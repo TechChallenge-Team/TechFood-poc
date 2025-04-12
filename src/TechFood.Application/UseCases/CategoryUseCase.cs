@@ -1,26 +1,26 @@
 ﻿using AutoMapper;
-using MediatR;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using TechFood.Application.Categories.Models;
+using TechFood.Application.Models;
+using TechFood.Application.UseCases.Interfaces;
 using TechFood.Domain.Entities;
 using TechFood.Domain.Repositories;
 
-namespace TechFood.Application.Categories.Queries.ListCategories
+namespace TechFood.Application.UseCases
 {
-    public class ListCategoriesQueryHandler(
+    internal class CategoryUseCase(
         IMapper mapper,
         ICategoryRepository categoryRepository,
-        IConfiguration appConfiguration) : IRequestHandler<ListCategoriesQuery, IEnumerable<CategoryDto>>
+        IConfiguration appConfiguration) : ICategoryUseCase
     {
         private readonly IMapper _mapper = mapper;
         private readonly ICategoryRepository _categoryRepository = categoryRepository;
         private readonly IConfiguration _appConfiguration = appConfiguration;
 
-        public async Task<IEnumerable<CategoryDto>> Handle(ListCategoriesQuery request, CancellationToken cancellationToken)
+
+        public async Task<IEnumerable<CategoryDto>> GetCategoriesAsync()
         {
             var categories = await _categoryRepository.GetAllAsync();
 

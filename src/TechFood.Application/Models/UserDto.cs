@@ -1,6 +1,6 @@
 ﻿using TechFood.Domain.ValueObjects;
 
-namespace TechFood.Application.Users.Data
+namespace TechFood.Application.Models
 {
     public class UserDto
     {

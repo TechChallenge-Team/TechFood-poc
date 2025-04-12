@@ -1,4 +1,4 @@
-﻿namespace TechFood.Application.Categories.Models
+﻿namespace TechFood.Application.Models
 {
     public class CategoryDto
     {

@@ -1,21 +1,19 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using TechFood.Application.Users.Queries.GetUserById;
+using TechFood.Application.UseCases.Interfaces;
 
 namespace TechFood.Api.Controllers
 {
     [ApiController()]
     [Route("v1/user")]
-    public class UserController(ISender mediator) : ControllerBase
+    public class UserController(IUserUseCase userUseCase) : ControllerBase
     {
-        private readonly ISender _mediator = mediator;
+        private readonly IUserUseCase _userUseCase = userUseCase;
 
         [HttpGet]
         public async Task<IActionResult> GetUserByIdAsync()
         {
-            var query = new GetUserByIdQuery(User.GetUserId());
-            var result = await _mediator.Send(query);
+            var result = await _userUseCase.GetUserByIdAsync(User.GetUserId());
 
             return Ok(result);
         }

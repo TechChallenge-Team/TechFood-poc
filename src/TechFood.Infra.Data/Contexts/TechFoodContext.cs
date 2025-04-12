@@ -1,22 +1,15 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TechFood.Domain.Entities;
-using TechFood.Domain.Shared.Entities;
 using TechFood.Infra.Data.Mappings;
 
 namespace TechFood.Infra.Data.Contexts
 {
     public class TechFoodContext(
-        IHttpContextAccessor httpContextAccessor,
         DbContextOptions<TechFoodContext> options) : DbContext(options)
     {
-        private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
-
         public DbSet<Category> Categories { get; set; } = null!;
 
         public DbSet<PaymentType> PaymentTypes { get; set; } = null!;
@@ -25,35 +18,7 @@ namespace TechFood.Infra.Data.Contexts
 
         public async Task CommitChangesAsync()
         {
-            // get hold of all the domain events
-            var domainEvents = ChangeTracker.Entries<Entity>()
-                .Select(entry => entry.Entity.PopDomainEvents())
-                .SelectMany(x => x)
-                .ToList();
-
-            if (domainEvents.Count != 0)
-            {
-                // store them in the http context for later
-                AddDomainEventsToOfflineProcessingQueue(domainEvents);
-            }
-
             await SaveChangesAsync();
-        }
-
-        private void AddDomainEventsToOfflineProcessingQueue(List<IDomainEvent> domainEvents)
-        {
-            // fetch queue from http context or create a new queue if it doesn't exist
-            var eventsQueue = _httpContextAccessor.HttpContext!
-                .Items
-                .TryGetValue(Application.Common.EventualConsistency.Mediator.EventsQueueKey, out var value) && value is Queue<INotification> existingEvents
-                    ? existingEvents
-                    : new Queue<INotification>();
-
-            // add the domain events to the end of the queue
-            domainEvents.ForEach(eventsQueue.Enqueue);
-
-            // store the queue in the http context
-            _httpContextAccessor.HttpContext.Items[Application.Common.EventualConsistency.Mediator.EventsQueueKey] = eventsQueue;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

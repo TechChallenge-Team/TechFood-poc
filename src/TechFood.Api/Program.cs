@@ -45,8 +45,6 @@ var app = builder.Build();
         app.UseSwaggerUI();
     }
 
-    app.UseApplication();
-
     app.UseHttpsRedirection();
 
     app.UseRouting();

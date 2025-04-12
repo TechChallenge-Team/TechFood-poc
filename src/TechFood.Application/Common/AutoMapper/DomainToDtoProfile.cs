@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using TechFood.Application.Categories.Models;
+using TechFood.Application.Models;
 using TechFood.Domain.Entities;
 
 namespace TechFood.Application.Common.AutoMapper

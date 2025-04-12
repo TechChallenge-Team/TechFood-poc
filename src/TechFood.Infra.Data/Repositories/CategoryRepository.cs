@@ -7,14 +7,9 @@ using TechFood.Infra.Data.Contexts;
 
 namespace TechFood.Infra.Data.Repositories
 {
-    public class CategoryRepository : ICategoryRepository
+    public class CategoryRepository(TechFoodContext dbContext) : ICategoryRepository
     {
-        private readonly DbSet<Category> _categories;
-
-        public CategoryRepository(TechFoodContext dbContext)
-        {
-            _categories = dbContext.Categories;
-        }
+        private readonly DbSet<Category> _categories = dbContext.Categories;
 
         public async Task<IEnumerable<Category>> GetAllAsync()
         {

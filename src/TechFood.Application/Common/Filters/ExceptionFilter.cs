@@ -1,9 +1,7 @@
-﻿using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System.Linq;
 using TechFood.Domain.Shared.Exceptions;
 
 namespace TechFood.Application.Common.Filters
@@ -16,24 +14,7 @@ namespace TechFood.Application.Common.Filters
 
             var requestId = context.HttpContext.TraceIdentifier;
 
-            if (context.Exception is ValidationException failException)
-            {
-                var failures = failException.Errors.Select(
-                    failure => new
-                    {
-                        code = failure.ErrorCode,
-                        message = failure.ErrorMessage
-                    });
-
-                context.Result = new BadRequestObjectResult(
-                    new
-                    {
-                        requestId,
-                        message = failException.Message,
-                        erros = failures,
-                    });
-            }
-            else if (context.Exception is DomainException domainException)
+            if (context.Exception is DomainException domainException)
             {
                 context.Result = new BadRequestObjectResult(
                     new

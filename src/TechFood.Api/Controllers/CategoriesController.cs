@@ -1,20 +1,18 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using TechFood.Application.Categories.Queries.ListCategories;
+﻿using Microsoft.AspNetCore.Mvc;
+using TechFood.Application.UseCases.Interfaces;
 
 namespace TechFood.Api.Controllers
 {
     [ApiController()]
     [Route("v1/categories")]
-    public class CategoriesController(ISender mediator) : ControllerBase
+    public class CategoriesController(ICategoryUseCase categoryUseCase) : ControllerBase
     {
-        private readonly ISender _mediator = mediator;
+        private readonly ICategoryUseCase _categoryUseCase = categoryUseCase;
 
         [HttpGet]
         public async Task<IActionResult> ListCategoriesAsync()
         {
-            var query = new ListCategoriesQuery();
-            var result = await _mediator.Send(query);
+            var result = await _categoryUseCase.GetCategoriesAsync();
 
             return Ok(result);
         }
