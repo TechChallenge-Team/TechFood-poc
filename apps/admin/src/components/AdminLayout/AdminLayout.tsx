@@ -8,9 +8,9 @@ import classNames from "./AdminLayout.module.css";
 
 export const AdminLayout = () => {
   const matches = useMatches();
-  const currentTitle = (matches.at(-1)?.handle as any)?.title;
+  const currentTitle = (matches[matches.length - 1]?.handle as any)?.title;
 
-  const { items: adminSidebarItems } = useSidebar("/admin");
+  const { items: adminSidebarItems } = useSidebar("/");
 
   useEffect(() => {
     if (currentTitle) {

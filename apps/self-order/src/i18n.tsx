@@ -8,7 +8,7 @@ import {
 
 import fallbackLangData from "./locales/en.json";
 
-const isDevelopment = (import.meta as any).env.DEV;
+const isDevelopment = import.meta.env.DEV;
 
 const defaultLang = { code: "en", label: "English", rtl: false };
 

@@ -4,7 +4,7 @@ import { StartPage, MenuPage } from "./pages";
 const router = createBrowserRouter([
   {
     index: true,
-    path: "start",
+    path: "/",
     element: <StartPage />,
   },
   {

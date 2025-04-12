@@ -6,7 +6,7 @@ import router from "../../routes";
 export const useSidebar = (route: string) => {
   const items = useMemo(
     () => generateFromRoutes(router.routes, route),
-    [router]
+    [route]
   );
 
   return {

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint src/**/*.{js,jsx}",
+    "lint": "eslint src/**/*.{js,jsx,ts,tsx}",
     "preview": "vite preview",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,25 +17,9 @@
     "@radix-ui/themes": "^3.2.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.487.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-router": "^7.5.0",
     "recharts": "^2.15.2"
   },
   "devDependencies": {
-    "@types/node": "^22.14.0",
-    "@types/react": "^18.3.1",
-    "@types/react-dom": "^18.3.1",
-    "@typescript-eslint/eslint-plugin": "^8.19.1",
-    "@typescript-eslint/parser": "^8.19.1",
-    "@vitejs/plugin-react": "^4.3.2",
-    "eslint": "^8.57.1",
-    "eslint-plugin-import": "^2.30.0",
-    "eslint-plugin-react": "^7.36.1",
-    "eslint-plugin-react-hooks": "^4.6.2",
-    "globals": "^15.11.0",
-    "typescript": "^5.8.3",
-    "vite": "^5.4.9",
     "vite-plugin-pwa": "^0.20.5"
   }
 }

@@ -10,7 +10,7 @@ import { Dashboard, MenuManagement } from "./pages";
 
 const router = createBrowserRouter([
   {
-    path: "/admin",
+    path: "/",
     Component: AdminLayout,
     children: [
       {
