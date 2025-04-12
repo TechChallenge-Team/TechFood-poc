@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TechFood.Application\TechFood.Application.csproj" />
-    <ProjectReference Include="..\TechFood.Infra.CrossCutting.IoC\TechFood.Infra.CrossCutting.IoC.csproj" />
+    <ProjectReference Include="..\TechFood.Infra.Data\TechFood.Infra.Data.csproj" />
   </ItemGroup>
 
 

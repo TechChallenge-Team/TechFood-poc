@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 using TechFood.Application;
 using TechFood.Application.Common.Filters;
 using TechFood.Application.Common.NamingPolicy;
-using TechFood.Infra.CrossCutting.IoC;
+using TechFood.Infra.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -32,7 +32,8 @@ var builder = WebApplication.CreateBuilder(args);
 
     builder.Services.AddSwaggerGen();
 
-    builder.Services.AddIoCServices();
+    builder.Services.AddApplication();
+    builder.Services.AddInfraData();
 }
 
 var app = builder.Build();
