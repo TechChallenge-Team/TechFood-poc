@@ -1,8 +1,8 @@
-﻿using AutoMapper;
-using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using Microsoft.Extensions.Configuration;
 using TechFood.Application.Models;
 using TechFood.Application.UseCases.Interfaces;
 using TechFood.Domain.Entities;
@@ -18,7 +18,6 @@ namespace TechFood.Application.UseCases
         private readonly IMapper _mapper = mapper;
         private readonly ICategoryRepository _categoryRepository = categoryRepository;
         private readonly IConfiguration _appConfiguration = appConfiguration;
-
 
         public async Task<IEnumerable<CategoryDto>> GetCategoriesAsync()
         {

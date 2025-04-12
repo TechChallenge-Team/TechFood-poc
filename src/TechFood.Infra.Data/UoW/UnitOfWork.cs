@@ -4,18 +4,11 @@ using TechFood.Infra.Data.Contexts;
 
 namespace TechFood.Infra.Data.UoW
 {
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork(TechFoodContext dbContext) : IUnitOfWork
     {
-        private readonly TechFoodContext _context;
-
-        public UnitOfWork(TechFoodContext dbContext)
-        {
-            _context = dbContext;
-        }
-
         public async Task<bool> CommitAsync()
         {
-            var success = await _context.SaveChangesAsync() > 0;
+            var success = await dbContext.SaveChangesAsync() > 0;
             return success;
         }
 

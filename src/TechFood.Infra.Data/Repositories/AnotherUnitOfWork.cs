@@ -4,14 +4,9 @@ using TechFood.Infra.Data.Contexts;
 
 namespace TechFood.Infra.Data.Repositories
 {
-    public class AnotherUnitOfWork : IUnitOfWork
+    public class AnotherUnitOfWork(TechFoodContext dbContext) : IUnitOfWork
     {
-        private readonly TechFoodContext _context;
-
-        public AnotherUnitOfWork(TechFoodContext dbContext)
-        {
-            _context = dbContext;
-        }
+        private readonly TechFoodContext _context = dbContext;
 
         public async Task<bool> CommitAsync()
         {
