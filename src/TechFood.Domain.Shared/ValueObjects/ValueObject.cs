@@ -1,6 +1,5 @@
-﻿namespace TechFood.Domain.Shared
+namespace TechFood.Domain.Shared.ValueObjects;
+
+public class ValueObject
 {
-    public class ValueObject
-    {
-    }
 }

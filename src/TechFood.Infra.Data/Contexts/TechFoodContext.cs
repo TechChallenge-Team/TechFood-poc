@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -11,10 +11,9 @@ namespace TechFood.Infra.Data.Contexts
         DbContextOptions<TechFoodContext> options) : DbContext(options)
     {
         public DbSet<Category> Categories { get; set; } = null!;
+        public DbSet<Category> Categories { get; set; } = null!;
+        public DbSet<Category> Categories { get; set; } = null!;
 
-        public DbSet<PaymentType> PaymentTypes { get; set; } = null!;
-
-        public DbSet<User> Users { get; set; } = null!;
 
         public async Task CommitChangesAsync()
         {
@@ -23,9 +22,7 @@ namespace TechFood.Infra.Data.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new CategoryMap());
-            modelBuilder.ApplyConfiguration(new PaymentTypeMap());
-            modelBuilder.ApplyConfiguration(new UserMap());
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(TechFoodContext).Assembly);
 
             var properties = modelBuilder.Model
                 .GetEntityTypes()

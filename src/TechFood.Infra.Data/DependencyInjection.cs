@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TechFood.Domain.Repositories;
@@ -30,8 +30,8 @@ namespace TechFood.Infra.Data
 
             //Data
             services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddScoped<IPaymentTypeRepository, PaymentTypeRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
+            //services.AddScoped<IPaymentTypeRepository, PaymentTypeRepository>();
+            //services.AddScoped<IUserRepository, UserRepository>();
 
             return services;
         }
