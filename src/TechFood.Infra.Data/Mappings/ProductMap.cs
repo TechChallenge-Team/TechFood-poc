@@ -22,8 +22,8 @@ public class ProductMap : IEntityTypeConfiguration<Product>
             .WithMany()
             .IsRequired();
 
-        builder.Property(a => a.ImageId)
-            .HasMaxLength(1000)
+        builder.Property(a => a.ImageFileName)
+            .HasMaxLength(50)
             .IsRequired();
     }
 }

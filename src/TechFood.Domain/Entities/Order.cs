@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using TechFood.Domain.Enums;
 using TechFood.Domain.Shared.Entities;
 using TechFood.Domain.Shared.Exceptions;
-using TechFood.Domain.ValueObjects;
 
 namespace TechFood.Domain.Entities;
 
@@ -12,14 +11,10 @@ public class Order : Entity, IAggregateRoot
     private Order() { }
 
     public Order(
-        Guid customerId,
-        decimal amount,
-        decimal discount
-        )
+        Customer customer)
     {
-        CustomerId = customerId;
-        Amount = amount;
-        Discount = discount;
+        Customer = customer;
+        CustomerId = customer.Id;
         CreatedAt = DateTime.Now;
         Status = OrderStatusType.Created;
     }
@@ -44,23 +39,81 @@ public class Order : Entity, IAggregateRoot
 
     public decimal Discount { get; private set; }
 
+    public Guid PaymentId { get; private set; }
+
     public Payment? Payment { get; private set; }
 
     public IReadOnlyCollection<OrderItem> Items => _itens.AsReadOnly();
 
     public IReadOnlyCollection<OrderHistory> Historical => _historical.AsReadOnly();
 
-    public void Pay(Payment payment)
+    public void CreatePayment(PaymentType type)
     {
-        if (payment.Amount != TotalAmount)
+        if (Status != OrderStatusType.Created)
         {
-            throw new DomainException(Resources.Exceptions.Order_AmountIsNotEqualOrderAmount);
+            throw new DomainException(Resources.Exceptions.Order_CannotCreatePaymentToNonCreatedStatus);
         }
 
-        Payment = payment;
+        Payment = new Payment(this, type, TotalAmount);
+        PaymentId = Payment.Id;
+    }
+
+    public void ApplyDiscount(decimal discount)
+    {
+        if (Status != OrderStatusType.Created)
+        {
+            throw new DomainException(Resources.Exceptions.Order_CannotApplyDiscountToNonCreatedStatus);
+        }
+
+        if (discount < 0)
+        {
+            throw new DomainException(Resources.Exceptions.Order_DiscountCannotBeNegative);
+        }
+
+        Discount = discount;
+
+        CalculateAmount();
+    }
+
+    public void PayPayment()
+    {
+        if (Status != OrderStatusType.Created)
+        {
+            throw new DomainException(Resources.Exceptions.Order_CannotPayToNonCreatedStatus);
+        }
+
+        if (Payment == null)
+        {
+            throw new DomainException(Resources.Exceptions.Order_PaymentIsNull);
+        }
+
+        Payment.Pay();
         Status = OrderStatusType.Paid;
 
-        _historical.Add(new(Id, OrderStatusType.Paid));
+        _historical.Add(new(this, OrderStatusType.Paid));
+    }
+
+    public void RefusedPayment()
+    {
+        if (Status != OrderStatusType.Created)
+        {
+            throw new DomainException(Resources.Exceptions.Order_CannotRefusePaymentToNonCreatedStatus);
+        }
+
+        if (Payment == null)
+        {
+            throw new DomainException(Resources.Exceptions.Order_PaymentIsNull);
+        }
+
+        Payment.Refused();
+    }
+
+    public void AddItems(IEnumerable<OrderItem> items)
+    {
+        foreach (var item in items)
+        {
+            AddItem(item);
+        }
     }
 
     public void AddItem(OrderItem item)
@@ -71,6 +124,8 @@ public class Order : Entity, IAggregateRoot
         }
 
         _itens.Add(item);
+
+        CalculateAmount();
     }
 
     public void RemoveItem(OrderItem item)
@@ -81,6 +136,8 @@ public class Order : Entity, IAggregateRoot
         }
 
         _itens.Remove(item);
+
+        CalculateAmount();
     }
 
     public void Prepare()
@@ -92,7 +149,17 @@ public class Order : Entity, IAggregateRoot
 
         Status = OrderStatusType.InPreparation;
 
-        _historical.Add(new(Id, OrderStatusType.InPreparation));
+        _historical.Add(new(this, OrderStatusType.InPreparation));
+    }
+
+    private void CalculateAmount()
+    {
+        Amount = 0;
+
+        foreach (var item in _itens)
+        {
+            Amount += item.Quantity * item.Product.Price;
+        }
     }
 
     public void Done()
@@ -104,7 +171,7 @@ public class Order : Entity, IAggregateRoot
 
         Status = OrderStatusType.Done;
 
-        _historical.Add(new(Id, OrderStatusType.Done));
+        _historical.Add(new(this, OrderStatusType.Done));
     }
 
     public void Finish()
@@ -112,6 +179,6 @@ public class Order : Entity, IAggregateRoot
         FinishedAt = DateTime.Now;
         Status = OrderStatusType.Finished;
 
-        _historical.Add(new(Id, OrderStatusType.Finished));
+        _historical.Add(new(this, OrderStatusType.Finished));
     }
 }

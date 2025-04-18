@@ -14,9 +14,11 @@ public class Phone : ValueObject
         Number = number;
     }
 
-    public string CountryCode { get; init; }
-    public string DDD { get; init; }
-    public string? Number { get; init; }
+    public string CountryCode { get; private init; }
+
+    public string DDD { get; private init; }
+
+    public string? Number { get; private init; }
 
     public void IsValidPhoneNumber()
     {
