@@ -53,10 +53,7 @@ if (app.Environment.IsDevelopment())
     {
         options.OpenApiVersion = Microsoft.OpenApi.OpenApiSpecVersion.OpenApi2_0;
     });
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "TechFood API V1");
-    });
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
