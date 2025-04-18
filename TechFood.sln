@@ -30,6 +30,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution Items", "_Solutio
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{6E8081B6-9D78-4ADB-8B83-9ED38BE45C47}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -100,6 +102,18 @@ Global
 		{7C0FDF26-D329-41E9-B142-746F3A5AA6ED}.Release|x64.Build.0 = Release|Any CPU
 		{7C0FDF26-D329-41E9-B142-746F3A5AA6ED}.Release|x86.ActiveCfg = Release|Any CPU
 		{7C0FDF26-D329-41E9-B142-746F3A5AA6ED}.Release|x86.Build.0 = Release|Any CPU
+		{6E8081B6-9D78-4ADB-8B83-9ED38BE45C47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E8081B6-9D78-4ADB-8B83-9ED38BE45C47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E8081B6-9D78-4ADB-8B83-9ED38BE45C47}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6E8081B6-9D78-4ADB-8B83-9ED38BE45C47}.Debug|x64.Build.0 = Debug|Any CPU
+		{6E8081B6-9D78-4ADB-8B83-9ED38BE45C47}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6E8081B6-9D78-4ADB-8B83-9ED38BE45C47}.Debug|x86.Build.0 = Debug|Any CPU
+		{6E8081B6-9D78-4ADB-8B83-9ED38BE45C47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E8081B6-9D78-4ADB-8B83-9ED38BE45C47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E8081B6-9D78-4ADB-8B83-9ED38BE45C47}.Release|x64.ActiveCfg = Release|Any CPU
+		{6E8081B6-9D78-4ADB-8B83-9ED38BE45C47}.Release|x64.Build.0 = Release|Any CPU
+		{6E8081B6-9D78-4ADB-8B83-9ED38BE45C47}.Release|x86.ActiveCfg = Release|Any CPU
+		{6E8081B6-9D78-4ADB-8B83-9ED38BE45C47}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
