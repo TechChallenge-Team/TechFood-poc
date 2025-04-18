@@ -6,15 +6,16 @@ namespace TechFood.Domain.Entities;
 
 public class OrderHistory : Entity
 {
+    public OrderHistory() { }
+
     public OrderHistory(
         Guid orderId,
-        DateTime createdAt,
         OrderStatusType orderStatusType
         )
     {
         OrderId = orderId;
-        CreatedAt = createdAt;
         OrderStatusType = orderStatusType;
+        CreatedAt = DateTime.Now;
     }
 
     public Guid OrderId { get; private set; }

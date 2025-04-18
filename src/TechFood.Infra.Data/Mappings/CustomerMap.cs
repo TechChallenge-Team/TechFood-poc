@@ -9,7 +9,7 @@ public class CustomerMap : IEntityTypeConfiguration<Customer>
 {
     public void Configure(EntityTypeBuilder<Customer> builder)
     {
-        builder.ToTable("Category");
+        builder.ToTable("Customer");
 
         builder.OwnsOne(a => a.Name, name => name.MapName())
             .Navigation(a => a.Name)
@@ -23,8 +23,7 @@ public class CustomerMap : IEntityTypeConfiguration<Customer>
             .Navigation(x => x.Document)
             .IsRequired();
 
-        builder.OwnsOne(x => x.Phone, phone => phone.MapPhone())
-            .Navigation(x => x.Phone)
-            .IsRequired();
+        builder.OwnsOne(x => x.Phone, phone => phone!.MapPhone())
+            .Navigation(x => x.Phone);
     }
 }

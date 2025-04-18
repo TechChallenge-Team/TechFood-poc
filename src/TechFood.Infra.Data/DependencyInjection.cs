@@ -19,7 +19,6 @@ namespace TechFood.Infra.Data
             {
                 var config = serviceProvider.GetRequiredService<IConfiguration>();
 
-                options.UseLazyLoadingProxies();
                 options.UseSqlServer(config.GetConnectionString("DataBaseConection"));
             });
 

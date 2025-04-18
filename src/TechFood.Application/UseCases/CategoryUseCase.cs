@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -30,7 +30,7 @@ namespace TechFood.Application.UseCases
                     {
                         dto.ImageUrl = string.Concat(
                             _appConfiguration["TechFoodStaticImagesUrl"],
-                            "/discoveries/",
+                            "/categories/",
                             category.ImageFileName);
                     })));
         }

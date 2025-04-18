@@ -3,12 +3,13 @@ using TechFood.Domain.Shared.Entities;
 
 namespace TechFood.Domain.Entities;
 
-public class Product : Entity
+public class Product : Entity, IAggregateRoot
 {
+    public Product() { }
+
     public Product(
         string name,
         string description,
-        Category category,
         Guid categoryId,
         string imageId,
         decimal price
@@ -16,21 +17,20 @@ public class Product : Entity
     {
         Name = name;
         Description = description;
-        Category = category;
         CategoryId = categoryId;
         ImageId = imageId;
         Price = price;
     }
 
-    public string Name { get; private set; }
+    public string Name { get; private set; } = null!;
 
-    public string Description { get; private set; }
+    public string Description { get; private set; } = null!;
 
-    public Category Category { get; private set; }
+    public Category Category { get; private set; } = null!;
 
     public Guid CategoryId { get; private set; }
 
-    public string ImageId { get; private set; }
+    public string ImageId { get; private set; } = null!;
 
     public decimal Price { get; private set; }
 }

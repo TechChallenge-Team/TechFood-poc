@@ -6,9 +6,16 @@ namespace TechFood.Domain.ValueObjects;
 
 public class Payment : ValueObject
 {
-    public DateTime Date { get; private set; }
+    public Payment(PaymentType type, decimal amount)
+    {
+        Type = type;
+        Amount = amount;
+        PaidAt = DateTime.Now;
+    }
 
-    public PaymentStatusType Status { get; private set; }
+    public DateTime PaidAt { get; private set; }
 
     public PaymentType Type { get; private set; }
+
+    public decimal Amount { get; private set; }
 }

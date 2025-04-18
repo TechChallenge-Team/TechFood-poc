@@ -1,8 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using TechFood.Domain.Entities;
-using TechFood.Infra.Data.ValueObjectMappings;
 
 namespace TechFood.Infra.Data.Mappings;
 
@@ -20,20 +18,12 @@ public class ProductMap : IEntityTypeConfiguration<Product>
             .HasMaxLength(255)
             .IsRequired();
 
-        //builder.Property(a => a.CategoryId)
-        //   .HasMaxLength(255)
-        //   .IsRequired();
-
-        builder.OwnsOne(a => a.Category, category => category.Name)
-            .HasMaxLength(1000)
+        builder.HasOne(a => a.Category)
+            .WithMany()
             .IsRequired();
 
         builder.Property(a => a.ImageId)
             .HasMaxLength(1000)
-            .IsRequired();
-
-        builder.Property(a => a.Price)
-            .HasPrecision(6,2)
             .IsRequired();
     }
 }

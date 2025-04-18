@@ -4,23 +4,18 @@ namespace TechFood.Domain.ValueObjects;
 
 public class Name : ValueObject
 {
-    public Name(
-        string first,
-        string? middle,
-        string last)
+    public Name(string fullName)
     {
-        First = first;
-        Middle = middle;
-        Last = last;
+        FullName = fullName;
     }
 
-    public string FullName { get; set; }
+    public string FullName { get; private set; } = null!;
 
-    public string First { get; private set; }
+    //public string First { get; private set; }
 
-    public string? Middle { get; private set; }
+    //public string? Middle { get; private set; }
 
-    public string Last { get; private set; }
+    //public string Last { get; private set; }
 
     //public static implicit operator Name(string note) => new(note);
 

@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using TechFood.Application.Common.Services;
 using TechFood.Application.Common.Services.Interfaces;
 using TechFood.Application.UseCases;
@@ -17,7 +17,6 @@ namespace TechFood.Application
             services.AddAutoMapper(typeof(DependecyInjection));
 
             services.AddTransient<ICategoryUseCase, CategoryUseCase>();
-            services.AddTransient<IUserUseCase, UserUseCase>();
 
             return services;
         }
