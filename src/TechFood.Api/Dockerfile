@@ -1,3 +1,4 @@
+# See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
 # This stage is used when running from VS in fast mode (Default for Debug configuration)
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
@@ -16,6 +17,7 @@ COPY ["src/TechFood.Application/TechFood.Application.csproj", "src/TechFood.Appl
 COPY ["src/TechFood.Domain/TechFood.Domain.csproj", "src/TechFood.Domain/"]
 COPY ["src/TechFood.Domain.Shared/TechFood.Domain.Shared.csproj", "src/TechFood.Domain.Shared/"]
 COPY ["src/TechFood.Infra.Data/TechFood.Infra.Data.csproj", "src/TechFood.Infra.Data/"]
+RUN dotnet restore "./src/TechFood.Api/TechFood.Api.csproj"
 COPY . .
 WORKDIR "/src/src/TechFood.Api"
 RUN dotnet build "./TechFood.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
@@ -29,3 +31,8 @@ RUN dotnet publish "./TechFood.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publi
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+## Run migrations
+FROM buildbase as migrations
+RUN dotnet tool install --version 6.0.9 --global dotnet-ef
+ENV PATH="$PATH:/root/.dotnet/tools"
+ENTRYPOINT [ "sh", "-c", "dotnet src/TechFood.Api.dll database update --project src/TechFood.Infra.Data --startup-project TechFood.Api  -c TechFoodContext  && dotnet TechFood.Api.dll" ]
