@@ -79,11 +79,38 @@ namespace TechFood.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot apply discount to an order that is not in the Created status..
+        /// </summary>
+        internal static string Order_CannotApplyDiscountToNonCreatedStatus {
+            get {
+                return ResourceManager.GetString("Order_CannotApplyDiscountToNonCreatedStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot create a payment for an order that is not in the Created status..
+        /// </summary>
+        internal static string Order_CannotCreatePaymentToNonCreatedStatus {
+            get {
+                return ResourceManager.GetString("Order_CannotCreatePaymentToNonCreatedStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot done an order that is not in the InPreparation status..
         /// </summary>
         internal static string Order_CannotFinishToNonInPreparationStatus {
             get {
                 return ResourceManager.GetString("Order_CannotFinishToNonInPreparationStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot pay for an order that is not in the Created status..
+        /// </summary>
+        internal static string Order_CannotPayToNonCreatedStatus {
+            get {
+                return ResourceManager.GetString("Order_CannotPayToNonCreatedStatus", resourceCulture);
             }
         }
         
@@ -97,11 +124,47 @@ namespace TechFood.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot refuse payment for an order that is not in the Created status..
+        /// </summary>
+        internal static string Order_CannotRefusePaymentToNonCreatedStatus {
+            get {
+                return ResourceManager.GetString("Order_CannotRefusePaymentToNonCreatedStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot remove items from an order that is not in the Created status..
         /// </summary>
         internal static string Order_CannotRemoveItemToNonCreatedStatus {
             get {
                 return ResourceManager.GetString("Order_CannotRemoveItemToNonCreatedStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Discount cannot be negative..
+        /// </summary>
+        internal static string Order_DiscountCannotBeNegative {
+            get {
+                return ResourceManager.GetString("Order_DiscountCannotBeNegative", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payment cannot be null..
+        /// </summary>
+        internal static string Order_PaymentIsNull {
+            get {
+                return ResourceManager.GetString("Order_PaymentIsNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payment has already been paid..
+        /// </summary>
+        internal static string Payment_AlreadyPaid {
+            get {
+                return ResourceManager.GetString("Payment_AlreadyPaid", resourceCulture);
             }
         }
     }

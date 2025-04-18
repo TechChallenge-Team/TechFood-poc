@@ -34,7 +34,7 @@ namespace TechFood.Infra.Data.Migrations
                     NameFullName = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
                     EmailAddress = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
                     DocumentType = table.Column<int>(type: "int", nullable: false),
-                    DocumentValue = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
+                    DocumentValue = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false),
                     PhoneCountryCode = table.Column<string>(type: "varchar(5)", maxLength: 5, nullable: true),
                     PhoneDDD = table.Column<string>(type: "varchar(4)", maxLength: 4, nullable: true),
                     PhoneNumber = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: true)
@@ -52,7 +52,7 @@ namespace TechFood.Infra.Data.Migrations
                     Name = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
                     Description = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
                     CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ImageId = table.Column<string>(type: "varchar(1000)", maxLength: 1000, nullable: false),
+                    ImageFileName = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
                     Price = table.Column<decimal>(type: "decimal(6,2)", nullable: false)
                 },
                 constraints: table =>
@@ -77,9 +77,7 @@ namespace TechFood.Infra.Data.Migrations
                     Status = table.Column<int>(type: "int", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(6,2)", nullable: false),
                     Discount = table.Column<decimal>(type: "decimal(6,2)", nullable: false),
-                    PaymentPaidAt = table.Column<DateTime>(type: "datetime", nullable: true),
-                    PaymentType = table.Column<int>(type: "int", nullable: true),
-                    PaymentAmount = table.Column<decimal>(type: "decimal(6,2)", nullable: true)
+                    PaymentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -99,7 +97,7 @@ namespace TechFood.Infra.Data.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
-                    OrderStatusType = table.Column<int>(type: "int", nullable: false)
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -126,6 +124,35 @@ namespace TechFood.Infra.Data.Migrations
                     table.PrimaryKey("PK_OrderItem", x => x.Id);
                     table.ForeignKey(
                         name: "FK_OrderItem_Order_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Order",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderItem_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Payment",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
+                    PaidAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(6,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payment", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Payment_Order_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Order",
                         principalColumn: "Id",
@@ -159,6 +186,17 @@ namespace TechFood.Infra.Data.Migrations
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_OrderItem_ProductId",
+                table: "OrderItem",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Payment_OrderId",
+                table: "Payment",
+                column: "OrderId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Product_CategoryId",
                 table: "Product",
                 column: "CategoryId");
@@ -172,6 +210,9 @@ namespace TechFood.Infra.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "OrderItem");
+
+            migrationBuilder.DropTable(
+                name: "Payment");
 
             migrationBuilder.DropTable(
                 name: "Product");

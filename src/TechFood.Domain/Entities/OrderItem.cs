@@ -8,18 +8,24 @@ public class OrderItem : Entity
     public OrderItem() { }
 
     public OrderItem(
-        Guid orderId,
-        Guid productId,
+        Order order,
+        Product product,
         int quantity)
     {
-        OrderId = orderId;
-        ProductId = productId;
+        OrderId = order.Id;
+        Order = order;
+        ProductId = product.Id;
+        Product = product;
         Quantity = quantity;
     }
 
     public Guid OrderId { get; private set; }
 
+    public Order Order { get; private set; } = null!;
+
     public Guid ProductId { get; private set; }
+
+    public Product Product { get; private set; } = null!;
 
     public int Quantity { get; private set; }
 }

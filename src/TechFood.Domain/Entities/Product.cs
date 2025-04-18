@@ -10,15 +10,16 @@ public class Product : Entity, IAggregateRoot
     public Product(
         string name,
         string description,
-        Guid categoryId,
-        string imageId,
+        Category category,
+        string imageFileName,
         decimal price
         )
     {
         Name = name;
         Description = description;
-        CategoryId = categoryId;
-        ImageId = imageId;
+        Category = category;
+        CategoryId = category.Id;
+        ImageFileName = imageFileName;
         Price = price;
     }
 
@@ -30,7 +31,7 @@ public class Product : Entity, IAggregateRoot
 
     public Guid CategoryId { get; private set; }
 
-    public string ImageId { get; private set; } = null!;
+    public string ImageFileName { get; private set; } = null!;
 
     public decimal Price { get; private set; }
 }

@@ -101,6 +101,9 @@ namespace TechFood.Infra.Data.Migrations
                     b.Property<DateTime?>("FinishedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("PaymentId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -123,14 +126,14 @@ namespace TechFood.Infra.Data.Migrations
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("OrderStatusType")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderHistory");
+                    b.ToTable("OrderHistory", (string)null);
                 });
 
             modelBuilder.Entity("TechFood.Domain.Entities.OrderItem", b =>
@@ -152,7 +155,41 @@ namespace TechFood.Infra.Data.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderItem");
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderItem", (string)null);
+                });
+
+            modelBuilder.Entity("TechFood.Domain.Entities.Payment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(6, 2)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("PaidAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId")
+                        .IsUnique();
+
+                    b.ToTable("Payment", (string)null);
                 });
 
             modelBuilder.Entity("TechFood.Domain.Entities.Product", b =>
@@ -169,10 +206,10 @@ namespace TechFood.Infra.Data.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
 
-                    b.Property<string>("ImageId")
+                    b.Property<string>("ImageFileName")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("varchar(1000)");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -202,8 +239,8 @@ namespace TechFood.Infra.Data.Migrations
 
                             b1.Property<string>("Value")
                                 .IsRequired()
-                                .HasMaxLength(255)
-                                .HasColumnType("varchar(255)")
+                                .HasMaxLength(20)
+                                .HasColumnType("varchar(20)")
                                 .HasColumnName("DocumentValue");
 
                             b1.HasKey("CustomerId");
@@ -303,52 +340,48 @@ namespace TechFood.Infra.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("TechFood.Domain.ValueObjects.Payment", "Payment", b1 =>
-                        {
-                            b1.Property<Guid>("OrderId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<decimal>("Amount")
-                                .HasColumnType("decimal(6, 2)")
-                                .HasColumnName("PaymentAmount");
-
-                            b1.Property<DateTime>("PaidAt")
-                                .HasColumnType("datetime")
-                                .HasColumnName("PaymentPaidAt");
-
-                            b1.Property<int>("Type")
-                                .HasColumnType("int")
-                                .HasColumnName("PaymentType");
-
-                            b1.HasKey("OrderId");
-
-                            b1.ToTable("Order");
-
-                            b1.WithOwner()
-                                .HasForeignKey("OrderId");
-                        });
-
                     b.Navigation("Customer");
-
-                    b.Navigation("Payment");
                 });
 
             modelBuilder.Entity("TechFood.Domain.Entities.OrderHistory", b =>
                 {
-                    b.HasOne("TechFood.Domain.Entities.Order", null)
+                    b.HasOne("TechFood.Domain.Entities.Order", "Order")
                         .WithMany("Historical")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("TechFood.Domain.Entities.OrderItem", b =>
                 {
-                    b.HasOne("TechFood.Domain.Entities.Order", null)
+                    b.HasOne("TechFood.Domain.Entities.Order", "Order")
                         .WithMany("Items")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("TechFood.Domain.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("TechFood.Domain.Entities.Payment", b =>
+                {
+                    b.HasOne("TechFood.Domain.Entities.Order", "Order")
+                        .WithOne("Payment")
+                        .HasForeignKey("TechFood.Domain.Entities.Payment", "OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("TechFood.Domain.Entities.Product", b =>
@@ -367,6 +400,8 @@ namespace TechFood.Infra.Data.Migrations
                     b.Navigation("Historical");
 
                     b.Navigation("Items");
+
+                    b.Navigation("Payment");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TechFood.Domain.Entities;
-using TechFood.Infra.Data.ValueObjectMappings;
 
 namespace TechFood.Infra.Data.Mappings;
 
@@ -15,15 +14,17 @@ public class OrderMap : IEntityTypeConfiguration<Order>
             .WithMany()
             .IsRequired();
 
+        builder.HasOne(o => o.Payment)
+           .WithOne(o => o.Order)
+           .HasForeignKey<Payment>(o => o.OrderId)
+           .IsRequired();
+
         builder.HasMany(o => o.Items)
-               .WithOne()
-               .IsRequired();
+            .WithOne(o => o.Order)
+            .IsRequired();
 
         builder.HasMany(o => o.Historical)
-              .WithOne()
-              .IsRequired();
-
-        builder.OwnsOne(o => o.Payment, payment => payment!.MapPayment())
-            .Navigation(o => o.Payment);
+            .WithOne(o => o.Order)
+            .IsRequired();
     }
 }

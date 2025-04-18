@@ -12,7 +12,7 @@ public static class DocumentMap
         navigationBuilder.WithOwner();
 
         navigationBuilder.Property(x => x.Value)
-            .HasMaxLength(255)
+            .HasMaxLength(20)
             .HasColumnName("DocumentValue")
             .IsRequired();
 
