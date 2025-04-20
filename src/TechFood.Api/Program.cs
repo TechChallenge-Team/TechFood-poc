@@ -1,8 +1,10 @@
 using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore;
 using TechFood.Application;
 using TechFood.Application.Common.Filters;
 using TechFood.Application.Common.NamingPolicy;
 using TechFood.Infra.Data;
+using TechFood.Infra.Data.Contexts;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -45,7 +47,12 @@ var builder = WebApplication.CreateBuilder(args);
 }
 
 var app = builder.Build();
-
+//Run migrations
+using (var scope = app.Services.CreateScope())
+{
+    var dataContext = scope.ServiceProvider.GetRequiredService<TechFoodContext>();
+    dataContext.Database.Migrate();
+}
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();

@@ -31,8 +31,4 @@ RUN dotnet publish "./TechFood.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publi
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-## Run migrations
-FROM buildbase as migrations
-RUN dotnet tool install --version 6.0.9 --global dotnet-ef
-ENV PATH="$PATH:/root/.dotnet/tools"
 ENTRYPOINT [ "sh", "-c", "dotnet src/TechFood.Api.dll database update --project src/TechFood.Infra.Data --startup-project TechFood.Api  -c TechFoodContext  && dotnet TechFood.Api.dll" ]

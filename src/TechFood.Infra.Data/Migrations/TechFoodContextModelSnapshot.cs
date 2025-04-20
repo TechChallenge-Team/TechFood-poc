@@ -340,34 +340,7 @@ namespace TechFood.Infra.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("TechFood.Domain.ValueObjects.Payment", "Payment", b1 =>
-                        {
-                            b1.Property<Guid>("OrderId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<decimal>("Amount")
-                                .HasColumnType("decimal(6, 2)")
-                                .HasColumnName("PaymentAmount");
-
-                            b1.Property<DateTime>("PaidAt")
-                                .HasColumnType("datetime")
-                                .HasColumnName("PaymentPaidAt");
-
-                            b1.Property<int>("Type")
-                                .HasColumnType("int")
-                                .HasColumnName("PaymentType");
-
-                            b1.HasKey("OrderId");
-
-                            b1.ToTable("Order");
-
-                            b1.WithOwner()
-                                .HasForeignKey("OrderId");
-                        });
-
                     b.Navigation("Customer");
-
-                    b.Navigation("Payment");
                 });
 
             modelBuilder.Entity("TechFood.Domain.Entities.OrderHistory", b =>
