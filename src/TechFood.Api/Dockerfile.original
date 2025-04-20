@@ -31,4 +31,4 @@ RUN dotnet publish "./TechFood.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publi
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT [ "sh", "-c", "dotnet src/TechFood.Api.dll database update --project src/TechFood.Infra.Data --startup-project TechFood.Api  -c TechFoodContext  && dotnet TechFood.Api.dll" ]
+ENTRYPOINT [ "sh", "-c", "dotnet TechFood.Api.dll database update --project TechFood.Infra.Data --startup-project TechFood.Api && dotnet TechFood.Api.dll" ]

@@ -12,7 +12,7 @@ using TechFood.Infra.Data.Contexts;
 namespace TechFood.Infra.Data.Migrations
 {
     [DbContext(typeof(TechFoodContext))]
-    [Migration("20250418134734_Initial")]
+    [Migration("20250420032703_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
