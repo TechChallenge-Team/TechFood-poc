@@ -31,7 +31,13 @@ public class Product : Entity, IAggregateRoot
 
     public Guid CategoryId { get; private set; }
 
+    public bool OutOfStock { get; private set; }
+
     public string ImageFileName { get; private set; } = null!;
 
     public decimal Price { get; private set; }
+
+    public void SetOutOfStock() => OutOfStock = true;
+
+    public void SetInStock() => OutOfStock = false;
 }
