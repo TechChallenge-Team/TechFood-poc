@@ -5,7 +5,7 @@ using TechFood.Application.UseCases.Interfaces;
 namespace TechFood.Api.Controllers;
 
 [ApiController()]
-[Route("v1/categories")]
+[Route("v1/products")]
 public class ProductController(IProductUseCase categoryUseCase) : ControllerBase
 {
     private readonly IProductUseCase _productUseCase = categoryUseCase;

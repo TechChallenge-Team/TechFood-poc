@@ -55,7 +55,7 @@ public class Product : Entity, IAggregateRoot
         Description = description;
     }
 
-    public void SetPriceName(decimal price)
+    public void SetPrice(decimal price)
     {
         if (price <= 0)
         {
@@ -81,7 +81,7 @@ public class Product : Entity, IAggregateRoot
     {
         SetName(name);
         SetDescription(description);
-        SetPriceName(price);
+        SetPrice(price);
         //SetCategory(category);
     }
 }
