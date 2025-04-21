@@ -10,12 +10,11 @@ public class Payment : Entity
     public Payment() { }
 
     public Payment(
-        Order order,
+        Guid orderId,
         PaymentType type,
         decimal amount)
     {
-        Order = order;
-        OrderId = order.Id;
+        OrderId = orderId;
         Type = type;
         Amount = amount;
         CreatedAt = DateTime.Now;
@@ -23,8 +22,6 @@ public class Payment : Entity
     }
 
     public Guid OrderId { get; private set; }
-
-    public Order Order { get; private set; } = null!;
 
     public DateTime CreatedAt { get; private set; }
 

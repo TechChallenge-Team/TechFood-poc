@@ -10,15 +10,14 @@ public class Product : Entity, IAggregateRoot
     public Product(
         string name,
         string description,
-        Category category,
+        Guid categoryId,
         string imageFileName,
         decimal price
         )
     {
         Name = name;
         Description = description;
-        Category = category;
-        CategoryId = category.Id;
+        CategoryId = categoryId;
         ImageFileName = imageFileName;
         Price = price;
     }
@@ -27,9 +26,9 @@ public class Product : Entity, IAggregateRoot
 
     public string Description { get; private set; } = null!;
 
-    public Category Category { get; private set; } = null!;
-
     public Guid CategoryId { get; private set; }
+
+    public bool OutOfStock { get; private set; }
 
     public string ImageFileName { get; private set; } = null!;
 
@@ -73,7 +72,6 @@ public class Product : Entity, IAggregateRoot
         }
 
         CategoryId = category.Id;
-        Category = category;
     }
 
     //TODO: adicionar category

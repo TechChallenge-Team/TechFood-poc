@@ -1,15 +1,13 @@
-# See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
+ARG DOTNET_RUNTIME=mcr.microsoft.com/dotnet/aspnet:8.0
+ARG DOTNET_SDK=mcr.microsoft.com/dotnet/sdk:8.0
 
-# This stage is used when running from VS in fast mode (Default for Debug configuration)
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+FROM ${DOTNET_RUNTIME} AS base
 USER app
 WORKDIR /app
 EXPOSE 5000
 EXPOSE 5001
 
-
-# This stage is used to build the service project
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM ${DOTNET_SDK} AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/TechFood.Api/TechFood.Api.csproj", "src/TechFood.Api/"]
@@ -17,18 +15,16 @@ COPY ["src/TechFood.Application/TechFood.Application.csproj", "src/TechFood.Appl
 COPY ["src/TechFood.Domain/TechFood.Domain.csproj", "src/TechFood.Domain/"]
 COPY ["src/TechFood.Domain.Shared/TechFood.Domain.Shared.csproj", "src/TechFood.Domain.Shared/"]
 COPY ["src/TechFood.Infra.Data/TechFood.Infra.Data.csproj", "src/TechFood.Infra.Data/"]
-RUN dotnet restore "./src/TechFood.Api/TechFood.Api.csproj"
+RUN dotnet restore "./src/TechFood.Api/./TechFood.Api.csproj"
 COPY . .
-WORKDIR "/src/src/TechFood.Api"
+WORKDIR /src/src/TechFood.Api
 RUN dotnet build "./TechFood.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-# This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "./TechFood.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-# This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT [ "sh", "-c", "dotnet src/TechFood.Api.dll database update --project src/TechFood.Infra.Data --startup-project TechFood.Api  -c TechFoodContext  && dotnet TechFood.Api.dll" ]
+ENTRYPOINT ["dotnet", "TechFood.Api.dll"]

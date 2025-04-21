@@ -18,7 +18,7 @@ public class ProductMap : IEntityTypeConfiguration<Product>
             .HasMaxLength(255)
             .IsRequired();
 
-        builder.HasOne(a => a.Category)
+        builder.HasOne<Category>()
             .WithMany()
             .IsRequired();
 

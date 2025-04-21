@@ -11,10 +11,9 @@ public class Order : Entity, IAggregateRoot
     private Order() { }
 
     public Order(
-        Customer customer)
+        Guid customerId)
     {
-        Customer = customer;
-        CustomerId = customer.Id;
+        CustomerId = customerId;
         CreatedAt = DateTime.Now;
         Status = OrderStatusType.Created;
     }
@@ -24,8 +23,6 @@ public class Order : Entity, IAggregateRoot
     private readonly List<OrderHistory> _historical = [];
 
     public Guid CustomerId { get; private set; }
-
-    public Customer Customer { get; private set; } = null!;
 
     public DateTime CreatedAt { get; private set; }
 
@@ -38,8 +35,6 @@ public class Order : Entity, IAggregateRoot
     public decimal TotalAmount => Amount - Discount;
 
     public decimal Discount { get; private set; }
-
-    public Guid PaymentId { get; private set; }
 
     public Payment? Payment { get; private set; }
 
@@ -54,8 +49,7 @@ public class Order : Entity, IAggregateRoot
             throw new DomainException(Resources.Exceptions.Order_CannotCreatePaymentToNonCreatedStatus);
         }
 
-        Payment = new Payment(this, type, TotalAmount);
-        PaymentId = Payment.Id;
+        Payment = new Payment(Id, type, TotalAmount);
     }
 
     public void ApplyDiscount(decimal discount)
@@ -88,9 +82,8 @@ public class Order : Entity, IAggregateRoot
         }
 
         Payment.Pay();
-        Status = OrderStatusType.Paid;
 
-        _historical.Add(new(this, OrderStatusType.Paid));
+        UpdateStatus(OrderStatusType.Paid);
     }
 
     public void RefusedPayment()
@@ -147,9 +140,7 @@ public class Order : Entity, IAggregateRoot
             throw new DomainException(Resources.Exceptions.Order_CannotPrepareToNonPaidStatus);
         }
 
-        Status = OrderStatusType.InPreparation;
-
-        _historical.Add(new(this, OrderStatusType.InPreparation));
+        UpdateStatus(OrderStatusType.InPreparation);
     }
 
     private void CalculateAmount()
@@ -158,7 +149,7 @@ public class Order : Entity, IAggregateRoot
 
         foreach (var item in _itens)
         {
-            Amount += item.Quantity * item.Product.Price;
+            Amount += item.Quantity * item.UnitPrice;
         }
     }
 
@@ -169,16 +160,19 @@ public class Order : Entity, IAggregateRoot
             throw new DomainException(Resources.Exceptions.Order_CannotFinishToNonInPreparationStatus);
         }
 
-        Status = OrderStatusType.Done;
-
-        _historical.Add(new(this, OrderStatusType.Done));
+        UpdateStatus(OrderStatusType.Done);
     }
 
     public void Finish()
     {
         FinishedAt = DateTime.Now;
-        Status = OrderStatusType.Finished;
 
-        _historical.Add(new(this, OrderStatusType.Finished));
+        UpdateStatus(OrderStatusType.Finished);
+    }
+
+    private void UpdateStatus(OrderStatusType status)
+    {
+        Status = status;
+        _historical.Add(new(Id, status));
     }
 }

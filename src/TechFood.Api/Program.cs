@@ -47,6 +47,7 @@ var builder = WebApplication.CreateBuilder(args);
 }
 
 var app = builder.Build();
+
 //Run migrations
 using (var scope = app.Services.CreateScope())
 {

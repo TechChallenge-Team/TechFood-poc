@@ -15,5 +15,8 @@
     </None>
     <None Include="docker-compose.yml" />
     <None Include=".dockerignore" />
+    <None Remove=".eslintrc.json" />
+    <None Remove="package.json" />
+    <None Remove="package-lock.json" />
   </ItemGroup>
 </Project>
