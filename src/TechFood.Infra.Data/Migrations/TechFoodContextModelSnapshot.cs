@@ -101,9 +101,6 @@ namespace TechFood.Infra.Data.Migrations
                     b.Property<DateTime?>("FinishedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("PaymentId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -150,6 +147,9 @@ namespace TechFood.Infra.Data.Migrations
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(6, 2)");
 
                     b.HasKey("Id");
 
@@ -215,6 +215,9 @@ namespace TechFood.Infra.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
+
+                    b.Property<bool>("OutOfStock")
+                        .HasColumnType("bit");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(6, 2)");
@@ -334,65 +337,53 @@ namespace TechFood.Infra.Data.Migrations
 
             modelBuilder.Entity("TechFood.Domain.Entities.Order", b =>
                 {
-                    b.HasOne("TechFood.Domain.Entities.Customer", "Customer")
+                    b.HasOne("TechFood.Domain.Entities.Customer", null)
                         .WithMany()
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("TechFood.Domain.Entities.OrderHistory", b =>
                 {
-                    b.HasOne("TechFood.Domain.Entities.Order", "Order")
+                    b.HasOne("TechFood.Domain.Entities.Order", null)
                         .WithMany("Historical")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("TechFood.Domain.Entities.OrderItem", b =>
                 {
-                    b.HasOne("TechFood.Domain.Entities.Order", "Order")
+                    b.HasOne("TechFood.Domain.Entities.Order", null)
                         .WithMany("Items")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TechFood.Domain.Entities.Product", "Product")
+                    b.HasOne("TechFood.Domain.Entities.Product", null)
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("TechFood.Domain.Entities.Payment", b =>
                 {
-                    b.HasOne("TechFood.Domain.Entities.Order", "Order")
+                    b.HasOne("TechFood.Domain.Entities.Order", null)
                         .WithOne("Payment")
                         .HasForeignKey("TechFood.Domain.Entities.Payment", "OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("TechFood.Domain.Entities.Product", b =>
                 {
-                    b.HasOne("TechFood.Domain.Entities.Category", "Category")
+                    b.HasOne("TechFood.Domain.Entities.Category", null)
                         .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("TechFood.Domain.Entities.Order", b =>

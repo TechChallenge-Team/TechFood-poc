@@ -52,6 +52,7 @@ namespace TechFood.Infra.Data.Migrations
                     Name = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
                     Description = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
                     CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    OutOfStock = table.Column<bool>(type: "bit", nullable: false),
                     ImageFileName = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
                     Price = table.Column<decimal>(type: "decimal(6,2)", nullable: false)
                 },
@@ -76,8 +77,7 @@ namespace TechFood.Infra.Data.Migrations
                     FinishedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(6,2)", nullable: false),
-                    Discount = table.Column<decimal>(type: "decimal(6,2)", nullable: false),
-                    PaymentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Discount = table.Column<decimal>(type: "decimal(6,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -115,9 +115,10 @@ namespace TechFood.Infra.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false)
+                    UnitPrice = table.Column<decimal>(type: "decimal(6,2)", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -133,7 +134,7 @@ namespace TechFood.Infra.Data.Migrations
                         column: x => x.ProductId,
                         principalTable: "Product",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(

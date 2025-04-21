@@ -9,17 +9,14 @@ public class OrderHistory : Entity
     public OrderHistory() { }
 
     public OrderHistory(
-        Order order,
+        Guid orderId,
         OrderStatusType status
         )
     {
-        OrderId = order.Id;
-        Order = order;
+        OrderId = orderId;
         Status = status;
         CreatedAt = DateTime.Now;
     }
-
-    public Order Order { get; private set; } = null!;
 
     public Guid OrderId { get; private set; }
 

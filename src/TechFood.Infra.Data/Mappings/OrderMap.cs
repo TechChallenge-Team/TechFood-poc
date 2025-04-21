@@ -10,21 +10,22 @@ public class OrderMap : IEntityTypeConfiguration<Order>
     {
         builder.ToTable("Order");
 
-        builder.HasOne(o => o.Customer)
+        builder.HasOne<Customer>()
             .WithMany()
+            .HasForeignKey(o => o.CustomerId)
             .IsRequired();
 
         builder.HasOne(o => o.Payment)
-           .WithOne(o => o.Order)
+           .WithOne()
            .HasForeignKey<Payment>(o => o.OrderId)
            .IsRequired();
 
         builder.HasMany(o => o.Items)
-            .WithOne(o => o.Order)
+            .WithOne()
             .IsRequired();
 
         builder.HasMany(o => o.Historical)
-            .WithOne(o => o.Order)
+            .WithOne()
             .IsRequired();
     }
 }
