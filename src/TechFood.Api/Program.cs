@@ -47,12 +47,14 @@ var builder = WebApplication.CreateBuilder(args);
 }
 
 var app = builder.Build();
+
 //Run migrations
 using (var scope = app.Services.CreateScope())
 {
     var dataContext = scope.ServiceProvider.GetRequiredService<TechFoodContext>();
     dataContext.Database.Migrate();
 }
+
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
