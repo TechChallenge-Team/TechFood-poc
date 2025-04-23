@@ -29,8 +29,7 @@ namespace TechFood.Infra.Data
 
             //Data
             services.AddScoped<ICategoryRepository, CategoryRepository>();
-            //services.AddScoped<IPaymentTypeRepository, PaymentTypeRepository>();
-            //services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
 
             return services;
         }

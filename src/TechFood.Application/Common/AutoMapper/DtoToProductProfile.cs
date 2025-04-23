@@ -4,10 +4,10 @@ using TechFood.Domain.Entities;
 
 namespace TechFood.Application.Common.AutoMapper;
 
-internal class ProductToDtoProfile : Profile
+internal class DtoToProductProfile : Profile
 {
-    public ProductToDtoProfile()
+    public DtoToProductProfile()
     {
-        CreateMap<Product, ProductResponseDto>();
+        CreateMap<ProductRequestDto, Product>();
     }
 }

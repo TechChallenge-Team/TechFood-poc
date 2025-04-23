@@ -7,13 +7,15 @@ namespace TechFood.Application.UseCases.Interfaces;
 
 public interface IProductUseCase
 {
-    Task<IEnumerable<ProductResponseDto>> GetProductsAsync();
+    Task<IEnumerable<ProductResponseDto>> GetAllAsync();
 
-    Task<ProductResponseDto> GetProductByIdAsync(Guid id);
+    Task<ProductResponseDto> GetByIdAsync(Guid id);
 
-    Task CreateProductAsync(ProductRequestDto request);
+    Task CreateAsync(ProductRequestDto request);
 
-    Task UpdateProductAsync(Guid id, ProductRequestDto request);
+    Task UpdateAsync(Guid id, ProductRequestDto request);
 
-    Task DeleteProductAsync(Guid id);
+    Task UpdateOutOfStockAsync(Guid id, bool request);
+
+    Task DeleteAsync(Guid id);
 }

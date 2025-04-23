@@ -15,13 +15,14 @@ public class Product : Entity, IAggregateRoot
         decimal price
         )
     {
-        Name = name;
-        Description = description;
-        CategoryId = categoryId;
-        ImageFileName = imageFileName;
-        Price = price;
+        SetName(name);
+        SetDescription(description);
+        SetCategory(categoryId);
+        SetImageFileName(imageFileName);
+        SetPrice(price);
+        SetOutOfStock(false);
     }
-
+    
     public string Name { get; private set; } = null!;
 
     public string Description { get; private set; } = null!;
@@ -33,6 +34,16 @@ public class Product : Entity, IAggregateRoot
     public string ImageFileName { get; private set; } = null!;
 
     public decimal Price { get; private set; }
+
+    public void SetOutOfStock(bool outOfStock)
+    {
+        OutOfStock = outOfStock;
+    }
+
+    public void SetImageFileName(string imageFileName = null!)
+    {
+        ImageFileName = imageFileName;
+    }
 
     public void SetName(string name)
     {
@@ -64,22 +75,14 @@ public class Product : Entity, IAggregateRoot
         Price = price;
     }
 
-    public void SetCategory(Category category)
-    {
-        if (category == null)
-        {
-            throw new ArgumentException("O Produto deve conter uma categoria.");
-        }
+    public void SetCategory(Guid categoryId)
+        => CategoryId = categoryId;
 
-        CategoryId = category.Id;
-    }
-
-    //TODO: adicionar category
-    public void Update(string name, string description, decimal price)
+    public void Update(string name, string description, decimal price, Guid categoryId)
     {
         SetName(name);
         SetDescription(description);
         SetPrice(price);
-        //SetCategory(category);
+        SetCategory(categoryId);
     }
 }

@@ -11,42 +11,50 @@ public class ProductController(IProductUseCase categoryUseCase) : ControllerBase
     private readonly IProductUseCase _productUseCase = categoryUseCase;
 
     [HttpGet]
-    public async Task<IActionResult> ListProductsAsync()
+    public async Task<IActionResult> ListAsync()
     {
-        var result = await _productUseCase.GetProductsAsync();
+        var result = await _productUseCase.GetAllAsync();
 
         return Ok(result);
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetProductByIdAsync(Guid id)
+    public async Task<IActionResult> GetByIdAsync(Guid id)
     {
-        var result = await _productUseCase.GetProductByIdAsync(id);
+        var result = await _productUseCase.GetByIdAsync(id);
 
         return Ok(result);
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateProductAsync(ProductRequestDto request )
+    public async Task<IActionResult> CreateAsync(ProductRequestDto request )
     {
-        await _productUseCase.CreateProductAsync(request);
+        await _productUseCase.CreateAsync(request);
 
         return Created();
     }
 
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> UpdateProductAsync(Guid id, ProductRequestDto request)
+    public async Task<IActionResult> UpdateAsync(Guid id, ProductRequestDto request)
     {
-        await _productUseCase.UpdateProductAsync(id, request);
+        await _productUseCase.UpdateAsync(id, request);
 
-        return Ok();
+        return NoContent();
+    }
+
+    [HttpPatch("outOfStock/{id:guid}")]
+    public async Task<IActionResult> PatchOutOfStockAsync(Guid id, bool request)
+    {
+        await _productUseCase.UpdateOutOfStockAsync(id, request);
+
+        return NoContent();
     }
 
     [HttpDelete("{id:guid}")]
-    public async Task<IActionResult> DeleteProductAsync(Guid id)
+    public async Task<IActionResult> DeleteAsync(Guid id)
     {
-        await _productUseCase.DeleteProductAsync(id);
+        await _productUseCase.DeleteAsync(id);
 
-        return Ok();
+        return NoContent();
     }
 }

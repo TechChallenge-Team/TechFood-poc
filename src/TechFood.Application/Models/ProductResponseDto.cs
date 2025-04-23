@@ -9,6 +9,7 @@ public class ProductResponseDto
         string name,
         string description,
         Guid categoryId,
+        bool outOfStock,
         string imageFileName,
         decimal price
         )
@@ -17,6 +18,7 @@ public class ProductResponseDto
         Name = name;
         Description = description;
         CategoryId = categoryId;
+        OutOfStock = outOfStock;
         ImageFileName = imageFileName;
         Price = price;
     }
@@ -28,6 +30,8 @@ public class ProductResponseDto
     public string Description { get; private set; }
 
     public Guid CategoryId { get; private set; }
+
+    public bool OutOfStock { get; private set; }
 
     public string ImageFileName { get; private set; }
 

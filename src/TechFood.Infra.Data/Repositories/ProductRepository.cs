@@ -20,7 +20,10 @@ public class ProductRepository(TechFoodContext dbContext) : IProductRepository
         => await _products.Where(x => x.Id == id).FirstAsync();
 
     public async Task CreateAsync(Product product)
-        => await _products.AddAsync(product);
+    {
+        await _products.AddAsync(product);
+        await dbContext.SaveChangesAsync();
+    }
 
     public async Task UpdateAsync()
         => await dbContext.SaveChangesAsync();
