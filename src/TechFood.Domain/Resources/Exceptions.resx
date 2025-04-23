@@ -147,6 +147,9 @@
   <data name="Order_DiscountCannotBeNegative" xml:space="preserve">
     <value>Discount cannot be negative.</value>
   </data>
+  <data name="Order_ItemNotFound" xml:space="preserve">
+    <value>Order item not found.</value>
+  </data>
   <data name="Order_PaymentIsNull" xml:space="preserve">
     <value>Payment cannot be null.</value>
   </data>

@@ -10,18 +10,14 @@ public class Payment : Entity
     public Payment() { }
 
     public Payment(
-        Guid orderId,
         PaymentType type,
         decimal amount)
     {
-        OrderId = orderId;
         Type = type;
         Amount = amount;
         CreatedAt = DateTime.Now;
         Status = PaymentStatusType.Pending;
     }
-
-    public Guid OrderId { get; private set; }
 
     public DateTime CreatedAt { get; private set; }
 

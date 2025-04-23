@@ -9,16 +9,12 @@ public class OrderHistory : Entity
     public OrderHistory() { }
 
     public OrderHistory(
-        Guid orderId,
         OrderStatusType status
         )
     {
-        OrderId = orderId;
         Status = status;
         CreatedAt = DateTime.Now;
     }
-
-    public Guid OrderId { get; private set; }
 
     public DateTime CreatedAt { get; private set; }
 

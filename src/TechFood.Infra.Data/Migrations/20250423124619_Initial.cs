@@ -45,6 +45,22 @@ namespace TechFood.Infra.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Payment",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
+                    PaidAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(6,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payment", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Product",
                 columns: table => new
                 {
@@ -77,7 +93,8 @@ namespace TechFood.Infra.Data.Migrations
                     FinishedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(6,2)", nullable: false),
-                    Discount = table.Column<decimal>(type: "decimal(6,2)", nullable: false)
+                    Discount = table.Column<decimal>(type: "decimal(6,2)", nullable: false),
+                    PaymentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -88,6 +105,11 @@ namespace TechFood.Infra.Data.Migrations
                         principalTable: "Customer",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Order_Payment_PaymentId",
+                        column: x => x.PaymentId,
+                        principalTable: "Payment",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -95,9 +117,9 @@ namespace TechFood.Infra.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false)
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -137,29 +159,6 @@ namespace TechFood.Infra.Data.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Payment",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
-                    PaidAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Type = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(6,2)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Payment", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Payment_Order_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "Order",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.InsertData(
                 table: "Category",
                 columns: new[] { "Id", "ImageFileName", "Name" },
@@ -171,10 +170,33 @@ namespace TechFood.Infra.Data.Migrations
                     { new Guid("ec2fb26d-99a4-4eab-aa5c-7dd18d88a025"), "sobremesa.jpg", "Sobremesa" }
                 });
 
+            migrationBuilder.InsertData(
+                table: "Customer",
+                columns: new[] { "Id", "DocumentType", "DocumentValue", "EmailAddress", "NameFullName", "PhoneCountryCode", "PhoneDDD", "PhoneNumber" },
+                values: new object[] { new Guid("25b58f54-63bc-42da-8cf6-8162097e72c8"), 0, "4511554544", "john.dev@gmail.com", "John", "55", "11", "9415452222" });
+
+            migrationBuilder.InsertData(
+                table: "Product",
+                columns: new[] { "Id", "CategoryId", "Description", "ImageFileName", "Name", "OutOfStock", "Price" },
+                values: new object[,]
+                {
+                    { new Guid("090d8eb0-f514-4248-8512-cf0d61a262f0"), new Guid("eaa76b46-2e6b-42eb-8f5d-b213f85f25ea"), "Delicioso X-Burguer", "", "X-Burguer", false, 19.99m },
+                    { new Guid("55f32e65-c82f-4a10-981c-cdb7b0d2715a"), new Guid("c65e2cec-bd44-446d-8ed3-a7045cd4876a"), "Crocante Batata Frita", "", "Batata Frita", false, 9.99m },
+                    { new Guid("86c50c81-c46e-4e79-a591-3b68c75cefda"), new Guid("c3a70938-9e88-437d-a801-c166d2716341"), "Gelado Refrigerante", "", "Refrigerante", false, 4.99m },
+                    { new Guid("de797d9f-c473-4bed-a560-e7036ca10ab1"), new Guid("ec2fb26d-99a4-4eab-aa5c-7dd18d88a025"), "Doce Pudim", "", "Pudim", false, 7.99m }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Order_CustomerId",
                 table: "Order",
                 column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Order_PaymentId",
+                table: "Order",
+                column: "PaymentId",
+                unique: true,
+                filter: "[PaymentId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderHistory_OrderId",
@@ -192,12 +214,6 @@ namespace TechFood.Infra.Data.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Payment_OrderId",
-                table: "Payment",
-                column: "OrderId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Product_CategoryId",
                 table: "Product",
                 column: "CategoryId");
@@ -213,19 +229,19 @@ namespace TechFood.Infra.Data.Migrations
                 name: "OrderItem");
 
             migrationBuilder.DropTable(
-                name: "Payment");
+                name: "Order");
 
             migrationBuilder.DropTable(
                 name: "Product");
 
             migrationBuilder.DropTable(
-                name: "Order");
+                name: "Customer");
+
+            migrationBuilder.DropTable(
+                name: "Payment");
 
             migrationBuilder.DropTable(
                 name: "Category");
-
-            migrationBuilder.DropTable(
-                name: "Customer");
         }
     }
 }

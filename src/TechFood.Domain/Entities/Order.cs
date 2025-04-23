@@ -18,7 +18,7 @@ public class Order : Entity, IAggregateRoot
         Status = OrderStatusType.Created;
     }
 
-    private readonly List<OrderItem> _itens = [];
+    private readonly List<OrderItem> _items = [];
 
     private readonly List<OrderHistory> _historical = [];
 
@@ -38,7 +38,7 @@ public class Order : Entity, IAggregateRoot
 
     public Payment? Payment { get; private set; }
 
-    public IReadOnlyCollection<OrderItem> Items => _itens.AsReadOnly();
+    public IReadOnlyCollection<OrderItem> Items => _items.AsReadOnly();
 
     public IReadOnlyCollection<OrderHistory> Historical => _historical.AsReadOnly();
 
@@ -49,7 +49,7 @@ public class Order : Entity, IAggregateRoot
             throw new DomainException(Resources.Exceptions.Order_CannotCreatePaymentToNonCreatedStatus);
         }
 
-        Payment = new Payment(Id, type, TotalAmount);
+        Payment = new Payment(type, TotalAmount);
     }
 
     public void ApplyDiscount(decimal discount)
@@ -116,19 +116,25 @@ public class Order : Entity, IAggregateRoot
             throw new DomainException(Resources.Exceptions.Order_CannotAddItemToNonCreatedStatus);
         }
 
-        _itens.Add(item);
+        _items.Add(item);
 
         CalculateAmount();
     }
 
-    public void RemoveItem(OrderItem item)
+    public void RemoveItem(Guid itemId)
     {
         if (Status != OrderStatusType.Created)
         {
             throw new DomainException(Resources.Exceptions.Order_CannotRemoveItemToNonCreatedStatus);
         }
 
-        _itens.Remove(item);
+        var item = _items.Find(i => i.Id == itemId);
+        if (item == null)
+        {
+            throw new DomainException(Resources.Exceptions.Order_ItemNotFound);
+        }
+
+        _items.Remove(item);
 
         CalculateAmount();
     }
@@ -147,7 +153,7 @@ public class Order : Entity, IAggregateRoot
     {
         Amount = 0;
 
-        foreach (var item in _itens)
+        foreach (var item in _items)
         {
             Amount += item.Quantity * item.UnitPrice;
         }
@@ -173,6 +179,6 @@ public class Order : Entity, IAggregateRoot
     private void UpdateStatus(OrderStatusType status)
     {
         Status = status;
-        _historical.Add(new(Id, status));
+        _historical.Add(new(status));
     }
 }
