@@ -12,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
         .AddControllers(options =>
     {
         options.Filters.Add<ExceptionFilter>();
+        options.Filters.Add<ModelStateFilter>();
     })
 
     .ConfigureApiBehaviorOptions(options =>
