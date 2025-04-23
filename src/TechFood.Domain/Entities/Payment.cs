@@ -7,7 +7,7 @@ namespace TechFood.Domain.Entities;
 
 public class Payment : Entity
 {
-    public Payment() { }
+    private Payment() { }
 
     public Payment(
         PaymentType type,

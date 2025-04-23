@@ -4,7 +4,7 @@ namespace TechFood.Domain.Entities;
 
 public class Category : Entity, IAggregateRoot
 {
-    public Category() { }
+    private Category() { }
 
     public Category(string name, string imageFileName)
     {

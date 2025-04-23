@@ -5,7 +5,7 @@ namespace TechFood.Domain.Entities;
 
 public class Product : Entity, IAggregateRoot
 {
-    public Product() { }
+    private Product() { }
 
     public Product(
         string name,

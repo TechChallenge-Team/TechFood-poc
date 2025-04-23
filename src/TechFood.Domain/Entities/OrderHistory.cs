@@ -6,7 +6,7 @@ namespace TechFood.Domain.Entities;
 
 public class OrderHistory : Entity
 {
-    public OrderHistory() { }
+    private OrderHistory() { }
 
     public OrderHistory(
         OrderStatusType status

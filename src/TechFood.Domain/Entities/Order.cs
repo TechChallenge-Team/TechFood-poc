@@ -101,14 +101,6 @@ public class Order : Entity, IAggregateRoot
         Payment.Refused();
     }
 
-    public void AddItems(IEnumerable<OrderItem> items)
-    {
-        foreach (var item in items)
-        {
-            AddItem(item);
-        }
-    }
-
     public void AddItem(OrderItem item)
     {
         if (Status != OrderStatusType.Created)
