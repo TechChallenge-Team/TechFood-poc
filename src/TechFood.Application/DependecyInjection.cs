@@ -16,6 +16,8 @@ namespace TechFood.Application
             //AutoMapper
             services.AddAutoMapper(typeof(DependecyInjection));
 
+            services.AddSingleton<IOrderNumberService, OrderNumberService>();
+
             services.AddTransient<ICategoryUseCase, CategoryUseCase>();
             services.AddTransient<IOrderUseCase, OrderUseCase>();
 

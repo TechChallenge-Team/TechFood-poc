@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using TechFood.Application.Common.Services.Interfaces;
 using TechFood.Application.Models.Order;
 using TechFood.Application.UseCases.Interfaces;
 using TechFood.Domain.Entities;
@@ -8,14 +9,17 @@ using TechFood.Domain.Repositories;
 namespace TechFood.Application.UseCases
 {
     internal class OrderUseCase(
-        IOrderRepository orderRepo
+        IOrderRepository orderRepo,
+        IOrderNumberService orderNumberService
         ) : IOrderUseCase
     {
         private readonly IOrderRepository _orderRepo = orderRepo;
+        private readonly IOrderNumberService _orderNumberService = orderNumberService;
 
         public async Task<CreateOrderResult> CreateAsync(CreateOrderRequest request)
         {
-            var order = new Order(request.CustomerId!.Value);
+            var number = await _orderNumberService.GetNumberAsync();
+            var order = new Order(number, request.CustomerId);
 
             return new()
             {

@@ -13,7 +13,7 @@ public class OrderMap : IEntityTypeConfiguration<Order>
         builder.HasOne<Customer>()
             .WithMany()
             .HasForeignKey(o => o.CustomerId)
-            .IsRequired();
+            .IsRequired(false);
 
         builder.HasOne(o => o.Payment)
             .WithOne()
