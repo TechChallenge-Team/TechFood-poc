@@ -67,7 +67,7 @@ internal class ProductUseCase(
         return products.Select(_mapper.Map<Product, GetProductResult>);
     }
 
-    public async Task UpdateAsync(Guid id, CreateProductRequest request)
+    public async Task UpdateAsync(Guid id, UpdateProductRequest request)
     {
         var product = await _productRepository.GetByIdAsync(id);
 
