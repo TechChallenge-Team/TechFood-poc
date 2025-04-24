@@ -5,7 +5,7 @@ namespace TechFood.Domain.Entities;
 
 public class Customer : Entity, IAggregateRoot
 {
-    public Customer() { }
+    private Customer() { }
 
     public Customer(Name name, Email email, Document document, Phone? phone)
     {

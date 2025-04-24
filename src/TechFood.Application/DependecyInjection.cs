@@ -18,6 +18,8 @@ namespace TechFood.Application
 
             services.AddTransient<ICategoryUseCase, CategoryUseCase>();
             services.AddTransient<IProductUseCase, ProductUseCase>();
+            services.AddTransient<IOrderUseCase, OrderUseCase>();
+          
             return services;
         }
     }
