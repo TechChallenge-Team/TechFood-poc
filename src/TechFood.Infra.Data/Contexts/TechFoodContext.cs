@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TechFood.Domain.Entities;
+using TechFood.Domain.UoW;
 
 namespace TechFood.Infra.Data.Contexts;
 

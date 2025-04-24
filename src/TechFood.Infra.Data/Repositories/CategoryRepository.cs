@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TechFood.Domain.Entities;
@@ -11,9 +13,24 @@ namespace TechFood.Infra.Data.Repositories
     {
         private readonly DbSet<Category> _categories = dbContext.Categories;
 
+        public async Task AddAsync(Category entity)
+        {
+            await _categories.AddAsync(entity);
+        }
+
+        public async Task DeleteAsync(Category category)
+        {
+           _categories.Remove(category);
+        }
+
         public async Task<IEnumerable<Category>> GetAllAsync()
         {
             return await _categories.AsNoTracking().ToListAsync();
+        }
+
+        public async Task<Category?> GetByIdAsync(Guid id)
+        {
+            return await _categories.Where(x => x.Id == id).FirstOrDefaultAsync();
         }
     }
 }

@@ -1,11 +1,10 @@
-﻿using TechFood.Domain.Entities;
+using TechFood.Domain.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace TechFood.Domain.Repositories
 {
-    public interface ICategoryRepository
+    public interface ICategoryRepository : IRepository<Category>
     {
-        Task<IEnumerable<Category>> GetAllAsync();
     }
 }
