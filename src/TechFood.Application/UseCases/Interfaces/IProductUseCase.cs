@@ -1,19 +1,19 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TechFood.Application.Models;
+using TechFood.Application.Models.Product;
 
 namespace TechFood.Application.UseCases.Interfaces;
 
 public interface IProductUseCase
 {
-    Task<IEnumerable<ProductResponseDto>> GetAllAsync();
+    Task<IEnumerable<GetProductResult>> GetAllAsync();
 
-    Task<ProductResponseDto> GetByIdAsync(Guid id);
+    Task<GetProductResult> GetByIdAsync(Guid id);
 
-    Task CreateAsync(ProductRequestDto request);
+    Task CreateAsync(CreateProductRequest request);
 
-    Task UpdateAsync(Guid id, ProductRequestDto request);
+    Task UpdateAsync(Guid id, UpdateProductRequest request);
 
     Task UpdateOutOfStockAsync(Guid id, bool request);
 

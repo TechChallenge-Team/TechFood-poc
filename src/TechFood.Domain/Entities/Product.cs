@@ -1,5 +1,6 @@
 using System;
 using TechFood.Domain.Shared.Entities;
+using TechFood.Domain.Shared.Exceptions;
 
 namespace TechFood.Domain.Entities;
 
@@ -49,7 +50,7 @@ public class Product : Entity, IAggregateRoot
     {
         if (string.IsNullOrWhiteSpace(name))
         {
-            throw new ArgumentException("Nome inválido.");
+            throw new DomainException("Nome inválido.");
         }
 
         Name = name;
@@ -59,7 +60,7 @@ public class Product : Entity, IAggregateRoot
     {
         if (string.IsNullOrWhiteSpace(description))
         {
-            throw new ArgumentException("Description Inválida.");
+            throw new DomainException("Description Inválida.");
         }
 
         Description = description;
@@ -69,7 +70,7 @@ public class Product : Entity, IAggregateRoot
     {
         if (price <= 0)
         {
-            throw new ArgumentException("Preço do producto não deve ser inferior a zero.");
+            throw new DomainException("Preço do producto não deve ser inferior a zero.");
         }
 
         Price = price;
@@ -78,11 +79,17 @@ public class Product : Entity, IAggregateRoot
     public void SetCategory(Guid categoryId)
         => CategoryId = categoryId;
 
-    public void Update(string name, string description, decimal price, Guid categoryId)
+    public void Update(
+        string name,
+        string description,
+        string imageFileName,
+        decimal price,
+        Guid categoryId)
     {
         SetName(name);
         SetDescription(description);
         SetPrice(price);
         SetCategory(categoryId);
+        SetImageFileName(imageFileName);
     }
 }

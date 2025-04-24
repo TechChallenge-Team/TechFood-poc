@@ -13,7 +13,5 @@ public interface IProductRepository
 
     Task CreateAsync(Product product);
 
-    Task UpdateAsync();
-
     Task DeleteAsync(Product product);
 }

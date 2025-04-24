@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using TechFood.Application.Models;
+using TechFood.Application.Models.Product;
 using TechFood.Application.UseCases.Interfaces;
 
 namespace TechFood.Api.Controllers;
@@ -27,7 +27,7 @@ public class ProductController(IProductUseCase categoryUseCase) : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateAsync(ProductRequestDto request )
+    public async Task<IActionResult> CreateAsync(CreateProductRequest request)
     {
         await _productUseCase.CreateAsync(request);
 
@@ -35,14 +35,14 @@ public class ProductController(IProductUseCase categoryUseCase) : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> UpdateAsync(Guid id, ProductRequestDto request)
+    public async Task<IActionResult> UpdateAsync(Guid id, UpdateProductRequest request)
     {
         await _productUseCase.UpdateAsync(id, request);
 
         return NoContent();
     }
 
-    [HttpPatch("outOfStock/{id:guid}")]
+    [HttpPatch("{id:guid}/outOfStock")]
     public async Task<IActionResult> PatchOutOfStockAsync(Guid id, bool request)
     {
         await _productUseCase.UpdateOutOfStockAsync(id, request);
