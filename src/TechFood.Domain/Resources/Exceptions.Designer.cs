@@ -151,6 +151,15 @@ namespace TechFood.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Order item not found..
+        /// </summary>
+        internal static string Order_ItemNotFound {
+            get {
+                return ResourceManager.GetString("Order_ItemNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Payment cannot be null..
         /// </summary>
         internal static string Order_PaymentIsNull {

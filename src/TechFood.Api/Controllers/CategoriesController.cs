@@ -1,12 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
-using TechFood.Application.Models;
+using TechFood.Application.Models.Category;
 using TechFood.Application.UseCases.Interfaces;
 using TechFood.Domain.Entities;
 
 namespace TechFood.Api.Controllers
 {
     [ApiController()]
-    [Route("v1/category")]
+    [Route("v1/[controller]")]
     public class CategoriesController(ICategoryUseCase categoryUseCase) : ControllerBase
     {
         private readonly ICategoryUseCase _categoryUseCase = categoryUseCase;
@@ -19,36 +19,36 @@ namespace TechFood.Api.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{id:string}")]
+        [HttpGet("{id:Guid}")]
         public async Task<IActionResult> GetCategoryByIdAsync(Guid id)
         {
             var result = await _categoryUseCase.GetCategoryByIdAsync(id);
 
-            return Ok(result);
+            return result != null ? Ok(result) : NotFound();
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddCategoryAsync(CategoryViewModel category)
+        public async Task<IActionResult> AddCategoryAsync(CreateCategoryRequest category)
         {
             var result = await _categoryUseCase.AddCategoryAsync(category);
 
             return Ok(result);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateCategoryAsync(Guid id, CategoryViewModel category)
+        [HttpPut("{id:Guid}")]
+        public async Task<IActionResult> UpdateCategoryAsync(Guid id, CreateCategoryRequest category)
         {
             var result = await _categoryUseCase.UpdateCategoryAsync(id, category);
 
-            return Ok(result);
+            return result != null ? Ok(result) : NotFound();
         }
 
-        [HttpDelete]
+        [HttpDelete("{id:Guid}")]
         public async Task<IActionResult> DeleteCategoryAsync(Guid id)
         {
             var result = await _categoryUseCase.DeleteCategoryAsync(id);
 
-            return Ok(result);
+            return result ? Ok(result) : NotFound();
         }
     }
 }

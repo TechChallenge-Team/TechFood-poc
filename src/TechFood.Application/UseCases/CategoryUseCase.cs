@@ -4,11 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.Configuration;
-using TechFood.Application.Models;
+using TechFood.Application.Models.Category;
 using TechFood.Application.UseCases.Interfaces;
 using TechFood.Domain.Entities;
 using TechFood.Domain.Repositories;
-using TechFood.Domain.Shared.Entities;
 using TechFood.Domain.UoW;
 
 namespace TechFood.Application.UseCases
@@ -24,56 +23,81 @@ namespace TechFood.Application.UseCases
         private readonly IConfiguration _appConfiguration = appConfiguration;
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-        public async Task<CategoryViewModel> AddCategoryAsync(CategoryViewModel category)
+        public async Task<CreateCategoryResponse> AddCategoryAsync(CreateCategoryRequest category)
         {
-            var categoryEntity = _mapper.Map<Category>(category);
+            var categoryEntity = new Category(category.Name, category.ImageFileName);
 
             await _categoryRepository.AddAsync(categoryEntity);
 
             await _unitOfWork.CommitAsync();
 
-            var result = _mapper.Map<CategoryViewModel>(categoryEntity);
+            var result = _mapper.Map<CreateCategoryResponse>(categoryEntity);
             return result;
         }
 
         public async Task<bool> DeleteCategoryAsync(Guid id)
         {
             var entity = await _categoryRepository.GetByIdAsync(id);
-      
-            await _categoryRepository.DeleteAsync(entity);
 
-            return true;
+            if (entity != null)
+            {
+                await _categoryRepository.DeleteAsync(entity);
+                await _unitOfWork.CommitAsync();
+                return true;
+            }
+
+            return false;
         }
 
-        public async Task<IEnumerable<CategoryViewModel>> GetCategoriesAsync()
+        public async Task<IEnumerable<CreateCategoryResponse>> GetCategoriesAsync()
         {
             var categories = await _categoryRepository.GetAllAsync();
 
             return categories
-                .Select(category => _mapper.Map<Category, CategoryViewModel>(
+                .Select(category => _mapper.Map<Category, CreateCategoryResponse>(
                     category,
                     options => options.AfterMap((category, dto) =>
                     {
-                        dto.ImageUrl = string.Concat(
+                        dto.ImageFileName = string.Concat(
                             _appConfiguration["TechFoodStaticImagesUrl"],
                             "/categories/",
                             category.ImageFileName);
                     })));
         }
 
-        public async Task<CategoryViewModel> GetCategoryByIdAsync(Guid id)
+        public async Task<CreateCategoryResponse> GetCategoryByIdAsync(Guid id)
         {
             var category = await _categoryRepository.GetByIdAsync(id);
-            return _mapper.Map<Category, CategoryViewModel>(category);
+
+            if (category != null)
+            {
+                return _mapper.Map<Category, CreateCategoryResponse>(category,
+                   options => options.AfterMap((category, dto) =>
+                   {
+                       dto.ImageFileName = string.Concat(
+                           _appConfiguration["TechFoodStaticImagesUrl"],
+                           "/categories/",
+                           category.ImageFileName);
+                   }));
+            }
+
+            return null;
         }
 
-
-        public async Task<CategoryViewModel> UpdateCategoryAsync(Guid id, CategoryViewModel category)
+        public async Task<CreateCategoryResponse> UpdateCategoryAsync(Guid id, CreateCategoryRequest category)
         {
-            return new CategoryViewModel();
-            var categoryUpdated = _mapper.Map<CategoryViewModel, Category>(category);
             var categoryRepository = await _categoryRepository.GetByIdAsync(id);
-           
+
+            if (categoryRepository != null)
+            {
+                categoryRepository.UpdateCategory(category.Name, category.ImageFileName);
+
+                await _unitOfWork.CommitAsync();
+
+                return _mapper.Map<Category, CreateCategoryResponse>(categoryRepository);
+            }
+
+            return null;
         }
     }
 }

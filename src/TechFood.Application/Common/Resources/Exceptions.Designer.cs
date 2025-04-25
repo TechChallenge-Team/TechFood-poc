@@ -61,11 +61,11 @@ namespace TechFood.Application.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to One or more error has occurried..
+        ///   Looks up a localized string similar to Order not found..
         /// </summary>
-        internal static string Exception_Message {
+        internal static string Order_OrderNotFound {
             get {
-                return ResourceManager.GetString("Exception_Message", resourceCulture);
+                return ResourceManager.GetString("Order_OrderNotFound", resourceCulture);
             }
         }
         

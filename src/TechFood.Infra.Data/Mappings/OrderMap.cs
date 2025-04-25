@@ -16,16 +16,18 @@ public class OrderMap : IEntityTypeConfiguration<Order>
             .IsRequired();
 
         builder.HasOne(o => o.Payment)
-           .WithOne()
-           .HasForeignKey<Payment>(o => o.OrderId)
-           .IsRequired();
+            .WithOne()
+            .HasForeignKey<Order>("PaymentId")
+            .IsRequired(false);
 
         builder.HasMany(o => o.Items)
             .WithOne()
+            .HasForeignKey("OrderId")
             .IsRequired();
 
         builder.HasMany(o => o.Historical)
             .WithOne()
+            .HasForeignKey("OrderId")
             .IsRequired();
     }
 }

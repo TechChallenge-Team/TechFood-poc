@@ -1,0 +1,69 @@
+@rootUrl=https://localhost:44310/v1
+
+### Create Order
+POST {{rootUrl}}/orders/
+Content-Type: application/json
+
+{
+    "customerId": "25b58f54-63bc-42da-8cf6-8162097e72c8"
+}
+
+### Add Item to Order
+POST {{rootUrl}}/orders/b282f85c-863d-45ee-b3a5-44083615881a/items
+Content-Type: application/json
+
+{
+    "productId": "090d8eb0-f514-4248-8512-cf0d61a262f0",
+    "quantity": 2
+}
+
+### Remove Item from Order
+DELETE {{rootUrl}}/orders/963d122b-72c4-42ec-9e37-5953322931f9/items/2725fe92-1896-47d6-a063-528748de5bb5
+Content-Type: application/json
+
+{
+    "productId": "090d8eb0-f514-4248-8512-cf0d61a262f0",
+    "quantity": 2
+}
+
+### Create Payment
+POST {{rootUrl}}/orders/963d122b-72c4-42ec-9e37-5953322931f9/payment
+Content-Type: application/json
+
+{
+    "type": "Pix"
+}
+
+### Prepare Order
+POST {{rootUrl}}/orders/963d122b-72c4-42ec-9e37-5953322931f9/prepare
+
+### Finish Order
+POST {{rootUrl}}/orders/963d122b-72c4-42ec-9e37-5953322931f9/finish
+
+
+### Create Category
+POST {{rootUrl}}/categories
+Content-Type: application/json
+
+{
+    "name": "Category Test",
+    "imageFileName": "imageFileName"
+}
+
+### Get Category
+GET {{rootUrl}}/categories
+
+### Get Category by Id
+GET {{rootUrl}}/categories/d0c39fb1-f281-4492-a398-f960b11b0c62
+
+### Update Category
+PUT {{rootUrl}}/categories/d0c39fb1-f281-4492-a398-f960b11b0c62
+Content-Type: application/json
+
+{
+    "name": "Category Updated",
+    "imageFileName": "imageFileName Updated"
+}
+
+### Delete Category
+DELETE {{rootUrl}}/categories/c3a70938-9e88-437d-a801-c166d2716341

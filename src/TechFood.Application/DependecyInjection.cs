@@ -17,6 +17,7 @@ namespace TechFood.Application
             services.AddAutoMapper(typeof(DependecyInjection));
 
             services.AddTransient<ICategoryUseCase, CategoryUseCase>();
+            services.AddTransient<IOrderUseCase, OrderUseCase>();
 
             return services;
         }
