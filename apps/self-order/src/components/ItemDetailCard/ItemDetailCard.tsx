@@ -73,12 +73,14 @@ const GarnisheList = ({ items }: any) => {
 };
 
 export const ItemDetailCard = ({
+  id,
   title,
   price,
   size,
   img,
   garnishes,
   onClose,
+  onAdd,
 }: ItemDetailCardProps) => {
   const [count, setCount] = useState(1);
   const [isChosingGarnishe, setIsChoosingGarnishe] = useState(false);
@@ -168,7 +170,25 @@ export const ItemDetailCard = ({
                 >
                   Customize
                 </Button>
-                <Button size="2">Done</Button>
+                <Button
+                  size="2"
+                  onClick={() =>
+                    onAdd({
+                      id,
+                      title,
+                      price,
+                      img,
+                      size,
+                      count,
+                      garnishes: garnishes.map((garnish) => ({
+                        ...garnish,
+                        count,
+                      })),
+                    })
+                  }
+                >
+                  Done
+                </Button>
               </Flex>
             </Flex>
           )}

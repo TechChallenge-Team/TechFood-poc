@@ -1,7 +1,16 @@
 .root {
   height: 100vh;
   background-color: var(--gray-a2);
+}
+
+.left {
   padding: var(--space-5) var(--space-5) 0;
+}
+
+.right {
+  background-color: var(--gray-1);
+  padding: var(--space-4);
+  min-width: 400px;
 }
 
 .categories-card {
@@ -15,4 +24,8 @@
 
 .sort {
   font-weight: bold !important;
+}
+
+.done-button {
+  max-width: 80px !important;
 }

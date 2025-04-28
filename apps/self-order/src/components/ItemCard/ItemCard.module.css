@@ -6,7 +6,6 @@
   background-color: var(--white-a10);
   border-radius: var(--radius-3);
   cursor: pointer;
-  box-shadow: var(--shadow-3);
   transition: border-color 0.3s ease;
 }
 

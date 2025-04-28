@@ -6,9 +6,15 @@ import {
   Strong,
   TextField,
   Text,
+  Button,
 } from "@radix-ui/themes";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import { CategoryCard, ItemCard, ItemDetailCard } from "../../components";
+import {
+  CategoryCard,
+  ItemCard,
+  ItemDetailCard,
+  OrderItemCard,
+} from "../../components";
 
 import classNames from "./MenuPage.module.css";
 import { useState } from "react";
@@ -282,41 +288,88 @@ const ItemsCard = ({ items, onSelectedItem }: any) => {
 export const MenuPage = () => {
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [selectedCategory, setSelectedCategory] = useState(categories[0]);
+  const [orderItems, setOrderItems] = useState<any[]>([]);
 
   const selectedItems = items.filter(
     (item) => item.category === selectedCategory.id
   );
 
+  function handleRemoveOrderItem(item: any) {
+    setOrderItems((prevItems: any) =>
+      prevItems.filter((i: any) => i.id !== item)
+    );
+  }
+
   return (
-    <Flex className={classNames.root} direction="column" gap="4">
-      <Flex direction="row" justify="between">
-        <Heading size="5" as="h1" weight="regular">
-          <Strong>Menu</Strong> Category
-        </Heading>
-        <Box width="100%" maxWidth="500px">
-          <TextField.Root
-            className={classNames.search}
-            placeholder="Search for food"
-            size="2"
-          >
-            <TextField.Slot>
-              <MagnifyingGlassIcon height="25" width="25" />
-            </TextField.Slot>
-          </TextField.Root>
-        </Box>
-      </Flex>
-      <CategoriesCard
-        categories={categories}
-        selectedItem={selectedCategory}
-        onSelectedItem={setSelectedCategory}
-      />
-      <ItemsCard items={selectedItems} onSelectedItem={setSelectedItem} />
-      {selectedItem && (
-        <ItemDetailCard
-          {...selectedItem}
-          onClose={() => setSelectedItem(null)}
+    <Flex className={classNames.root} direction="row">
+      <Flex className={classNames.left} direction="column" gap="4" flexGrow="1">
+        <Flex direction="row" justify="between">
+          <Heading size="5" as="h1" weight="regular">
+            <Strong>Menu</Strong> Category
+          </Heading>
+          <Box width="100%" maxWidth="500px">
+            <TextField.Root
+              className={classNames.search}
+              placeholder="Search for food"
+              size="2"
+            >
+              <TextField.Slot>
+                <MagnifyingGlassIcon height="25" width="25" />
+              </TextField.Slot>
+            </TextField.Root>
+          </Box>
+        </Flex>
+        <CategoriesCard
+          categories={categories}
+          selectedItem={selectedCategory}
+          onSelectedItem={setSelectedCategory}
         />
-      )}
+        <ItemsCard items={selectedItems} onSelectedItem={setSelectedItem} />
+        {selectedItem && (
+          <ItemDetailCard
+            {...selectedItem}
+            onClose={() => setSelectedItem(null)}
+            onAdd={(item: any) => {
+              setOrderItems((prevItems) => [...prevItems, item]);
+              setSelectedItem(null);
+            }}
+          />
+        )}
+      </Flex>
+      <Flex className={classNames.right} direction="column" gap="4">
+        <Heading>My Order</Heading>
+        <Flex direction="column" flexGrow="1">
+          <Flex direction="column" gap="3" overflowY="auto" flexGrow="1">
+            {orderItems.map((item: any, i: number) => (
+              <OrderItemCard
+                key={i}
+                {...item}
+                onRemoveClick={handleRemoveOrderItem}
+              />
+            ))}
+          </Flex>
+          <Flex direction="column" gap="4" align="center">
+            <Heading as="h5">Total</Heading>
+            <Text>
+              $
+              {orderItems
+                .reduce(
+                  (total, item) =>
+                    total + parseFloat(item.price.replace(",", ".")),
+                  0
+                )
+                .toFixed(2)}
+            </Text>
+            <Button
+              size="4"
+              className={classNames.doneButton}
+              disabled={!orderItems.length}
+            >
+              Done
+            </Button>
+          </Flex>
+        </Flex>
+      </Flex>
     </Flex>
   );
 };
