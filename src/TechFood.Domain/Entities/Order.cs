@@ -11,8 +11,10 @@ public class Order : Entity, IAggregateRoot
     private Order() { }
 
     public Order(
-        Guid customerId)
+        int number,
+        Guid? customerId = null)
     {
+        Number = number;
         CustomerId = customerId;
         CreatedAt = DateTime.Now;
         Status = OrderStatusType.Created;
@@ -22,7 +24,9 @@ public class Order : Entity, IAggregateRoot
 
     private readonly List<OrderHistory> _historical = [];
 
-    public Guid CustomerId { get; private set; }
+    public int Number { get; private set; }
+
+    public Guid? CustomerId { get; private set; }
 
     public DateTime CreatedAt { get; private set; }
 

@@ -12,7 +12,7 @@ using TechFood.Infra.Data.Contexts;
 namespace TechFood.Infra.Data.Migrations
 {
     [DbContext(typeof(TechFoodContext))]
-    [Migration("20250423124619_Initial")]
+    [Migration("20250424005910_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -98,7 +98,7 @@ namespace TechFood.Infra.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime");
 
-                    b.Property<Guid>("CustomerId")
+                    b.Property<Guid?>("CustomerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Discount")
@@ -106,6 +106,9 @@ namespace TechFood.Infra.Data.Migrations
 
                     b.Property<DateTime?>("FinishedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("int");
 
                     b.Property<Guid?>("PaymentId")
                         .HasColumnType("uniqueidentifier");
@@ -415,9 +418,7 @@ namespace TechFood.Infra.Data.Migrations
                 {
                     b.HasOne("TechFood.Domain.Entities.Customer", null)
                         .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CustomerId");
 
                     b.HasOne("TechFood.Domain.Entities.Payment", "Payment")
                         .WithOne()
