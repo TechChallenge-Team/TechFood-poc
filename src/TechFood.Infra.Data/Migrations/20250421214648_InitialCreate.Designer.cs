@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TechFood.Infra.Data.Contexts;
 
@@ -11,9 +12,11 @@ using TechFood.Infra.Data.Contexts;
 namespace TechFood.Infra.Data.Migrations
 {
     [DbContext(typeof(TechFoodContext))]
-    partial class TechFoodContextModelSnapshot : ModelSnapshot
+    [Migration("20250421214648_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,6 +28,7 @@ namespace TechFood.Infra.Data.Migrations
             modelBuilder.Entity("TechFood.Domain.Entities.Category", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ImageFileName")
@@ -71,22 +75,18 @@ namespace TechFood.Infra.Data.Migrations
             modelBuilder.Entity("TechFood.Domain.Entities.Customer", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.ToTable("Customer", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("25b58f54-63bc-42da-8cf6-8162097e72c8")
-                        });
                 });
 
             modelBuilder.Entity("TechFood.Domain.Entities.Order", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Amount")
@@ -95,7 +95,7 @@ namespace TechFood.Infra.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime");
 
-                    b.Property<Guid?>("CustomerId")
+                    b.Property<Guid>("CustomerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Discount")
@@ -104,12 +104,6 @@ namespace TechFood.Infra.Data.Migrations
                     b.Property<DateTime?>("FinishedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Number")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("PaymentId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -117,16 +111,13 @@ namespace TechFood.Infra.Data.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.HasIndex("PaymentId")
-                        .IsUnique()
-                        .HasFilter("[PaymentId] IS NOT NULL");
-
                     b.ToTable("Order", (string)null);
                 });
 
             modelBuilder.Entity("TechFood.Domain.Entities.OrderHistory", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
@@ -148,6 +139,7 @@ namespace TechFood.Infra.Data.Migrations
             modelBuilder.Entity("TechFood.Domain.Entities.OrderItem", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("OrderId")
@@ -174,6 +166,7 @@ namespace TechFood.Infra.Data.Migrations
             modelBuilder.Entity("TechFood.Domain.Entities.Payment", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Amount")
@@ -181,6 +174,9 @@ namespace TechFood.Infra.Data.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("PaidAt")
                         .HasColumnType("datetime2");
@@ -193,12 +189,16 @@ namespace TechFood.Infra.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("OrderId")
+                        .IsUnique();
+
                     b.ToTable("Payment", (string)null);
                 });
 
             modelBuilder.Entity("TechFood.Domain.Entities.Product", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CategoryId")
@@ -230,48 +230,6 @@ namespace TechFood.Infra.Data.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Product", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("090d8eb0-f514-4248-8512-cf0d61a262f0"),
-                            CategoryId = new Guid("eaa76b46-2e6b-42eb-8f5d-b213f85f25ea"),
-                            Description = "Delicioso X-Burguer",
-                            ImageFileName = "",
-                            Name = "X-Burguer",
-                            OutOfStock = false,
-                            Price = 19.99m
-                        },
-                        new
-                        {
-                            Id = new Guid("55f32e65-c82f-4a10-981c-cdb7b0d2715a"),
-                            CategoryId = new Guid("c65e2cec-bd44-446d-8ed3-a7045cd4876a"),
-                            Description = "Crocante Batata Frita",
-                            ImageFileName = "",
-                            Name = "Batata Frita",
-                            OutOfStock = false,
-                            Price = 9.99m
-                        },
-                        new
-                        {
-                            Id = new Guid("86c50c81-c46e-4e79-a591-3b68c75cefda"),
-                            CategoryId = new Guid("c3a70938-9e88-437d-a801-c166d2716341"),
-                            Description = "Gelado Refrigerante",
-                            ImageFileName = "",
-                            Name = "Refrigerante",
-                            OutOfStock = false,
-                            Price = 4.99m
-                        },
-                        new
-                        {
-                            Id = new Guid("de797d9f-c473-4bed-a560-e7036ca10ab1"),
-                            CategoryId = new Guid("ec2fb26d-99a4-4eab-aa5c-7dd18d88a025"),
-                            Description = "Doce Pudim",
-                            ImageFileName = "",
-                            Name = "Pudim",
-                            OutOfStock = false,
-                            Price = 7.99m
-                        });
                 });
 
             modelBuilder.Entity("TechFood.Domain.Entities.Customer", b =>
@@ -297,14 +255,6 @@ namespace TechFood.Infra.Data.Migrations
 
                             b1.WithOwner()
                                 .HasForeignKey("CustomerId");
-
-                            b1.HasData(
-                                new
-                                {
-                                    CustomerId = new Guid("25b58f54-63bc-42da-8cf6-8162097e72c8"),
-                                    Type = 0,
-                                    Value = "4511554544"
-                                });
                         });
 
                     b.OwnsOne("TechFood.Domain.ValueObjects.Email", "Email", b1 =>
@@ -324,13 +274,6 @@ namespace TechFood.Infra.Data.Migrations
 
                             b1.WithOwner()
                                 .HasForeignKey("CustomerId");
-
-                            b1.HasData(
-                                new
-                                {
-                                    CustomerId = new Guid("25b58f54-63bc-42da-8cf6-8162097e72c8"),
-                                    Address = "john.dev@gmail.com"
-                                });
                         });
 
                     b.OwnsOne("TechFood.Domain.ValueObjects.Name", "Name", b1 =>
@@ -350,13 +293,6 @@ namespace TechFood.Infra.Data.Migrations
 
                             b1.WithOwner()
                                 .HasForeignKey("CustomerId");
-
-                            b1.HasData(
-                                new
-                                {
-                                    CustomerId = new Guid("25b58f54-63bc-42da-8cf6-8162097e72c8"),
-                                    FullName = "John"
-                                });
                         });
 
                     b.OwnsOne("TechFood.Domain.ValueObjects.Phone", "Phone", b1 =>
@@ -388,15 +324,6 @@ namespace TechFood.Infra.Data.Migrations
 
                             b1.WithOwner()
                                 .HasForeignKey("CustomerId");
-
-                            b1.HasData(
-                                new
-                                {
-                                    CustomerId = new Guid("25b58f54-63bc-42da-8cf6-8162097e72c8"),
-                                    CountryCode = "55",
-                                    DDD = "11",
-                                    Number = "9415452222"
-                                });
                         });
 
                     b.Navigation("Document")
@@ -415,13 +342,9 @@ namespace TechFood.Infra.Data.Migrations
                 {
                     b.HasOne("TechFood.Domain.Entities.Customer", null)
                         .WithMany()
-                        .HasForeignKey("CustomerId");
-
-                    b.HasOne("TechFood.Domain.Entities.Payment", "Payment")
-                        .WithOne()
-                        .HasForeignKey("TechFood.Domain.Entities.Order", "PaymentId");
-
-                    b.Navigation("Payment");
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("TechFood.Domain.Entities.OrderHistory", b =>
@@ -448,6 +371,15 @@ namespace TechFood.Infra.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("TechFood.Domain.Entities.Payment", b =>
+                {
+                    b.HasOne("TechFood.Domain.Entities.Order", null)
+                        .WithOne("Payment")
+                        .HasForeignKey("TechFood.Domain.Entities.Payment", "OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("TechFood.Domain.Entities.Product", b =>
                 {
                     b.HasOne("TechFood.Domain.Entities.Category", null)
@@ -462,6 +394,8 @@ namespace TechFood.Infra.Data.Migrations
                     b.Navigation("Historical");
 
                     b.Navigation("Items");
+
+                    b.Navigation("Payment");
                 });
 #pragma warning restore 612, 618
         }
