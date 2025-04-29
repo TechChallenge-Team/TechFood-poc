@@ -5,6 +5,7 @@ using TechFood.Application.Common.Filters;
 using TechFood.Application.Common.NamingPolicy;
 using TechFood.Infra.Data;
 using TechFood.Infra.Data.Contexts;
+using TechFood.Infra.Services.MercadoPago;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -45,6 +46,7 @@ var builder = WebApplication.CreateBuilder(args);
 
     builder.Services.AddApplication();
     builder.Services.AddInfraData();
+    builder.Services.AddInfraMercadoPagoPayment();
 }
 
 var app = builder.Build();

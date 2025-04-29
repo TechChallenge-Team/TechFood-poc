@@ -9,7 +9,7 @@ Content-Type: application/json
 }
 
 ### Add Item to Order
-POST {{rootUrl}}/orders/b282f85c-863d-45ee-b3a5-44083615881a/items
+POST {{rootUrl}}/orders/963d122b-72c4-42ec-9e37-5953322931f9/items
 Content-Type: application/json
 
 {
@@ -31,7 +31,7 @@ POST {{rootUrl}}/orders/963d122b-72c4-42ec-9e37-5953322931f9/payment
 Content-Type: application/json
 
 {
-    "type": "Pix"
+    "type": "QrCode"
 }
 
 ### Prepare Order
