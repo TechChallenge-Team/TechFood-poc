@@ -13,19 +13,21 @@ public class OrderMap : IEntityTypeConfiguration<Order>
         builder.HasOne<Customer>()
             .WithMany()
             .HasForeignKey(o => o.CustomerId)
-            .IsRequired();
+            .IsRequired(false);
 
         builder.HasOne(o => o.Payment)
-           .WithOne()
-           .HasForeignKey<Payment>(o => o.OrderId)
-           .IsRequired();
+            .WithOne()
+            .HasForeignKey<Order>("PaymentId")
+            .IsRequired(false);
 
         builder.HasMany(o => o.Items)
             .WithOne()
+            .HasForeignKey("OrderId")
             .IsRequired();
 
         builder.HasMany(o => o.Historical)
             .WithOne()
+            .HasForeignKey("OrderId")
             .IsRequired();
     }
 }

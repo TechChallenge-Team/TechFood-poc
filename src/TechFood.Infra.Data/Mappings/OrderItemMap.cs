@@ -12,7 +12,6 @@ public class OrderItemMap : IEntityTypeConfiguration<OrderItem>
 
         builder.HasOne<Product>()
             .WithMany()
-            .HasForeignKey(x => x.ProductId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

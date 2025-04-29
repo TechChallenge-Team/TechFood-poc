@@ -5,7 +5,7 @@ namespace TechFood.Domain.Entities;
 
 public class OrderItem : Entity
 {
-    public OrderItem() { }
+    private OrderItem() { }
 
     public OrderItem(
         Guid productId,
