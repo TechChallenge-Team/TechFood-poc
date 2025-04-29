@@ -142,7 +142,7 @@ public class Order : Entity, IAggregateRoot
 
         UpdateStatus(OrderStatusType.InPreparation);
     }
-
+   
     private void CalculateAmount()
     {
         Amount = 0;
