@@ -1,4 +1,4 @@
-﻿namespace TechFood.Domain.UoW
+namespace TechFood.Domain.UoW
 {
     public interface IUnitOfWorkTransaction : IUnitOfWork
     { }
