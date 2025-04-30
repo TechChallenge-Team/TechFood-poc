@@ -1,5 +1,5 @@
-﻿using AutoMapper;
-using TechFood.Application.Models;
+using AutoMapper;
+using TechFood.Application.Models.Category;
 using TechFood.Domain.Entities;
 
 namespace TechFood.Application.Common.AutoMapper
@@ -8,7 +8,7 @@ namespace TechFood.Application.Common.AutoMapper
     {
         public DomainToDtoProfile()
         {
-            CreateMap<Category, CategoryDto>();
+            CreateMap<Category, CreateCategoryResponse>();
         }
     }
 }

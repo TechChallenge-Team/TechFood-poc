@@ -7,20 +7,29 @@ using TechFood.Domain.Entities;
 using TechFood.Domain.Repositories;
 using TechFood.Infra.Data.Contexts;
 
-namespace TechFood.Infra.Data.Repositories
+namespace TechFood.Infra.Data.Repositories;
+
+public class CategoryRepository(TechFoodContext dbContext) : ICategoryRepository
 {
-    public class CategoryRepository(TechFoodContext dbContext) : ICategoryRepository
+    private readonly DbSet<Category> _categories = dbContext.Categories;
+
+    public async Task AddAsync(Category entity)
     {
-        private readonly DbSet<Category> _categories = dbContext.Categories;
+        await _categories.AddAsync(entity);
+    }
 
-        public async Task<IEnumerable<Category>> GetAllAsync()
-        {
-            return await _categories.AsNoTracking().ToListAsync();
-        }
+    public async Task DeleteAsync(Category category)
+    {
+       _categories.Remove(category);
+    }
 
-        public async Task<Category> GetByIdAsync(Guid id)
-        {
-            return await _categories.Where(x => x.Id == id).FirstOrDefaultAsync();
-        }
+    public async Task<IEnumerable<Category>> GetAllAsync()
+    {
+        return await _categories.AsNoTracking().ToListAsync();
+    }
+
+    public async Task<Category?> GetByIdAsync(Guid id)
+    {
+        return await _categories.Where(x => x.Id == id).FirstOrDefaultAsync();
     }
 }
