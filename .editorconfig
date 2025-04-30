@@ -114,9 +114,6 @@ dotnet_diagnostic.CA1018.severity = warning
 # CA1047: Do not declare protected member in sealed type
 dotnet_diagnostic.CA1047.severity = warning
 
-# CA1305: Specify IFormatProvider
-dotnet_diagnostic.CA1305.severity = warning
-
 # CA1507: Use nameof to express symbol names
 dotnet_diagnostic.CA1507.severity = warning
 
@@ -223,9 +220,6 @@ dotnet_diagnostic.CA1846.severity = warning
 # CA1847: Use string.Contains(char) instead of string.Contains(string) with single characters
 dotnet_diagnostic.CA1847.severity = warning
 
-# CA1852: Seal internal types
-dotnet_diagnostic.CA1852.severity = warning
-
 # CA1855: Prefer 'Clear' over 'Fill'
 dotnet_diagnostic.CA1855.severity = warning
 
@@ -258,9 +252,6 @@ dotnet_diagnostic.CA2016.severity = warning
 
 # CA2200: Rethrow to preserve stack details
 dotnet_diagnostic.CA2200.severity = warning
-
-# CA2201: Do not raise reserved exception types
-dotnet_diagnostic.CA2201.severity = warning
 
 # CA2208: Instantiate argument exceptions correctly
 dotnet_diagnostic.CA2208.severity = warning
@@ -323,9 +314,6 @@ dotnet_diagnostic.IDE0060.severity = warning
 
 # IDE0062: Make local function static
 dotnet_diagnostic.IDE0062.severity = warning
-
-# IDE0161: Convert to file-scoped namespace
-dotnet_diagnostic.IDE0161.severity = false:silent
 
 # IDE0200: Lambda expression can be removed
 dotnet_diagnostic.IDE0200.severity = warning

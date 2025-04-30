@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Exception_Message" xml:space="preserve">
-    <value>One or more error has occurried.</value>
+  <data name="Order_OrderNotFound" xml:space="preserve">
+    <value>Order not found.</value>
   </data>
   <data name="ValidationException_Message" xml:space="preserve">
     <value>The command state is not valid for the current request.</value>
