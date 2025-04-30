@@ -39,13 +39,13 @@ services:
     environment:
       ASPNETCORE_HTTP_PORTS: 8080
       ASPNETCORE_ENVIRONMENT: Development
-      ConnectionStrings__DataBaseConection: Server=dbsqlserver;Database=dbtechfood;User Id=sa;Password=123456#4EA;TrustServerCertificate=True;
+      ConnectionStrings__DataBaseConection: Server=techfood.db;Database=dbtechfood;User Id=sa;Password=123456#4EA;TrustServerCertificate=True;
     depends_on:
-      - dbsqlserver
+      - techfood.db
 
-  dbsqlserver:
+  techfood.db:
     image: mcr.microsoft.com/mssql/server:2019-latest
-    container_name: dbsqlserver
+    container_name: techfood.db
     ports:
       - "1434:1433"
     environment:
