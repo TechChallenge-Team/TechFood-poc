@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { Flex, Text, Heading, IconButton } from "@radix-ui/themes";
-import { Trash2Icon } from "lucide-react";
+import { MinusIcon, PlusIcon, Trash2Icon } from "lucide-react";
 import { OrderItemCardProps } from "./OrderItemCard.types";
 
 import classNames from "./OrderItemCard.module.css";
@@ -7,32 +8,47 @@ import classNames from "./OrderItemCard.module.css";
 const assetsPath = "../../assets/products/";
 
 export const OrderItemCard = ({
-  id,
-  title,
-  price,
-  img,
+  item,
+  product: { name, img, price },
   onRemoveClick,
 }: OrderItemCardProps) => {
+  const [count, setCount] = useState(1);
+
   const src = new URL(`${assetsPath}${img}`, import.meta.url).href;
+  const isDeleteVisible = count <= 1;
+
+  const handleCountChange = (newCount: number) => {
+    if (newCount < 1) onRemoveClick(item);
+    setCount(newCount);
+  };
 
   return (
-    <Flex className={classNames.root} direction="row" gap="2" align="center">
-      <img src={src} alt={title} />
-      <Flex direction="column" flexGrow="1">
-        <Heading size="1" weight="bold">
-          {title}
-        </Heading>
-        <Text size="1" color="gray">
-          R$ {price}
-        </Text>
+    <Flex className={classNames.root} direction="column" gap="1" align="center">
+      <img src={src} alt={name} />
+      <Heading size="1" weight="bold">
+        {name}
+      </Heading>
+      <Text size="1" color="gray">
+        R$ {price}
+      </Text>
+      <Flex direction="column" align="center">
+        <Flex direction="row" gap="3" align="center">
+          <IconButton
+            variant="soft"
+            color={isDeleteVisible ? "red" : "gray"}
+            size="1"
+            onClick={() => handleCountChange(count - 1)}
+          >
+            {isDeleteVisible ? <Trash2Icon /> : <MinusIcon />}
+          </IconButton>
+          <Text size="1" color="gray">
+            {count}
+          </Text>
+          <IconButton size="1" onClick={() => handleCountChange(count + 1)}>
+            <PlusIcon />
+          </IconButton>
+        </Flex>
       </Flex>
-      <IconButton
-        size="1"
-        onClick={() => onRemoveClick(id)}
-        aria-label="Remove item"
-      >
-        <Trash2Icon />
-      </IconButton>
     </Flex>
   );
 };

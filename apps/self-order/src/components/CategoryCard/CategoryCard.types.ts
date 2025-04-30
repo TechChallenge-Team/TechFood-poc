@@ -1,6 +1,7 @@
+import { Category } from "../../models";
+
 export type CategoryCardProps = {
-  name: string;
-  img: string;
+  item: Category;
   selected?: boolean;
   onClick?: () => void;
 };

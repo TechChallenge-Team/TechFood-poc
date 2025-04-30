@@ -1,14 +1,15 @@
+import { useState } from "react";
 import { Button, Card, Flex, Grid, IconButton, Text } from "@radix-ui/themes";
 import { MinusIcon, PlusIcon, XIcon } from "lucide-react";
-import { ItemDetailCardProps } from "./ItemDetailCard.types";
-
-import classNames from "./ItemDetailCard.module.css";
-import { useState } from "react";
 import { clsx } from "clsx";
+import { Garnish } from "../../models";
+import { OrderItemBuilderCardProps } from "./OrderItemBuilderCard.types";
+
+import classNames from "./OrderItemBuilderCard.module.css";
 
 const assetsPath = "../../assets/products/";
 
-const GarnisheItem = ({ title, subtitle, img }: any) => {
+const GarnisheItem = ({ name, description, img }: Garnish) => {
   const [count, setCount] = useState(1);
 
   const src = new URL(`${assetsPath}${img}`, import.meta.url).href;
@@ -27,9 +28,9 @@ const GarnisheItem = ({ title, subtitle, img }: any) => {
     >
       <img src={src} />
       <Flex direction="column" gap="1" justify="center">
-        <Text size="2">{title}</Text>
+        <Text size="2">{name}</Text>
         <Text size="1" color="gray">
-          {subtitle}
+          {description}
         </Text>
       </Flex>
       <Flex direction="row" gap="4" align="center">
@@ -53,7 +54,7 @@ const GarnisheItem = ({ title, subtitle, img }: any) => {
   );
 };
 
-const GarnisheList = ({ items }: any) => {
+const GarnisheList = ({ items }: { items: Garnish[] }) => {
   return (
     <Flex className={classNames.garnisheList} direction="column" gap="4">
       <Flex className={classNames.garnisheListItems} direction="column" gap="2">
@@ -72,16 +73,11 @@ const GarnisheList = ({ items }: any) => {
   );
 };
 
-export const ItemDetailCard = ({
-  id,
-  title,
-  price,
-  size,
-  img,
-  garnishes,
+export const OrderItemBuilderCard = ({
+  item: { id, name, price, img, unit, garnishes },
   onClose,
   onAdd,
-}: ItemDetailCardProps) => {
+}: OrderItemBuilderCardProps) => {
   const [count, setCount] = useState(1);
   const [isChosingGarnishe, setIsChoosingGarnishe] = useState(false);
 
@@ -122,13 +118,13 @@ export const ItemDetailCard = ({
             gap="4"
             align="center"
           >
-            <img src={src} alt={title} className={classNames.img} />
+            <img src={src} alt={name} className={classNames.img} />
             <Flex direction="column" align="center">
               <Text size="2" weight="bold">
-                {title}
+                {name}
               </Text>
               <Text size="1" color="gray">
-                {size}
+                {unit}
               </Text>
               <Text size="2" weight="bold" className={classNames.price}>
                 R$ {price}
@@ -174,16 +170,9 @@ export const ItemDetailCard = ({
                   size="2"
                   onClick={() =>
                     onAdd({
-                      id,
-                      title,
-                      price,
-                      img,
-                      size,
-                      count,
-                      garnishes: garnishes.map((garnish) => ({
-                        ...garnish,
-                        count,
-                      })),
+                      productId: id,
+                      quantity: count,
+                      unitPrice: price,
                     })
                   }
                 >
