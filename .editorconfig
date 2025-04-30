@@ -220,9 +220,6 @@ dotnet_diagnostic.CA1846.severity = warning
 # CA1847: Use string.Contains(char) instead of string.Contains(string) with single characters
 dotnet_diagnostic.CA1847.severity = warning
 
-# CA1852: Seal internal types
-dotnet_diagnostic.CA1852.severity = warning
-
 # CA1855: Prefer 'Clear' over 'Fill'
 dotnet_diagnostic.CA1855.severity = warning
 
