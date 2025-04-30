@@ -7,6 +7,7 @@ using TechFood.Application.Common.Services.Interfaces;
 using TechFood.Application.Models.Order;
 using TechFood.Application.UseCases.Interfaces;
 using TechFood.Domain.Entities;
+using TechFood.Domain.Enums;
 using TechFood.Domain.Repositories;
 
 namespace TechFood.Application.UseCases
@@ -67,9 +68,11 @@ namespace TechFood.Application.UseCases
 
             var paymentService = _serviceProvider.GetRequiredKeyedService<IPaymentService>(data.Type);
 
-            if (paymentService is IQrCodePaymentService qrCodePayment)
+            order.CreatePayment(data.Type);
+
+            if (data.Type == PaymentType.QrCode)
             {
-                var payment = await qrCodePayment.GeneratePaymentAsync(
+                var payment = await paymentService.GenerateQrCodePaymentAsync(
                     new(
                         "TOTEM01",
                         order.Id,
@@ -86,6 +89,10 @@ namespace TechFood.Application.UseCases
                 order.CreatePayment(data.Type);
 
                 result.QrCodeData = payment.QrCodeData;
+            }
+            else if (data.Type == PaymentType.CreditCard)
+            {
+                // TODO: Implement credit card payment
             }
 
             await _orderRepo.UpdateAsync(order);

@@ -14,7 +14,7 @@ namespace TechFood.Infra.Services.MercadoPago
     internal class MercadoPagoPaymentService(
         IOptions<MercadoPagoOptions> options,
         IHttpClientFactory httpClientFactory,
-        IHttpContextAccessor httpContextAccessor) : IQrCodePaymentService
+        IHttpContextAccessor httpContextAccessor) : IPaymentService
     {
         private readonly MercadoPagoOptions _options = options.Value;
         private readonly HttpClient _client = httpClientFactory.CreateClient(MercadoPagoOptions.ClientName);
@@ -25,7 +25,7 @@ namespace TechFood.Infra.Services.MercadoPago
             PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
         };
 
-        public async Task<QrCodePaymentResult> GeneratePaymentAsync(QrCodePaymentRequest data)
+        public async Task<QrCodePaymentResult> GenerateQrCodePaymentAsync(QrCodePaymentRequest data)
         {
             var http = _httpContextAccessor.HttpContext!.Request;
             var notificationUrl = $"{http.Scheme}://www.techfood.com/v1/notifications/mercadopago";
