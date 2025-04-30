@@ -6,9 +6,10 @@ services:
       dockerfile: src/TechFood.Api/Dockerfile
     container_name: techfood.api
     ports:
-      - "5000:5000"
-      - "5001:5001"
+      - "5000:8080"
     environment:
+      ASPNETCORE_HTTP_PORTS: 8080
+      ASPNETCORE_ENVIRONMENT: Development
       ConnectionStrings__DataBaseConection: Server=dbsqlserver;Database=dbtechfood;User Id=sa;Password=123456#4EA;TrustServerCertificate=True;
     depends_on:
       - dbsqlserver
