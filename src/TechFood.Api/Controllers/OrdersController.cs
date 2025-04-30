@@ -40,9 +40,9 @@ namespace TechFood.Api.Controllers
         [Route("{orderId:guid}/payment")]
         public async Task<IActionResult> CreatePaymentAsync(Guid orderId, CreatePaymentRequest data)
         {
-            await _orderUseCase.CreatePaymentAsync(orderId, data);
+            var result = await _orderUseCase.CreatePaymentAsync(orderId, data);
 
-            return Ok();
+            return Ok(result);
         }
 
         [HttpPost]
