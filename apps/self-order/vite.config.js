@@ -4,7 +4,7 @@ import react from "@vitejs/plugin-react";
 import { configureCss } from "../../scripts";
 
 export default defineConfig({
-  base: "./",
+  base: "/self-order",
   ...configureCss(),
   plugins: [
     react(),
