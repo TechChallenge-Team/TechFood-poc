@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Box, Button, Flex, IconButton, TextField } from "@radix-ui/themes";
 import { ArrowRightIcon } from "lucide-react";
+import { t } from "../../i18n";
 import { LanguageSwitch } from "../../components";
 
 import classNames from "./StartPage.module.css";
 
 export const StartPage = () => {
-  const [cpf, setCpf] = useState("");
+  const [documentNumber, setDocumentNumber] = useState("");
 
   return (
     <Flex className={classNames.root} direction="column">
@@ -18,19 +19,19 @@ export const StartPage = () => {
           <Flex gap="2" align="center">
             <Box maxWidth="400px">
               <TextField.Root
-                placeholder="CPF"
+                placeholder={t("startPage.documentNumber")}
                 size="3"
                 maxLength={11}
-                onChange={(e) => setCpf(e.target.value)}
+                onChange={(e) => setDocumentNumber(e.target.value)}
               />
             </Box>
-            <IconButton size="3" disabled={cpf.length < 11}>
+            <IconButton size="3" disabled={documentNumber.length < 11}>
               <ArrowRightIcon size="40" />
             </IconButton>
           </Flex>
-          <Button size="3">Cadastre-se</Button>
+          <Button size="3">{t("startPage.register")}</Button>
           <Button variant="outline" size="3">
-            Não se indentificar
+            {t("startPage.dontIdentify")}
           </Button>
         </Flex>
       </Flex>

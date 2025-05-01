@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Flex, Text, Heading, IconButton } from "@radix-ui/themes";
 import { MinusIcon, PlusIcon, Trash2Icon } from "lucide-react";
+import { t } from "../../i18n";
 import { OrderItemCardProps } from "./OrderItemCard.types";
 
 import classNames from "./OrderItemCard.module.css";
@@ -27,7 +28,7 @@ export const OrderItemCard = ({
         {name}
       </Heading>
       <Text size="1" color="gray">
-        R$ {price}
+        {t("labels.currency")} {price}
       </Text>
       <Flex direction="column" align="center">
         <Flex direction="row" gap="3" align="center">

@@ -1,4 +1,5 @@
 import { Flex, Text, Strong, Heading } from "@radix-ui/themes";
+import { t } from "../../i18n";
 import { ProductCardProps } from "./ProductCard.types";
 
 import classNames from "./ProductCard.module.css";
@@ -24,7 +25,9 @@ export const ProductCard = ({
         {unit}
       </Text>
       <Strong className={classNames.price}>
-        <Strong>R$ {price}</Strong>
+        <Strong>
+          {t("labels.currency")} {price}
+        </Strong>
       </Strong>
       <Text
         className={classNames.description}

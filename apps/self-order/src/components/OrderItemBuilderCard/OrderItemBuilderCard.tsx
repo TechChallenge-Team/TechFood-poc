@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button, Card, Flex, Grid, IconButton, Text } from "@radix-ui/themes";
 import { MinusIcon, PlusIcon, XIcon } from "lucide-react";
 import { clsx } from "clsx";
+import { t } from "../../i18n";
 import { Garnish } from "../../models";
 import { OrderItemBuilderCardProps } from "./OrderItemBuilderCard.types";
 
@@ -65,7 +66,7 @@ const GarnisheList = ({ items }: { items: Garnish[] }) => {
         direction="row"
         justify="center"
       >
-        <Button size="2">Apply</Button>
+        <Button size="2">{t("labels.apply")}</Button>
       </Flex>
     </Flex>
   );
@@ -125,7 +126,7 @@ export const OrderItemBuilderCard = ({
                 {unit}
               </Text>
               <Text size="2" weight="bold" className={classNames.price}>
-                R$ {price}
+                {t("labels.currency")} {price}
               </Text>
             </Flex>
           </Flex>
@@ -162,7 +163,7 @@ export const OrderItemBuilderCard = ({
                   onClick={() => setIsChoosingGarnishe(!isChosingGarnishe)}
                   disabled={garnishes.length === 0}
                 >
-                  Customize
+                  {t("labels.customize")}
                 </Button>
                 <Button
                   size="2"
@@ -174,7 +175,7 @@ export const OrderItemBuilderCard = ({
                     })
                   }
                 >
-                  Done
+                  {t("labels.done")}
                 </Button>
               </Flex>
             </Flex>

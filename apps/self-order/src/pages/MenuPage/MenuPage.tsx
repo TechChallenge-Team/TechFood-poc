@@ -10,6 +10,7 @@ import {
   Button,
 } from "@radix-ui/themes";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import { t } from "../../i18n";
 import { Category, OrderItem, Product } from "../../models";
 import {
   CategoryCard,
@@ -650,6 +651,12 @@ const items: Product[] = [
   },
 ];
 
+const sortByOptions = [
+  { value: "popular", label: () => t("menuPage.sort.popular") },
+  { value: "name", label: () => t("menuPage.sort.name") },
+  { value: "price", label: () => t("menuPage.sort.price") },
+];
+
 const CategoriesCard = ({
   items,
   selectedItem,
@@ -696,15 +703,18 @@ const ItemsCard = ({
     >
       <Flex direction="row" justify="between">
         <Heading size="5" as="h1" weight="regular">
-          <Strong>Choose</Strong> Order
+          <Strong>{t("menuPage.choose")}</Strong> {t("menuPage.order")}
         </Heading>
         <Flex align="center" gap="1">
-          <Text size="1">Sort By</Text>
+          <Text size="1">{t("menuPage.sortBy")}</Text>
           <Select.Root defaultValue="popular" size="1">
             <Select.Trigger className={classNames.sort} variant="ghost" />
             <Select.Content>
-              <Select.Item value="popular">Popular</Select.Item>
-              <Select.Item value="name">Name</Select.Item>
+              {sortByOptions.map((option) => (
+                <Select.Item key={option.value} value={option.value}>
+                  {option.label()}
+                </Select.Item>
+              ))}
             </Select.Content>
           </Select.Root>
         </Flex>
@@ -746,12 +756,12 @@ export const MenuPage = () => {
       <Flex className={classNames.left} direction="column" gap="4" flexGrow="1">
         <Flex direction="row" justify="between">
           <Heading size="5" as="h1" weight="regular">
-            <Strong>Menu</Strong> Category
+            <Strong>{t("menuPage.menu")}</Strong> {t("menuPage.category")}
           </Heading>
           <Box width="100%" maxWidth="500px">
             <TextField.Root
               className={classNames.search}
-              placeholder="Search for food"
+              placeholder={t("menuPage.search")}
               size="2"
             >
               <TextField.Slot>
@@ -778,7 +788,7 @@ export const MenuPage = () => {
         )}
       </Flex>
       <Flex className={classNames.right} direction="column">
-        <Heading className={classNames.header}>My Order</Heading>
+        <Heading className={classNames.header}>{t("menuPage.myOrder")}</Heading>
         <Flex direction="column" overflowY="auto" flexGrow="1">
           {orderItems.map((item, i) => (
             <OrderItemCard
@@ -790,9 +800,9 @@ export const MenuPage = () => {
           ))}
         </Flex>
         <Flex direction="column" gap="4" align="center">
-          <Heading as="h5">Total</Heading>
+          <Heading as="h5">{t("labels.total")}</Heading>
           <Text>
-            $
+            {t("labels.currency")}
             {orderItems
               .reduce((total, item) => total + item.unitPrice, 0)
               .toFixed(2)}
@@ -802,7 +812,7 @@ export const MenuPage = () => {
             className={classNames.doneButton}
             disabled={!orderItems.length}
           >
-            Done
+            {t("labels.done")}
           </Button>
         </Flex>
       </Flex>
