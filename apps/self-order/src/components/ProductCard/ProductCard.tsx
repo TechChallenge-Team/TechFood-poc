@@ -1,15 +1,12 @@
 import { Flex, Text, Strong, Heading } from "@radix-ui/themes";
-import { ItemCardProps } from "./ItemCard.types";
+import { ProductCardProps } from "./ProductCard.types";
 
-import classNames from "./ItemCard.module.css";
+import classNames from "./ProductCard.module.css";
 
-export const ItemCard = ({
-  title,
-  price,
-  size,
-  img,
+export const ProductCard = ({
+  item: { name, img, unit, price },
   onClick,
-}: ItemCardProps) => {
+}: ProductCardProps) => {
   const src = new URL(`../../assets/products/${img}.png`, import.meta.url).href;
   return (
     <Flex
@@ -19,12 +16,12 @@ export const ItemCard = ({
       align="center"
       onClick={onClick}
     >
-      <img src={src} alt={title} />
+      <img src={src} alt={name} />
       <Heading className={classNames.title} size="3" weight="bold" color="gray">
-        {title}
+        {name}
       </Heading>
       <Text size="1" weight="medium" color="gray" wrap="wrap">
-        {size}
+        {unit}
       </Text>
       <Strong className={classNames.price}>
         <Strong>R$ {price}</Strong>

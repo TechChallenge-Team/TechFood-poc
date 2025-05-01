@@ -50,7 +50,7 @@
   -webkit-mask-image: linear-gradient(to bottom, white 1%, transparent);
 }
 
-.garnisheListButtons {
+.garnishe-list-buttons {
   position: absolute;
   bottom: var(--space-2);
   left: 0;

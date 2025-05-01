@@ -1,12 +1,11 @@
 import { Box, Flex, Text } from "@radix-ui/themes";
+import { clsx } from "clsx";
 import { CategoryCardProps } from "./CategoryCard.types";
 
 import classNames from "./CategoryCard.module.css";
-import { clsx } from "clsx";
 
 export const CategoryCard = ({
-  name,
-  img,
+  item: { name, img },
   selected,
   onClick,
 }: CategoryCardProps) => {
