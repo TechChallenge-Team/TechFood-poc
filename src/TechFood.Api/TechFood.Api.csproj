@@ -20,9 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\TechFood.Infra.ImageStore.LocalDisk\TechFood.Infra.ImageStore.LocalDisk.csproj" />
     <ProjectReference Include="..\TechFood.Application\TechFood.Application.csproj" />
     <ProjectReference Include="..\TechFood.Infra.Data\TechFood.Infra.Data.csproj" />
+    <ProjectReference Include="..\TechFood.Infra.ImageStore.LocalDisk\TechFood.Infra.ImageStore.LocalDisk.csproj" />
   </ItemGroup>
 
   <ItemGroup>

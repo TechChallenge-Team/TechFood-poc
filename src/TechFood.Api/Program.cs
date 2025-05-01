@@ -47,7 +47,7 @@ var builder = WebApplication.CreateBuilder(args);
 
     builder.Services.AddApplication();
     builder.Services.AddInfraData();
-    builder.Services.AddInfraImageStore(builder.Configuration);
+    builder.Services.AddInfraImageStore();
 }
 
 var app = builder.Build();
