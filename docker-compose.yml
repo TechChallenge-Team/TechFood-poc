@@ -1,20 +1,53 @@
 services:
+  nginx:
+    image: ${DOCKER_REGISTRY-}techfood.nginx
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: techfood.nginx
+    ports:
+      - "5000:5000"
+    depends_on:
+      - techfood.admin
+      - techfood.self-order
+      - techfood.api
+
+  techfood.admin:
+    image: ${DOCKER_REGISTRY-}techfood.admin
+    build:
+      context: .
+      dockerfile: apps/admin/Dockerfile
+    container_name: techfood.admin
+    depends_on:
+      - techfood.api
+
+  techfood.self-order:
+    image: ${DOCKER_REGISTRY-}techfood.self-order
+    build:
+      context: .
+      dockerfile: apps/self-order/Dockerfile
+    container_name: techfood.self-order
+    depends_on:
+      - techfood.api
+
   techfood.api:
-    image: ${DOCKER_REGISTRY-}techfoodapi
+    image: ${DOCKER_REGISTRY-}techfood.api
     build:
       context: .
       dockerfile: src/TechFood.Api/Dockerfile
     container_name: techfood.api
     ports:
-      - "5000:5000"
-      - "5001:5001"
+      - "5001:8080"
     environment:
-      ConnectionStrings__DataBaseConection: Server=dbsqlserver;Database=dbtechfood;User Id=sa;Password=123456#4EA;TrustServerCertificate=True;
+      ASPNETCORE_HTTP_PORTS: 8080
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__DataBaseConection: Server=techfood.db;Database=dbtechfood;User Id=sa;Password=123456#4EA;TrustServerCertificate=True;
     depends_on:
-      - dbsqlserver
-  dbsqlserver:
+      - techfood.db
+
+  techfood.db:
     image: mcr.microsoft.com/mssql/server:2019-latest
-    container_name: dbsqlserver
+    container_name: techfood.db
     ports:
       - "1434:1433"
     environment:
@@ -22,5 +55,6 @@ services:
       ACCEPT_EULA: "Y"
     volumes:
       - sqlserver_data:/var/opt/mssql
+
 volumes:
   sqlserver_data:

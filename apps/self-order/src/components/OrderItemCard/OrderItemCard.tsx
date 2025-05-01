@@ -5,8 +5,6 @@ import { OrderItemCardProps } from "./OrderItemCard.types";
 
 import classNames from "./OrderItemCard.module.css";
 
-const assetsPath = "../../assets/products/";
-
 export const OrderItemCard = ({
   item,
   product: { name, img, price },
@@ -14,7 +12,7 @@ export const OrderItemCard = ({
 }: OrderItemCardProps) => {
   const [count, setCount] = useState(1);
 
-  const src = new URL(`${assetsPath}${img}`, import.meta.url).href;
+  const src = new URL(`../../assets/products/${img}.png`, import.meta.url).href;
   const isDeleteVisible = count <= 1;
 
   const handleCountChange = (newCount: number) => {

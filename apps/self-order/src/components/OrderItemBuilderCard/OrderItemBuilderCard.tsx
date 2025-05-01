@@ -7,12 +7,10 @@ import { OrderItemBuilderCardProps } from "./OrderItemBuilderCard.types";
 
 import classNames from "./OrderItemBuilderCard.module.css";
 
-const assetsPath = "../../assets/products/";
-
 const GarnisheItem = ({ name, description, img }: Garnish) => {
   const [count, setCount] = useState(1);
 
-  const src = new URL(`${assetsPath}${img}`, import.meta.url).href;
+  const src = new URL(`../../assets/products/${img}.png`, import.meta.url).href;
 
   const handleCountChange = (newCount: number) => {
     if (newCount < 0) return;
@@ -81,7 +79,7 @@ export const OrderItemBuilderCard = ({
   const [count, setCount] = useState(1);
   const [isChosingGarnishe, setIsChoosingGarnishe] = useState(false);
 
-  const src = new URL(`${assetsPath}${img}`, import.meta.url).href;
+  const src = new URL(`../../assets/products/${img}.png`, import.meta.url).href;
 
   const handleCountChange = (newCount: number) => {
     if (newCount < 0) return;

@@ -1,7 +1,7 @@
 {
-  "name": "Techfood",
+  "name": "Techfood - Self Order",
   "short_name": "techfood_self_order",
-  "start_url": "/",
+  "start_url": "/self-order",
   "display": "standalone",
   "background_color": "#121212",
   "theme_color": "#4f4d6f",

@@ -4,14 +4,13 @@ import { CategoryCardProps } from "./CategoryCard.types";
 
 import classNames from "./CategoryCard.module.css";
 
-const assetsPath = "../../assets/categories/";
-
 export const CategoryCard = ({
   item: { name, img },
   selected,
   onClick,
 }: CategoryCardProps) => {
-  const src = new URL(`${assetsPath}${img}`, import.meta.url).href;
+  const src = new URL(`../../assets/categories/${img}.png`, import.meta.url)
+    .href;
 
   return (
     <Flex
