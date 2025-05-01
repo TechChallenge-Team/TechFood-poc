@@ -5,10 +5,10 @@ import { CategoryCard, PopularCard } from "../../components";
 import classNames from "./MenuManagement.module.css";
 
 const categories = [
-  { name: "Hambugers", img: "hamburger.png" },
-  { name: "Bebidas", img: "soda.png" },
-  { name: "Acompanhamentos", img: "fried-chicken.png" },
-  { name: "Sobremesas", img: "donut.png" },
+  { name: "Hambugers", img: "hamburger" },
+  { name: "Bebidas", img: "soda" },
+  { name: "Acompanhamentos", img: "fried-chicken" },
+  { name: "Sobremesas", img: "donut" },
 ];
 
 const popular = [
@@ -20,7 +20,7 @@ const popular = [
     reviewsCount: 100,
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    img: "1.png",
+    img: "1",
   },
   {
     title: "Hambuger 2",
@@ -30,7 +30,7 @@ const popular = [
     reviewsCount: 1001,
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    img: "2.png",
+    img: "2",
   },
   {
     title: "Coca-Cola",
@@ -40,7 +40,7 @@ const popular = [
     reviewsCount: 51,
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    img: "3.png",
+    img: "3",
   },
   {
     title: "Banana split",
@@ -50,7 +50,7 @@ const popular = [
     reviewsCount: 151,
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    img: "4.png",
+    img: "4",
   },
 ];
 

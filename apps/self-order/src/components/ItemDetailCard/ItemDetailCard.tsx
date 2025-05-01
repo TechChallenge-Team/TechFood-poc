@@ -6,12 +6,10 @@ import classNames from "./ItemDetailCard.module.css";
 import { useState } from "react";
 import { clsx } from "clsx";
 
-const assetsPath = "../../assets/products/";
-
 const GarnisheItem = ({ title, subtitle, img }: any) => {
   const [count, setCount] = useState(1);
 
-  const src = new URL(`${assetsPath}${img}`, import.meta.url).href;
+  const src = new URL(`../../assets/products/${img}.png`, import.meta.url).href;
 
   const handleCountChange = (newCount: number) => {
     if (newCount < 0) return;
@@ -83,7 +81,7 @@ export const ItemDetailCard = ({
   const [count, setCount] = useState(1);
   const [isChosingGarnishe, setIsChoosingGarnishe] = useState(false);
 
-  const src = new URL(`${assetsPath}${img}`, import.meta.url).href;
+  const src = new URL(`../../assets/products/${img}.png`, import.meta.url).href;
 
   const handleCountChange = (newCount: number) => {
     if (newCount < 0) return;

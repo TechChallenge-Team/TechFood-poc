@@ -3,8 +3,6 @@ import { ItemCardProps } from "./ItemCard.types";
 
 import classNames from "./ItemCard.module.css";
 
-const assetsPath = "../../assets/products/";
-
 export const ItemCard = ({
   title,
   price,
@@ -12,7 +10,7 @@ export const ItemCard = ({
   img,
   onClick,
 }: ItemCardProps) => {
-  const src = new URL(`${assetsPath}${img}`, import.meta.url).href;
+  const src = new URL(`../../assets/products/${img}.png`, import.meta.url).href;
   return (
     <Flex
       className={classNames.root}

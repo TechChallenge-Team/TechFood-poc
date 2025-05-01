@@ -5,8 +5,6 @@ import { PopularCardProps } from "./PopularCard.types";
 
 import classNames from "./PopularCard.module.css";
 
-const assetsPath = "../../assets/popular/";
-
 export const PopularCard = ({
   title,
   price,
@@ -15,7 +13,7 @@ export const PopularCard = ({
   description,
   img,
 }: PopularCardProps) => {
-  const src = new URL(`${assetsPath}${img}`, import.meta.url).href;
+  const src = new URL(`../../assets/popular/${img}.png`, import.meta.url).href;
   return (
     <Flex className={classNames.root} direction="column" gap="2">
       <Flex direction="row">
