@@ -18,9 +18,9 @@ namespace TechFood.Infra.Data.Repositories
             await _categories.AddAsync(entity);
         }
 
-        public async Task DeleteAsync(Category category)
+        public void Delete(Category category)
         {
-           _categories.Remove(category);
+            _categories.Remove(category);
         }
 
         public async Task<IEnumerable<Category>> GetAllAsync()

@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using TechFood.Domain.UoW;
 
 namespace TechFood.Domain.Repositories
 {
@@ -15,6 +12,6 @@ namespace TechFood.Domain.Repositories
 
         Task AddAsync(T entity);
 
-        Task DeleteAsync(T entity);
+        void Delete(T entity);
     }
 }

@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TechFood.Application.Models.Category;
 using TechFood.Application.UseCases.Interfaces;
-using TechFood.Domain.Entities;
 
 namespace TechFood.Api.Controllers
 {
@@ -28,17 +27,17 @@ namespace TechFood.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddCategoryAsync(CreateCategoryRequest category)
+        public async Task<IActionResult> AddCategoryAsync(CreateCategoryRequest createCategoryRequest)
         {
-            var result = await _categoryUseCase.AddCategoryAsync(category);
+            var result = await _categoryUseCase.AddCategoryAsync(createCategoryRequest);
 
             return Ok(result);
         }
 
         [HttpPut("{id:Guid}")]
-        public async Task<IActionResult> UpdateCategoryAsync(Guid id, CreateCategoryRequest category)
+        public async Task<IActionResult> UpdateCategoryAsync(Guid id, UpdateCategoryRequest updateCategoryRequest)
         {
-            var result = await _categoryUseCase.UpdateCategoryAsync(id, category);
+            var result = await _categoryUseCase.UpdateCategoryAsync(id, updateCategoryRequest);
 
             return result != null ? Ok(result) : NotFound();
         }
