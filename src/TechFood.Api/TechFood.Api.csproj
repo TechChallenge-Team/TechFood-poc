@@ -25,9 +25,5 @@
     <ProjectReference Include="..\TechFood.Infra.ImageStore.LocalDisk\TechFood.Infra.ImageStore.LocalDisk.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="images\" />
-  </ItemGroup>
-
 
 </Project>
