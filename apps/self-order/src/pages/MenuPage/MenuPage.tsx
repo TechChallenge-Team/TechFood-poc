@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Box,
   Flex,
@@ -6,220 +7,665 @@ import {
   Strong,
   TextField,
   Text,
+  Button,
 } from "@radix-ui/themes";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import { CategoryCard, ItemCard, ItemDetailCard } from "../../components";
+import { t } from "../../i18n";
+import { Category, OrderItem, Product } from "../../models";
+import {
+  CategoryCard,
+  ProductCard,
+  OrderItemBuilderCard,
+  OrderItemCard,
+} from "../../components";
 
 import classNames from "./MenuPage.module.css";
-import { useState } from "react";
 
-const categories = [
-  { id: 1, name: "Hambugers", img: "hamburger.png" },
-  { id: 2, name: "Bebidas", img: "soda.png" },
-  { id: 3, name: "Acompanhamentos", img: "fried-chicken.png" },
-  { id: 4, name: "Sobremesas", img: "donut.png" },
+const categories: Category[] = [
+  { id: "1", name: "Hambugers", img: "hamburger" },
+  { id: "2", name: "Bebidas", img: "soda" },
+  { id: "3", name: "Acompanhamentos", img: "fried-chicken" },
+  { id: "4", name: "Sobremesas", img: "donut" },
 ];
 
-const items = [
+const items: Product[] = [
   {
-    id: 1,
-    title: "Hambuger",
-    category: 1,
-    price: "10,00",
-    size: "180g",
-    img: "2.png",
+    id: "1",
+    name: "Hambuger",
+    description: "Hambuger",
+    categoryId: "1",
+    price: 10.0,
+    unit: "180g",
+    img: "2",
+    outOfStock: false,
     garnishes: [
-      { id: 1, title: "Option 1", subtitle: "Option 1", img: "1.png" },
-      { id: 2, title: "Option 2", subtitle: "Option 2", img: "1.png" },
-      { id: 3, title: "Option 3", subtitle: "Option 3", img: "1.png" },
-      { id: 4, title: "Option 4", subtitle: "Option 4", img: "1.png" },
-      { id: 5, title: "Option 5", subtitle: "Option 5", img: "1.png" },
-      { id: 6, title: "Option 6", subtitle: "Option 6", img: "1.png" },
-      { id: 7, title: "Option 7", subtitle: "Option 7", img: "1.png" },
-      { id: 8, title: "Option 8", subtitle: "Option 8", img: "1.png" },
+      {
+        id: "1",
+        name: "Option 1",
+        description: "Option 1",
+        img: "1",
+      },
+      {
+        id: "2",
+        name: "Option 2",
+        description: "Option 2",
+        img: "1",
+      },
+      {
+        id: "3",
+        name: "Option 3",
+        description: "Option 3",
+        img: "1",
+      },
+      {
+        id: "4",
+        name: "Option 4",
+        description: "Option 4",
+        img: "1",
+      },
+      {
+        id: "5",
+        name: "Option 5",
+        description: "Option 5",
+        img: "1",
+      },
+      {
+        id: "6",
+        name: "Option 6",
+        description: "Option 6",
+        img: "1",
+      },
+      {
+        id: "7",
+        name: "Option 7",
+        description: "Option 7",
+        img: "1",
+      },
+      {
+        id: "8",
+        name: "Option 8",
+        description: "Option 8",
+        img: "1",
+      },
     ],
   },
   {
-    id: 2,
-    title: "Hambuger 2",
-    category: 1,
-    price: "12,00",
-    size: "280g",
-    img: "2.png",
+    id: "2",
+    name: "Hambuger 2",
+    description: "Hambuger 2",
+    categoryId: "1",
+    price: 12.0,
+    unit: "280g",
+    img: "2",
+    outOfStock: false,
     garnishes: [
-      { id: 1, title: "Option 1", subtitle: "Option 1", img: "1.png" },
-      { id: 2, title: "Option 2", subtitle: "Option 2", img: "1.png" },
-      { id: 3, title: "Option 3", subtitle: "Option 3", img: "1.png" },
-      { id: 4, title: "Option 4", subtitle: "Option 4", img: "1.png" },
-      { id: 5, title: "Option 5", subtitle: "Option 5", img: "1.png" },
-      { id: 6, title: "Option 6", subtitle: "Option 6", img: "1.png" },
-      { id: 7, title: "Option 7", subtitle: "Option 7", img: "1.png" },
-      { id: 8, title: "Option 8", subtitle: "Option 8", img: "1.png" },
+      {
+        id: "1",
+        name: "Option 1",
+        description: "Option 1",
+        img: "1",
+      },
+      {
+        id: "2",
+        name: "Option 2",
+        description: "Option 2",
+        img: "1",
+      },
+      {
+        id: "3",
+        name: "Option 3",
+        description: "Option 3",
+        img: "1",
+      },
+      {
+        id: "4",
+        name: "Option 4",
+        description: "Option 4",
+        img: "1",
+      },
+      {
+        id: "5",
+        name: "Option 5",
+        description: "Option 5",
+        img: "1",
+      },
+      {
+        id: "6",
+        name: "Option 6",
+        description: "Option 6",
+        img: "1",
+      },
+      {
+        id: "7",
+        name: "Option 7",
+        description: "Option 7",
+        img: "1",
+      },
+      {
+        id: "8",
+        name: "Option 8",
+        description: "Option 8",
+        img: "1",
+      },
     ],
   },
   {
-    id: 3,
-    title: "Hambuger 3",
-    category: 1,
-    price: "12,00",
-    size: "280g",
-    img: "2.png",
+    id: "3",
+    name: "Hambuger 3",
+    description: "Hambuger 3",
+    categoryId: "1",
+    price: 12.0,
+    unit: "280g",
+    img: "2",
+    outOfStock: false,
     garnishes: [
-      { id: 1, title: "Option 1", subtitle: "Option 1", img: "1.png" },
-      { id: 2, title: "Option 2", subtitle: "Option 2", img: "1.png" },
-      { id: 3, title: "Option 3", subtitle: "Option 3", img: "1.png" },
-      { id: 4, title: "Option 4", subtitle: "Option 4", img: "1.png" },
-      { id: 5, title: "Option 5", subtitle: "Option 5", img: "1.png" },
-      { id: 6, title: "Option 6", subtitle: "Option 6", img: "1.png" },
-      { id: 7, title: "Option 7", subtitle: "Option 7", img: "1.png" },
-      { id: 8, title: "Option 8", subtitle: "Option 8", img: "1.png" },
+      {
+        id: "1",
+        name: "Option 1",
+        description: "Option 1",
+        img: "1",
+      },
+      {
+        id: "2",
+        name: "Option 2",
+        description: "Option 2",
+        img: "1",
+      },
+      {
+        id: "3",
+        name: "Option 3",
+        description: "Option 3",
+        img: "1",
+      },
+      {
+        id: "4",
+        name: "Option 4",
+        description: "Option 4",
+        img: "1",
+      },
+      {
+        id: "5",
+        name: "Option 5",
+        description: "Option 5",
+        img: "1",
+      },
+      {
+        id: "6",
+        name: "Option 6",
+        description: "Option 6",
+        img: "1",
+      },
+      {
+        id: "7",
+        name: "Option 7",
+        description: "Option 7",
+        img: "1",
+      },
+      {
+        id: "8",
+        name: "Option 8",
+        description: "Option 8",
+        img: "1",
+      },
     ],
   },
   {
-    id: 4,
-    title: "Hambuger 4",
-    category: 1,
-    price: "12,00",
-    size: "280g",
-    img: "2.png",
+    id: "4",
+    name: "Hambuger 4",
+    description: "Hambuger 4",
+    categoryId: "1",
+    price: 12.0,
+    unit: "280g",
+    img: "2",
+    outOfStock: false,
     garnishes: [
-      { id: 1, title: "Option 1", subtitle: "Option 1", img: "1.png" },
-      { id: 2, title: "Option 2", subtitle: "Option 2", img: "1.png" },
-      { id: 3, title: "Option 3", subtitle: "Option 3", img: "1.png" },
-      { id: 4, title: "Option 4", subtitle: "Option 4", img: "1.png" },
-      { id: 5, title: "Option 5", subtitle: "Option 5", img: "1.png" },
-      { id: 6, title: "Option 6", subtitle: "Option 6", img: "1.png" },
-      { id: 7, title: "Option 7", subtitle: "Option 7", img: "1.png" },
-      { id: 8, title: "Option 8", subtitle: "Option 8", img: "1.png" },
+      {
+        id: "1",
+        name: "Option 1",
+        description: "Option 1",
+        img: "1",
+      },
+      {
+        id: "2",
+        name: "Option 2",
+        description: "Option 2",
+        img: "1",
+      },
+      {
+        id: "3",
+        name: "Option 3",
+        description: "Option 3",
+        img: "1",
+      },
+      {
+        id: "4",
+        name: "Option 4",
+        description: "Option 4",
+        img: "1",
+      },
+      {
+        id: "5",
+        name: "Option 5",
+        description: "Option 5",
+        img: "1",
+      },
+      {
+        id: "6",
+        name: "Option 6",
+        description: "Option 6",
+        img: "1",
+      },
+      {
+        id: "7",
+        name: "Option 7",
+        description: "Option 7",
+        img: "1",
+      },
+      {
+        id: "8",
+        name: "Option 8",
+        description: "Option 8",
+        img: "1",
+      },
     ],
   },
   {
-    id: 5,
-    title: "Hambuger 5",
-    category: 1,
-    price: "12,00",
-    size: "280g",
-    img: "2.png",
+    id: "5",
+    name: "Hambuger 5",
+    description: "Hambuger 5",
+    categoryId: "1",
+    price: 12.0,
+    unit: "280g",
+    img: "2",
+    outOfStock: false,
     garnishes: [
-      { id: 1, title: "Option 1", subtitle: "Option 1", img: "1.png" },
-      { id: 2, title: "Option 2", subtitle: "Option 2", img: "1.png" },
-      { id: 3, title: "Option 3", subtitle: "Option 3", img: "1.png" },
-      { id: 4, title: "Option 4", subtitle: "Option 4", img: "1.png" },
-      { id: 5, title: "Option 5", subtitle: "Option 5", img: "1.png" },
-      { id: 6, title: "Option 6", subtitle: "Option 6", img: "1.png" },
-      { id: 7, title: "Option 7", subtitle: "Option 7", img: "1.png" },
-      { id: 8, title: "Option 8", subtitle: "Option 8", img: "1.png" },
+      {
+        id: "1",
+        name: "Option 1",
+        description: "Option 1",
+        img: "1",
+      },
+      {
+        id: "2",
+        name: "Option 2",
+        description: "Option 2",
+        img: "1",
+      },
+      {
+        id: "3",
+        name: "Option 3",
+        description: "Option 3",
+        img: "1",
+      },
+      {
+        id: "4",
+        name: "Option 4",
+        description: "Option 4",
+        img: "1",
+      },
+      {
+        id: "5",
+        name: "Option 5",
+        description: "Option 5",
+        img: "1",
+      },
+      {
+        id: "6",
+        name: "Option 6",
+        description: "Option 6",
+        img: "1",
+      },
+      {
+        id: "7",
+        name: "Option 7",
+        description: "Option 7",
+        img: "1",
+      },
+      {
+        id: "8",
+        name: "Option 8",
+        description: "Option 8",
+        img: "1",
+      },
     ],
   },
   {
-    id: 6,
-    title: "Hambuger 6",
-    category: 1,
-    price: "12,00",
-    size: "280g",
-    img: "2.png",
+    id: "6",
+    name: "Hambuger 6",
+    description: "Hambuger 6",
+    categoryId: "1",
+    price: 12.0,
+    unit: "280g",
+    img: "2",
+    outOfStock: false,
     garnishes: [
-      { id: 1, title: "Option 1", subtitle: "Option 1", img: "1.png" },
-      { id: 2, title: "Option 2", subtitle: "Option 2", img: "1.png" },
-      { id: 3, title: "Option 3", subtitle: "Option 3", img: "1.png" },
-      { id: 4, title: "Option 4", subtitle: "Option 4", img: "1.png" },
-      { id: 5, title: "Option 5", subtitle: "Option 5", img: "1.png" },
-      { id: 6, title: "Option 6", subtitle: "Option 6", img: "1.png" },
-      { id: 7, title: "Option 7", subtitle: "Option 7", img: "1.png" },
-      { id: 8, title: "Option 8", subtitle: "Option 8", img: "1.png" },
+      {
+        id: "1",
+        name: "Option 1",
+        description: "Option 1",
+        img: "1",
+      },
+      {
+        id: "2",
+        name: "Option 2",
+        description: "Option 2",
+        img: "1",
+      },
+      {
+        id: "3",
+        name: "Option 3",
+        description: "Option 3",
+        img: "1",
+      },
+      {
+        id: "4",
+        name: "Option 4",
+        description: "Option 4",
+        img: "1",
+      },
+      {
+        id: "5",
+        name: "Option 5",
+        description: "Option 5",
+        img: "1",
+      },
+      {
+        id: "6",
+        name: "Option 6",
+        description: "Option 6",
+        img: "1",
+      },
+      {
+        id: "7",
+        name: "Option 7",
+        description: "Option 7",
+        img: "1",
+      },
+      {
+        id: "8",
+        name: "Option 8",
+        description: "Option 8",
+        img: "1",
+      },
     ],
   },
   {
-    id: 7,
-    title: "Hambuger 7",
-    category: 1,
-    price: "12,00",
-    size: "280g",
-    img: "2.png",
+    id: "7",
+    name: "Hambuger 7",
+    description: "Hambuger 7",
+    categoryId: "1",
+    price: 12.0,
+    unit: "280g",
+    img: "2",
+    outOfStock: false,
     garnishes: [
-      { id: 1, title: "Option 1", subtitle: "Option 1", img: "1.png" },
-      { id: 2, title: "Option 2", subtitle: "Option 2", img: "1.png" },
-      { id: 3, title: "Option 3", subtitle: "Option 3", img: "1.png" },
-      { id: 4, title: "Option 4", subtitle: "Option 4", img: "1.png" },
-      { id: 5, title: "Option 5", subtitle: "Option 5", img: "1.png" },
-      { id: 6, title: "Option 6", subtitle: "Option 6", img: "1.png" },
-      { id: 7, title: "Option 7", subtitle: "Option 7", img: "1.png" },
-      { id: 8, title: "Option 8", subtitle: "Option 8", img: "1.png" },
+      {
+        id: "1",
+        name: "Option 1",
+        description: "Option 1",
+        img: "1",
+      },
+      {
+        id: "2",
+        name: "Option 2",
+        description: "Option 2",
+        img: "1",
+      },
+      {
+        id: "3",
+        name: "Option 3",
+        description: "Option 3",
+        img: "1",
+      },
+      {
+        id: "4",
+        name: "Option 4",
+        description: "Option 4",
+        img: "1",
+      },
+      {
+        id: "5",
+        name: "Option 5",
+        description: "Option 5",
+        img: "1",
+      },
+      {
+        id: "6",
+        name: "Option 6",
+        description: "Option 6",
+        img: "1",
+      },
+      {
+        id: "7",
+        name: "Option 7",
+        description: "Option 7",
+        img: "1",
+      },
+      {
+        id: "8",
+        name: "Option 8",
+        description: "Option 8",
+        img: "1",
+      },
     ],
   },
   {
-    id: 8,
-    title: "Hambuger 8",
-    category: 1,
-    price: "12,00",
-    size: "280g",
-    img: "2.png",
+    id: "8",
+    name: "Hambuger 8",
+    description: "Hambuger 8",
+    categoryId: "1",
+    price: 12.0,
+    unit: "280g",
+    img: "2",
+    outOfStock: false,
     garnishes: [
-      { id: 1, title: "Option 1", subtitle: "Option 1", img: "1.png" },
-      { id: 2, title: "Option 2", subtitle: "Option 2", img: "1.png" },
-      { id: 3, title: "Option 3", subtitle: "Option 3", img: "1.png" },
-      { id: 4, title: "Option 4", subtitle: "Option 4", img: "1.png" },
-      { id: 5, title: "Option 5", subtitle: "Option 5", img: "1.png" },
-      { id: 6, title: "Option 6", subtitle: "Option 6", img: "1.png" },
-      { id: 7, title: "Option 7", subtitle: "Option 7", img: "1.png" },
-      { id: 8, title: "Option 8", subtitle: "Option 8", img: "1.png" },
+      {
+        id: "1",
+        name: "Option 1",
+        description: "Option 1",
+        img: "1",
+      },
+      {
+        id: "2",
+        name: "Option 2",
+        description: "Option 2",
+        img: "1",
+      },
+      {
+        id: "3",
+        name: "Option 3",
+        description: "Option 3",
+        img: "1",
+      },
+      {
+        id: "4",
+        name: "Option 4",
+        description: "Option 4",
+        img: "1",
+      },
+      {
+        id: "5",
+        name: "Option 5",
+        description: "Option 5",
+        img: "1",
+      },
+      {
+        id: "6",
+        name: "Option 6",
+        description: "Option 6",
+        img: "1",
+      },
+      {
+        id: "7",
+        name: "Option 7",
+        description: "Option 7",
+        img: "1",
+      },
+      {
+        id: "8",
+        name: "Option 8",
+        description: "Option 8",
+        img: "1",
+      },
     ],
   },
   {
-    id: 9,
-    title: "Hambuger 9",
-    category: 1,
-    price: "25,00",
-    size: "580g",
-    img: "2.png",
+    id: "9",
+    name: "Hambuger 9",
+    description: "Hambuger 9",
+    categoryId: "1",
+    price: 25.0,
+    unit: "580g",
+    img: "2",
+    outOfStock: false,
     garnishes: [
-      { id: 1, title: "Option 1", subtitle: "Option 1", img: "1.png" },
-      { id: 2, title: "Option 2", subtitle: "Option 2", img: "1.png" },
-      { id: 3, title: "Option 3", subtitle: "Option 3", img: "1.png" },
-      { id: 4, title: "Option 4", subtitle: "Option 4", img: "1.png" },
-      { id: 5, title: "Option 5", subtitle: "Option 5", img: "1.png" },
-      { id: 6, title: "Option 6", subtitle: "Option 6", img: "1.png" },
-      { id: 7, title: "Option 7", subtitle: "Option 7", img: "1.png" },
-      { id: 8, title: "Option 8", subtitle: "Option 8", img: "1.png" },
+      {
+        id: "1",
+        name: "Option 1",
+        description: "Option 1",
+        img: "1",
+      },
+      {
+        id: "2",
+        name: "Option 2",
+        description: "Option 2",
+        img: "1",
+      },
+      {
+        id: "3",
+        name: "Option 3",
+        description: "Option 3",
+        img: "1",
+      },
+      {
+        id: "4",
+        name: "Option 4",
+        description: "Option 4",
+        img: "1",
+      },
+      {
+        id: "5",
+        name: "Option 5",
+        description: "Option 5",
+        img: "1",
+      },
+      {
+        id: "6",
+        name: "Option 6",
+        description: "Option 6",
+        img: "1",
+      },
+      {
+        id: "7",
+        name: "Option 7",
+        description: "Option 7",
+        img: "1",
+      },
+      {
+        id: "8",
+        name: "Option 8",
+        description: "Option 8",
+        img: "1",
+      },
     ],
   },
   {
-    id: 10,
-    title: "Hambuger 10",
-    category: 1,
-    price: "30,00",
-    size: "680g",
-    img: "2.png",
+    id: "10",
+    name: "Hambuger 10",
+    description: "Hambuger 10",
+    categoryId: "1",
+    price: 30.0,
+    unit: "680g",
+    img: "2",
+    outOfStock: false,
     garnishes: [
-      { id: 1, title: "Option 1", subtitle: "Option 1", img: "1.png" },
-      { id: 2, title: "Option 2", subtitle: "Option 2", img: "1.png" },
-      { id: 3, title: "Option 3", subtitle: "Option 3", img: "1.png" },
-      { id: 4, title: "Option 4", subtitle: "Option 4", img: "1.png" },
-      { id: 5, title: "Option 5", subtitle: "Option 5", img: "1.png" },
-      { id: 6, title: "Option 6", subtitle: "Option 6", img: "1.png" },
-      { id: 7, title: "Option 7", subtitle: "Option 7", img: "1.png" },
-      { id: 8, title: "Option 8", subtitle: "Option 8", img: "1.png" },
+      {
+        id: "1",
+        name: "Option 1",
+        description: "Option 1",
+        img: "1",
+      },
+      {
+        id: "2",
+        name: "Option 2",
+        description: "Option 2",
+        img: "1",
+      },
+      {
+        id: "3",
+        name: "Option 3",
+        description: "Option 3",
+        img: "1",
+      },
+      {
+        id: "4",
+        name: "Option 4",
+        description: "Option 4",
+        img: "1",
+      },
+      {
+        id: "5",
+        name: "Option 5",
+        description: "Option 5",
+        img: "1",
+      },
+      {
+        id: "6",
+        name: "Option 6",
+        description: "Option 6",
+        img: "1",
+      },
+      {
+        id: "7",
+        name: "Option 7",
+        description: "Option 7",
+        img: "1",
+      },
+      {
+        id: "8",
+        name: "Option 8",
+        description: "Option 8",
+        img: "1",
+      },
     ],
   },
   {
-    id: 11,
-    title: "Coca-Cola",
-    category: 2,
-    price: "5,00",
-    img: "3.png",
+    id: "11",
+    name: "Coca-Cola",
+    description: "Coca-Cola",
+    categoryId: "2",
+    price: 5.0,
+    img: "3",
+    outOfStock: false,
     garnishes: [],
   },
   {
-    id: 12,
-    title: "Coca-Cola 2",
-    category: 2,
-    price: "5,00",
-    img: "3.png",
+    id: "12",
+    name: "Coca-Cola 2",
+    description: "Coca-Cola 2",
+    categoryId: "2",
+    price: 5.0,
+    img: "3",
+    outOfStock: false,
     garnishes: [],
   },
 ];
 
-const CategoriesCard = ({ categories, selectedItem, onSelectedItem }: any) => {
+const sortByOptions = [
+  { value: "popular", label: () => t("menuPage.sort.popular") },
+  { value: "name", label: () => t("menuPage.sort.name") },
+  { value: "price", label: () => t("menuPage.sort.price") },
+];
+
+const CategoriesCard = ({
+  items,
+  selectedItem,
+  onSelectedItem,
+}: {
+  items: Category[];
+  selectedItem: Category;
+  onSelectedItem: (item: Category) => void;
+}) => {
   return (
     <Flex
       className={classNames.categoriesCard}
@@ -227,13 +673,13 @@ const CategoriesCard = ({ categories, selectedItem, onSelectedItem }: any) => {
       gap="4"
       overflowX="auto"
     >
-      {categories.map((category: any) => (
+      {items.map((item: Category) => (
         <CategoryCard
-          key={category.id}
-          {...category}
-          selected={category == selectedItem}
+          key={item.id}
+          item={item}
+          selected={item == selectedItem}
           onClick={() => {
-            onSelectedItem(category);
+            onSelectedItem(item);
           }}
         />
       ))}
@@ -241,7 +687,13 @@ const CategoriesCard = ({ categories, selectedItem, onSelectedItem }: any) => {
   );
 };
 
-const ItemsCard = ({ items, onSelectedItem }: any) => {
+const ItemsCard = ({
+  items,
+  onSelectedItem,
+}: {
+  items: Product[];
+  onSelectedItem: (item: Product) => void;
+}) => {
   return (
     <Flex
       className={classNames.itemsCard}
@@ -251,15 +703,18 @@ const ItemsCard = ({ items, onSelectedItem }: any) => {
     >
       <Flex direction="row" justify="between">
         <Heading size="5" as="h1" weight="regular">
-          <Strong>Choose</Strong> Order
+          <Strong>{t("menuPage.choose")}</Strong> {t("menuPage.order")}
         </Heading>
         <Flex align="center" gap="1">
-          <Text size="1">Sort By</Text>
+          <Text size="1">{t("menuPage.sortBy")}</Text>
           <Select.Root defaultValue="popular" size="1">
             <Select.Trigger className={classNames.sort} variant="ghost" />
             <Select.Content>
-              <Select.Item value="popular">Popular</Select.Item>
-              <Select.Item value="name">Name</Select.Item>
+              {sortByOptions.map((option) => (
+                <Select.Item key={option.value} value={option.value}>
+                  {option.label()}
+                </Select.Item>
+              ))}
             </Select.Content>
           </Select.Root>
         </Flex>
@@ -271,8 +726,12 @@ const ItemsCard = ({ items, onSelectedItem }: any) => {
         wrap="wrap"
         overflowY="auto"
       >
-        {items.map((item: any, i: number) => (
-          <ItemCard key={i} {...item} onClick={() => onSelectedItem(item)} />
+        {items.map((item, i) => (
+          <ProductCard
+            key={i}
+            item={item}
+            onClick={() => onSelectedItem(item)}
+          />
         ))}
       </Flex>
     </Flex>
@@ -280,43 +739,83 @@ const ItemsCard = ({ items, onSelectedItem }: any) => {
 };
 
 export const MenuPage = () => {
-  const [selectedItem, setSelectedItem] = useState<any>(null);
+  const [selectedItem, setSelectedItem] = useState<Product | null>(null);
   const [selectedCategory, setSelectedCategory] = useState(categories[0]);
+  const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
 
   const selectedItems = items.filter(
-    (item) => item.category === selectedCategory.id
+    (item) => item.categoryId === selectedCategory.id
   );
 
+  function handleRemoveOrderItem(item: OrderItem) {
+    setOrderItems((prevItems) => prevItems.filter((i) => i !== item));
+  }
+
   return (
-    <Flex className={classNames.root} direction="column" gap="4">
-      <Flex direction="row" justify="between">
-        <Heading size="5" as="h1" weight="regular">
-          <Strong>Menu</Strong> Category
-        </Heading>
-        <Box width="100%" maxWidth="500px">
-          <TextField.Root
-            className={classNames.search}
-            placeholder="Search for food"
-            size="2"
-          >
-            <TextField.Slot>
-              <MagnifyingGlassIcon height="25" width="25" />
-            </TextField.Slot>
-          </TextField.Root>
-        </Box>
-      </Flex>
-      <CategoriesCard
-        categories={categories}
-        selectedItem={selectedCategory}
-        onSelectedItem={setSelectedCategory}
-      />
-      <ItemsCard items={selectedItems} onSelectedItem={setSelectedItem} />
-      {selectedItem && (
-        <ItemDetailCard
-          {...selectedItem}
-          onClose={() => setSelectedItem(null)}
+    <Flex className={classNames.root} direction="row">
+      <Flex className={classNames.left} direction="column" gap="4" flexGrow="1">
+        <Flex direction="row" justify="between">
+          <Heading size="5" as="h1" weight="regular">
+            <Strong>{t("menuPage.menu")}</Strong> {t("menuPage.category")}
+          </Heading>
+          <Box width="100%" maxWidth="500px">
+            <TextField.Root
+              className={classNames.search}
+              placeholder={t("menuPage.search")}
+              size="2"
+            >
+              <TextField.Slot>
+                <MagnifyingGlassIcon height="25" width="25" />
+              </TextField.Slot>
+            </TextField.Root>
+          </Box>
+        </Flex>
+        <CategoriesCard
+          items={categories}
+          selectedItem={selectedCategory}
+          onSelectedItem={setSelectedCategory}
         />
-      )}
+        <ItemsCard items={selectedItems} onSelectedItem={setSelectedItem} />
+        {selectedItem && (
+          <OrderItemBuilderCard
+            item={selectedItem}
+            onClose={() => setSelectedItem(null)}
+            onAdd={(item: OrderItem) => {
+              setOrderItems((prevItems) => [...prevItems, item]);
+              setSelectedItem(null);
+            }}
+          />
+        )}
+      </Flex>
+      <Flex className={classNames.right} direction="column">
+        <Heading className={classNames.header}>{t("menuPage.myOrder")}</Heading>
+        <Flex direction="column" overflowY="auto" flexGrow="1">
+          {orderItems.map((item, i) => (
+            <OrderItemCard
+              key={i}
+              item={item}
+              product={items.find((i) => i.id === item.productId) as Product}
+              onRemoveClick={handleRemoveOrderItem}
+            />
+          ))}
+        </Flex>
+        <Flex direction="column" gap="4" align="center">
+          <Heading as="h5">{t("labels.total")}</Heading>
+          <Text>
+            {t("labels.currency")}
+            {orderItems
+              .reduce((total, item) => total + item.unitPrice, 0)
+              .toFixed(2)}
+          </Text>
+          <Button
+            size="4"
+            className={classNames.doneButton}
+            disabled={!orderItems.length}
+          >
+            {t("labels.done")}
+          </Button>
+        </Flex>
+      </Flex>
     </Flex>
   );
 };

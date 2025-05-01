@@ -1,8 +1,9 @@
 .root {
-  width: 680px;
+  width: 100%;
+  max-width: 320px;
   padding: var(--space-4);
-  background-color: var(--gray-1);
-  border: 1px solid var(--gray-2);
+  border: 1px solid var(--white-a10);
+  background-color: var(--white-a10);
   border-radius: var(--radius-3);
   cursor: pointer;
   transition: border-color 0.3s ease;
@@ -25,12 +26,4 @@
 
 .price strong {
   color: var(--amber-10);
-}
-
-.description {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }

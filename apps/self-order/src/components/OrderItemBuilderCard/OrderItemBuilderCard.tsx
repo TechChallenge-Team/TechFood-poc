@@ -1,17 +1,17 @@
+import { useState } from "react";
 import { Button, Card, Flex, Grid, IconButton, Text } from "@radix-ui/themes";
 import { MinusIcon, PlusIcon, XIcon } from "lucide-react";
-import { ItemDetailCardProps } from "./ItemDetailCard.types";
-
-import classNames from "./ItemDetailCard.module.css";
-import { useState } from "react";
 import { clsx } from "clsx";
+import { t } from "../../i18n";
+import { Garnish } from "../../models";
+import { OrderItemBuilderCardProps } from "./OrderItemBuilderCard.types";
 
-const assetsPath = "../../assets/products/";
+import classNames from "./OrderItemBuilderCard.module.css";
 
-const GarnisheItem = ({ title, subtitle, img }: any) => {
+const GarnisheItem = ({ name, description, img }: Garnish) => {
   const [count, setCount] = useState(1);
 
-  const src = new URL(`${assetsPath}${img}`, import.meta.url).href;
+  const src = new URL(`../../assets/products/${img}.png`, import.meta.url).href;
 
   const handleCountChange = (newCount: number) => {
     if (newCount < 0) return;
@@ -27,9 +27,9 @@ const GarnisheItem = ({ title, subtitle, img }: any) => {
     >
       <img src={src} />
       <Flex direction="column" gap="1" justify="center">
-        <Text size="2">{title}</Text>
+        <Text size="2">{name}</Text>
         <Text size="1" color="gray">
-          {subtitle}
+          {description}
         </Text>
       </Flex>
       <Flex direction="row" gap="4" align="center">
@@ -53,7 +53,7 @@ const GarnisheItem = ({ title, subtitle, img }: any) => {
   );
 };
 
-const GarnisheList = ({ items }: any) => {
+const GarnisheList = ({ items }: { items: Garnish[] }) => {
   return (
     <Flex className={classNames.garnisheList} direction="column" gap="4">
       <Flex className={classNames.garnisheListItems} direction="column" gap="2">
@@ -66,24 +66,21 @@ const GarnisheList = ({ items }: any) => {
         direction="row"
         justify="center"
       >
-        <Button size="2">Apply</Button>
+        <Button size="2">{t("labels.apply")}</Button>
       </Flex>
     </Flex>
   );
 };
 
-export const ItemDetailCard = ({
-  title,
-  price,
-  size,
-  img,
-  garnishes,
+export const OrderItemBuilderCard = ({
+  item: { id, name, price, img, unit, garnishes },
   onClose,
-}: ItemDetailCardProps) => {
+  onAdd,
+}: OrderItemBuilderCardProps) => {
   const [count, setCount] = useState(1);
   const [isChosingGarnishe, setIsChoosingGarnishe] = useState(false);
 
-  const src = new URL(`${assetsPath}${img}`, import.meta.url).href;
+  const src = new URL(`../../assets/products/${img}.png`, import.meta.url).href;
 
   const handleCountChange = (newCount: number) => {
     if (newCount < 0) return;
@@ -120,16 +117,16 @@ export const ItemDetailCard = ({
             gap="4"
             align="center"
           >
-            <img src={src} alt={title} className={classNames.img} />
+            <img src={src} alt={name} className={classNames.img} />
             <Flex direction="column" align="center">
               <Text size="2" weight="bold">
-                {title}
+                {name}
               </Text>
               <Text size="1" color="gray">
-                {size}
+                {unit}
               </Text>
               <Text size="2" weight="bold" className={classNames.price}>
-                R$ {price}
+                {t("labels.currency")} {price}
               </Text>
             </Flex>
           </Flex>
@@ -166,9 +163,20 @@ export const ItemDetailCard = ({
                   onClick={() => setIsChoosingGarnishe(!isChosingGarnishe)}
                   disabled={garnishes.length === 0}
                 >
-                  Customize
+                  {t("labels.customize")}
                 </Button>
-                <Button size="2">Done</Button>
+                <Button
+                  size="2"
+                  onClick={() =>
+                    onAdd({
+                      productId: id,
+                      quantity: count,
+                      unitPrice: price,
+                    })
+                  }
+                >
+                  {t("labels.done")}
+                </Button>
               </Flex>
             </Flex>
           )}
