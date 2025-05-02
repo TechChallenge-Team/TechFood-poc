@@ -1,6 +1,6 @@
 .root {
   width: 100%;
-  max-width: 320px;
+  max-width: 250px;
   padding: var(--space-4);
   border: 1px solid var(--white-a10);
   background-color: var(--white-a10);

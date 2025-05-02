@@ -28,7 +28,8 @@ export const OrderItemCard = ({
         {name}
       </Heading>
       <Text size="1" color="gray">
-        {t("labels.currency")} {price}
+        {t("labels.currency")}
+        {price}
       </Text>
       <Flex direction="column" align="center">
         <Flex direction="row" gap="3" align="center">

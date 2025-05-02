@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router";
-import { StartPage, MenuPage } from "./pages";
+import { StartPage, MenuPage, CheckoutPage } from "./pages";
 
 const router = createBrowserRouter(
   [
@@ -11,6 +11,10 @@ const router = createBrowserRouter(
     {
       path: "menu",
       element: <MenuPage />,
+    },
+    {
+      path: "checkout",
+      element: <CheckoutPage />,
     },
   ],
   {

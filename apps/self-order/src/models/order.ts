@@ -5,5 +5,6 @@ export interface Order {
   number: number;
   amount: number;
   totalAmount: number;
+  discount: number;
   items: OrderItem[];
 }

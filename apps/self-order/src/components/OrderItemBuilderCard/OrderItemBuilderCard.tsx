@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { Button, Card, Flex, Grid, IconButton, Text } from "@radix-ui/themes";
-import { MinusIcon, PlusIcon, XIcon } from "lucide-react";
+import { Button, Flex, Grid, IconButton, Text } from "@radix-ui/themes";
+import { MinusIcon, PlusIcon } from "lucide-react";
 import { clsx } from "clsx";
 import { t } from "../../i18n";
 import { Garnish } from "../../models";
 import { OrderItemBuilderCardProps } from "./OrderItemBuilderCard.types";
 
 import classNames from "./OrderItemBuilderCard.module.css";
+import { BottomSheet } from "../BottomSheet";
 
 const GarnisheItem = ({ name, description, img }: Garnish) => {
   const [count, setCount] = useState(1);
@@ -88,100 +89,82 @@ export const OrderItemBuilderCard = ({
   };
 
   return (
-    <Flex className={classNames.root} direction="column">
-      <Card
+    <BottomSheet className={classNames.root} onClose={onClose}>
+      <Flex
+        direction="column"
+        align="center"
         className={clsx(
           classNames.card,
           isChosingGarnishe && classNames.chosingGarnishe
         )}
       >
-        <Flex direction="column" align="center">
-          <IconButton
-            variant="outline"
-            size="2"
-            aria-label="Close"
-            onClick={onClose}
-          >
-            <XIcon />
-          </IconButton>
-        </Flex>
         <Flex
-          className={classNames.content}
+          className={classNames.itemInfo}
           direction="column"
+          gap="4"
           align="center"
-          gap="5"
         >
-          <Flex
-            className={classNames.itemInfo}
-            direction="column"
-            gap="4"
-            align="center"
-          >
-            <img src={src} alt={name} className={classNames.img} />
-            <Flex direction="column" align="center">
-              <Text size="2" weight="bold">
-                {name}
-              </Text>
+          <img src={src} alt={name} className={classNames.img} />
+          <Flex direction="column" align="center">
+            <Text size="2" weight="bold">
+              {name}
+            </Text>
+            <Text size="1" color="gray">
+              {unit}
+            </Text>
+            <Text size="2" weight="bold" className={classNames.price}>
+              {t("labels.currency")}
+              {price}
+            </Text>
+          </Flex>
+        </Flex>
+        {isChosingGarnishe ? (
+          <GarnisheList items={garnishes} />
+        ) : (
+          <Flex direction="column" gap="5" align="center">
+            <Flex direction="row" gap="4" align="center">
+              <IconButton
+                variant="soft"
+                color="gray"
+                size="1"
+                onClick={() => handleCountChange(count - 1)}
+                disabled={count <= 1}
+              >
+                <MinusIcon />
+              </IconButton>
               <Text size="1" color="gray">
-                {unit}
+                {count}
               </Text>
-              <Text size="2" weight="bold" className={classNames.price}>
-                {t("labels.currency")} {price}
-              </Text>
+              <IconButton size="1" onClick={() => handleCountChange(count + 1)}>
+                <PlusIcon />
+              </IconButton>
+            </Flex>
+            <Flex direction="row" gap="4" justify="center">
+              <Button
+                variant="soft"
+                color="gray"
+                size="2"
+                onClick={() => setIsChoosingGarnishe(!isChosingGarnishe)}
+                disabled={garnishes.length === 0}
+              >
+                {t("labels.customize")}
+              </Button>
+              <Button
+                size="2"
+                onClick={() =>
+                  onAdd({
+                    productId: id,
+                    quantity: count,
+                    unitPrice: price,
+                  })
+                }
+              >
+                {t("labels.done")}
+              </Button>
             </Flex>
           </Flex>
-
-          {isChosingGarnishe ? (
-            <GarnisheList items={garnishes} />
-          ) : (
-            <Flex direction="column" gap="5" align="center">
-              <Flex direction="row" gap="4" align="center">
-                <IconButton
-                  variant="soft"
-                  color="gray"
-                  size="1"
-                  onClick={() => handleCountChange(count - 1)}
-                  disabled={count <= 1}
-                >
-                  <MinusIcon />
-                </IconButton>
-                <Text size="1" color="gray">
-                  {count}
-                </Text>
-                <IconButton
-                  size="1"
-                  onClick={() => handleCountChange(count + 1)}
-                >
-                  <PlusIcon />
-                </IconButton>
-              </Flex>
-              <Flex direction="row" gap="4" justify="center">
-                <Button
-                  variant="soft"
-                  color="gray"
-                  size="2"
-                  onClick={() => setIsChoosingGarnishe(!isChosingGarnishe)}
-                  disabled={garnishes.length === 0}
-                >
-                  {t("labels.customize")}
-                </Button>
-                <Button
-                  size="2"
-                  onClick={() =>
-                    onAdd({
-                      productId: id,
-                      quantity: count,
-                      unitPrice: price,
-                    })
-                  }
-                >
-                  {t("labels.done")}
-                </Button>
-              </Flex>
-            </Flex>
-          )}
-        </Flex>
-      </Card>
-    </Flex>
+        )}
+      </Flex>
+    </BottomSheet>
   );
 };

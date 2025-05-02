@@ -21,6 +21,18 @@
     "addToCart": "Adicionar ao carrinho",
     "thankYou": "Obrigado"
   },
+  "checkoutPage": {
+    "title": "Como você gostaria de pagar?",
+    "orderSummary": "Resumo do Pedido",
+    "subtotal": "Subtotal",
+    "taxes": "Taxas",
+    "discount": "Desconto",
+    "pay": "Pagar",
+    "pix": "Pix",
+    "pixInstructions": "Use sua carteira para escanear o código QR e pagar com Pix.",
+    "creditCard": "Cartão de Crédito",
+    "creditCardInstructions": "Insira os dados do cartão de crédito para concluir o pagamento."
+  },
   "labels": {
     "currency": "R$",
     "name": "Nome",

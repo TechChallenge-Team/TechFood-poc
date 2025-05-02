@@ -26,7 +26,8 @@ export const ProductCard = ({
       </Text>
       <Strong className={classNames.price}>
         <Strong>
-          {t("labels.currency")} {price}
+          {t("labels.currency")}
+          {price}
         </Strong>
       </Strong>
       <Text
