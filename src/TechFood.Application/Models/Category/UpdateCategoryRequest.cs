@@ -2,11 +2,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TechFood.Application.Models.Category;
 
-public class CreateCategoryRequest
+public class UpdateCategoryRequest
 {
-    public CreateCategoryRequest(
-        string name,
-        string imageFileName)
+    public UpdateCategoryRequest(string name, string imageFileName)
     {
         Name = name;
         ImageFileName = imageFileName;

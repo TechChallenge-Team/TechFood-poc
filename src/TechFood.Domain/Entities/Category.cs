@@ -1,5 +1,4 @@
 using TechFood.Domain.Shared.Entities;
-using TechFood.Domain.Shared.Exceptions;
 using TechFood.Domain.Shared.Validations;
 
 namespace TechFood.Domain.Entities;
@@ -20,7 +19,7 @@ public class Category : Entity, IAggregateRoot
 
     public string ImageFileName { get; private set; } = null!;
 
-    public void UpdateCategory(string name, string imageFileName)
+    public void UpdateAsync(string name, string imageFileName)
     {
         Name = name;
         ImageFileName = imageFileName;

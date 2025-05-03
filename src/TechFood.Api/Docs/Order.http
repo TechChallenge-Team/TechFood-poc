@@ -3,17 +3,15 @@
 ### Create Order
 POST {{rootUrl}}/orders/
 Content-Type: application/json
-
 {
-    "customerId": "25b58f54-63bc-42da-8cf6-8162097e72c8"
+    "customerId": "7c6d95a1-bbbb-498d-a26c-765bef6a6669"
 }
 
 ### Add Item to Order
-POST {{rootUrl}}/orders/b282f85c-863d-45ee-b3a5-44083615881a/items
+POST {{rootUrl}}/orders/5258163e-3f3a-4c77-8d76-77d0b70a1193/items
 Content-Type: application/json
-
 {
-    "productId": "090d8eb0-f514-4248-8512-cf0d61a262f0",
+    "productId": "72f79837-6bd5-4cb3-866e-f9b954f35bf7",
     "quantity": 2
 }
 
@@ -40,6 +38,7 @@ POST {{rootUrl}}/orders/963d122b-72c4-42ec-9e37-5953322931f9/prepare
 ### Finish Order
 POST {{rootUrl}}/orders/963d122b-72c4-42ec-9e37-5953322931f9/finish
 
+###--------------------------CATEGORY---------------------------
 
 ### Create Category
 POST {{rootUrl}}/categories
@@ -54,10 +53,10 @@ Content-Type: application/json
 GET {{rootUrl}}/categories
 
 ### Get Category by Id
-GET {{rootUrl}}/categories/d0c39fb1-f281-4492-a398-f960b11b0c62
+GET {{rootUrl}}/categories/33bfe6cb-9d51-4d96-b9ac-99c860deb938
 
 ### Update Category
-PUT {{rootUrl}}/categories/d0c39fb1-f281-4492-a398-f960b11b0c62
+PUT {{rootUrl}}/categories/33bfe6cb-9d51-4d96-b9ac-99c860deb938
 Content-Type: application/json
 
 {
@@ -66,4 +65,45 @@ Content-Type: application/json
 }
 
 ### Delete Category
-DELETE {{rootUrl}}/categories/c3a70938-9e88-437d-a801-c166d2716341
+DELETE {{rootUrl}}/categories/33bfe6cb-9d51-4d96-b9ac-99c860deb938
+
+
+###--------------------------PRODUCT---------------------------
+
+###POST Product
+POST {{rootUrl}}/products
+Content-Type: application/json
+
+{
+  "name": "X-Burguer",
+  "description": "Pão, 1 Carne, queijo, bacon, salada, ketchup e maionese",
+  "categoryId": "ec2fb26d-99a4-4eab-aa5c-7dd18d88a025",
+  "imageFileName": "Teste",
+  "price": 15.25
+}
+
+###GET Product
+GET {{rootUrl}}/products
+
+###GET Product by id
+GET {{rootUrl}}/products/1c5a2a4e-2008-4f8b-9881-03a74976aedf
+
+###PUT Product
+PUT {{rootUrl}}/products/9a3b1122-dcc9-417f-844f-ceb2811f6938
+Content-Type: application/json
+{
+  "name": "Teste",
+  "description": "altera item",
+  "categoryId": "ec2fb26d-99a4-4eab-aa5c-7dd18d88a025",
+  "imageFileName": "AAAA.png",
+  "price": 0.92
+}
+
+###Delete Product by id
+DELETE {{rootUrl}}/products/5287caf3-0487-4874-991b-c8e113387d91
+
+###PATCH Product
+DELETE {{rootUrl}}/products/5287caf3-0487-4874-991b-c8e113387d91/outOfStock
+
+
+

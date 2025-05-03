@@ -4,6 +4,6 @@ namespace TechFood.Application.Common.Services.Interfaces
 {
     public interface IOrderNumberService
     {
-        Task<int> GetNumberAsync();
+        Task<int> GetAsync();
     }
 }

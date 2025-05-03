@@ -135,16 +135,6 @@ public class Order : Entity, IAggregateRoot
         CalculateAmount();
     }
 
-    public void Prepare()
-    {
-        if (Status != OrderStatusType.Paid)
-        {
-            throw new DomainException(Resources.Exceptions.Order_CannotPrepareToNonPaidStatus);
-        }
-
-        UpdateStatus(OrderStatusType.InPreparation);
-    }
-
     private void CalculateAmount()
     {
         Amount = 0;
@@ -163,6 +153,16 @@ public class Order : Entity, IAggregateRoot
         }
 
         UpdateStatus(OrderStatusType.Done);
+    }
+
+    public void Prepare()
+    {
+        if (Status != OrderStatusType.Paid)
+        {
+            throw new DomainException(Resources.Exceptions.Order_CannotPrepareToNonPaidStatus);
+        }
+
+        UpdateStatus(OrderStatusType.InPreparation);
     }
 
     public void Finish()

@@ -1,11 +1,6 @@
 using TechFood.Domain.Entities;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System;
+using TechFood.Domain.Shared.Interfaces;
 
-namespace TechFood.Domain.Repositories
-{
-    public interface ICategoryRepository : IRepository<Category>
-    {
-    }
-}
+namespace TechFood.Domain.Repositories;
+
+public interface ICategoryRepository : IRepository<Category> { }

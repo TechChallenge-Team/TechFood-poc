@@ -10,94 +10,96 @@ using TechFood.Domain.Entities;
 using TechFood.Domain.Repositories;
 using TechFood.Domain.UoW;
 
-namespace TechFood.Application.UseCases
+namespace TechFood.Application.UseCases;
+
+internal class CategoryUseCase(
+    IMapper mapper,
+    ICategoryRepository categoryRepository,
+    IConfiguration appConfiguration,
+    IUnitOfWork unitOfWork) : ICategoryUseCase
 {
-    internal class CategoryUseCase(
-        IMapper mapper,
-        ICategoryRepository categoryRepository,
-        IConfiguration appConfiguration,
-        IUnitOfWork unitOfWork) : ICategoryUseCase
+    private readonly ICategoryRepository _categoryRepository = categoryRepository;
+    private readonly IConfiguration _appConfiguration = appConfiguration;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly IMapper _mapper = mapper;
+
+    public async Task<IEnumerable<GetCategoryResult>> ListAllAsync()
     {
-        private readonly IMapper _mapper = mapper;
-        private readonly ICategoryRepository _categoryRepository = categoryRepository;
-        private readonly IConfiguration _appConfiguration = appConfiguration;
-        private readonly IUnitOfWork _unitOfWork = unitOfWork;
+        var categories = await _categoryRepository.GetAllAsync();
 
-        public async Task<CreateCategoryResponse> AddCategoryAsync(CreateCategoryRequest category)
+        return categories
+            .Select(category => _mapper.Map<Category, GetCategoryResult>(
+                category,
+                options => options.AfterMap((category, dto) =>
+                {
+                    dto.ImageFileName = string.Concat(
+                        _appConfiguration["TechFoodStaticImagesUrl"],
+                        "/categories/",
+                        category.ImageFileName);
+                })));
+    }
+
+    public async Task<GetCategoryResult?> GetByIdAsync(Guid id)
+    {
+        var category = await _categoryRepository.GetByIdAsync(id);
+
+        if (category == null)
         {
-            var categoryEntity = new Category(category.Name, category.ImageFileName);
-
-            await _categoryRepository.AddAsync(categoryEntity);
-
-            await _unitOfWork.CommitAsync();
-
-            var result = _mapper.Map<CreateCategoryResponse>(categoryEntity);
-            return result;
+            return null;
         }
 
-        public async Task<bool> DeleteCategoryAsync(Guid id)
+        return _mapper.Map<Category, GetCategoryResult>(category,
+               options => options.AfterMap((category, dto) =>
+               {
+                   dto.ImageFileName = string.Concat(
+                       _appConfiguration["TechFoodStaticImagesUrl"],
+                       "/categories/",
+                       category.ImageFileName);
+               }));
+    }
+
+    public async Task<CreateCategoryResult> AddAsync(CreateCategoryRequest category)
+    {
+        var categoryEntity = new Category(category.Name, category.ImageFileName);
+
+        await _categoryRepository.AddAsync(categoryEntity);
+
+        await _unitOfWork.CommitAsync();
+
+        var result = _mapper.Map<CreateCategoryResult>(categoryEntity);
+
+        return result;
+    }
+
+    public async Task<bool> DeleteAsync(Guid id)
+    {
+        var entity = await _categoryRepository.GetByIdAsync(id);
+
+        if (entity == null)
         {
-            var entity = await _categoryRepository.GetByIdAsync(id);
-
-            if (entity != null)
-            {
-                await _categoryRepository.DeleteAsync(entity);
-                await _unitOfWork.CommitAsync();
-                return true;
-            }
-
             return false;
         }
 
-        public async Task<IEnumerable<CreateCategoryResponse>> GetCategoriesAsync()
+        await _categoryRepository.DeleteAsync(entity);
+
+        await _unitOfWork.CommitAsync();
+
+        return true;
+    }
+
+    public async Task<UpdateCategoryResult?> UpdateAsync(Guid id, UpdateCategoryRequest request)
+    {
+        var category = await _categoryRepository.GetByIdAsync(id);
+
+        if (category == null)
         {
-            var categories = await _categoryRepository.GetAllAsync();
-
-            return categories
-                .Select(category => _mapper.Map<Category, CreateCategoryResponse>(
-                    category,
-                    options => options.AfterMap((category, dto) =>
-                    {
-                        dto.ImageFileName = string.Concat(
-                            _appConfiguration["TechFoodStaticImagesUrl"],
-                            "/categories/",
-                            category.ImageFileName);
-                    })));
-        }
-
-        public async Task<CreateCategoryResponse> GetCategoryByIdAsync(Guid id)
-        {
-            var category = await _categoryRepository.GetByIdAsync(id);
-
-            if (category != null)
-            {
-                return _mapper.Map<Category, CreateCategoryResponse>(category,
-                   options => options.AfterMap((category, dto) =>
-                   {
-                       dto.ImageFileName = string.Concat(
-                           _appConfiguration["TechFoodStaticImagesUrl"],
-                           "/categories/",
-                           category.ImageFileName);
-                   }));
-            }
-
             return null;
         }
 
-        public async Task<CreateCategoryResponse> UpdateCategoryAsync(Guid id, CreateCategoryRequest category)
-        {
-            var categoryRepository = await _categoryRepository.GetByIdAsync(id);
+        category.UpdateAsync(request.Name, request.ImageFileName);
 
-            if (categoryRepository != null)
-            {
-                categoryRepository.UpdateCategory(category.Name, category.ImageFileName);
+        await _unitOfWork.CommitAsync();
 
-                await _unitOfWork.CommitAsync();
-
-                return _mapper.Map<Category, CreateCategoryResponse>(categoryRepository);
-            }
-
-            return null;
-        }
+        return _mapper.Map<UpdateCategoryResult>(category);
     }
 }

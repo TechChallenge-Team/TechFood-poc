@@ -2,14 +2,11 @@ using System;
 using System.Threading.Tasks;
 using TechFood.Domain.Entities;
 
-namespace TechFood.Domain.Repositories
+namespace TechFood.Domain.Repositories;
+
+public interface IOrderRepository
 {
-    public interface IOrderRepository
-    {
-        Task<Guid> CreateAsync(Order order);
+    Task<Guid> AddAsync(Order order);
 
-        Task<Order> FindByIdAsync(Guid id);
-
-        Task UpdateAsync(Order order);
-    }
+    Task<Order?> GetByIdAsync(Guid id);
 }
