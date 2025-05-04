@@ -23,11 +23,13 @@ public class Category : Entity, IAggregateRoot
     {
         Name = name;
         ImageFileName = imageFileName;
+
+        Validate();
     }
 
     private void Validate()
     {
-        Validations.ThrowIfEmpty(Name, "The category name cannot be empty");
-        Validations.ThrowIfEmpty(ImageFileName, "The category file image cannot be empty");
+        Validations.ThrowIfEmpty(Name, Resources.Exceptions.Category_ThrowNameIsEmpty);
+        Validations.ThrowIfEmpty(ImageFileName, Resources.Exceptions.Category_ThrowFileImageIsEmpty);
     }
 }
