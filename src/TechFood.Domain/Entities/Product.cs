@@ -40,6 +40,9 @@ public class Product : Entity, IAggregateRoot
     public void SetCategory(Guid categoryId)
         => CategoryId = categoryId;
 
+    public void SetOutOfStock(bool outOfStock)
+       => OutOfStock = outOfStock;
+
     public void Update(
         string name,
         string description,
