@@ -80,7 +80,7 @@ public class Order : Entity, IAggregateRoot
 
         Validations.ThrowObjectIsNull(Payment, Resources.Exceptions.Order_PaymentIsNull);
 
-        Payment.Pay();
+        Payment!.Pay();
 
         UpdateStatus(OrderStatusType.Paid);
     }
@@ -94,7 +94,7 @@ public class Order : Entity, IAggregateRoot
 
         Validations.ThrowObjectIsNull(Payment, Resources.Exceptions.Order_PaymentIsNull);
 
-        Payment.Refused();
+        Payment!.Refused();
     }
 
     public void AddItem(OrderItem item)
