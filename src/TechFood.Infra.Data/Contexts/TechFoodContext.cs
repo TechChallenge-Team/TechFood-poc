@@ -121,10 +121,10 @@ public class TechFoodContext(
 
         modelBuilder.Entity<Category>()
             .HasData(
-                new { Id = new Guid("eaa76b46-2e6b-42eb-8f5d-b213f85f25ea"), Name = "Lanche", ImageFileName = "lanche.jpg" },
+                new { Id = new Guid("eaa76b46-2e6b-42eb-8f5d-b213f85f25ea"), Name = "Lanche", ImageFileName = "lanche.png" },
                 new { Id = new Guid("c65e2cec-bd44-446d-8ed3-a7045cd4876a"), Name = "Acompanhamento", ImageFileName = "acompanhamento.png" },
-                new { Id = new Guid("c3a70938-9e88-437d-a801-c166d2716341"), Name = "Bebida", ImageFileName = "bebida.jpg" },
-                new { Id = new Guid("ec2fb26d-99a4-4eab-aa5c-7dd18d88a025"), Name = "Sobremesa", ImageFileName = "sobremesa.jpg" }
+                new { Id = new Guid("c3a70938-9e88-437d-a801-c166d2716341"), Name = "Bebida", ImageFileName = "bebida.png" },
+                new { Id = new Guid("ec2fb26d-99a4-4eab-aa5c-7dd18d88a025"), Name = "Sobremesa", ImageFileName = "sobremesa.png" }
             );
 
         modelBuilder.Entity<Product>()

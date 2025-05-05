@@ -7,13 +7,13 @@ namespace TechFood.Application.UseCases.Interfaces;
 
 public interface ICategoryUseCase
 {
-    Task<IEnumerable<GetCategoryResult>> ListAllAsync();
+    Task<IEnumerable<CategoryResponse>> ListAllAsync();
 
-    Task<GetCategoryResult?> GetByIdAsync(Guid id);
+    Task<CategoryResponse?> GetByIdAsync(Guid id);
 
-    Task<CreateCategoryResult> AddAsync(CreateCategoryRequest category);
+    Task<CategoryResponse> AddAsync(CreateCategoryRequest category);
 
-    Task<UpdateCategoryResult?> UpdateAsync(Guid id, UpdateCategoryRequest category);
+    Task<CategoryResponse?> UpdateAsync(Guid id, UpdateCategoryRequest category);
 
     Task<bool> DeleteAsync(Guid id);
 }

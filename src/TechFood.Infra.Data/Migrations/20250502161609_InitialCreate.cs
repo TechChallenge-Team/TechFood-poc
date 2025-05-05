@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -164,10 +164,10 @@ namespace TechFood.Infra.Data.Migrations
                 columns: new[] { "Id", "ImageFileName", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("c3a70938-9e88-437d-a801-c166d2716341"), "bebida.jpg", "Bebida" },
+                    { new Guid("c3a70938-9e88-437d-a801-c166d2716341"), "bebida.png", "Bebida" },
                     { new Guid("c65e2cec-bd44-446d-8ed3-a7045cd4876a"), "acompanhamento.png", "Acompanhamento" },
-                    { new Guid("eaa76b46-2e6b-42eb-8f5d-b213f85f25ea"), "lanche.jpg", "Lanche" },
-                    { new Guid("ec2fb26d-99a4-4eab-aa5c-7dd18d88a025"), "sobremesa.jpg", "Sobremesa" }
+                    { new Guid("eaa76b46-2e6b-42eb-8f5d-b213f85f25ea"), "lanche.png", "Lanche" },
+                    { new Guid("ec2fb26d-99a4-4eab-aa5c-7dd18d88a025"), "sobremesa.png", "Sobremesa" }
                 });
 
             migrationBuilder.InsertData(
