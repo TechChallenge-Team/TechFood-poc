@@ -120,7 +120,7 @@ public class Order : Entity, IAggregateRoot
 
         Validations.ThrowObjectIsNull(item, Resources.Exceptions.Order_ItemNotFound);
 
-        _items.Remove(item);
+        _items.Remove(item!);
 
         CalculateAmount();
     }
