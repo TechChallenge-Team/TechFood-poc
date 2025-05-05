@@ -6,7 +6,7 @@ namespace TechFood.Api.Controllers;
 
 [ApiController()]
 [Route("v1/[controller]")]
-public class CustomerController(ICustomerUseCase customerUseCase) : ControllerBase
+public class CustomersController(ICustomerUseCase customerUseCase) : ControllerBase
 {
     private readonly ICustomerUseCase _customerUseCase = customerUseCase;
 

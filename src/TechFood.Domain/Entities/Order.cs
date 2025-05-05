@@ -37,8 +37,6 @@ public class Order : Entity, IAggregateRoot
 
     public decimal Amount { get; private set; }
 
-    public decimal TotalAmount => Amount - Discount;
-
     public decimal Discount { get; private set; }
 
     public Payment? Payment { get; private set; }
@@ -54,7 +52,7 @@ public class Order : Entity, IAggregateRoot
             throw new DomainException(Resources.Exceptions.Order_CannotCreatePaymentToNonCreatedStatus);
         }
 
-        Payment = new Payment(type, TotalAmount);
+        Payment = new Payment(type, Amount);
     }
 
     public void ApplyDiscount(decimal discount)
@@ -80,7 +78,7 @@ public class Order : Entity, IAggregateRoot
 
         Validations.ThrowObjectIsNull(Payment, Resources.Exceptions.Order_PaymentIsNull);
 
-        Payment.Pay();
+        Payment!.Pay();
 
         UpdateStatus(OrderStatusType.Paid);
     }
@@ -94,7 +92,7 @@ public class Order : Entity, IAggregateRoot
 
         Validations.ThrowObjectIsNull(Payment, Resources.Exceptions.Order_PaymentIsNull);
 
-        Payment.Refused();
+        Payment!.Refused();
     }
 
     public void AddItem(OrderItem item)
@@ -133,6 +131,8 @@ public class Order : Entity, IAggregateRoot
         {
             Amount += item.Quantity * item.UnitPrice;
         }
+
+        Amount -= Discount;
     }
 
     public void Done()
