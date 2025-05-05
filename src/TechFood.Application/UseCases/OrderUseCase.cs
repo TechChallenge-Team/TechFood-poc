@@ -116,7 +116,7 @@ internal class OrderUseCase(
                     "TOTEM01",
                     order.Id,
                     "TechFood - Order #" + order.Number,
-                    order.TotalAmount,
+                    order.Amount,
                     order.Items.ToList().ConvertAll(i => new PaymentItem(
                         i.ProductId.ToString(),
                         i.Quantity,
