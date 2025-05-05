@@ -61,6 +61,24 @@ namespace TechFood.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The category file image cannot be empty.
+        /// </summary>
+        internal static string Category_ThrowFileImageIsEmpty {
+            get {
+                return ResourceManager.GetString("Category_ThrowFileImageIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The category name cannot be empty.
+        /// </summary>
+        internal static string Category_ThrowNameIsEmpty {
+            get {
+                return ResourceManager.GetString("Category_ThrowNameIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Payment amount is not equal to the order total amount..
         /// </summary>
         internal static string Order_AmountIsNotEqualOrderAmount {
@@ -169,11 +187,83 @@ namespace TechFood.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The ProductId is not valid.
+        /// </summary>
+        internal static string OrderItem_ThrowProductIdIsInvalid {
+            get {
+                return ResourceManager.GetString("OrderItem_ThrowProductIdIsInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The OrdemItem quantity have be greater than zero.
+        /// </summary>
+        internal static string OrderItem_ThrowQuantityGreaterThanZero {
+            get {
+                return ResourceManager.GetString("OrderItem_ThrowQuantityGreaterThanZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The orderItem UnitPrice have be greater than zero.
+        /// </summary>
+        internal static string OrderItem_ThrowUnitPriceGreaterThanZero {
+            get {
+                return ResourceManager.GetString("OrderItem_ThrowUnitPriceGreaterThanZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Payment has already been paid..
         /// </summary>
         internal static string Payment_AlreadyPaid {
             get {
                 return ResourceManager.GetString("Payment_AlreadyPaid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The product CategoryId is not valid.
+        /// </summary>
+        internal static string Product_ThrowCategoryIdInvalid {
+            get {
+                return ResourceManager.GetString("Product_ThrowCategoryIdInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The category image file cannot be empty.
+        /// </summary>
+        internal static string Product_ThrowCategoryImageFileIsEmpty {
+            get {
+                return ResourceManager.GetString("Product_ThrowCategoryImageFileIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The product description cannot be empty.
+        /// </summary>
+        internal static string Product_ThrowDescriptionIsEmpty {
+            get {
+                return ResourceManager.GetString("Product_ThrowDescriptionIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Name cannot empty .
+        /// </summary>
+        internal static string Product_ThrowNameIsEmpty {
+            get {
+                return ResourceManager.GetString("Product_ThrowNameIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The product price cannot be empty.
+        /// </summary>
+        internal static string Product_ThrowPriceIsGreaterThanZero {
+            get {
+                return ResourceManager.GetString("Product_ThrowPriceIsGreaterThanZero", resourceCulture);
             }
         }
     }

@@ -1,11 +1,10 @@
-using System;
 using System.Threading.Tasks;
+using System;
 using TechFood.Domain.Entities;
 
-namespace TechFood.Domain.Repositories
+namespace TechFood.Domain.Repositories;
+
+public interface ICustomerRepository
 {
-    public interface ICustomerRepository
-    {
-        Task<Guid> CreateAsync(Customer customer);
-    }
+    Task<Guid> CreateAsync(Customer customer);
 }

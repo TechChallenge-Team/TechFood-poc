@@ -5,37 +5,26 @@ using TechFood.Domain.Entities;
 using TechFood.Domain.Repositories;
 using TechFood.Infra.Data.Contexts;
 
-namespace TechFood.Infra.Data.Repositories
+namespace TechFood.Infra.Data.Repositories;
+
+internal class OrderRepository(TechFoodContext dbContext) : IOrderRepository
 {
-    internal class OrderRepository(TechFoodContext dbContext) : IOrderRepository
+    private readonly DbSet<Order> _orders = dbContext.Orders;
+
+    public async Task<Guid> AddAsync(Order order)
     {
-        private readonly TechFoodContext _dbContext = dbContext;
+        var entry = await _orders.AddAsync(order);
 
-        public async Task<Guid> CreateAsync(Order order)
-        {
-            var entry = await _dbContext.AddAsync(order);
+        return entry.Entity.Id;
+    }
 
-            await entry.Context.SaveChangesAsync();
+    public async Task<Order?> GetByIdAsync(Guid id)
+    {
+        var t = await _orders
+            .Include(o => o.Payment)
+            .Include(o => o.Items)
+            .FirstOrDefaultAsync(o => o.Id == id);
 
-            return entry.Entity.Id;
-        }
-
-        public async Task<Order> FindByIdAsync(Guid id)
-        {
-            var order = await _dbContext
-                .Orders
-                .Include(o => o.Payment)
-                .Include(o => o.Items)
-                .FirstAsync(o => o.Id == id);
-
-            return order;
-        }
-
-        public async Task UpdateAsync(Order order)
-        {
-            _dbContext.Orders.Update(order);
-
-            await _dbContext.SaveChangesAsync();
-        }
+        return t;
     }
 }

@@ -6,6 +6,7 @@ using TechFood.Application.Common.Filters;
 using TechFood.Application.Common.NamingPolicy;
 using TechFood.Infra.Data;
 using TechFood.Infra.Data.Contexts;
+using TechFood.Infra.Services.MercadoPago;
 using TechFood.Infra.ImageStore.LocalDisk.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -47,6 +48,7 @@ var builder = WebApplication.CreateBuilder(args);
 
     builder.Services.AddApplication();
     builder.Services.AddInfraData();
+    builder.Services.AddInfraMercadoPagoPayment();
     builder.Services.AddInfraImageStore();
 }
 

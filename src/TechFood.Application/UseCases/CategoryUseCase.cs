@@ -29,7 +29,7 @@ namespace TechFood.Application.UseCases
         private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
         private readonly IImageUrlResolver _imageUrlResolver = imageUrlResolver;
 
-        public async Task<CategoryResponse> AddCategoryAsync(CreateCategoryRequest category)
+        public async Task<CategoryResponse> AddAsync(CreateCategoryRequest category)
         {
             var imageFileName = _imageUrlResolver.CreateImageFileName(category.Name, category.File.ContentType);
 
@@ -50,13 +50,13 @@ namespace TechFood.Application.UseCases
             return result;
         }
 
-        public async Task<bool> DeleteCategoryAsync(Guid id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
             var category = await _categoryRepository.GetByIdAsync(id);
 
             if (category != null)
             {
-                _categoryRepository.Delete(category);
+                await _categoryRepository.DeleteAsync(category);
                 await _unitOfWork.CommitAsync();
 
                 await _localDiskImageStorageService.DeleteAsync(category.ImageFileName, nameof(Category));
@@ -67,7 +67,7 @@ namespace TechFood.Application.UseCases
             return false;
         }
 
-        public async Task<IEnumerable<CategoryResponse>> GetCategoriesAsync()
+        public async Task<IEnumerable<CategoryResponse>> ListAllAsync()
         {
             var categories = await _categoryRepository.GetAllAsync();
 
@@ -82,57 +82,58 @@ namespace TechFood.Application.UseCases
                     })));
         }
 
-        public async Task<CategoryResponse> GetCategoryByIdAsync(Guid id)
+        public async Task<CategoryResponse> GetByIdAsync(Guid id)
         {
             var category = await _categoryRepository.GetByIdAsync(id);
 
-            if (category != null)
+            if (category == null)
             {
-                return _mapper.Map<Category, CategoryResponse>(category,
+                return null;
+            }
+
+            return _mapper.Map<Category, CategoryResponse>(category,
                    options => options.AfterMap((category, dto) =>
                    {
                        dto.FilePath = _imageUrlResolver.BuildFilePath(_httpContextAccessor.HttpContext?.Request,
                                                                         nameof(Category).ToLower(),
                                                                         category.ImageFileName);
                    }));
-            }
-
-            return null;
         }
 
-        public async Task<CategoryResponse> UpdateCategoryAsync(Guid id, UpdateCategoryRequest updateCategoryRequest)
+        public async Task<CategoryResponse> UpdateAsync(Guid id, UpdateCategoryRequest updateCategoryRequest)
         {
 
-            var categoryRepository = await _categoryRepository.GetByIdAsync(id);
+            var category = await _categoryRepository.GetByIdAsync(id);
 
-            var imageFileName = categoryRepository?.ImageFileName;
+            var imageFileName = category?.ImageFileName;
 
-            if (categoryRepository != null)
+            if (category == null)
             {
-                if (updateCategoryRequest.File != null)
-                {
-                    imageFileName = _imageUrlResolver.CreateImageFileName(updateCategoryRequest.Name, updateCategoryRequest.File.ContentType);
-
-                    await _localDiskImageStorageService.SaveAsync(
-                            updateCategoryRequest.File.OpenReadStream(),
-                            imageFileName, nameof(Category));
-
-                    await _localDiskImageStorageService.DeleteAsync(categoryRepository.ImageFileName, nameof(Category));
-                }
-
-                categoryRepository.UpdateCategory(updateCategoryRequest.Name, imageFileName);
-
-                await _unitOfWork.CommitAsync();
-
-                return _mapper.Map<Category, CategoryResponse>(categoryRepository, options => options.AfterMap((category, dto) =>
-                {
-                    dto.FilePath = _imageUrlResolver.BuildFilePath(_httpContextAccessor.HttpContext?.Request,
-                                                                        nameof(Category).ToLower(),
-                                                                        category.ImageFileName);
-                }));
+                return null;
             }
 
-            return null;
+            if (updateCategoryRequest.File != null)
+            {
+                imageFileName = _imageUrlResolver.CreateImageFileName(updateCategoryRequest.Name, updateCategoryRequest.File.ContentType);
+
+                await _localDiskImageStorageService.SaveAsync(
+                        updateCategoryRequest.File.OpenReadStream(),
+                        imageFileName, nameof(Category));
+
+                await _localDiskImageStorageService.DeleteAsync(category.ImageFileName, nameof(Category));
+            }
+
+            category.UpdateAsync(updateCategoryRequest.Name, imageFileName);
+
+            await _unitOfWork.CommitAsync();
+
+            return _mapper.Map<Category, CategoryResponse>(category, options => options.AfterMap((category, dto) =>
+            {
+                dto.FilePath = _imageUrlResolver.BuildFilePath(_httpContextAccessor.HttpContext?.Request,
+                                                                    nameof(Category).ToLower(),
+                                                                    category.ImageFileName);
+            }));
+
         }
     }
 }

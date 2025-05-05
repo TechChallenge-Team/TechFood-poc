@@ -1,49 +1,56 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using TechFood.Domain.Shared.Exceptions;
 
-namespace TechFood.Application.Common.Filters
+namespace TechFood.Application.Common.Filters;
+
+public class ExceptionFilter : IExceptionFilter
 {
-    public class ExceptionFilter : IExceptionFilter
+    private static readonly Type[] _handledExceptions =
+        [
+            typeof(DomainException),
+            typeof(Exceptions.ApplicationException)
+        ];
+
+    public void OnException(ExceptionContext context)
     {
-        public void OnException(ExceptionContext context)
+        context.ExceptionHandled = true;
+
+        var requestId = context.HttpContext.TraceIdentifier;
+
+        if (_handledExceptions.Any(type => type.IsInstanceOfType(context.Exception)))
         {
-            context.ExceptionHandled = true;
-
-            var requestId = context.HttpContext.TraceIdentifier;
-
-            if (context.Exception is DomainException domainException)
-            {
-                context.Result = new BadRequestObjectResult(
-                    new
-                    {
-                        requestId,
-                        message = domainException.Message
-                    });
-            }
-            else
-            {
-                var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<ExceptionFilter>>();
-
-                logger.LogError(
-                    context.Exception,
-                    "One or more error has occurried. RequestId {requestId}",
-                    requestId);
-
-                var result = new ObjectResult(
-                    new
-                    {
-                        requestId,
-                        message = context.Exception.ToString(),
-                    })
+            context.Result = new BadRequestObjectResult(
+                new
                 {
-                    StatusCode = 500
-                };
+                    requestId,
+                    message = context.Exception.Message
+                });
+        }
+        else
+        {
+            var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<ExceptionFilter>>();
 
-                context.Result = result;
-            }
+            logger.LogError(
+                context.Exception,
+                "One or more error has occurried. RequestId {requestId}",
+                requestId);
+
+            var result = new ObjectResult(
+                new
+                {
+                    requestId,
+                    message = context.Exception.ToString(),
+                })
+            {
+                StatusCode = 500
+            };
+
+            context.Result = result;
         }
     }
 }

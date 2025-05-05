@@ -29,32 +29,32 @@ public class ProductController(IProductUseCase categoryUseCase) : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateAsync(CreateProductRequest request)
     {
-        await _productUseCase.CreateAsync(request);
+        var result = await _productUseCase.CreateAsync(request);
 
-        return Created();
+        return Ok(result);
     }
 
     [HttpPut("{id:guid}")]
     public async Task<IActionResult> UpdateAsync(Guid id, UpdateProductRequest request)
     {
-        await _productUseCase.UpdateAsync(id, request);
+        var result = await _productUseCase.UpdateAsync(id, request);
 
-        return NoContent();
+        return result != null ? Ok(result) : NotFound();
     }
 
     [HttpPatch("{id:guid}/outOfStock")]
     public async Task<IActionResult> PatchOutOfStockAsync(Guid id, bool request)
     {
-        await _productUseCase.UpdateOutOfStockAsync(id, request);
+        var result = await _productUseCase.UpdateOutOfStockAsync(id, request);
 
-        return NoContent();
+        return result != null ? Ok(result) : NotFound();
     }
 
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> DeleteAsync(Guid id)
     {
-        await _productUseCase.DeleteAsync(id);
+        var result = await _productUseCase.DeleteAsync(id);
 
-        return NoContent();
+        return result ? NoContent() : NotFound();
     }
 }

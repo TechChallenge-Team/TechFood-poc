@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace TechFood.Application.Models.Product;
 
@@ -19,13 +20,18 @@ public class CreateProductRequest
         Price = price;
     }
 
+    [Required]
     public string Name { get; private set; }
 
+    [Required]
     public string Description { get; private set; }
 
+    [Required]
     public Guid CategoryId { get; private set; }
 
+    [Required]
     public string ImageFileName { get; private set; }
 
+    [Required]
     public decimal Price { get; private set; }
 }

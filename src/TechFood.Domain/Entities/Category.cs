@@ -1,5 +1,4 @@
 using TechFood.Domain.Shared.Entities;
-using TechFood.Domain.Shared.Exceptions;
 using TechFood.Domain.Shared.Validations;
 
 namespace TechFood.Domain.Entities;
@@ -20,15 +19,17 @@ public class Category : Entity, IAggregateRoot
 
     public string ImageFileName { get; private set; } = null!;
 
-    public void UpdateCategory(string name, string imageFileName)
+    public void UpdateAsync(string name, string imageFileName)
     {
         Name = name;
         ImageFileName = imageFileName;
+
+        Validate();
     }
 
     private void Validate()
     {
-        Validations.ThrowIfEmpty(Name, "The category name cannot be empty");
-        Validations.ThrowIfEmpty(ImageFileName, "The category file image cannot be empty");
+        Validations.ThrowIfEmpty(Name, Resources.Exceptions.Category_ThrowNameIsEmpty);
+        Validations.ThrowIfEmpty(ImageFileName, Resources.Exceptions.Category_ThrowFileImageIsEmpty);
     }
 }

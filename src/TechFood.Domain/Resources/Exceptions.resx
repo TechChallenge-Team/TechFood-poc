@@ -117,6 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Product_ThrowDescriptionIsEmpty" xml:space="preserve">
+    <value>The product description cannot be empty</value>
+  </data>
+  <data name="Product_ThrowNameIsEmpty" xml:space="preserve">
+    <value>The Name cannot empty </value>
+  </data>
+  <data name="Product_ThrowCategoryIdInvalid" xml:space="preserve">
+    <value>The product CategoryId is not valid</value>
+  </data>
   <data name="Order_AmountIsNotEqualOrderAmount" xml:space="preserve">
     <value>Payment amount is not equal to the order total amount.</value>
   </data>
@@ -155,5 +164,26 @@
   </data>
   <data name="Payment_AlreadyPaid" xml:space="preserve">
     <value>Payment has already been paid.</value>
+  </data>
+  <data name="Product_ThrowCategoryImageFileIsEmpty" xml:space="preserve">
+    <value>The category image file cannot be empty</value>
+  </data>
+  <data name="Product_ThrowPriceIsGreaterThanZero" xml:space="preserve">
+    <value>The product price cannot be empty</value>
+  </data>
+  <data name="OrderItem_ThrowUnitPriceGreaterThanZero" xml:space="preserve">
+    <value>The orderItem UnitPrice have be greater than zero</value>
+  </data>
+  <data name="OrderItem_ThrowQuantityGreaterThanZero" xml:space="preserve">
+    <value>The OrdemItem quantity have be greater than zero</value>
+  </data>
+  <data name="OrderItem_ThrowProductIdIsInvalid" xml:space="preserve">
+    <value>The ProductId is not valid</value>
+  </data>
+  <data name="Category_ThrowNameIsEmpty" xml:space="preserve">
+    <value>The category name cannot be empty</value>
+  </data>
+  <data name="Category_ThrowFileImageIsEmpty" xml:space="preserve">
+    <value>The category file image cannot be empty</value>
   </data>
 </root>

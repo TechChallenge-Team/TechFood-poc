@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TechFood.Domain.Enums;
 using TechFood.Domain.Shared.Entities;
 using TechFood.Domain.Shared.Exceptions;
+using TechFood.Domain.Shared.Validations;
 
 namespace TechFood.Domain.Entities;
 
@@ -63,10 +64,7 @@ public class Order : Entity, IAggregateRoot
             throw new DomainException(Resources.Exceptions.Order_CannotApplyDiscountToNonCreatedStatus);
         }
 
-        if (discount < 0)
-        {
-            throw new DomainException(Resources.Exceptions.Order_DiscountCannotBeNegative);
-        }
+        Validations.ThrowIsGreaterThanZero(discount, Resources.Exceptions.Order_DiscountCannotBeNegative);
 
         Discount = discount;
 
@@ -80,10 +78,7 @@ public class Order : Entity, IAggregateRoot
             throw new DomainException(Resources.Exceptions.Order_CannotPayToNonCreatedStatus);
         }
 
-        if (Payment == null)
-        {
-            throw new DomainException(Resources.Exceptions.Order_PaymentIsNull);
-        }
+        Validations.ThrowObjectIsNull(Payment, Resources.Exceptions.Order_PaymentIsNull);
 
         Payment.Pay();
 
@@ -97,10 +92,7 @@ public class Order : Entity, IAggregateRoot
             throw new DomainException(Resources.Exceptions.Order_CannotRefusePaymentToNonCreatedStatus);
         }
 
-        if (Payment == null)
-        {
-            throw new DomainException(Resources.Exceptions.Order_PaymentIsNull);
-        }
+        Validations.ThrowObjectIsNull(Payment, Resources.Exceptions.Order_PaymentIsNull);
 
         Payment.Refused();
     }
@@ -125,24 +117,12 @@ public class Order : Entity, IAggregateRoot
         }
 
         var item = _items.Find(i => i.Id == itemId);
-        if (item == null)
-        {
-            throw new DomainException(Resources.Exceptions.Order_ItemNotFound);
-        }
 
-        _items.Remove(item);
+        Validations.ThrowObjectIsNull(item, Resources.Exceptions.Order_ItemNotFound);
+
+        _items.Remove(item!);
 
         CalculateAmount();
-    }
-
-    public void Prepare()
-    {
-        if (Status != OrderStatusType.Paid)
-        {
-            throw new DomainException(Resources.Exceptions.Order_CannotPrepareToNonPaidStatus);
-        }
-
-        UpdateStatus(OrderStatusType.InPreparation);
     }
 
     private void CalculateAmount()
@@ -163,6 +143,16 @@ public class Order : Entity, IAggregateRoot
         }
 
         UpdateStatus(OrderStatusType.Done);
+    }
+
+    public void Prepare()
+    {
+        if (Status != OrderStatusType.Paid)
+        {
+            throw new DomainException(Resources.Exceptions.Order_CannotPrepareToNonPaidStatus);
+        }
+
+        UpdateStatus(OrderStatusType.InPreparation);
     }
 
     public void Finish()

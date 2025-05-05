@@ -10,8 +10,8 @@ namespace TechFood.Domain.Repositories
 
         Task<IEnumerable<T>> GetAllAsync();
 
-        Task AddAsync(T entity);
+        Task<Guid> AddAsync(T entity);
 
-        void Delete(T entity);
+        Task DeleteAsync(T entity);
     }
 }

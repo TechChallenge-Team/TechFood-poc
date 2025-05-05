@@ -1,9 +1,8 @@
 using System;
 
-namespace TechFood.Application.Models.Order
+namespace TechFood.Application.Models.Order;
+
+public class CreateOrderRequest
 {
-    public class CreateOrderRequest
-    {
-        public Guid? CustomerId { get; set; }
-    }
+    public Guid? CustomerId { get; set; }
 }
