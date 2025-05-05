@@ -1,8 +1,11 @@
-import { Button, Flex, Heading, TextField } from "@radix-ui/themes";
+import { Box, Flex, Heading, TextField } from "@radix-ui/themes";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { CategoryCard, PopularCard } from "../../components";
+import { ProductModal } from "../../components/ProductModal";
+import { Category } from "../../models/Category";
 
 import classNames from "./MenuManagement.module.css";
+import { useEffect, useState } from "react";
 
 const categories = [
   { name: "Hambugers", img: "hamburger" },
@@ -68,9 +71,19 @@ const Section = ({ title, direction, children }: any) => {
 };
 
 export const MenuManagement = () => {
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {}, []);
+
   return (
     <Flex direction="column">
-      <Flex direction="row" justify="between">
+      <Flex direction="row" justify="between"></Flex>
+      <Section title="Categories">
+        {categories.map((category, i) => (
+          <CategoryCard key={i} {...category} />
+        ))}
+      </Section>
+      <Flex gap="8" align="center">
         <TextField.Root
           className={classNames.search}
           placeholder="Search"
@@ -80,16 +93,9 @@ export const MenuManagement = () => {
             <MagnifyingGlassIcon height="25" width="25" />
           </TextField.Slot>
         </TextField.Root>
-        <Button className={classNames.button} size="3">
-          Add New Item
-        </Button>
+        <ProductModal />
       </Flex>
-      <Section title="Categories">
-        {categories.map((category, i) => (
-          <CategoryCard key={i} {...category} />
-        ))}
-      </Section>
-      <Section title="Popular This Week">
+      <Section title="">
         {popular.map((popu, i) => (
           <PopularCard key={i} {...popu} />
         ))}
