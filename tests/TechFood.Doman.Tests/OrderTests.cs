@@ -190,7 +190,6 @@ namespace TechFood.Doman.Tests
 
             // Assert
             Assert.Equal(7 * 10.42m * 4, order.Amount);
-            Assert.Equal(7 * 10.42m * 4, order.TotalAmount);
         }
 
         [Fact(DisplayName = "Validate Discount Calculation in Order")]
@@ -212,7 +211,7 @@ namespace TechFood.Doman.Tests
             // Act
 
             // Assert
-            Assert.Equal((7 * 10.42m) - 9.76m, order.TotalAmount);
+            Assert.Equal((7 * 10.42m) - 9.76m, order.Amount);
         }
     }
 }
