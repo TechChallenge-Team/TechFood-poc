@@ -1,5 +1,5 @@
 services:
-  nginx:
+  techfood.nginx:
     image: ${DOCKER_REGISTRY-}techfood.nginx
     build:
       context: ./nginx
