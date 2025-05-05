@@ -23,6 +23,7 @@ namespace TechFood.Application
             services.AddTransient<IOrderUseCase, OrderUseCase>();
 
             services.AddTransient<ICustomerUseCase, CustomerUseCase>();
+            services.AddTransient<IImageUrlResolver, ImageUrlResolver>();
 
             return services;
         }

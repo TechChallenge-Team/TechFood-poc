@@ -8,7 +8,7 @@ namespace TechFood.Application.Common.AutoMapper
     {
         public DomainToDtoProfile()
         {
-            CreateMap<Category, CreateCategoryResult>();
+            CreateMap<Category, CategoryResponse>();
         }
     }
 }
