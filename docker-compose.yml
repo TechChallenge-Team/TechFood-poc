@@ -40,6 +40,8 @@ services:
       ASPNETCORE_HTTP_PORTS: 8080
       ASPNETCORE_ENVIRONMENT: Development
       ConnectionStrings__DataBaseConection: Server=techfood.db;Database=dbtechfood;User Id=sa;Password=123456#4EA;TrustServerCertificate=True;
+    ports:
+      - "5001:8080"
     depends_on:
       - techfood.db
     volumes:
