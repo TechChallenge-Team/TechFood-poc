@@ -54,6 +54,8 @@ var builder = WebApplication.CreateBuilder(args);
         });
     });
 
+    builder.Services.AddHealthChecks();
+
     builder.Services.AddApplication();
     builder.Services.AddInfraData();
     builder.Services.AddInfraMercadoPagoPayment();
@@ -70,6 +72,8 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.UseForwardedHeaders();
+
+app.UseHealthChecks("/health");
 
 if (app.Environment.IsDevelopment())
 {
