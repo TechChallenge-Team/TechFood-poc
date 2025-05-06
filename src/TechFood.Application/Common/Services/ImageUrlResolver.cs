@@ -1,4 +1,5 @@
 using System;
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using TechFood.Application.Common.Services.Interfaces;
@@ -25,7 +26,7 @@ namespace TechFood.Application.Common.Services
 
         public string CreateImageFileName(string categoryName, string contentType)
         {
-            return $"{categoryName}-{DateTime.UtcNow:yyyyMMddHHmmss}.{contentType.Replace("image/", "")}";
+            return $"{Regex.Replace(categoryName.Trim(), @"\s+", "-")}-{DateTime.UtcNow:yyyyMMddHHmmss}.{contentType.Replace("image/", "")}";
         }
     }
 }

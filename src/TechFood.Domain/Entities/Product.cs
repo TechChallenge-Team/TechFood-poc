@@ -43,6 +43,9 @@ public class Product : Entity, IAggregateRoot
     public void SetOutOfStock(bool outOfStock)
        => OutOfStock = outOfStock;
 
+    public void SetImageFileName(string imageFileName)
+       => ImageFileName = imageFileName;
+
     public void Update(
         string name,
         string description,

@@ -3,6 +3,7 @@ import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { CategoryCard, PopularCard } from "../../components";
 import { ProductModal } from "../../components/ProductModal";
 import { Category } from "../../models/Category";
+import { axios } from "../../models/Product";
 
 import classNames from "./MenuManagement.module.css";
 import { useEffect, useState } from "react";
@@ -71,9 +72,11 @@ const Section = ({ title, direction, children }: any) => {
 };
 
 export const MenuManagement = () => {
-  const [categories, setCategories] = useState<Category[]>([]);
+  // const [categories, setCategories] = useState<Category[]>([]);
 
-  useEffect(() => {}, []);
+  // useEffect(() => {
+    
+  // }, []);
 
   return (
     <Flex direction="column">

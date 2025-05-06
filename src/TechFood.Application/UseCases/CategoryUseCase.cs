@@ -45,7 +45,7 @@ namespace TechFood.Application.UseCases
 
             var result = _mapper.Map<CategoryResponse>(categoryEntity, options => options.AfterMap((category, dto) =>
             {
-                dto.FilePath = _imageUrlResolver.BuildFilePath(_httpContextAccessor.HttpContext?.Request, nameof(Category).ToLower(), imageFileName);
+                dto.ImageUrl = _imageUrlResolver.BuildFilePath(_httpContextAccessor.HttpContext!.Request, nameof(Category).ToLower(), imageFileName);
             }));
             return result;
         }
@@ -76,41 +76,36 @@ namespace TechFood.Application.UseCases
                     category,
                     options => options.AfterMap((category, dto) =>
                     {
-                        dto.FilePath = _imageUrlResolver.BuildFilePath(_httpContextAccessor.HttpContext?.Request,
+                        dto.ImageUrl = _imageUrlResolver.BuildFilePath(_httpContextAccessor.HttpContext!.Request,
                                                                         nameof(Category).ToLower(),
                                                                         category.ImageFileName);
                     })));
         }
 
-        public async Task<CategoryResponse> GetByIdAsync(Guid id)
+        public async Task<CategoryResponse?> GetByIdAsync(Guid id)
         {
             var category = await _categoryRepository.GetByIdAsync(id);
 
-            if (category == null)
-            {
-                return null;
-            }
-
-            return _mapper.Map<Category, CategoryResponse>(category,
+            return category is null ? null : _mapper.Map<Category, CategoryResponse>(category,
                    options => options.AfterMap((category, dto) =>
                    {
-                       dto.FilePath = _imageUrlResolver.BuildFilePath(_httpContextAccessor.HttpContext?.Request,
+                       dto.ImageUrl = _imageUrlResolver.BuildFilePath(_httpContextAccessor.HttpContext!.Request,
                                                                         nameof(Category).ToLower(),
                                                                         category.ImageFileName);
                    }));
         }
 
-        public async Task<CategoryResponse> UpdateAsync(Guid id, UpdateCategoryRequest updateCategoryRequest)
+        public async Task<CategoryResponse?> UpdateAsync(Guid id, UpdateCategoryRequest updateCategoryRequest)
         {
 
             var category = await _categoryRepository.GetByIdAsync(id);
-
-            var imageFileName = category?.ImageFileName;
 
             if (category == null)
             {
                 return null;
             }
+
+            var imageFileName = category.ImageFileName;
 
             if (updateCategoryRequest.File != null)
             {
@@ -129,7 +124,7 @@ namespace TechFood.Application.UseCases
 
             return _mapper.Map<Category, CategoryResponse>(category, options => options.AfterMap((category, dto) =>
             {
-                dto.FilePath = _imageUrlResolver.BuildFilePath(_httpContextAccessor.HttpContext?.Request,
+                dto.ImageUrl = _imageUrlResolver.BuildFilePath(_httpContextAccessor.HttpContext!.Request,
                                                                     nameof(Category).ToLower(),
                                                                     category.ImageFileName);
             }));
