@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using TechFood.Application;
@@ -6,8 +7,8 @@ using TechFood.Application.Common.Filters;
 using TechFood.Application.Common.NamingPolicy;
 using TechFood.Infra.Data;
 using TechFood.Infra.Data.Contexts;
-using TechFood.Infra.Services.MercadoPago;
 using TechFood.Infra.ImageStore.LocalDisk.Configuration;
+using TechFood.Infra.Services.MercadoPago;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -31,6 +32,13 @@ var builder = WebApplication.CreateBuilder(args);
     });
 
     builder.Services.AddCors();
+
+    builder.Services.Configure<ForwardedHeadersOptions>(options =>
+    {
+        options.ForwardedHeaders = ForwardedHeaders.All;
+        options.KnownNetworks.Clear();
+        options.KnownProxies.Clear();
+    });
 
     builder.Services.AddHttpContextAccessor();
 
@@ -61,6 +69,8 @@ using (var scope = app.Services.CreateScope())
     dataContext.Database.Migrate();
 }
 
+app.UseForwardedHeaders();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
@@ -73,7 +83,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseStaticFiles(new StaticFileOptions
 {
-    RequestPath = app.Configuration.GetSection("TechFoodStaticImagesUrl").Value,
+    RequestPath = app.Configuration["TechFoodStaticImagesUrl"],
     FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "images")),
 });
 
