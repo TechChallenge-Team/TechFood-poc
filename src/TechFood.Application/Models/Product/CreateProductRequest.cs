@@ -1,37 +1,27 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
+using TechFood.Application.Common.Attributes;
 
 namespace TechFood.Application.Models.Product;
 
 public class CreateProductRequest
 {
-    public CreateProductRequest(
-        string name,
-        string description,
-        Guid categoryId,
-        string imageFileName,
-        decimal price
-        )
-    {
-        Name = name;
-        Description = description;
-        CategoryId = categoryId;
-        ImageFileName = imageFileName;
-        Price = price;
-    }
 
     [Required]
-    public string Name { get; private set; }
+    public string Name { get; set; }
 
     [Required]
-    public string Description { get; private set; }
+    public string Description { get; set; }
 
     [Required]
-    public Guid CategoryId { get; private set; }
+    public Guid CategoryId { get; set; }
 
     [Required]
-    public string ImageFileName { get; private set; }
+    [MaxFileSize(5 * 1024 * 1024)]
+    [AllowedExtensions(".jpg", ".jpeg", ".png", ".webp")]
+    public IFormFile File { get; set; }
 
     [Required]
-    public decimal Price { get; private set; }
+    public decimal Price { get; set; }
 }

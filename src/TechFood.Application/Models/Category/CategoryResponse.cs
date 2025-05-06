@@ -8,6 +8,6 @@ namespace TechFood.Application.Models.Category
 
         public string Name { get; set; }
 
-        public string FilePath { get; set; }
+        public string ImageUrl { get; set; }
     }
 }
