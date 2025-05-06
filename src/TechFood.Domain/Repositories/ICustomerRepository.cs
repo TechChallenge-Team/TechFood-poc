@@ -1,10 +1,13 @@
-using System.Threading.Tasks;
 using System;
+using System.Threading.Tasks;
 using TechFood.Domain.Entities;
+using TechFood.Domain.Enums;
 
-namespace TechFood.Domain.Repositories;
-
-public interface ICustomerRepository
+namespace TechFood.Domain.Repositories
 {
-    Task<Guid> CreateAsync(Customer customer);
+    public interface ICustomerRepository
+    {
+        Task<Guid> CreateAsync(Customer customer);
+        Task<Customer> GetByDocument(DocumentType documentType, string documentValue);
+    }
 }

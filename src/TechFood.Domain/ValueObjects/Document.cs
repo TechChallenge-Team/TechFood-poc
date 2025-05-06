@@ -15,7 +15,6 @@ public class Document : ValueObject
         Value = value;
         Validate();
     }
-
     public DocumentType Type { get; set; }
 
     public string Value { get; set; }

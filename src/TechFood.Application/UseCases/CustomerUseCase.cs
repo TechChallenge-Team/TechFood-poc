@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using TechFood.Application.Models.Customer;
 using TechFood.Application.UseCases.Interfaces;
@@ -16,11 +17,20 @@ internal class CustomerUseCase(
 
     public async Task<CreateCustomerResult> CreateCustomerAsync(CreateCustomerRequest data)
     {
+        var document = new Document(DocumentType.CPF, data.CPF);
+
+        var cpfExists = await _customerRepository.GetByDocument(document.Type, document.Value);
+        if (cpfExists != null)
+        {
+            throw new ApplicationException("Já existe um cliente com esse CPF.");
+        }
+        
         var customer = new Customer(
             new Name(data.Name),
             new Email(data.Email),
-            new Document(DocumentType.CPF, data.CPF),
-            null);
+            document,
+            null
+        );
 
         var item = await _customerRepository.CreateAsync(customer);
 
