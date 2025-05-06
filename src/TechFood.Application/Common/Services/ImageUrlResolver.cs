@@ -6,9 +6,12 @@ using TechFood.Application.Common.Services.Interfaces;
 
 namespace TechFood.Application.Common.Services
 {
-    public class ImageUrlResolver : IImageUrlResolver
+    public partial class ImageUrlResolver : IImageUrlResolver
     {
         private readonly IConfiguration _appConfiguration;
+
+        [GeneratedRegex(@"\s+")]
+        private static partial Regex ImageNameRegex();
 
         public ImageUrlResolver(IConfiguration appConfiguration)
         {
@@ -17,16 +20,28 @@ namespace TechFood.Application.Common.Services
 
         public string BuildFilePath(HttpRequest request, string folderName, string imageFileName)
         {
-            var scheme = request.Scheme;
-            var host = request.Host.Value;
+            if (
+                string.IsNullOrWhiteSpace(folderName) ||
+                string.IsNullOrWhiteSpace(imageFileName))
+            {
+                throw new Exceptions.ApplicationException(Resources.Exceptions.ImageUrlResolver_FolderCannotBeNull);
+            }
+
+            var basePath = request.PathBase.Value?.Trim('/');
             var baseUrl = _appConfiguration["TechFoodStaticImagesUrl"]?.Trim('/');
 
-            return $"{scheme}://{host}/{baseUrl}/{folderName}/{imageFileName}";
+            var uriBuilder = new UriBuilder
+            {
+                Scheme = request.Scheme,
+                Host = request.Host.Host,
+                Port = request.Host.Port ?? -1,
+                Path = $"{basePath}/{baseUrl}/{Uri.EscapeDataString(folderName)}/{Uri.EscapeDataString(imageFileName)}"
+            };
+
+            return uriBuilder.ToString();
         }
 
-        public string CreateImageFileName(string categoryName, string contentType)
-        {
-            return $"{Regex.Replace(categoryName.Trim(), @"\s+", "-")}-{DateTime.UtcNow:yyyyMMddHHmmss}.{contentType.Replace("image/", "")}";
-        }
+        public string CreateImageFileName(string categoryName, string contentType) =>
+            $"{ImageNameRegex().Replace(categoryName.Trim(), "-")}-{DateTime.UtcNow:yyyyMMddHHmmss}.{contentType.Replace("image/", "")}";
     }
 }

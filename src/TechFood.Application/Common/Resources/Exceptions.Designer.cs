@@ -61,6 +61,15 @@ namespace TechFood.Application.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Folder name and image file name cannot be null or empty..
+        /// </summary>
+        internal static string ImageUrlResolver_FolderCannotBeNull {
+            get {
+                return ResourceManager.GetString("ImageUrlResolver_FolderCannotBeNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Item Not Found.
         /// </summary>
         internal static string Order_ItemNotFound {

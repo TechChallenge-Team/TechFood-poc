@@ -42,6 +42,8 @@ services:
       ConnectionStrings__DataBaseConection: Server=techfood.db;Database=dbtechfood;User Id=sa;Password=123456#4EA;TrustServerCertificate=True;
     depends_on:
       - techfood.db
+    volumes:
+      - images_data:/app/images
 
   techfood.db:
     image: mcr.microsoft.com/mssql/server:2019-latest
@@ -56,3 +58,4 @@ services:
 
 volumes:
   sqlserver_data:
+  images_data:

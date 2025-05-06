@@ -4,14 +4,18 @@ namespace TechFood.Infra.ImageStore.LocalDisk
 {
     public class LocalDiskImageStorageService : ILocalDiskImageStorageService
     {
+        private const string ImageFolderName = "images";
+
         public Task DeleteAsync(string fileName, string folder)
         {
             if (!string.IsNullOrWhiteSpace(folder))
+            {
                 folder = folder.ToLower();
+            }
 
             fileName = Path.GetFileName(fileName);
 
-            var imageFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "images", folder);
+            var imageFolderPath = Path.Combine(Directory.GetCurrentDirectory(), ImageFolderName, folder);
             var fullPath = Path.Combine(imageFolderPath, fileName);
 
             if (File.Exists(fullPath))
@@ -25,18 +29,22 @@ namespace TechFood.Infra.ImageStore.LocalDisk
         public async Task SaveAsync(Stream imageStream, string fileName, string folder)
         {
             if (!string.IsNullOrWhiteSpace(folder))
+            {
                 folder = folder.ToLower();
+            }
 
-            var imageFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "images", folder);
+            var imageFolderPath = Path.Combine(Directory.GetCurrentDirectory(), ImageFolderName, folder);
 
             if (!Directory.Exists(imageFolderPath))
+            {
                 Directory.CreateDirectory(imageFolderPath);
+            }
 
             var fullPath = Path.Combine(imageFolderPath, fileName);
 
-            using (var stream = new FileStream(fullPath, FileMode.Create))
+            using var stream = new FileStream(fullPath, FileMode.OpenOrCreate);
 
-                await imageStream.CopyToAsync(stream);
+            await imageStream.CopyToAsync(stream);
         }
     }
 }
