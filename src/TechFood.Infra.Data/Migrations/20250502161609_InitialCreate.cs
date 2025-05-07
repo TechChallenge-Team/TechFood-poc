@@ -180,10 +180,10 @@ namespace TechFood.Infra.Data.Migrations
                 columns: new[] { "Id", "CategoryId", "Description", "ImageFileName", "Name", "OutOfStock", "Price" },
                 values: new object[,]
                 {
-                    { new Guid("090d8eb0-f514-4248-8512-cf0d61a262f0"), new Guid("eaa76b46-2e6b-42eb-8f5d-b213f85f25ea"), "Delicioso X-Burguer", "", "X-Burguer", false, 19.99m },
-                    { new Guid("55f32e65-c82f-4a10-981c-cdb7b0d2715a"), new Guid("c65e2cec-bd44-446d-8ed3-a7045cd4876a"), "Crocante Batata Frita", "", "Batata Frita", false, 9.99m },
-                    { new Guid("86c50c81-c46e-4e79-a591-3b68c75cefda"), new Guid("c3a70938-9e88-437d-a801-c166d2716341"), "Gelado Refrigerante", "", "Refrigerante", false, 4.99m },
-                    { new Guid("de797d9f-c473-4bed-a560-e7036ca10ab1"), new Guid("ec2fb26d-99a4-4eab-aa5c-7dd18d88a025"), "Doce Pudim", "", "Pudim", false, 7.99m }
+                    { new Guid("090d8eb0-f514-4248-8512-cf0d61a262f0"), new Guid("eaa76b46-2e6b-42eb-8f5d-b213f85f25ea"), "Delicioso X-Burguer", "lanche-carnes.png", "X-Burguer", false, 19.99m },
+                    { new Guid("55f32e65-c82f-4a10-981c-cdb7b0d2715a"), new Guid("c65e2cec-bd44-446d-8ed3-a7045cd4876a"), "Crocante Batata Frita", "bebida-gelada.png", "Batata Frita", false, 9.99m },
+                    { new Guid("86c50c81-c46e-4e79-a591-3b68c75cefda"), new Guid("c3a70938-9e88-437d-a801-c166d2716341"), "Gelado Refrigerante", "bebida-gelada.png", "Refrigerante", false, 4.99m },
+                    { new Guid("de797d9f-c473-4bed-a560-e7036ca10ab1"), new Guid("ec2fb26d-99a4-4eab-aa5c-7dd18d88a025"), "Doce Pudim", "bebida-gelada.png", "Pudim", false, 7.99m }
                 });
 
             migrationBuilder.CreateIndex(

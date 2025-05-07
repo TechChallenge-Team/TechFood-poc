@@ -129,10 +129,10 @@ public class TechFoodContext(
 
         modelBuilder.Entity<Product>()
             .HasData(
-                new { Id = new Guid("090d8eb0-f514-4248-8512-cf0d61a262f0"), Name = "X-Burguer", Description = "Delicioso X-Burguer", Price = 19.99m, CategoryId = new Guid("eaa76b46-2e6b-42eb-8f5d-b213f85f25ea"), ImageFileName = "", OutOfStock = false },
-                new { Id = new Guid("55f32e65-c82f-4a10-981c-cdb7b0d2715a"), Name = "Batata Frita", Description = "Crocante Batata Frita", Price = 9.99m, CategoryId = new Guid("c65e2cec-bd44-446d-8ed3-a7045cd4876a"), ImageFileName = "", OutOfStock = false },
-                new { Id = new Guid("86c50c81-c46e-4e79-a591-3b68c75cefda"), Name = "Refrigerante", Description = "Gelado Refrigerante", Price = 4.99m, CategoryId = new Guid("c3a70938-9e88-437d-a801-c166d2716341"), ImageFileName = "", OutOfStock = false },
-                new { Id = new Guid("de797d9f-c473-4bed-a560-e7036ca10ab1"), Name = "Pudim", Description = "Doce Pudim", Price = 7.99m, CategoryId = new Guid("ec2fb26d-99a4-4eab-aa5c-7dd18d88a025"), ImageFileName = "", OutOfStock = false }
+                new { Id = new Guid("090d8eb0-f514-4248-8512-cf0d61a262f0"), Name = "X-Burguer", Description = "Delicioso X-Burguer", Price = 19.99m, CategoryId = new Guid("eaa76b46-2e6b-42eb-8f5d-b213f85f25ea"), ImageFileName = "lanche-carnes.png", OutOfStock = false },
+                new { Id = new Guid("55f32e65-c82f-4a10-981c-cdb7b0d2715a"), Name = "Batata Frita", Description = "Crocante Batata Frita", Price = 9.99m, CategoryId = new Guid("c65e2cec-bd44-446d-8ed3-a7045cd4876a"), ImageFileName = "bebida-gelada.png", OutOfStock = false },
+                new { Id = new Guid("86c50c81-c46e-4e79-a591-3b68c75cefda"), Name = "Refrigerante", Description = "Gelado Refrigerante", Price = 4.99m, CategoryId = new Guid("c3a70938-9e88-437d-a801-c166d2716341"), ImageFileName = "bebida-gelada.png", OutOfStock = false },
+                new { Id = new Guid("de797d9f-c473-4bed-a560-e7036ca10ab1"), Name = "Pudim", Description = "Doce Pudim", Price = 7.99m, CategoryId = new Guid("ec2fb26d-99a4-4eab-aa5c-7dd18d88a025"), ImageFileName = "bebida-gelada.png", OutOfStock = false }
                 );
 
         //modelBuilder.Entity<PaymentType>()

@@ -237,7 +237,7 @@ namespace TechFood.Infra.Data.Migrations
                             Id = new Guid("090d8eb0-f514-4248-8512-cf0d61a262f0"),
                             CategoryId = new Guid("eaa76b46-2e6b-42eb-8f5d-b213f85f25ea"),
                             Description = "Delicioso X-Burguer",
-                            ImageFileName = "",
+                            ImageFileName = "lanche-carnes.png",
                             Name = "X-Burguer",
                             OutOfStock = false,
                             Price = 19.99m
@@ -247,7 +247,7 @@ namespace TechFood.Infra.Data.Migrations
                             Id = new Guid("55f32e65-c82f-4a10-981c-cdb7b0d2715a"),
                             CategoryId = new Guid("c65e2cec-bd44-446d-8ed3-a7045cd4876a"),
                             Description = "Crocante Batata Frita",
-                            ImageFileName = "",
+                            ImageFileName = "bebida-gelada.png",
                             Name = "Batata Frita",
                             OutOfStock = false,
                             Price = 9.99m
@@ -257,7 +257,7 @@ namespace TechFood.Infra.Data.Migrations
                             Id = new Guid("86c50c81-c46e-4e79-a591-3b68c75cefda"),
                             CategoryId = new Guid("c3a70938-9e88-437d-a801-c166d2716341"),
                             Description = "Gelado Refrigerante",
-                            ImageFileName = "",
+                            ImageFileName = "bebida-gelada.png",
                             Name = "Refrigerante",
                             OutOfStock = false,
                             Price = 4.99m
@@ -267,7 +267,7 @@ namespace TechFood.Infra.Data.Migrations
                             Id = new Guid("de797d9f-c473-4bed-a560-e7036ca10ab1"),
                             CategoryId = new Guid("ec2fb26d-99a4-4eab-aa5c-7dd18d88a025"),
                             Description = "Doce Pudim",
-                            ImageFileName = "",
+                            ImageFileName = "bebida-gelada.png",
                             Name = "Pudim",
                             OutOfStock = false,
                             Price = 7.99m
