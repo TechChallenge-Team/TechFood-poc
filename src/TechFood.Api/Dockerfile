@@ -2,6 +2,8 @@ ARG DOTNET_RUNTIME=mcr.microsoft.com/dotnet/aspnet:8.0
 ARG DOTNET_SDK=mcr.microsoft.com/dotnet/sdk:8.0
 
 FROM ${DOTNET_RUNTIME} AS base
+RUN apt-get update && \
+    apt-get install wget -y
 USER app
 WORKDIR /app
 EXPOSE 8080
