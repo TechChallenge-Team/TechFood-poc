@@ -4,5 +4,5 @@ export type PopularCardProps = {
   rating: number;
   reviewsCount: number;
   description: string;
-  img: string;
+  imageUrl: string;
 };

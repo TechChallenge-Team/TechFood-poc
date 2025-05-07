@@ -3,10 +3,7 @@ import { CategoryCardProps } from "./CategoryCard.types";
 
 import classNames from "./CategoryCard.module.css";
 
-export const CategoryCard = ({ name, img }: CategoryCardProps) => {
-  const src = new URL(`../../assets/categories/${img}.png`, import.meta.url)
-    .href;
-
+export const CategoryCard = ({ name, imageUrl }: CategoryCardProps) => {
   return (
     <Flex
       className={classNames.root}
@@ -15,7 +12,7 @@ export const CategoryCard = ({ name, img }: CategoryCardProps) => {
       align="center"
       justify="center"
     >
-      <img src={src} alt={name} />
+      <img src={imageUrl} alt={name} />
       <Text
         as="p"
         size="2"

@@ -1,62 +1,12 @@
-import { Box, Flex, Heading, TextField } from "@radix-ui/themes";
+import { Flex, Heading, TextField } from "@radix-ui/themes";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import { CategoryCard, PopularCard } from "../../components";
+import { CategoryCard, PopularCard, PopularCardProps } from "../../components";
 import { ProductModal } from "../../components/ProductModal";
 import { Category } from "../../models/Category";
-import { axios } from "../../models/Product";
 
 import classNames from "./MenuManagement.module.css";
 import { useEffect, useState } from "react";
-
-const categories = [
-  { name: "Hambugers", img: "hamburger" },
-  { name: "Bebidas", img: "soda" },
-  { name: "Acompanhamentos", img: "fried-chicken" },
-  { name: "Sobremesas", img: "donut" },
-];
-
-const popular = [
-  {
-    title: "Hambuger",
-    category: "Hambugers",
-    price: "10,00",
-    rating: 4.5,
-    reviewsCount: 100,
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    img: "1",
-  },
-  {
-    title: "Hambuger 2",
-    category: "Hambugers",
-    price: "10,00",
-    rating: 4.5,
-    reviewsCount: 1001,
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    img: "2",
-  },
-  {
-    title: "Coca-Cola",
-    category: "Bebidas",
-    price: "5,00",
-    rating: 4.0,
-    reviewsCount: 51,
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    img: "3",
-  },
-  {
-    title: "Banana split",
-    category: "Sobremesas",
-    price: "15,00",
-    rating: 5.0,
-    reviewsCount: 151,
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    img: "4",
-  },
-];
+import axios from "axios";
 
 const Section = ({ title, direction, children }: any) => {
   return (
@@ -72,11 +22,21 @@ const Section = ({ title, direction, children }: any) => {
 };
 
 export const MenuManagement = () => {
-  // const [categories, setCategories] = useState<Category[]>([]);
+  const [popularCards, setProducts] = useState<PopularCardProps[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  useEffect(() => {
+    const loadCategories = async () => {
+      const result = await axios.get<Category[]>("/api/v1/Categories");
+      setCategories(result.data);
+    };
+    const loadProducts = async () => {
+      const result = await axios.get<PopularCardProps[]>("/api/v1/Products");
+      setProducts(result.data);
+    };
 
-  // useEffect(() => {
-    
-  // }, []);
+    loadProducts();
+    loadCategories();
+  }, []);
 
   return (
     <Flex direction="column">
@@ -99,7 +59,7 @@ export const MenuManagement = () => {
         <ProductModal />
       </Flex>
       <Section title="">
-        {popular.map((popu, i) => (
+        {popularCards.map((popu, i) => (
           <PopularCard key={i} {...popu} />
         ))}
       </Section>

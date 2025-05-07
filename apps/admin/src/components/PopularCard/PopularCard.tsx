@@ -11,13 +11,12 @@ export const PopularCard = ({
   rating,
   reviewsCount,
   description,
-  img,
+  imageUrl,
 }: PopularCardProps) => {
-  const src = new URL(`../../assets/popular/${img}.png`, import.meta.url).href;
   return (
     <Flex className={classNames.root} direction="column" gap="2">
       <Flex direction="row">
-        <img src={src} alt={title} />
+        <img src={imageUrl} alt={title} />
         <Flex className={classNames.info} direction="column" gap="1">
           <Heading
             className={classNames.title}
