@@ -12,14 +12,11 @@ export const StartPage = () => {
   let navigate = useNavigate();
   function register() {
     var resp = validaCPF(documentNumber);
-    console.log(documentNumber)
-    console.log(resp)
     if (validaCPF(documentNumber)) {
       navigate('/register/' + documentNumber)
       return;
     }
     alert('cpf inválido!')
-
   }
   return (
     <Flex className={classNames.root} direction="column">
