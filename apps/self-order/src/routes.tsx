@@ -18,7 +18,7 @@ const router = createBrowserRouter(
       element: <CheckoutPage />,
     },
     {
-      path: "register",
+      path: "register/:doc",
       element: <RegisterPage />,
     },
   ],

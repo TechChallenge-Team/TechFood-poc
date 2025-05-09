@@ -3,7 +3,6 @@ import { Box, Button, Flex, IconButton, TextField } from "@radix-ui/themes";
 import { ArrowRightIcon } from "lucide-react";
 import { t } from "../../i18n";
 import { LanguageSwitch } from "../../components";
-
 import classNames from "./StartPage.module.css";
 import { Link, useNavigate } from "react-router";
 import { validaCPF } from "../../utilities";
@@ -12,10 +11,14 @@ export const StartPage = () => {
   const [documentNumber, setDocumentNumber] = useState("");
   let navigate = useNavigate();
   function register() {
-    //if (validaCPF(documentNumber)) {
-
-    navigate('/register')
-    //}
+    var resp = validaCPF(documentNumber);
+    console.log(documentNumber)
+    console.log(resp)
+    if (validaCPF(documentNumber)) {
+      navigate('/register/' + documentNumber)
+      return;
+    }
+    alert('cpf inválido!')
 
   }
   return (

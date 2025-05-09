@@ -1,44 +1,49 @@
-export const validaCPF = (strCpf:string) =>{
-
-  var soma;
-  var resto;
-  soma = 0;
-  if (strCpf == "00000000000") {
-      return false;
-  }
+export const validaCPF = (cpf:string) =>{
+    var Soma = 0
+    var Resto
   
-  for (let i = 1; i <= 9; i++) {
-      soma = soma + parseInt(strCpf.substring(i - 1, i)) * (11 - i);
-  }
+    var strCPF = String(cpf).replace(/[^\d]/g, '')
+    
+    if (strCPF.length !== 11)
+       return false
+    
+    if ([
+      '00000000000',
+      '11111111111',
+      '22222222222',
+      '33333333333',
+      '44444444444',
+      '55555555555',
+      '66666666666',
+      '77777777777',
+      '88888888888',
+      '99999999999',
+      ].indexOf(strCPF) !== -1)
+      return false
   
-  resto = soma % 11;
+    for (let i=1; i<=9; i++)
+      Soma = Soma + parseInt(strCPF.substring(i-1, i)) * (11 - i);
   
-  if (resto == 10 || resto == 11 || resto < 2) {
-      resto = 0;
-  } else {
-      resto = 11 - resto;
-  }
+    Resto = (Soma * 10) % 11
   
-  if (resto != parseInt(strCpf.substring(9, 10))) {
-      return false;
-  }
+    if ((Resto == 10) || (Resto == 11)) 
+      Resto = 0
   
-  soma = 0;
+    if (Resto != parseInt(strCPF.substring(9, 10)) )
+      return false
   
-  for (let i = 1; i <= 10; i++) {
-      soma = soma + parseInt(strCpf.substring(i - 1, i)) * (12 - i);
-  }
-  resto = soma % 11;
+    Soma = 0
   
-  if (resto == 10 || resto == 11 || resto < 2) {
-      resto = 0;
-  } else {
-      resto = 11 - resto;
-  }
+    for (let i = 1; i <= 10; i++)
+      Soma = Soma + parseInt(strCPF.substring(i-1, i)) * (12 - i)
   
-  if (resto != parseInt(strCpf.substring(10, 11))) {
-      return false;
-  }
+    Resto = (Soma * 10) % 11
   
-  return true;
+    if ((Resto == 10) || (Resto == 11)) 
+      Resto = 0
+  
+    if (Resto != parseInt(strCPF.substring(10, 11) ) )
+      return false
+  
+    return true
   }
