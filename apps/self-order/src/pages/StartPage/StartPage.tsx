@@ -5,10 +5,19 @@ import { t } from "../../i18n";
 import { LanguageSwitch } from "../../components";
 
 import classNames from "./StartPage.module.css";
+import { Link, useNavigate } from "react-router";
+import { validaCPF } from "../../utilities";
 
 export const StartPage = () => {
   const [documentNumber, setDocumentNumber] = useState("");
+  let navigate = useNavigate();
+  function register() {
+    //if (validaCPF(documentNumber)) {
 
+    navigate('/register')
+    //}
+
+  }
   return (
     <Flex className={classNames.root} direction="column">
       <Flex className={classNames.languageSwitch} justify="end">
@@ -29,10 +38,12 @@ export const StartPage = () => {
               <ArrowRightIcon size="40" />
             </IconButton>
           </Flex>
-          <Button size="3">{t("startPage.register")}</Button>
-          <Button variant="outline" size="3">
-            {t("startPage.dontIdentify")}
-          </Button>
+          <Button onClick={register} size="3">{t("startPage.register")}</Button>
+          <Link to='/menu' >
+            <Button variant="outline" size="3">
+              {t("startPage.dontIdentify")}
+            </Button>
+          </Link>
         </Flex>
       </Flex>
     </Flex>

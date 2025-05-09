@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router";
-import { StartPage, MenuPage, CheckoutPage } from "./pages";
+import { StartPage, MenuPage, CheckoutPage, RegisterPage } from "./pages";
+
 
 const router = createBrowserRouter(
   [
@@ -15,6 +16,10 @@ const router = createBrowserRouter(
     {
       path: "checkout",
       element: <CheckoutPage />,
+    },
+    {
+      path: "register",
+      element: <RegisterPage />,
     },
   ],
   {
