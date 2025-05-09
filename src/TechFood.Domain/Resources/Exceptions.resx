@@ -186,4 +186,7 @@
   <data name="Category_ThrowFileImageIsEmpty" xml:space="preserve">
     <value>The category file image cannot be empty</value>
   </data>
+  <data name="Customer_ThrowDocumentCPFInvalid" xml:space="preserve">
+    <value>The Document CPF is invalid</value>
+  </data>
 </root>

@@ -23,7 +23,7 @@ public class Document : ValueObject
     {
         if (Type == DocumentType.CPF && !ValidaDocument.ValidarCPF(Value))
         {
-            throw new DomainException("CPF é inválido!");
+            throw new DomainException(Resources.Exceptions.Customer_ThrowDocumentCPFInvalid);
         }
     }
 }

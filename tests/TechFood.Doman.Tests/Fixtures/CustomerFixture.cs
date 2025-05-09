@@ -26,4 +26,16 @@ public class CustomerFixture
                 "11",
                 _faker.Phone.PhoneNumber("#####-####"))
             );
+    public Customer CreateInvalidCPFCustomer() =>
+        new(
+            new Name(
+                _faker.Name.FullName()),
+            new Email(
+                _faker.Internet.Email()),
+            new Document(DocumentType.CPF, "000.000.004-91"),
+            new Phone(
+                "+55",
+                "11",
+                _faker.Phone.PhoneNumber("#####-####"))
+            );
 }
