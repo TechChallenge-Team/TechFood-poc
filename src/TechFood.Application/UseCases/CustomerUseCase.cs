@@ -39,4 +39,26 @@ internal class CustomerUseCase(
             Id = item,
         };
     }
+
+    public async Task<CustomerResponse> GetByDocumentAsync(string documentType, string documentValue)
+    {
+        var document = new Document((DocumentType)Enum.Parse(typeof(DocumentType), documentType), documentValue);
+
+        var customer = await _customerRepository.GetByDocumentAsync(document.Type, document.Value);
+        if (customer == null)
+        {
+            return null;
+        }
+
+        return new CustomerResponse
+        {
+            Id = customer.Id,
+            Name = customer.Name.FullName,
+            Email = customer.Email.Address,
+            DocumentType = customer.Document.Type.ToString(),
+            DocumentValue = customer.Document.Value,
+        };
+    }
+    
+   
 }

@@ -26,5 +26,11 @@ namespace TechFood.Infra.Data.Repositories
             return await _dbContext.Customers
                 .FirstOrDefaultAsync(c => c.Document.Type == type && c.Document.Value == value);
         }
+
+        public Task<Customer> GetByDocumentAsync(DocumentType documentType, string documentValue)
+        {
+            return _dbContext.Customers
+                .FirstOrDefaultAsync(c => c.Document.Type == documentType && c.Document.Value == documentValue);
+        }
     }
 }

@@ -17,4 +17,12 @@ public class CustomersController(ICustomerUseCase customerUseCase) : ControllerB
 
         return Ok(result);
     }
+
+    [HttpGet("{documentValue}")]
+    public async Task<IActionResult> GetByDocumentAsync(string documentValue)
+    {
+        var result = await _customerUseCase.GetByDocumentAsync(TechFood.Domain.Enums.DocumentType.CPF.ToString(), documentValue);
+    
+        return result != null ? Ok(result) : NotFound();
+    }
 }
