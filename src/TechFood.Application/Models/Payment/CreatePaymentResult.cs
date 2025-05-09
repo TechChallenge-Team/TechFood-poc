@@ -1,6 +1,6 @@
 using System;
 
-namespace TechFood.Application.Models.Order
+namespace TechFood.Application.Models.Payment
 {
     public class CreatePaymentResult
     {

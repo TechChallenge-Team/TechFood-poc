@@ -5,19 +5,23 @@ using TechFood.Domain.Shared.Exceptions;
 
 namespace TechFood.Domain.Entities;
 
-public class Payment : Entity
+public class Payment : Entity, IAggregateRoot
 {
     private Payment() { }
 
     public Payment(
+        Guid orderId,
         PaymentType type,
         decimal amount)
     {
+        OrderId = orderId;
         Type = type;
         Amount = amount;
         CreatedAt = DateTime.Now;
         Status = PaymentStatusType.Pending;
     }
+
+    public Guid OrderId { get; private set; }
 
     public DateTime CreatedAt { get; private set; }
 

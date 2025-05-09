@@ -1,0 +1,10 @@
+@rootUrl=https://localhost:44310/v1
+
+### Create Payment
+POST {{rootUrl}}/payments
+Content-Type: application/json
+
+{
+    "orderId": "18a33050-c7fd-4c1a-b1ec-dd3814b30392",
+    "type": "QrCode"
+}

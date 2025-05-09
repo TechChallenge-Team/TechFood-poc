@@ -1,5 +1,4 @@
 using TechFood.Domain.Entities;
-using TechFood.Domain.Enums;
 using TechFood.Domain.Shared.Exceptions;
 using TechFood.Doman.Tests.Fixtures;
 
@@ -77,7 +76,7 @@ namespace TechFood.Doman.Tests
             order.Finish();
 
             // Act
-            var result = Assert.Throws<DomainException>(() => order.CreatePayment(PaymentType.CreditCard));
+            var result = Assert.Throws<DomainException>(order.CreatePayment);
 
             // Assert
             Assert.Equal(Domain.Resources.Exceptions.Order_CannotCreatePaymentToNonCreatedStatus, result.Message);

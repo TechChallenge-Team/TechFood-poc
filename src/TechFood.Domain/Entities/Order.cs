@@ -39,21 +39,9 @@ public class Order : Entity, IAggregateRoot
 
     public decimal Discount { get; private set; }
 
-    public Payment? Payment { get; private set; }
-
     public IReadOnlyCollection<OrderItem> Items => _items.AsReadOnly();
 
     public IReadOnlyCollection<OrderHistory> Historical => _historical.AsReadOnly();
-
-    public void CreatePayment(PaymentType type)
-    {
-        if (Status != OrderStatusType.Created)
-        {
-            throw new DomainException(Resources.Exceptions.Order_CannotCreatePaymentToNonCreatedStatus);
-        }
-
-        Payment = new Payment(type, Amount);
-    }
 
     public void ApplyDiscount(decimal discount)
     {
@@ -69,16 +57,22 @@ public class Order : Entity, IAggregateRoot
         CalculateAmount();
     }
 
+    public void CreatePayment()
+    {
+        if (Status != OrderStatusType.Created)
+        {
+            throw new DomainException(Resources.Exceptions.Order_CannotCreatePaymentToNonCreatedStatus);
+        }
+
+        UpdateStatus(OrderStatusType.WaitingPayment);
+    }
+
     public void PayPayment()
     {
         if (Status != OrderStatusType.Created)
         {
             throw new DomainException(Resources.Exceptions.Order_CannotPayToNonCreatedStatus);
         }
-
-        Validations.ThrowObjectIsNull(Payment, Resources.Exceptions.Order_PaymentIsNull);
-
-        Payment!.Pay();
 
         UpdateStatus(OrderStatusType.Paid);
     }
@@ -90,9 +84,7 @@ public class Order : Entity, IAggregateRoot
             throw new DomainException(Resources.Exceptions.Order_CannotRefusePaymentToNonCreatedStatus);
         }
 
-        Validations.ThrowObjectIsNull(Payment, Resources.Exceptions.Order_PaymentIsNull);
-
-        Payment!.Refused();
+        UpdateStatus(OrderStatusType.RefusedPayment);
     }
 
     public void AddItem(OrderItem item)

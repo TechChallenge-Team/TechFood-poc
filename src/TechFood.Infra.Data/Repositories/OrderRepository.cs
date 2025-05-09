@@ -21,7 +21,6 @@ internal class OrderRepository(TechFoodContext dbContext) : IOrderRepository
     public async Task<Order?> GetByIdAsync(Guid id)
     {
         var t = await _orders
-            .Include(o => o.Payment)
             .Include(o => o.Items)
             .FirstOrDefaultAsync(o => o.Id == id);
 

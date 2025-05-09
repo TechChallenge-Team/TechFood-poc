@@ -18,33 +18,6 @@ public class OrdersController(IOrderUseCase orderUseCase) : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost]
-    [Route("{orderId:guid}/items")]
-    public async Task<IActionResult> AddItemAsync(Guid orderId, AddOrderItemRequest data)
-    {
-        var result = await _orderUseCase.AddItemAsync(orderId, data);
-
-        return result != null ? Ok(result) : NotFound();
-    }
-
-    [HttpDelete]
-    [Route("{orderId:guid}/items/{itemId:guid}")]
-    public async Task<IActionResult> RemoveItemAsync(Guid orderId, Guid itemId)
-    {
-        var result = await _orderUseCase.RemoveItemAsync(orderId, itemId);
-
-        return result ? Ok() : NotFound();
-    }
-
-    [HttpPost]
-    [Route("{orderId:guid}/payment")]
-    public async Task<IActionResult> CreatePaymentAsync(Guid orderId, CreatePaymentRequest data)
-    {
-        var result = await _orderUseCase.CreatePaymentAsync(orderId, data);
-
-        return result != null ? Ok(result) : NotFound();
-    }
-
     [HttpPatch]
     [Route("{orderId:guid}/prepare")]
     public async Task<IActionResult> PatchPrepareAsync(Guid orderId)

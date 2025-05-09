@@ -19,6 +19,8 @@ public class TechFoodContext(
 
     public DbSet<Product> Products { get; set; } = null!;
 
+    public DbSet<Payment> Payments { get; set; } = null!;
+
     public async Task CommitChangesAsync()
     {
         await SaveChangesAsync();

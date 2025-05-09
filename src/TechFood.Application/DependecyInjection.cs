@@ -21,6 +21,7 @@ namespace TechFood.Application
             services.AddTransient<ICategoryUseCase, CategoryUseCase>();
             services.AddTransient<IProductUseCase, ProductUseCase>();
             services.AddTransient<IOrderUseCase, OrderUseCase>();
+            services.AddTransient<IPaymentUseCase, PaymentUseCase>();
 
             services.AddTransient<ICustomerUseCase, CustomerUseCase>();
             services.AddTransient<IImageUrlResolver, ImageUrlResolver>();

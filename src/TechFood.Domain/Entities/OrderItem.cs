@@ -26,6 +26,13 @@ public class OrderItem : Entity
 
     public int Quantity { get; private set; }
 
+    public void UpdateQuantity(int quantity)
+    {
+        Validations.ThrowIsGreaterThanZero(quantity, Resources.Exceptions.OrderItem_ThrowQuantityGreaterThanZero);
+
+        Quantity = quantity;
+    }
+
     private void Validate()
     {
         Validations.ThrowValidGuid(ProductId, Resources.Exceptions.OrderItem_ThrowProductIdIsInvalid);
