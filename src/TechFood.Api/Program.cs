@@ -73,11 +73,16 @@ using (var scope = app.Services.CreateScope())
 
 app.UseForwardedHeaders();
 
-app.UseHealthChecks("/health");
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHsts();
+    app.UseHttpsRedirection();
+}
 
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
+
     app.UseSwagger(options =>
     {
         options.OpenApiVersion = Microsoft.OpenApi.OpenApiSpecVersion.OpenApi2_0;
@@ -85,13 +90,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseHealthChecks("/health");
+
 app.UseStaticFiles(new StaticFileOptions
 {
     RequestPath = app.Configuration["TechFoodStaticImagesUrl"],
     FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "images")),
 });
-
-app.UseHttpsRedirection();
 
 app.UseRouting();
 
@@ -102,4 +107,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
