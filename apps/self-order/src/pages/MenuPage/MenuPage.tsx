@@ -195,7 +195,7 @@ export const MenuPage = () => {
         )}
       </Flex>
       <Flex className={classNames.right} direction="column">
-        <Flex className={classNames.rightHeader} direction="column" gap="6">
+        <Flex className={classNames.rightHeader} direction="column" gap="4">
           <Flex direction="column" align="end">
             <LanguageSwitch />
           </Flex>
