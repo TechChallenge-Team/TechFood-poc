@@ -3,7 +3,7 @@ export function configureServer() {
     server: {
       proxy: {
         "/api": {
-          target: "https://localhost:44310",
+          target: "http://localhost:49752",
           changeOrigin: true,
           secure: false,
           rewrite: (path) => path.replace(/^\/api/, ""),
