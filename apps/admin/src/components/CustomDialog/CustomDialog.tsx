@@ -1,26 +1,23 @@
 import { t } from "../../i18n";
 import { AlertDialog, Button, Flex } from "@radix-ui/themes";
 
-interface IDialogDeleteProductProps {
+interface ICustomDialogProps {
   title: string;
   description: string;
-  dialogDeleteOpen: boolean;
-  setDialogDeleteOpen: (open: boolean) => void;
+  dialogOpen: boolean;
+  setDialogOpen: (open: boolean) => void;
   onConfirm: () => void;
 }
 
 export const CustomDialog = ({
   title,
   description,
-  dialogDeleteOpen,
-  setDialogDeleteOpen,
+  dialogOpen,
+  setDialogOpen,
   onConfirm,
-}: IDialogDeleteProductProps) => {
+}: ICustomDialogProps) => {
   return (
-    <AlertDialog.Root
-      open={dialogDeleteOpen}
-      onOpenChange={setDialogDeleteOpen}
-    >
+    <AlertDialog.Root open={dialogOpen} onOpenChange={setDialogOpen}>
       <AlertDialog.Content maxWidth="450px">
         <AlertDialog.Title>{title}</AlertDialog.Title>
         <AlertDialog.Description size="2">

@@ -186,8 +186,8 @@ export const MenuManagement = () => {
       <CustomDialog
         title={t("DeleteDialog.Title")}
         description={t("DeleteDialog.Message")}
-        dialogDeleteOpen={dialogDeleteOpen}
-        setDialogDeleteOpen={setDialogDeleteOpen}
+        dialogOpen={dialogDeleteOpen}
+        setDialogOpen={setDialogDeleteOpen}
         onConfirm={handleDeleteProduct}
       />
       <ProductModal
