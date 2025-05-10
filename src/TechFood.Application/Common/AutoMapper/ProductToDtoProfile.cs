@@ -13,5 +13,6 @@ internal class ProductToDtoProfile : Profile
         CreateMap<Product, UpdateProductResult>();
         CreateMap<Product, CreateCustomerResult>();
         CreateMap<Product, GetProductResult>();
+        CreateMap<Product, CreateProductResult>();
     }
 }

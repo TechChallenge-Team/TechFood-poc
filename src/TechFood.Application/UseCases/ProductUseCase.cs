@@ -75,20 +75,17 @@ internal class ProductUseCase(
                 request.File.OpenReadStream(),
                 imageFileName, nameof(Product));
 
-        var product = await _productRepository.AddAsync(
-            _mapper.Map<CreateProductRequest, Product>(request, destination =>
-        destination
-        .AfterMap((src, dest) =>
-        {
-            dest.SetImageFileName(imageFileName);
-            dest.SetCategory(request.CategoryId);
-            dest.SetOutOfStock(true);
-        }
-        )));
+        var productEntity = new Product(request.Name, request.Description, request.CategoryId, imageFileName, request.Price);
+
+        await _productRepository.AddAsync(productEntity);
 
         await _unitOfWork.CommitAsync();
 
-        return new CreateProductResult(product);
+        var response = _mapper.Map<CreateProductResult>(productEntity, options => options.AfterMap((product, dto) =>
+        {
+            dto.ImageUrl = _imageUrlResolver.BuildFilePath(_httpContextAccessor.HttpContext!.Request, nameof(Product).ToLower(), imageFileName);
+        }));
+        return response;
     }
 
     public async Task<UpdateProductResult?> UpdateAsync(Guid id, UpdateProductRequest request)

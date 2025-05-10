@@ -28,16 +28,11 @@ const router = createBrowserRouter(
           element: <MenuManagement />,
           handle: { title: "Menu", menu: true, icon: <UtensilsIcon /> },
         },
-        {
-          path: "reviews",
-          element: <MenuManagement />,
-          handle: { title: "Reviews", menu: true, icon: <StarIcon /> },
-        },
-        {
-          path: "settings",
-          element: <MenuManagement />,
-          handle: { title: "Settings", menu: true, icon: <SettingsIcon /> },
-        },
+        // {
+        //   path: "reviews",
+        //   element: <MenuManagement />,
+        //   handle: { title: "Reviews", menu: true, icon: <StarIcon /> },
+        // },
       ],
     },
   ],

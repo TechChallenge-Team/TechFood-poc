@@ -1,6 +1,8 @@
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as Label from "@radix-ui/react-label";
+import { toast } from "react-toastify";
+import { t } from "../../i18n";
 import {
   TextField,
   Flex,
@@ -14,10 +16,22 @@ import {
 import { productSchema, ProductFormData } from "../../schemas/productSchema";
 import { FileInputWithPreview } from "../FileInputWithPreview/FileInputWithPreview";
 import { CurrencyInput } from "../CurrencyInput/CurrencyInput";
-
+import { Category } from "../../models/Category";
+import { useState } from "react";
 import classNames from "./ProductModal.module.css";
+import axios from "axios";
+import { ProductCardProps } from "../ProductCard";
 
-export const ProductModal = () => {
+interface IProductModal {
+  categories: Category[];
+  handleAddProducts: (product: ProductCardProps) => void;
+}
+
+export const ProductModal = ({
+  categories,
+  handleAddProducts,
+}: IProductModal) => {
+  const [isOpen, setIsOpen] = useState(false);
   const {
     register,
     handleSubmit,
@@ -35,28 +49,35 @@ export const ProductModal = () => {
     },
   });
 
-  const onSubmit = (data: ProductFormData) => {
+  const onSubmit = async (data: ProductFormData) => {
     if (!data.file) return;
     const file = data.file[0];
-    debugger;
+
     const formData = new FormData();
-    formData.append("name", data.name);
-    formData.append("description", data.description);
-    formData.append("categoryId", data.categoryId);
-    formData.append("price", String(data.price));
-    formData.append("file", file);
+    formData.append("Name", data.name);
+    formData.append("Description", data.description);
+    formData.append("CategoryId", data.categoryId);
+    formData.append("Price", String(data.price));
+    formData.append("File", file);
+    const result = await axios.post("/api/v1/Products", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    if (result.status === 200) {
+      handleAddProducts(result.data);
+      toast.success(t("ProductModal.SuccessMessage"));
+      setIsOpen(false);
+      reset();
+    } else {
+      toast.error(t("ProductModal.ErrorMessage"));
+    }
   };
 
   return (
-    <Dialog.Root
-      onOpenChange={(open) => {
-        if (!open) {
-          reset();
-        }
-      }}
-    >
+    <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
       <Dialog.Trigger>
-        <Button size={"3"}>Add Product</Button>
+        <Button size={"3"}>{t("MenuManagement.AddProduct")}</Button>
       </Dialog.Trigger>
 
       <Dialog.Content maxWidth="450px">
@@ -99,12 +120,11 @@ export const ProductModal = () => {
                     />
                     <Select.Content position="popper">
                       <Select.Group>
-                        <Select.Item value="lanche">Lanche</Select.Item>
-                        <Select.Item value="acompanhamento">
-                          Acompanhamento
-                        </Select.Item>
-                        <Select.Item value="sobremesa">Sobremesa</Select.Item>
-                        <Select.Item value="bebida">Bebida</Select.Item>
+                        {categories.map((category) => (
+                          <Select.Item key={category.id} value={category.id}>
+                            {category.name}
+                          </Select.Item>
+                        ))}
                       </Select.Group>
                     </Select.Content>
                   </Select.Root>

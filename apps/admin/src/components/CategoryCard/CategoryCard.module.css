@@ -9,6 +9,14 @@
   transition: border-color 0.3s ease;
 }
 
+.selected {
+  border-color: var(--accent-10);
+}
+
+.not-selected {
+  border-color: var(--gray-2);
+}
+
 .root:hover {
   border-color: var(--accent-10);
 }

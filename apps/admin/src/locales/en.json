@@ -1,1 +1,11 @@
-{}
+{
+  "MenuManagement": {
+    "Products": "Products",
+    "Categories": "Categories",
+    "AddProduct": "Add Product"
+  },
+  "ProductModal": {
+    "SuccessMessage": "Product added successfully",
+    "ErrorMessage": "Failed to add product"
+  }
+}
