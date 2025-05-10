@@ -27,7 +27,7 @@ export const OrderItemCard = ({
   return (
     <Flex className={classNames.root} direction="column" align="center">
       <img src={imageUrl} alt={name} />
-      <Heading size="1" weight="bold">
+      <Heading size="1" weight="bold" align="center">
         {name}
       </Heading>
       <Text size="1" color="gray">
