@@ -199,7 +199,7 @@ export const MenuPage = () => {
           <Flex direction="column" align="end">
             <LanguageSwitch />
           </Flex>
-          <Heading as="h2" size="5" style={{ maxWidth: "120px" }}>
+          <Heading as="h2" size="5" style={{ maxWidth: "140px" }}>
             {t("menuPage.myOrder")}
           </Heading>
         </Flex>
