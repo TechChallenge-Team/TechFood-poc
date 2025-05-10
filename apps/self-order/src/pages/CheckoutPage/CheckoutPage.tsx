@@ -9,22 +9,26 @@ import {
 } from "@radix-ui/themes";
 import { ArrowLeftIcon } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
+import { useNavigate } from "react-router";
 import { t } from "../../i18n";
+import { PaymentType } from "../../models";
 import { BottomSheet } from "../../components";
+import { useOrder } from "../../contexts";
 
 import classNames from "./CheckoutPage.module.css";
 
-const paymentMethods = [
+const paymentMethods: {
+  type: PaymentType;
+  name: () => string;
+  img: string;
+}[] = [
+  { type: "QRCODE", name: () => t("checkoutPage.pix"), img: "pix" },
   {
-    id: "credit-card",
+    type: "CREDITCARD",
     name: () => t("checkoutPage.creditCard"),
     img: "credit-card",
   },
-  { id: "pix", name: () => t("checkoutPage.pix"), img: "pix" },
 ];
-
-const qrcode =
-  "00020101021243650016COM.MERCADOLIBRE02013063638f1192a-5fd1-4180-a180-8bcae3556bc35204000053039865802BR5925IZABEL AAAA DE MELO6007BARUERI62070503***63040B6D";
 
 const PaymentMethod = ({
   name,
@@ -38,6 +42,7 @@ const PaymentMethod = ({
   onClick: () => void;
 }) => {
   const src = new URL(`../../assets/payments/${img}.png`, import.meta.url).href;
+
   return (
     <Flex
       className={classNames.paymentMethod}
@@ -60,7 +65,7 @@ const SummaryItem = ({
   discount,
 }: {
   name: string;
-  price: string;
+  price: number;
   discount?: boolean;
 }) => {
   return (
@@ -68,17 +73,73 @@ const SummaryItem = ({
       <Text color="gray">{name}</Text>
       <Text color={discount ? "green" : undefined} weight="medium">
         {t("labels.currency")}
-        {discount ? `-${price}` : price}
+        {discount ? `-${price.toFixed(2)}` : price.toFixed(2)}
       </Text>
     </Flex>
   );
 };
 
-export const CheckoutPage = () => {
-  const [isPaymentOpen, setIsPaymentOpen] = useState(false);
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(
-    paymentMethods[0].id
+const QrCodePayment = ({
+  qrCode,
+  total,
+  onFinish,
+}: {
+  qrCode: string;
+  total: number;
+  onFinish: () => void;
+}) => {
+  const handleFinish = () => {
+    onFinish();
+  };
+
+  return (
+    <BottomSheet
+      onClose={handleFinish}
+      showCloseButton={false}
+      closeOnOverlayClick={false}
+    >
+      <Flex direction="column" align="center" gap="4">
+        <Flex direction="column" align="center">
+          <Text size="2" weight="medium">
+            {t("labels.total")}
+          </Text>
+          <Text size="4" weight="bold">
+            {t("labels.currency")}
+            {total.toFixed(2)}
+          </Text>
+        </Flex>
+        <Text size="4" weight="medium" color="gray">
+          {t("checkoutPage.pixInstructions")}
+        </Text>
+        <QRCodeSVG value={qrCode!} size={350} />
+      </Flex>
+    </BottomSheet>
   );
+};
+
+export const CheckoutPage = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [showPayment, setShowPayment] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState(paymentMethods[0].type);
+
+  const navigate = useNavigate();
+
+  const { discount, total, subtotal, paymentQrCode, createPayment } =
+    useOrder();
+
+  const handlePayment = async () => {
+    setIsLoading(true);
+    try {
+      await createPayment(paymentMethod);
+      setShowPayment(true);
+    } catch (error) {
+      console.error("Error creating payment:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleFinish = () => {};
 
   return (
     <Flex className={classNames.root} direction="column" align="center" gap="9">
@@ -88,7 +149,12 @@ export const CheckoutPage = () => {
         justify="between"
         gap="5"
       >
-        <IconButton variant="outline" size="2" aria-label="Back">
+        <IconButton
+          variant="outline"
+          size="2"
+          aria-label="Back"
+          onClick={() => navigate(-1)}
+        >
           <ArrowLeftIcon size="30" />
         </IconButton>
         <Heading className={classNames.title}>
@@ -97,13 +163,13 @@ export const CheckoutPage = () => {
       </Flex>
       <Flex className={classNames.content} direction="column" gap="8">
         <Flex className={classNames.paymentMethods} direction="column" gap="4">
-          {paymentMethods.map((method) => (
+          {paymentMethods.map((type) => (
             <PaymentMethod
-              key={method.id}
-              name={method.name()}
-              img={method.img}
-              selected={method.id === selectedPaymentMethod}
-              onClick={() => setSelectedPaymentMethod(method.id)}
+              key={type.type}
+              name={type.name()}
+              img={type.img}
+              selected={type.type === paymentMethod}
+              onClick={() => setPaymentMethod(type.type)}
             />
           ))}
         </Flex>
@@ -114,10 +180,10 @@ export const CheckoutPage = () => {
             direction="column"
             gap="2"
           >
-            <SummaryItem name={t("checkoutPage.subtotal")} price="50.00" />
+            <SummaryItem name={t("checkoutPage.subtotal")} price={subtotal} />
             <SummaryItem
               name={t("checkoutPage.discount")}
-              price="5.00"
+              price={discount}
               discount
             />
           </Flex>
@@ -128,34 +194,22 @@ export const CheckoutPage = () => {
             justify="between"
           >
             <Text>{t("labels.total")}</Text>
-            <Text weight="medium">{t("labels.currency")}45.00</Text>
+            <Text weight="medium">
+              {t("labels.currency")}
+              {total.toFixed(2)}
+            </Text>
           </Flex>
         </Flex>
-        <Button size="3" onClick={() => setIsPaymentOpen(true)}>
+        <Button size="3" onClick={handlePayment} disabled={isLoading}>
           {t("checkoutPage.pay")}
         </Button>
       </Flex>
-      {isPaymentOpen && selectedPaymentMethod === "pix" && (
-        <BottomSheet
-          onClose={() => setIsPaymentOpen(false)}
-          showCloseButton={false}
-          closeOnOverlayClick={false}
-        >
-          <Flex direction="column" align="center" gap="4">
-            <Flex direction="column" align="center">
-              <Text size="2" weight="medium">
-                {t("labels.total")}
-              </Text>
-              <Text size="4" weight="bold">
-                {t("labels.currency")}45.00
-              </Text>
-            </Flex>
-            <Text size="4" weight="medium" color="gray">
-              {t("checkoutPage.pixInstructions")}
-            </Text>
-            <QRCodeSVG value={qrcode} size={350} />
-          </Flex>
-        </BottomSheet>
+      {showPayment && paymentMethod === "QRCODE" && (
+        <QrCodePayment
+          qrCode={paymentQrCode!}
+          onFinish={handleFinish}
+          total={total}
+        />
       )}
     </Flex>
   );

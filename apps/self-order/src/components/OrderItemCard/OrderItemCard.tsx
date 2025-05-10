@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Flex, Text, Heading, IconButton } from "@radix-ui/themes";
 import { MinusIcon, PlusIcon, Trash2Icon } from "lucide-react";
 import { t } from "../../i18n";
@@ -8,22 +7,26 @@ import classNames from "./OrderItemCard.module.css";
 
 export const OrderItemCard = ({
   item,
-  product: { name, img, price },
-  onRemoveClick,
+  product: { name, imageUrl, price },
+  onRemove,
+  onUpdate,
 }: OrderItemCardProps) => {
-  const [count, setCount] = useState(1);
+  const isDeleteVisible = item.quantity <= 1;
 
-  const src = new URL(`../../assets/products/${img}.png`, import.meta.url).href;
-  const isDeleteVisible = count <= 1;
+  const handleQtyChange = (newQty: number) => {
+    if (newQty < 1) {
+      onRemove(item);
+      return;
+    }
 
-  const handleCountChange = (newCount: number) => {
-    if (newCount < 1) onRemoveClick(item);
-    setCount(newCount);
+    item.quantity = newQty;
+
+    onUpdate(item);
   };
 
   return (
-    <Flex className={classNames.root} direction="column" gap="1" align="center">
-      <img src={src} alt={name} />
+    <Flex className={classNames.root} direction="column" align="center">
+      <img src={imageUrl} alt={name} />
       <Heading size="1" weight="bold">
         {name}
       </Heading>
@@ -37,14 +40,17 @@ export const OrderItemCard = ({
             variant="soft"
             color={isDeleteVisible ? "red" : "gray"}
             size="1"
-            onClick={() => handleCountChange(count - 1)}
+            onClick={() => handleQtyChange(item.quantity - 1)}
           >
             {isDeleteVisible ? <Trash2Icon /> : <MinusIcon />}
           </IconButton>
           <Text size="1" color="gray">
-            {count}
+            {item.quantity}
           </Text>
-          <IconButton size="1" onClick={() => handleCountChange(count + 1)}>
+          <IconButton
+            size="1"
+            onClick={() => handleQtyChange(item.quantity + 1)}
+          >
             <PlusIcon />
           </IconButton>
         </Flex>

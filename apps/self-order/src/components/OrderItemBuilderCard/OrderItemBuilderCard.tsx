@@ -74,14 +74,12 @@ const GarnisheList = ({ items }: { items: Garnish[] }) => {
 };
 
 export const OrderItemBuilderCard = ({
-  item: { id, name, price, img, unit, garnishes },
+  item: { id, name, price, imageUrl, unit, garnishes },
   onClose,
   onAdd,
 }: OrderItemBuilderCardProps) => {
   const [count, setCount] = useState(1);
   const [isChosingGarnishe, setIsChoosingGarnishe] = useState(false);
-
-  const src = new URL(`../../assets/products/${img}.png`, import.meta.url).href;
 
   const handleCountChange = (newCount: number) => {
     if (newCount < 0) return;
@@ -104,7 +102,7 @@ export const OrderItemBuilderCard = ({
           gap="4"
           align="center"
         >
-          <img src={src} alt={name} className={classNames.img} />
+          <img src={imageUrl} alt={name} className={classNames.img} />
           <Flex direction="column" align="center">
             <Text size="2" weight="bold">
               {name}
@@ -140,15 +138,16 @@ export const OrderItemBuilderCard = ({
               </IconButton>
             </Flex>
             <Flex direction="row" gap="4" justify="center">
-              <Button
-                variant="soft"
-                color="gray"
-                size="2"
-                onClick={() => setIsChoosingGarnishe(!isChosingGarnishe)}
-                disabled={garnishes.length === 0}
-              >
-                {t("labels.customize")}
-              </Button>
+              {garnishes && garnishes.length > 0 && (
+                <Button
+                  variant="soft"
+                  color="gray"
+                  size="2"
+                  onClick={() => setIsChoosingGarnishe(!isChosingGarnishe)}
+                >
+                  {t("labels.customize")}
+                </Button>
+              )}
               <Button
                 size="2"
                 onClick={() =>

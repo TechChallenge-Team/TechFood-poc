@@ -8,12 +8,22 @@
 }
 
 .right {
+  width: 200px;
   background-color: var(--white-a10);
   padding: var(--space-4) 0;
 }
 
-.right .header {
-  padding: 0 var(--space-4);
+.right-header {
+  padding: 0 var(--space-4) var(--space-2);
+}
+
+.right-content {
+  border-top: 1px solid var(--gray-a4);
+  border-bottom: 1px solid var(--gray-a4);
+}
+
+.right-footer {
+  padding: var(--space-2) var(--space-4) 0;
 }
 
 .categories-card {

@@ -5,10 +5,9 @@ import { ProductCardProps } from "./ProductCard.types";
 import classNames from "./ProductCard.module.css";
 
 export const ProductCard = ({
-  item: { name, img, unit, price },
+  item: { name, imageUrl, unit, price },
   onClick,
 }: ProductCardProps) => {
-  const src = new URL(`../../assets/products/${img}.png`, import.meta.url).href;
   return (
     <Flex
       className={classNames.root}
@@ -17,7 +16,7 @@ export const ProductCard = ({
       align="center"
       onClick={onClick}
     >
-      <img src={src} alt={name} />
+      <img src={imageUrl} alt={name} />
       <Heading className={classNames.title} size="3" weight="bold" color="gray">
         {name}
       </Heading>

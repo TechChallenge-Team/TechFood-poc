@@ -8,21 +8,25 @@ import {
   TextField,
   Text,
   Button,
+  Spinner,
 } from "@radix-ui/themes";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import axios from "axios";
+import { useNavigate } from "react-router";
 import { t } from "../../i18n";
-import { Category, OrderItem, Product } from "../../models";
+import { Category, Product } from "../../models";
 import {
   CategoryCard,
   ProductCard,
   OrderItemBuilderCard,
   OrderItemCard,
+  LanguageSwitch,
 } from "../../components";
+import { useOrder } from "../../contexts";
+
 import classNames from "./MenuPage.module.css";
-import axios from "axios";
 
 const sortByOptions = [
-  { value: "popular", label: () => t("menuPage.sort.popular") },
   { value: "name", label: () => t("menuPage.sort.name") },
   { value: "price", label: () => t("menuPage.sort.price") },
 ];
@@ -33,7 +37,7 @@ const CategoriesCard = ({
   onSelectedItem,
 }: {
   items: Category[];
-  selectedItem: Category | undefined;
+  selectedItem?: Category;
   onSelectedItem: (item: Category) => void;
 }) => {
   return (
@@ -77,7 +81,7 @@ const ItemsCard = ({
         </Heading>
         <Flex align="center" gap="1">
           <Text size="1">{t("menuPage.sortBy")}</Text>
-          <Select.Root defaultValue="popular" size="1">
+          <Select.Root defaultValue={sortByOptions[0].value} size="1">
             <Select.Trigger className={classNames.sort} variant="ghost" />
             <Select.Content>
               {sortByOptions.map((option) => (
@@ -109,39 +113,49 @@ const ItemsCard = ({
 };
 
 export const MenuPage = () => {
-  const [selectedItem, setSelectedItem] = useState<Product | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<Product | undefined>();
   const [selectedCategory, setSelectedCategory] = useState<
     Category | undefined
   >();
-  const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
 
-  const selectedItems = products.filter(
+  const productsByCategory = products.filter(
     (product) => product.categoryId === selectedCategory?.id
   );
 
-  function handleRemoveOrderItem(item: OrderItem) {
-    setOrderItems((prevItems) => prevItems.filter((i) => i !== item));
-  }
+  const navigate = useNavigate();
+
+  const { items, total, addItem, updateItem, removeItem, createOrder } =
+    useOrder();
 
   useEffect(() => {
-    const loadCategories = async () => {
-      const result = await axios.get<Category[]>("/api/v1/Categories");
-      setCategories(result.data);
-      setSelectedCategory(result.data[0]);
+    const fetchData = async () => {
+      setIsLoading(true);
+
+      const [categories, products] = await Promise.all([
+        axios.get<Category[]>("/api/v1/categories"),
+        axios.get<Product[]>("/api/v1/products"),
+      ]);
+
+      setProducts(products.data);
+      setCategories(categories.data);
+      setSelectedCategory(categories.data[0]);
+      setIsLoading(false);
     };
 
-    const loadProducts = async () => {
-      const result = await axios.get<Product[]>("/api/v1/Products");
-      setProducts(result.data);
-    };
-
-    loadCategories();
-    loadProducts();
+    fetchData();
   }, []);
 
-  return (
+  const handleDone = async () => {
+    await createOrder();
+    navigate("/checkout");
+  };
+
+  return isLoading ? (
+    <Spinner size="3" />
+  ) : (
     <Flex className={classNames.root} direction="row">
       <Flex className={classNames.left} direction="column" gap="4" flexGrow="1">
         <Flex direction="row" justify="between">
@@ -165,42 +179,62 @@ export const MenuPage = () => {
           selectedItem={selectedCategory}
           onSelectedItem={setSelectedCategory}
         />
-        <ItemsCard items={selectedItems} onSelectedItem={setSelectedItem} />
-        {selectedItem && (
+        <ItemsCard
+          items={productsByCategory}
+          onSelectedItem={setSelectedProduct}
+        />
+        {selectedProduct && (
           <OrderItemBuilderCard
-            item={selectedItem}
-            onClose={() => setSelectedItem(null)}
-            onAdd={(item: OrderItem) => {
-              setOrderItems((prevItems) => [...prevItems, item]);
-              setSelectedItem(null);
+            item={selectedProduct}
+            onClose={() => setSelectedProduct(undefined)}
+            onAdd={(item) => {
+              addItem(item);
+              setSelectedProduct(undefined);
             }}
           />
         )}
       </Flex>
       <Flex className={classNames.right} direction="column">
-        <Heading className={classNames.header}>{t("menuPage.myOrder")}</Heading>
-        <Flex direction="column" overflowY="auto" flexGrow="1">
-          {orderItems.map((item, i) => (
+        <Flex className={classNames.rightHeader} direction="column" gap="6">
+          <Flex direction="column" align="end">
+            <LanguageSwitch />
+          </Flex>
+          <Heading as="h2" size="5" style={{ maxWidth: "120px" }}>
+            {t("menuPage.myOrder")}
+          </Heading>
+        </Flex>
+        <Flex
+          className={classNames.rightContent}
+          direction="column"
+          overflowY="auto"
+          flexGrow="1"
+        >
+          {items.map((item, i) => (
             <OrderItemCard
               key={i}
               item={item}
               product={products.find((i) => i.id === item.productId) as Product}
-              onRemoveClick={handleRemoveOrderItem}
+              onRemove={() => removeItem(item)}
+              onUpdate={(item) => updateItem(item)}
             />
           ))}
         </Flex>
-        <Flex direction="column" gap="4" align="center">
-          <Heading as="h5">{t("labels.total")}</Heading>
-          <Text>
+        <Flex
+          className={classNames.rightFooter}
+          direction="column"
+          gap="2"
+          align="center"
+        >
+          <Text size="2">{t("labels.total")}</Text>
+          <Text size="3" weight="bold">
             {t("labels.currency")}
-            {orderItems
-              .reduce((total, item) => total + item.unitPrice, 0)
-              .toFixed(2)}
+            {total.toFixed(2)}
           </Text>
           <Button
             size="4"
             className={classNames.doneButton}
-            disabled={!orderItems.length}
+            disabled={!items.length}
+            onClick={handleDone}
           >
             {t("labels.done")}
           </Button>
