@@ -1,81 +1,109 @@
-import { Box, Button, Flex, IconButton, TextField } from '@radix-ui/themes';
-import { useEffect, useState } from 'react';
-import { useParams } from "react-router"
+import { Box, Button, Flex, IconButton, TextField } from "@radix-ui/themes";
+import { useEffect, useState } from "react";
 import * as Label from "@radix-ui/react-label";
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+import { Form, useNavigate, useParams } from "react-router";
+import { useForm } from "react-hook-form";
+import { ArrowLeftIcon } from "lucide-react";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from 'axios';
-import { useNavigate } from "react-router";
-import { ArrowLeftIcon, Space } from 'lucide-react';
+import axios from "axios";
+
 import classNames from "./RegisterPage.module.css";
+
 const createCustomerSchema = z.object({
   name: z.string().min(1, "O campo nome é obrigatório"),
   email: z.string().email("Formato de email inválido"),
 });
-type CreateCustomerSchema = z.infer<typeof createCustomerSchema>
+
+type CreateCustomerSchema = z.infer<typeof createCustomerSchema>;
+
 export const RegisterPage = () => {
   const [documentNumber, setDocumentNumber] = useState("");
-  let navigate = useNavigate();
-  let params = useParams();
+  const navigate = useNavigate();
+  const params = useParams();
 
-  const { register, handleSubmit, formState: { errors } } = useForm<CreateCustomerSchema>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<CreateCustomerSchema>({
     resolver: zodResolver(createCustomerSchema),
   });
 
-  const onSubmit = async (customer: CreateCustomerSchema) => {
-
+  const onSubmit = async ({ name, email }: CreateCustomerSchema) => {
     try {
-      const result = await axios.post<any>("/api/v1/Customers",
-        { cpf: params.doc, name: customer.name, email: customer.email });
-      navigate('/menu');
+      const result = await axios.post<{
+        id: string;
+        name: string;
+        email: string;
+        cpf: string;
+      }>("/api/v1/customers", {
+        cpf: params.doc,
+        name,
+        email,
+      });
+
+      navigate("/menu");
     } catch (error) {
-      console.log('erro!!!');
+      console.log("erro!!!");
       console.log(error);
     }
   };
 
-
-
   useEffect(() => {
-    setDocumentNumber(String(params.doc))
-  }, []);
+    setDocumentNumber(params.doc!);
+  }, [params.doc]);
+
   return (
-
-    <Flex direction="column" align="center" justify="center" className={classNames.spaceup} >
-
-      <Flex gap="2" align="center"  >
-        <Box maxWidth="500px"  >
-          <form onSubmit={handleSubmit(onSubmit)}>
+    <Flex
+      direction="column"
+      align="center"
+      justify="center"
+      className={classNames.spaceup}
+    >
+      <Flex gap="2" align="center">
+        <Box maxWidth="500px">
+          <Form onSubmit={handleSubmit(onSubmit)}>
             <Label.Root className="label" htmlFor="cpf">
               CPF:
             </Label.Root>
-            <TextField.Root name='cpf' size="3" maxLength={11} value={documentNumber} disabled={true} />
+            <TextField.Root
+              name="cpf"
+              size="3"
+              maxLength={11}
+              value={documentNumber}
+              disabled={true}
+            />
             <Label.Root className="label" htmlFor="nome">
               Nome:
             </Label.Root>
-            <TextField.Root {...register("name", { required: "O campo nome é obrigatório" })}
-              size="3" maxLength={255} />
+            <TextField.Root
+              {...register("name", { required: "O campo nome é obrigatório" })}
+              size="3"
+              maxLength={255}
+            />
             {errors.name && <span>{errors.name.message}</span>}
             <Label.Root className="label" htmlFor="email">
               Email:
             </Label.Root>
-            <TextField.Root{...register("email")} size="3" maxLength={255} />
+            <TextField.Root {...register("email")} size="3" maxLength={255} />
             {errors.email && <span>{errors.email.message}</span>}
-            <Flex direction="row" justify={'between'}  >
-              <IconButton onClick={() => { navigate('/') }} size="3" >
+            <Flex direction="row" justify="between">
+              <IconButton
+                onClick={() => {
+                  navigate("/");
+                }}
+                size="3"
+              >
                 <ArrowLeftIcon size="40" />
               </IconButton>
-              <Button type='submit' size="3"   >Cadastrar</Button>
+              <Button type="submit" size="3">
+                Cadastrar
+              </Button>
             </Flex>
-          </form>
+          </Form>
         </Box>
-
-
       </Flex>
     </Flex>
-
-
   );
-}
-
+};
