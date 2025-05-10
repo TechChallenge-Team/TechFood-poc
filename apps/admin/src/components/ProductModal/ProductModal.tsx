@@ -1,8 +1,6 @@
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as Label from "@radix-ui/react-label";
-import { toast } from "react-toastify";
-import { t } from "../../i18n";
 import {
   TextField,
   Flex,
@@ -17,21 +15,25 @@ import { productSchema, ProductFormData } from "../../schemas/productSchema";
 import { FileInputWithPreview } from "../FileInputWithPreview/FileInputWithPreview";
 import { CurrencyInput } from "../CurrencyInput/CurrencyInput";
 import { Category } from "../../models/Category";
-import { useState } from "react";
 import classNames from "./ProductModal.module.css";
-import axios from "axios";
-import { ProductCardProps } from "../ProductCard";
+import { Product } from "../../models/Product";
+import { useEffect } from "react";
 
 interface IProductModal {
+  isOpen: boolean;
   categories: Category[];
-  handleAddProducts: (product: ProductCardProps) => void;
+  setIsOpen: (open: boolean) => void;
+  handleProduct: (formData: FormData, id: string) => void;
+  selectedEditProduct?: Product | null;
 }
 
 export const ProductModal = ({
   categories,
-  handleAddProducts,
+  handleProduct,
+  isOpen,
+  setIsOpen,
+  selectedEditProduct,
 }: IProductModal) => {
-  const [isOpen, setIsOpen] = useState(false);
   const {
     register,
     handleSubmit,
@@ -49,6 +51,18 @@ export const ProductModal = ({
     },
   });
 
+  useEffect(() => {
+    if (selectedEditProduct) {
+      reset({
+        name: selectedEditProduct.name,
+        description: selectedEditProduct.description,
+        categoryId: selectedEditProduct.categoryId,
+        file: undefined,
+        price: selectedEditProduct.price,
+      });
+    }
+  }, [selectedEditProduct, reset]);
+
   const onSubmit = async (data: ProductFormData) => {
     if (!data.file) return;
     const file = data.file[0];
@@ -59,27 +73,12 @@ export const ProductModal = ({
     formData.append("CategoryId", data.categoryId);
     formData.append("Price", String(data.price));
     formData.append("File", file);
-    const result = await axios.post("/api/v1/Products", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-    if (result.status === 200) {
-      handleAddProducts(result.data);
-      toast.success(t("ProductModal.SuccessMessage"));
-      setIsOpen(false);
-      reset();
-    } else {
-      toast.error(t("ProductModal.ErrorMessage"));
-    }
+    handleProduct(formData, selectedEditProduct?.id || "");
+    reset();
   };
 
   return (
     <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
-      <Dialog.Trigger>
-        <Button size={"3"}>{t("MenuManagement.AddProduct")}</Button>
-      </Dialog.Trigger>
-
       <Dialog.Content maxWidth="450px">
         <Dialog.Title></Dialog.Title>
         <form

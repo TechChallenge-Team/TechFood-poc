@@ -1,16 +1,20 @@
 import { Flex, Text, Strong, Heading } from "@radix-ui/themes";
-import { ProductCardProps } from "./ProductCard.types";
+
 import { Pencil1Icon, TrashIcon } from "@radix-ui/react-icons";
 import classNames from "./ProductCard.module.css";
+import { Product } from "../../models/Product";
+
+interface IProductCardProps {
+  product: Product;
+  handleOpenDeleteAlertDialog: (id: string) => void;
+  handleOpenEditDialog: (product: Product) => void;
+}
 
 export const ProductCard = ({
-  price,
-  description,
-  imageUrl,
-  name,
-  id,
-  handleDeleteProduct,
-}: ProductCardProps) => {
+  product,
+  handleOpenDeleteAlertDialog,
+  handleOpenEditDialog,
+}: IProductCardProps) => {
   return (
     <Flex className={classNames.root} direction="column" gap="2">
       <Flex
@@ -26,10 +30,15 @@ export const ProductCard = ({
           weight="bold"
           color="gray"
         >
-          {name}
+          {product.name}
         </Heading>
         <Flex gap={"3"}>
-          <Flex className={classNames.edit} align={"center"} justify={"center"}>
+          <Flex
+            className={classNames.edit}
+            align={"center"}
+            justify={"center"}
+            onClick={() => handleOpenEditDialog(product)}
+          >
             <Pencil1Icon
               className={classNames.editIcon}
               width={16}
@@ -41,7 +50,7 @@ export const ProductCard = ({
             align={"center"}
             justify={"center"}
             onClick={() => {
-              handleDeleteProduct(id);
+              handleOpenDeleteAlertDialog(product.id);
             }}
           >
             <TrashIcon
@@ -54,12 +63,12 @@ export const ProductCard = ({
       </Flex>
       <Flex direction="row" align={"center"} gap="2" justify="start">
         <Flex className={classNames.imageContainer}>
-          <img src={imageUrl} alt={name} />
+          <img src={product.imageUrl} alt={product.name} />
         </Flex>
         <Flex className={classNames.info} direction="column" gap="1">
           <Flex gap="1" className={classNames.price}>
             <Strong>R$</Strong>
-            {Number(price).toFixed(2)}
+            {Number(product.price).toFixed(2)}
           </Flex>
           <Flex direction="row" gap="2" align="center">
             <Text
@@ -68,7 +77,7 @@ export const ProductCard = ({
               weight="medium"
               color="gray"
             >
-              {description}
+              {product.description}
             </Text>
           </Flex>
         </Flex>
