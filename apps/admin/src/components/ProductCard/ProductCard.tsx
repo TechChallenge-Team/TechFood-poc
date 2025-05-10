@@ -62,7 +62,12 @@ export const ProductCard = ({
             {Number(price).toFixed(2)}
           </Flex>
           <Flex direction="row" gap="2" align="center">
-            <Text size="2" weight="medium" color="gray">
+            <Text
+              className={classNames.description}
+              size="2"
+              weight="medium"
+              color="gray"
+            >
               {description}
             </Text>
           </Flex>
