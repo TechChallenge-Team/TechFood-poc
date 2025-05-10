@@ -78,7 +78,13 @@ export const ProductModal = ({
   };
 
   return (
-    <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog.Root
+      open={isOpen}
+      onOpenChange={() => {
+        setIsOpen(!isOpen);
+        reset();
+      }}
+    >
       <Dialog.Content maxWidth="450px">
         <Dialog.Title></Dialog.Title>
         <form
