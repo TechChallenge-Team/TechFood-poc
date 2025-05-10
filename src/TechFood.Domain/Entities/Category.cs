@@ -7,10 +7,11 @@ public class Category : Entity, IAggregateRoot
 {
     public Category() { }
 
-    public Category(string name, string imageFileName)
+    public Category(string name, string imageFileName, int sortOrder)
     {
         Name = name;
         ImageFileName = imageFileName;
+        SortOrder = sortOrder;
 
         Validate();
     }
@@ -18,6 +19,8 @@ public class Category : Entity, IAggregateRoot
     public string Name { get; private set; } = null!;
 
     public string ImageFileName { get; private set; } = null!;
+
+    public int SortOrder { get; private set; }
 
     public void UpdateAsync(string name, string imageFileName)
     {
@@ -31,5 +34,6 @@ public class Category : Entity, IAggregateRoot
     {
         Validations.ThrowIfEmpty(Name, Resources.Exceptions.Category_ThrowNameIsEmpty);
         Validations.ThrowIfEmpty(ImageFileName, Resources.Exceptions.Category_ThrowFileImageIsEmpty);
+        Validations.ThrowIfLessThan(SortOrder, 0, Resources.Exceptions.Category_ThrowIndexIsLessThanZero);
     }
 }

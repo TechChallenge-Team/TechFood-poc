@@ -33,7 +33,7 @@ namespace TechFood.Application.UseCases
         {
             var imageFileName = _imageUrlResolver.CreateImageFileName(category.Name, category.File.ContentType);
 
-            var categoryEntity = new Category(category.Name, imageFileName);
+            var categoryEntity = new Category(category.Name, imageFileName, 0);
 
             await _localDiskImageStorageService.SaveAsync(
                 category.File.OpenReadStream(),

@@ -24,7 +24,7 @@ public class CategoryRepository(TechFoodContext dbContext) : ICategoryRepository
         => await Task.FromResult(_categories.Remove(category));
 
     public async Task<IEnumerable<Category>> GetAllAsync()
-        => await _categories.AsNoTracking().ToListAsync();
+        => await _categories.AsNoTracking().OrderBy(c => c.SortOrder).ToListAsync();
 
     public async Task<Category?> GetByIdAsync(Guid id)
         => await _categories.Where(x => x.Id == id).FirstOrDefaultAsync();

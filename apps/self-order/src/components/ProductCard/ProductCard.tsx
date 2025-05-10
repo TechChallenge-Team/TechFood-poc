@@ -17,7 +17,13 @@ export const ProductCard = ({
       onClick={onClick}
     >
       <img src={imageUrl} alt={name} />
-      <Heading className={classNames.title} size="3" weight="bold" color="gray">
+      <Heading
+        className={classNames.title}
+        size="3"
+        weight="bold"
+        color="gray"
+        align="center"
+      >
         {name}
       </Heading>
       <Text size="1" weight="medium" color="gray" wrap="wrap">

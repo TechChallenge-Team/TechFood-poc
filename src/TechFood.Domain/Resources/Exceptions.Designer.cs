@@ -70,6 +70,15 @@ namespace TechFood.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Category order must be greater than or equal to 0..
+        /// </summary>
+        public static string Category_ThrowIndexIsLessThanZero {
+            get {
+                return ResourceManager.GetString("Category_ThrowIndexIsLessThanZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The category name cannot be empty.
         /// </summary>
         public static string Category_ThrowNameIsEmpty {
