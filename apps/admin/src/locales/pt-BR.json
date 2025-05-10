@@ -6,6 +6,13 @@
   },
   "ProductModal": {
     "SuccessMessage": "Produto adicionado com sucesso",
-    "ErrorMessage": "Falha ao adicionar produto"
+    "ErrorMessage": "Falha ao adicionar produto",
+    "DeleteSuccessMessage": "Produto deletado com sucesso"
+  },
+  "DeleteDialog": {
+    "Title": "Deletar Produto",
+    "Message": "Você tem certeza que deseja deletar este produto?",
+    "Confirm": "Deletar",
+    "Cancel": "Cancelar"
   }
 }

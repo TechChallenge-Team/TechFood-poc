@@ -1,21 +1,16 @@
-import {
-  Flex,
-  Heading,
-  TextField,
-  AlertDialog,
-  Button,
-} from "@radix-ui/themes";
+import { Flex, Heading, TextField, Button } from "@radix-ui/themes";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { CategoryCard, ProductCard, ProductCardProps } from "../../components";
 import { ProductModal } from "../../components/ProductModal";
 import { Category } from "../../models/Category";
 import { t } from "../../i18n";
 import { normalizeText } from "../../utilities/normalizeText";
-
+import { CustomDialog } from "../../components/CustomDialog";
 import classNames from "./MenuManagement.module.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { Product } from "../../models/Product";
 
 const Section = ({ title, direction, children }: any) => {
   return (
@@ -31,13 +26,17 @@ const Section = ({ title, direction, children }: any) => {
 };
 
 export const MenuManagement = () => {
-  const [products, setProducts] = useState<ProductCardProps[]>([]);
-  const [productsFiltered, setProductsFiltered] = useState<ProductCardProps[]>(
-    []
-  );
+  const [products, setProducts] = useState<Product[]>([]);
+  const [productsFiltered, setProductsFiltered] = useState<Product[]>([]);
+  const [productFormIsOpen, setProductFormIsOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [categories, setCategories] = useState<Category[]>([]);
   const [categorySelected, setCategorySelected] = useState("");
+  const [dialogDeleteOpen, setDialogDeleteOpen] = useState(false);
+  const [selectedDeleteProduct, setSelectedDeleteProduct] =
+    useState<string>("");
+  const [selectedEditProduct, setSelectedEditProduct] =
+    useState<Product | null>(null);
 
   const handleFilterByCategory = (category: string) => {
     if (category === categorySelected) {
@@ -53,19 +52,71 @@ export const MenuManagement = () => {
     setCategorySelected(category);
   };
 
-  const handleAddProduct = (product: ProductCardProps) => {
-    setProducts((prev) => [...prev, product]);
-    setProductsFiltered((prev) => [...prev, product]);
+  const handleEditProduct = async (formData: FormData) => {
+    const result = await axios.put("/api/v1/Products", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    if (result.status === 200) {
+      toast.success(t("ProductModal.SuccessMessage"));
+      setProductFormIsOpen(false);
+    } else {
+      toast.error(t("ProductModal.ErrorMessage"));
+    }
+
+    setProducts((prev) => [...prev, result.data]);
+    setProductsFiltered((prev) => [...prev, result.data]);
   };
 
-  const handleDeleteProduct = async (id: string) => {
-    const result = await axios.delete(`/api/v1/Products/${id}`);
-    if (result.status !== 200) {
-      toast.error("Error deleting product");
-      return;
+  const handleProduct = async (formData: FormData) => {
+    const result = await axios.post("/api/v1/Products", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    if (result.status === 200) {
+      toast.success(t("ProductModal.SuccessMessage"));
+      setProductFormIsOpen(false);
+    } else {
+      toast.error(t("ProductModal.ErrorMessage"));
     }
-    setProducts((prev) => prev.filter((product) => product.id !== id));
-    setProductsFiltered((prev) => prev.filter((product) => product.id !== id));
+
+    setProducts((prev) => [...prev, result.data]);
+    setProductsFiltered((prev) => [...prev, result.data]);
+  };
+
+  const handleOpenDeleteAlertDialog = (id: string) => {
+    setSelectedDeleteProduct(id);
+    setDialogDeleteOpen(true);
+  };
+
+  const handleOpenEditDialog = (product: Product) => {
+    setSelectedEditProduct(product);
+    setProductFormIsOpen(true);
+  };
+
+  const handleDeleteProduct = async () => {
+    if (selectedDeleteProduct) {
+      const result = await axios.delete(
+        `/api/v1/Products/${selectedDeleteProduct}`
+      );
+      setSelectedDeleteProduct("");
+      setDialogDeleteOpen(false);
+
+      if (result.status !== 204) {
+        toast.error("Error deleting product");
+        return;
+      }
+
+      toast.success(t("ProductModal.DeleteSuccessMessage"));
+      setProducts((prev) =>
+        prev.filter((product) => product.id !== selectedDeleteProduct)
+      );
+      setProductsFiltered((prev) =>
+        prev.filter((product) => product.id !== selectedDeleteProduct)
+      );
+    }
   };
 
   useEffect(() => {
@@ -79,7 +130,7 @@ export const MenuManagement = () => {
   useEffect(() => {
     const fetchProductsAndCategories = async () => {
       const [productsResponse, categoriesResponse] = await Promise.all([
-        axios.get<ProductCardProps[]>("/api/v1/Products"),
+        axios.get<Product[]>("/api/v1/Products"),
         axios.get<Category[]>("/api/v1/Categories"),
       ]);
       setProducts(productsResponse.data);
@@ -105,10 +156,9 @@ export const MenuManagement = () => {
             <MagnifyingGlassIcon height="25" width="25" />
           </TextField.Slot>
         </TextField.Root>
-        <ProductModal
-          categories={categories}
-          handleAddProducts={handleAddProduct}
-        />
+        <Button size={"3"} onClick={() => setProductFormIsOpen(true)}>
+          {t("MenuManagement.AddProduct")}
+        </Button>
       </Flex>
       <Flex direction="row" justify="between"></Flex>
       {!search && (
@@ -127,37 +177,26 @@ export const MenuManagement = () => {
         {productsFiltered.map((product) => (
           <ProductCard
             key={product.id}
-            {...product}
-            handleDeleteProduct={handleDeleteProduct}
+            product={product}
+            handleOpenDeleteAlertDialog={handleOpenDeleteAlertDialog}
+            handleOpenEditDialog={handleOpenEditDialog}
           />
         ))}
       </Section>
-
-      {/* <AlertDialog.Root>
-        <AlertDialog.Trigger>
-          <Button color="red">Revoke access</Button>
-        </AlertDialog.Trigger>
-        <AlertDialog.Content maxWidth="450px">
-          <AlertDialog.Title>Revoke access</AlertDialog.Title>
-          <AlertDialog.Description size="2">
-            Are you sure? This application will no longer be accessible and any
-            existing sessions will be expired.
-          </AlertDialog.Description>
-
-          <Flex gap="3" mt="4" justify="end">
-            <AlertDialog.Cancel>
-              <Button variant="soft" color="gray">
-                Cancel
-              </Button>
-            </AlertDialog.Cancel>
-            <AlertDialog.Action>
-              <Button variant="solid" color="red">
-                Revoke access
-              </Button>
-            </AlertDialog.Action>
-          </Flex>
-        </AlertDialog.Content>
-      </AlertDialog.Root> */}
+      <CustomDialog
+        title={t("DeleteDialog.Title")}
+        description={t("DeleteDialog.Message")}
+        dialogDeleteOpen={dialogDeleteOpen}
+        setDialogDeleteOpen={setDialogDeleteOpen}
+        onConfirm={handleDeleteProduct}
+      />
+      <ProductModal
+        isOpen={productFormIsOpen}
+        setIsOpen={setProductFormIsOpen}
+        categories={categories}
+        handleProduct={handleProduct}
+        selectedEditProduct={selectedEditProduct}
+      />
     </Flex>
   );
 };
