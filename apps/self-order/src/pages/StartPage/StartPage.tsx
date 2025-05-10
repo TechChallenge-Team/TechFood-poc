@@ -31,7 +31,7 @@ export const StartPage = () => {
   };
 
   const handlerDontIdentify = () => {
-    navigate("/register");
+    navigate("/menu");
   };
 
   return (
