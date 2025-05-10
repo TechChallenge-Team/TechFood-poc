@@ -2,7 +2,8 @@
   "startPage": {
     "documentNumber": "Document number",
     "register": "Register",
-    "dontIdentify": "Don't identify"
+    "dontIdentify": "Don't identify",
+    "invalidDocument": "Invalid document number!"
   },
   "menuPage": {
     "choose": "Choose",
@@ -52,6 +53,8 @@
     "finish": "Finish",
     "customize": "Customize",
     "apply": "Apply",
-    "done": "Done"
+    "done": "Done",
+    "ok": "OK",
+    "close": "Close"
   }
 }

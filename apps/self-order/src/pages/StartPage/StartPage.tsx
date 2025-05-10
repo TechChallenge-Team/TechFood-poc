@@ -1,23 +1,39 @@
 import { useState } from "react";
-import { Box, Button, Flex, IconButton, TextField } from "@radix-ui/themes";
+import {
+  AlertDialog,
+  Box,
+  Button,
+  Flex,
+  IconButton,
+  TextField,
+} from "@radix-ui/themes";
 import { ArrowRightIcon } from "lucide-react";
+import { useNavigate } from "react-router";
 import { t } from "../../i18n";
 import { LanguageSwitch } from "../../components";
+import { validateCPF } from "../../utilities";
+
 import classNames from "./StartPage.module.css";
-import { Link, useNavigate } from "react-router";
-import { validaCPF } from "../../utilities";
 
 export const StartPage = () => {
+  const [errorMessage, setErrorMessage] = useState("");
   const [documentNumber, setDocumentNumber] = useState("");
-  let navigate = useNavigate();
-  function register() {
-    var resp = validaCPF(documentNumber);
-    if (validaCPF(documentNumber)) {
-      navigate('/register/' + documentNumber)
+
+  const navigate = useNavigate();
+
+  const handleRegister = () => {
+    if (validateCPF(documentNumber)) {
+      navigate("/register/" + documentNumber);
       return;
     }
-    alert('cpf inválido!')
-  }
+
+    setErrorMessage(t("startPage.invalidDocument"));
+  };
+
+  const handlerDontIdentify = () => {
+    navigate("/register");
+  };
+
   return (
     <Flex className={classNames.root} direction="column">
       <Flex className={classNames.languageSwitch} justify="end">
@@ -38,14 +54,34 @@ export const StartPage = () => {
               <ArrowRightIcon size="40" />
             </IconButton>
           </Flex>
-          <Button onClick={register} size="3">{t("startPage.register")}</Button>
-          <Link to='/menu' >
-            <Button variant="outline" size="3">
-              {t("startPage.dontIdentify")}
-            </Button>
-          </Link>
+          <Button
+            onClick={handleRegister}
+            size="3"
+            disabled={documentNumber.length < 11}
+          >
+            {t("startPage.register")}
+          </Button>
+          <Button onClick={handlerDontIdentify} variant="outline" size="3">
+            {t("startPage.dontIdentify")}
+          </Button>
         </Flex>
       </Flex>
+      {errorMessage && (
+        <AlertDialog.Root open={true}>
+          <AlertDialog.Content>
+            <AlertDialog.Description mb="5">
+              <Flex justify="center">{errorMessage}</Flex>
+            </AlertDialog.Description>
+            <Flex gap="3" justify="center">
+              <AlertDialog.Cancel onClick={() => setErrorMessage("")}>
+                <Button variant="soft" color="gray">
+                  {t("labels.close")}
+                </Button>
+              </AlertDialog.Cancel>
+            </Flex>
+          </AlertDialog.Content>
+        </AlertDialog.Root>
+      )}
     </Flex>
   );
 };

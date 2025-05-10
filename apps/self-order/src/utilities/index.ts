@@ -1,2 +1,2 @@
 export * from "./getReviewsCount";
-export * from "./validaCPF";
+export * from "./validateCpf";

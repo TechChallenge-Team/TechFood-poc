@@ -2,7 +2,8 @@
   "startPage": {
     "documentNumber": "Nº do documento",
     "register": "Cadastra-se",
-    "dontIdentify": "Não se identificar"
+    "dontIdentify": "Não se identificar",
+    "invalidDocument": "Número do documento inválido!"
   },
   "menuPage": {
     "choose": "Montar",
@@ -52,6 +53,8 @@
     "finish": "Finalizar",
     "customize": "Personalizar",
     "apply": "Aplicar",
-    "done": "Concluir"
+    "done": "Concluir",
+    "ok": "OK",
+    "close": "Fechar"
   }
 }
