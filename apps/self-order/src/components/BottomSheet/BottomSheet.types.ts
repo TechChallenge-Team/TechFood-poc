@@ -1,5 +1,5 @@
 export type BottomSheetProps = {
-  onClose: () => void;
+  onClose?: () => void;
   showCloseButton?: boolean;
   closeOnOverlayClick?: boolean;
 } & React.HTMLAttributes<HTMLDivElement>;

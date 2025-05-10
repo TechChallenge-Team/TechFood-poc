@@ -22,7 +22,12 @@ const paymentMethods: {
   name: () => string;
   img: string;
 }[] = [
-  { type: "QRCODE", name: () => t("checkoutPage.pix"), img: "pix" },
+  {
+    type: "MERCADOPAGO",
+    name: () => t("checkoutPage.mercadoPago"),
+    img: "mercado-pago",
+  },
+  { type: "PIX", name: () => t("checkoutPage.pix"), img: "pix" },
   {
     type: "CREDITCARD",
     name: () => t("checkoutPage.creditCard"),
@@ -79,26 +84,28 @@ const SummaryItem = ({
   );
 };
 
-const QrCodePayment = ({
+const MercadoPagoPayment = ({
   qrCode,
   total,
   onFinish,
+  onCancel,
 }: {
   qrCode: string;
   total: number;
   onFinish: () => void;
+  onCancel: () => void;
 }) => {
+  const handleCancel = () => {
+    onCancel();
+  };
+
   const handleFinish = () => {
     onFinish();
   };
 
   return (
-    <BottomSheet
-      onClose={handleFinish}
-      showCloseButton={false}
-      closeOnOverlayClick={false}
-    >
-      <Flex direction="column" align="center" gap="4">
+    <BottomSheet showCloseButton={false} closeOnOverlayClick={false}>
+      <Flex direction="column" align="center" gap="5">
         <Flex direction="column" align="center">
           <Text size="2" weight="medium">
             {t("labels.total")}
@@ -109,9 +116,12 @@ const QrCodePayment = ({
           </Text>
         </Flex>
         <Text size="4" weight="medium" color="gray">
-          {t("checkoutPage.pixInstructions")}
+          {t("checkoutPage.mercadoPagoInstructions")}
         </Text>
         <QRCodeSVG value={qrCode!} size={350} />
+        <Button color="tomato" onClick={handleCancel}>
+          {t("checkoutPage.cancel")}
+        </Button>
       </Flex>
     </BottomSheet>
   );
@@ -204,10 +214,11 @@ export const CheckoutPage = () => {
           {t("checkoutPage.pay")}
         </Button>
       </Flex>
-      {showPayment && paymentMethod === "QRCODE" && (
-        <QrCodePayment
+      {showPayment && paymentMethod === "MERCADOPAGO" && (
+        <MercadoPagoPayment
           qrCode={paymentQrCode!}
           onFinish={handleFinish}
+          onCancel={() => setShowPayment(false)}
           total={total}
         />
       )}

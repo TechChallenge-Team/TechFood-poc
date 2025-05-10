@@ -19,7 +19,7 @@ namespace TechFood.Infra.Services.MercadoPago
                     configSection.Bind(options);
                 });
 
-            services.AddKeyedTransient<IPaymentService, MercadoPagoPaymentService>(PaymentType.QrCode);
+            services.AddKeyedTransient<IPaymentService, MercadoPagoPaymentService>(PaymentType.MercadoPago);
 
             services.AddHttpClient(MercadoPagoOptions.ClientName, (serviceProvider, client) =>
             {

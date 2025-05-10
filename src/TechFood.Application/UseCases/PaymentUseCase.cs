@@ -39,7 +39,7 @@ internal class PaymentUseCase(
 
         var paymentService = _serviceProvider.GetRequiredKeyedService<IPaymentService>(data.Type);
 
-        if (data.Type == PaymentType.QrCode)
+        if (data.Type == PaymentType.MercadoPago)
         {
             var paymentRequest = await paymentService.GenerateQrCodePaymentAsync(
                 new(

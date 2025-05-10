@@ -1,1 +1,1 @@
-export type PaymentType = "CREDITCARD" | "QRCODE";
+export type PaymentType = "MERCADOPAGO" | "PIX" | "CREDITCARD";
