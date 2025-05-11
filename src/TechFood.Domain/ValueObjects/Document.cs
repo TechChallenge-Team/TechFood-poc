@@ -15,13 +15,14 @@ public class Document : ValueObject
         Value = value;
         Validate();
     }
+
     public DocumentType Type { get; set; }
 
     public string Value { get; set; }
 
     private void Validate()
     {
-        if (Type == DocumentType.CPF && !ValidaDocument.ValidarCPF(Value))
+        if (Type == DocumentType.CPF && !DocumentValidation.IsCpfValid(Value))
         {
             throw new DomainException(Resources.Exceptions.Customer_ThrowDocumentCPFInvalid);
         }
