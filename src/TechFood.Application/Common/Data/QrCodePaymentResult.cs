@@ -1,15 +1,14 @@
-namespace TechFood.Application.Common.Data
+namespace TechFood.Application.Common.Data;
+
+public class QrCodePaymentResult
 {
-    public class QrCodePaymentResult
+    public string QrCodeId { get; set; }
+
+    public string QrCodeData { get; set; }
+
+    public QrCodePaymentResult(string qrCodeId, string qrCodeData)
     {
-        public string QrCodeId { get; set; }
-
-        public string QrCodeData { get; set; }
-
-        public QrCodePaymentResult(string qrCodeId, string qrCodeData)
-        {
-            QrCodeId = qrCodeId;
-            QrCodeData = qrCodeData;
-        }
+        QrCodeId = qrCodeId;
+        QrCodeData = qrCodeData;
     }
 }

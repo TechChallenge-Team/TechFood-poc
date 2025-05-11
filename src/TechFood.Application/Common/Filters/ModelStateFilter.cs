@@ -2,30 +2,29 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace TechFood.Application.Common.Filters
+namespace TechFood.Application.Common.Filters;
+
+public class ModelStateFilter : ActionFilterAttribute
 {
-    public class ModelStateFilter : ActionFilterAttribute
+    public override void OnActionExecuting(ActionExecutingContext context)
     {
-        public override void OnActionExecuting(ActionExecutingContext context)
+        if (!context.ModelState.IsValid)
         {
-            if (!context.ModelState.IsValid)
+            var requestId = context.HttpContext.TraceIdentifier;
+
+            var errors = context.ModelState
+                .Where(e => e.Value!.Errors.Count > 0)
+                .ToDictionary(
+                    kv => kv.Key,
+                    kv => kv.Value!.Errors.Select(e => e.ErrorMessage).ToArray()
+                );
+
+            context.Result = new BadRequestObjectResult(new
             {
-                var requestId = context.HttpContext.TraceIdentifier;
-
-                var errors = context.ModelState
-                    .Where(e => e.Value!.Errors.Count > 0)
-                    .ToDictionary(
-                        kv => kv.Key,
-                        kv => kv.Value!.Errors.Select(e => e.ErrorMessage).ToArray()
-                    );
-
-                context.Result = new BadRequestObjectResult(new
-                {
-                    requestId,
-                    message = "The request is invalid.",
-                    errors
-                });
-            }
+                requestId,
+                message = "The request is invalid.",
+                errors
+            });
         }
     }
 }

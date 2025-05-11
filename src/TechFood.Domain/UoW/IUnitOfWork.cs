@@ -1,11 +1,10 @@
 using System.Threading.Tasks;
 
-namespace TechFood.Domain.UoW
-{
-    public interface IUnitOfWork
-    {
-        Task<bool> CommitAsync();
+namespace TechFood.Domain.UoW;
 
-        Task RollbackAsync();
-    }
+public interface IUnitOfWork
+{
+    Task<bool> CommitAsync();
+
+    Task RollbackAsync();
 }
