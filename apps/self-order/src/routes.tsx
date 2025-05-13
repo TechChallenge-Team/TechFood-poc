@@ -5,6 +5,7 @@ import {
   CheckoutPage,
   RegisterPage,
   ConfirmationPage,
+  HomePage,
 } from "./pages";
 
 const router = createBrowserRouter(
@@ -12,6 +13,10 @@ const router = createBrowserRouter(
     {
       index: true,
       path: "/",
+      element: <HomePage />,
+    },
+    {
+      path: "/start",
       element: <StartPage />,
     },
     {
