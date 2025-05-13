@@ -1,11 +1,10 @@
 using System.IO;
 using System.Threading.Tasks;
 
-namespace TechFood.Application.Common.Services.Interfaces
+namespace TechFood.Application.Common.Services.Interfaces;
+
+public interface ILocalDiskImageStorageService
 {
-    public interface ILocalDiskImageStorageService
-    {
-        Task SaveAsync(Stream imageStream, string fileName, string folder);
-        Task DeleteAsync(string fileName, string folder);
-    }
+    Task SaveAsync(Stream imageStream, string fileName, string folder);
+    Task DeleteAsync(string fileName, string folder);
 }

@@ -4,29 +4,28 @@ using TechFood.Application.Common.Services.Interfaces;
 using TechFood.Application.UseCases;
 using TechFood.Application.UseCases.Interfaces;
 
-namespace TechFood.Application
+namespace TechFood.Application;
+
+public static class DependecyInjection
 {
-    public static class DependecyInjection
+    public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        public static IServiceCollection AddApplication(this IServiceCollection services)
-        {
-            //Services
-            services.AddTransient<IEmailSender, EmailSender>();
+        //Services
+        services.AddTransient<IEmailSender, EmailSender>();
 
-            //AutoMapper
-            services.AddAutoMapper(typeof(DependecyInjection));
+        //AutoMapper
+        services.AddAutoMapper(typeof(DependecyInjection));
 
-            services.AddSingleton<IOrderNumberService, OrderNumberService>();
+        services.AddSingleton<IOrderNumberService, OrderNumberService>();
 
-            services.AddTransient<ICategoryUseCase, CategoryUseCase>();
-            services.AddTransient<IProductUseCase, ProductUseCase>();
-            services.AddTransient<IOrderUseCase, OrderUseCase>();
-            services.AddTransient<IPaymentUseCase, PaymentUseCase>();
+        services.AddTransient<ICategoryUseCase, CategoryUseCase>();
+        services.AddTransient<IProductUseCase, ProductUseCase>();
+        services.AddTransient<IOrderUseCase, OrderUseCase>();
+        services.AddTransient<IPaymentUseCase, PaymentUseCase>();
 
-            services.AddTransient<ICustomerUseCase, CustomerUseCase>();
-            services.AddTransient<IImageUrlResolver, ImageUrlResolver>();
+        services.AddTransient<ICustomerUseCase, CustomerUseCase>();
+        services.AddTransient<IImageUrlResolver, ImageUrlResolver>();
 
-            return services;
-        }
+        return services;
     }
 }

@@ -1,6 +1,6 @@
 import { Flex, Heading, TextField, Button } from "@radix-ui/themes";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import { CategoryCard, ProductCard, ProductCardProps } from "../../components";
+import { CategoryCard, ProductCard } from "../../components";
 import { ProductModal } from "../../components/ProductModal";
 import { Category } from "../../models/Category";
 import { t } from "../../i18n";
@@ -52,38 +52,45 @@ export const MenuManagement = () => {
     setCategorySelected(category);
   };
 
-  const handleEditProduct = async (formData: FormData) => {
-    const result = await axios.put("/api/v1/Products", formData, {
+  const handleProduct = async (formData: FormData, id?: string) => {
+    const url = id ? `/api/v1/Products/${id}` : "/api/v1/Products";
+    const method = id ? "put" : "post";
+    const result = await axios({
+      method,
+      url,
+      data: formData,
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
+
     if (result.status === 200) {
-      toast.success(t("ProductModal.SuccessMessage"));
+      if (!id) {
+        toast.success(t("ProductModal.AddSuccessMessage"));
+        setProducts((prev) => [...prev, result.data]);
+        setProductsFiltered((prev) => [...prev, result.data]);
+      } else {
+        toast.success(t("ProductModal.EditSuccessMessage"));
+        setProducts((prev) =>
+          prev.map((product) =>
+            product.id === id ? { ...product, ...result.data } : product
+          )
+        );
+        setProductsFiltered((prev) =>
+          prev.map((product) =>
+            product.id === id ? { ...product, ...result.data } : product
+          )
+        );
+      }
+
       setProductFormIsOpen(false);
     } else {
-      toast.error(t("ProductModal.ErrorMessage"));
+      if (!id) {
+        toast.error(t("ProductModal.AddErrorMessage"));
+      } else {
+        toast.error(t("ProductModal.EditErrorMessage"));
+      }
     }
-
-    setProducts((prev) => [...prev, result.data]);
-    setProductsFiltered((prev) => [...prev, result.data]);
-  };
-
-  const handleProduct = async (formData: FormData) => {
-    const result = await axios.post("/api/v1/Products", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-    if (result.status === 200) {
-      toast.success(t("ProductModal.SuccessMessage"));
-      setProductFormIsOpen(false);
-    } else {
-      toast.error(t("ProductModal.ErrorMessage"));
-    }
-
-    setProducts((prev) => [...prev, result.data]);
-    setProductsFiltered((prev) => [...prev, result.data]);
   };
 
   const handleOpenDeleteAlertDialog = (id: string) => {
@@ -156,7 +163,13 @@ export const MenuManagement = () => {
             <MagnifyingGlassIcon height="25" width="25" />
           </TextField.Slot>
         </TextField.Root>
-        <Button size={"3"} onClick={() => setProductFormIsOpen(true)}>
+        <Button
+          size={"3"}
+          onClick={() => {
+            setProductFormIsOpen(true);
+            setSelectedEditProduct(null);
+          }}
+        >
           {t("MenuManagement.AddProduct")}
         </Button>
       </Flex>

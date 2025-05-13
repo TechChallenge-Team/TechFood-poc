@@ -2,16 +2,15 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 using TechFood.Application.Common.Attributes;
 
-namespace TechFood.Application.Models.Category
-{
-    public class CreateCategoryRequest
-    {
-        [Required]
-        public required string Name { get; set; }
+namespace TechFood.Application.Models.Category;
 
-        [Required]
-        [MaxFileSize(5 * 1024 * 1024)]
-        [AllowedExtensions(".jpg", ".jpeg", ".png", ".webp")]
-        public IFormFile File { get; set; }
-    }
+public class CreateCategoryRequest
+{
+    [Required]
+    public required string Name { get; set; }
+
+    [Required]
+    [MaxFileSize(5 * 1024 * 1024)]
+    [AllowedExtensions(".jpg", ".jpeg", ".png", ".webp")]
+    public IFormFile File { get; set; }
 }

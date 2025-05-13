@@ -2,13 +2,12 @@ using AutoMapper;
 using TechFood.Application.Models.Category;
 using TechFood.Domain.Entities;
 
-namespace TechFood.Application.Common.AutoMapper
+namespace TechFood.Application.Common.AutoMapper;
+
+public class DomainToDtoProfile : Profile
 {
-    public class DomainToDtoProfile : Profile
+    public DomainToDtoProfile()
     {
-        public DomainToDtoProfile()
-        {
-            CreateMap<Category, CategoryResponse>();
-        }
+        CreateMap<Category, CategoryResponse>();
     }
 }

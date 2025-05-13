@@ -1,10 +1,9 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using TechFood.Application.Common.Data;
 
-namespace TechFood.Application.Common.Services.Interfaces
+namespace TechFood.Application.Common.Services.Interfaces;
+
+public interface IGeoService
 {
-    public interface IGeoService
-    {
-        Task<Location> GetLocationAsync(Coordinates coordinates);
-    }
+    Task<Location> GetLocationAsync(Coordinates coordinates);
 }

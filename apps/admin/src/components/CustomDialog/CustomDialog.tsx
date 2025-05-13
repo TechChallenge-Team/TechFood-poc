@@ -20,7 +20,7 @@ export const CustomDialog = ({
     <AlertDialog.Root open={dialogOpen} onOpenChange={setDialogOpen}>
       <AlertDialog.Content maxWidth="450px">
         <AlertDialog.Title>{title}</AlertDialog.Title>
-        <AlertDialog.Description size="2">
+        <AlertDialog.Description size="3">
           {description}
         </AlertDialog.Description>
         <Flex gap="3" mt="4" justify="end">
