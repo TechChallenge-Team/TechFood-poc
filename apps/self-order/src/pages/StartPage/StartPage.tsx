@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   AlertDialog,
   Box,
@@ -14,12 +14,19 @@ import { LanguageSwitch } from "../../components";
 import { validateCPF } from "../../utilities";
 
 import classNames from "./StartPage.module.css";
+import { useOrder } from "../../contexts";
 
 export const StartPage = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [documentNumber, setDocumentNumber] = useState("");
 
   const navigate = useNavigate();
+
+  const { clearOrder } = useOrder();
+
+  useEffect(() => {
+    clearOrder();
+  }, [clearOrder]);
 
   const handleRegister = () => {
     if (validateCPF(documentNumber)) {
