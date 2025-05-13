@@ -1,6 +1,11 @@
 import { createBrowserRouter } from "react-router";
-import { StartPage, MenuPage, CheckoutPage, RegisterPage } from "./pages";
-
+import {
+  StartPage,
+  MenuPage,
+  CheckoutPage,
+  RegisterPage,
+  ConfirmationPage,
+} from "./pages";
 
 const router = createBrowserRouter(
   [
@@ -20,6 +25,10 @@ const router = createBrowserRouter(
     {
       path: "register/:doc",
       element: <RegisterPage />,
+    },
+    {
+      path: "confirmation",
+      element: <ConfirmationPage />,
     },
   ],
   {
