@@ -1,11 +1,10 @@
 using System;
 
-namespace TechFood.Application.Models.Payment
-{
-    public class CreatePaymentResult
-    {
-        public Guid Id { get; set; }
+namespace TechFood.Application.Models.Payment;
 
-        public string QrCodeData { get; set; } = null!;
-    }
+public class CreatePaymentResult
+{
+    public Guid Id { get; set; }
+
+    public string QrCodeData { get; set; } = null!;
 }

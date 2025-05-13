@@ -1,9 +1,8 @@
-﻿using System;
+using System;
 
-namespace TechFood.Domain.Shared.Dto
+namespace TechFood.Domain.Shared.Dto;
+
+public class PagingRequest<TSort> : PagingRequest where TSort : struct, IConvertible
 {
-    public class PagingRequest<TSort> : PagingRequest where TSort : struct, IConvertible
-    {
-        public TSort Sort { get; set; }
-    }
+    public TSort Sort { get; set; }
 }

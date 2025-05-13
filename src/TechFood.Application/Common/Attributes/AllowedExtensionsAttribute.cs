@@ -4,24 +4,23 @@ using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 
-namespace TechFood.Application.Common.Attributes
+namespace TechFood.Application.Common.Attributes;
+
+public class AllowedExtensionsAttribute : ValidationAttribute
 {
-    public class AllowedExtensionsAttribute : ValidationAttribute
+    private readonly string[] _extensions;
+    public AllowedExtensionsAttribute(params string[] extensions) => _extensions = extensions;
+
+    protected override ValidationResult? IsValid(object? value, ValidationContext context)
     {
-        private readonly string[] _extensions;
-        public AllowedExtensionsAttribute(params string[] extensions) => _extensions = extensions;
-
-        protected override ValidationResult? IsValid(object? value, ValidationContext context)
+        if (value is not IFormFile file || file.Length == 0)
         {
-            if (value is not IFormFile file || file.Length == 0)
-            {
-                return ValidationResult.Success;
-            }
-
-            var ext = Path.GetExtension(file.FileName)?.ToLowerInvariant();
-            return !_extensions.Contains(ext)
-                ? new ValidationResult($"Extensão inválida. Permitido: {string.Join(", ", _extensions)}")
-                : ValidationResult.Success;
+            return ValidationResult.Success;
         }
+
+        var ext = Path.GetExtension(file.FileName)?.ToLowerInvariant();
+        return !_extensions.Contains(ext)
+            ? new ValidationResult($"Extensão inválida. Permitido: {string.Join(", ", _extensions)}")
+            : ValidationResult.Success;
     }
 }

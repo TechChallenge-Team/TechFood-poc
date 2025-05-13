@@ -1,17 +1,16 @@
-﻿using System;
+using System;
 
-namespace TechFood.Domain.Shared.Exceptions
+namespace TechFood.Domain.Shared.Exceptions;
+
+public class DomainException : Exception
 {
-    public class DomainException : Exception
+    public DomainException(string message)
+        : base(message)
     {
-        public DomainException(string message)
-            : base(message)
-        {
-        }
+    }
 
-        public DomainException(string message, Exception innerException)
-            : base(message, innerException)
-        {
-        }
+    public DomainException(string message, Exception innerException)
+        : base(message, innerException)
+    {
     }
 }

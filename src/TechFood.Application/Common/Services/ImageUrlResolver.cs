@@ -4,44 +4,43 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using TechFood.Application.Common.Services.Interfaces;
 
-namespace TechFood.Application.Common.Services
+namespace TechFood.Application.Common.Services;
+
+public partial class ImageUrlResolver : IImageUrlResolver
 {
-    public partial class ImageUrlResolver : IImageUrlResolver
+    private readonly IConfiguration _appConfiguration;
+
+    [GeneratedRegex(@"\s+")]
+    private static partial Regex ImageNameRegex();
+
+    public ImageUrlResolver(IConfiguration appConfiguration)
     {
-        private readonly IConfiguration _appConfiguration;
-
-        [GeneratedRegex(@"\s+")]
-        private static partial Regex ImageNameRegex();
-
-        public ImageUrlResolver(IConfiguration appConfiguration)
-        {
-            _appConfiguration = appConfiguration;
-        }
-
-        public string BuildFilePath(HttpRequest request, string folderName, string imageFileName)
-        {
-            if (
-                string.IsNullOrWhiteSpace(folderName) ||
-                string.IsNullOrWhiteSpace(imageFileName))
-            {
-                throw new Exceptions.ApplicationException(Resources.Exceptions.ImageUrlResolver_FolderCannotBeNull);
-            }
-
-            var basePath = request.PathBase.Value?.Trim('/');
-            var baseUrl = _appConfiguration["TechFoodStaticImagesUrl"]?.Trim('/');
-
-            var uriBuilder = new UriBuilder
-            {
-                Scheme = request.Scheme,
-                Host = request.Host.Host,
-                Port = request.Host.Port ?? -1,
-                Path = $"{basePath}/{baseUrl}/{Uri.EscapeDataString(folderName)}/{Uri.EscapeDataString(imageFileName)}"
-            };
-
-            return uriBuilder.ToString();
-        }
-
-        public string CreateImageFileName(string categoryName, string contentType) =>
-            $"{ImageNameRegex().Replace(categoryName.Trim(), "-")}-{DateTime.UtcNow:yyyyMMddHHmmss}.{contentType.Replace("image/", "")}";
+        _appConfiguration = appConfiguration;
     }
+
+    public string BuildFilePath(HttpRequest request, string folderName, string imageFileName)
+    {
+        if (
+            string.IsNullOrWhiteSpace(folderName) ||
+            string.IsNullOrWhiteSpace(imageFileName))
+        {
+            throw new Exceptions.ApplicationException(Resources.Exceptions.ImageUrlResolver_FolderCannotBeNull);
+        }
+
+        var basePath = request.PathBase.Value?.Trim('/');
+        var baseUrl = _appConfiguration["TechFoodStaticImagesUrl"]?.Trim('/');
+
+        var uriBuilder = new UriBuilder
+        {
+            Scheme = request.Scheme,
+            Host = request.Host.Host,
+            Port = request.Host.Port ?? -1,
+            Path = $"{basePath}/{baseUrl}/{Uri.EscapeDataString(folderName)}/{Uri.EscapeDataString(imageFileName)}"
+        };
+
+        return uriBuilder.ToString();
+    }
+
+    public string CreateImageFileName(string categoryName, string contentType) =>
+        $"{ImageNameRegex().Replace(categoryName.Trim(), "-")}-{DateTime.UtcNow:yyyyMMddHHmmss}.{contentType.Replace("image/", "")}";
 }
