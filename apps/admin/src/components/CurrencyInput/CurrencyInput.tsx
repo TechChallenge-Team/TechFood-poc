@@ -19,7 +19,7 @@ export function CurrencyInput({
     <div>
       <NumericFormat
         id={id}
-        value={value}
+        value={value ?? undefined}
         thousandSeparator="."
         decimalSeparator=","
         prefix="R$ "

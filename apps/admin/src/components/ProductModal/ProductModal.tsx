@@ -18,6 +18,7 @@ import { Category } from "../../models/Category";
 import classNames from "./ProductModal.module.css";
 import { Product } from "../../models/Product";
 import { useEffect } from "react";
+import { t } from "../../i18n";
 
 interface IProductModal {
   isOpen: boolean;
@@ -37,6 +38,7 @@ export const ProductModal = ({
   const {
     register,
     handleSubmit,
+    getValues,
     control,
     reset,
     formState: { errors },
@@ -48,6 +50,7 @@ export const ProductModal = ({
       categoryId: "",
       file: undefined,
       price: undefined,
+      imageUrl: "",
     },
   });
 
@@ -59,47 +62,51 @@ export const ProductModal = ({
         categoryId: selectedEditProduct.categoryId,
         file: undefined,
         price: selectedEditProduct.price,
+        imageUrl: selectedEditProduct.imageUrl,
+      });
+    } else {
+      reset({
+        name: "",
+        description: "",
+        categoryId: "",
+        file: undefined,
+        price: undefined,
+        imageUrl: "",
       });
     }
   }, [selectedEditProduct, reset]);
 
   const onSubmit = async (data: ProductFormData) => {
-    if (!data.file) return;
-    const file = data.file[0];
-
     const formData = new FormData();
     formData.append("Name", data.name);
     formData.append("Description", data.description);
     formData.append("CategoryId", data.categoryId);
     formData.append("Price", String(data.price));
-    formData.append("File", file);
-    handleProduct(formData, selectedEditProduct?.id || "");
-    reset();
+    formData.append("File", data.file ? data.file[0] : "");
+
+    await handleProduct(formData, selectedEditProduct?.id || "");
   };
 
   return (
-    <Dialog.Root
-      open={isOpen}
-      onOpenChange={() => {
-        setIsOpen(!isOpen);
-        reset();
-      }}
-    >
+    <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
       <Dialog.Content maxWidth="450px">
-        <Dialog.Title></Dialog.Title>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          onInvalid={() => console.log("inválido")}
-        >
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Dialog.Title>
+            {selectedEditProduct
+              ? t("ProductModal.EditTitle")
+              : t("ProductModal.AddTitle")}
+          </Dialog.Title>
           <Flex direction="column" gap="3">
             <Box>
-              <Label.Root htmlFor="name">Nome</Label.Root>
+              <Label.Root htmlFor="name">{t("ProductModal.Name")}</Label.Root>
               <TextField.Root id="name" {...register("name")} />
               {errors.name && <Text color="red">{errors.name.message}</Text>}
             </Box>
 
             <Box>
-              <Label.Root htmlFor="description">Descrição</Label.Root>
+              <Label.Root htmlFor="description">
+                {t("ProductModal.Description")}
+              </Label.Root>
               <Controller
                 control={control}
                 name="description"
@@ -115,24 +122,29 @@ export const ProductModal = ({
                 control={control}
                 name="categoryId"
                 render={({ field }) => (
-                  <Select.Root
-                    onValueChange={field.onChange}
-                    value={field.value}
-                  >
-                    <Select.Trigger
-                      className={classNames.selectButton}
-                      placeholder="Selecione uma categoria"
-                    />
-                    <Select.Content position="popper">
-                      <Select.Group>
-                        {categories.map((category) => (
-                          <Select.Item key={category.id} value={category.id}>
-                            {category.name}
-                          </Select.Item>
-                        ))}
-                      </Select.Group>
-                    </Select.Content>
-                  </Select.Root>
+                  <>
+                    <Label.Root htmlFor="categoryId">
+                      {t("ProductModal.Category")}
+                    </Label.Root>
+                    <Select.Root
+                      onValueChange={field.onChange}
+                      value={field.value}
+                    >
+                      <Select.Trigger
+                        className={classNames.selectButton}
+                        placeholder={t("ProductModal.SelectCategory")}
+                      />
+                      <Select.Content position="popper">
+                        <Select.Group>
+                          {categories.map((category) => (
+                            <Select.Item key={category.id} value={category.id}>
+                              {category.name}
+                            </Select.Item>
+                          ))}
+                        </Select.Group>
+                      </Select.Content>
+                    </Select.Root>
+                  </>
                 )}
               />
               {errors.categoryId && (
@@ -141,10 +153,11 @@ export const ProductModal = ({
             </Flex>
 
             <Box>
-              <Label.Root htmlFor="price">Preço</Label.Root>
+              <Label.Root htmlFor="price">{t("ProductModal.Price")}</Label.Root>
               <Controller
                 control={control}
                 name="price"
+                defaultValue={undefined}
                 render={({ field }) => (
                   <CurrencyInput
                     id="price"
@@ -167,6 +180,7 @@ export const ProductModal = ({
                     value={field.value}
                     onChange={field.onChange}
                     error={errors.file}
+                    imageUrl={getValues("imageUrl")}
                   />
                 )}
               />
@@ -175,10 +189,10 @@ export const ProductModal = ({
             <Flex gap="3" mt="4" justify="end">
               <Dialog.Close>
                 <Button variant="soft" color="gray">
-                  Cancelar
+                  {t("ProductModal.Cancel")}
                 </Button>
               </Dialog.Close>
-              <Button type="submit">Salvar</Button>
+              <Button type="submit">{t("ProductModal.Save")}</Button>
             </Flex>
           </Flex>
         </form>

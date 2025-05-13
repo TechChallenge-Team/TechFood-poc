@@ -18,7 +18,7 @@ public class UpdateProductRequest
 
     [MaxFileSize(5 * 1024 * 1024)]
     [AllowedExtensions(".jpg", ".jpeg", ".png", ".webp")]
-    public IFormFile File { get; set; }
+    public IFormFile? File { get; set; }
 
     [Required]
     public decimal Price { get; set; }

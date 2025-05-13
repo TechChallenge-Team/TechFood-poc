@@ -7,7 +7,21 @@
   "ProductModal": {
     "SuccessMessage": "Produto adicionado com sucesso",
     "ErrorMessage": "Falha ao adicionar produto",
-    "DeleteSuccessMessage": "Produto deletado com sucesso"
+    "DeleteSuccessMessage": "Produto deletado com sucesso",
+    "EditSuccessMessage": "Produto atualizado com sucesso",
+    "EditTitle": "Editar Produto",
+    "AddTitle": "Adicionar Produto",
+    "Name": "Nome",
+    "Description": "Descrição",
+    "Price": "Preço",
+    "Category": "Categoria",
+    "Image": "Imagem",
+    "SelectImage": "Selecionar Imagem",
+    "SelectCategory": "Selecionar Categoria",
+    "Save": "Salvar",
+    "Cancel": "Cancelar",
+    "RemoveImage": "Remover Imagem",
+    "SelectedImage": "Imagem Selecionada"
   },
   "DeleteDialog": {
     "Title": "Deletar Produto",

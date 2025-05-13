@@ -1,12 +1,14 @@
 import { Button, Text, Flex, Box, Card } from "@radix-ui/themes";
 import * as Label from "@radix-ui/react-label";
 import { useState, useRef, useEffect } from "react";
+import { t } from "../../i18n";
 
 interface FileInputWithPreviewProps {
   value?: FileList;
   onChange: (files: FileList | undefined) => void;
   error?: any;
   name: string;
+  imageUrl?: string;
 }
 
 export function FileInputWithPreview({
@@ -14,6 +16,7 @@ export function FileInputWithPreview({
   onChange,
   error,
   name,
+  imageUrl,
 }: FileInputWithPreviewProps) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -21,7 +24,6 @@ export function FileInputWithPreview({
   const file = value?.[0];
   const fileName = file?.name ?? "";
 
-  // Atualiza o preview sempre que o arquivo mudar
   useEffect(() => {
     if (file) {
       const objectUrl = URL.createObjectURL(file);
@@ -52,7 +54,7 @@ export function FileInputWithPreview({
       <Flex gap="2" align="center">
         <Button asChild>
           <Label.Root htmlFor={name} style={{ cursor: "pointer" }}>
-            Escolher Imagem
+            {t("ProductModal.SelectImage")}
           </Label.Root>
         </Button>
 
@@ -63,7 +65,7 @@ export function FileInputWithPreview({
             onClick={handleClear}
             type="button"
           >
-            Remover
+            {t("ProductModal.RemoveImage")}
           </Button>
         )}
       </Flex>
@@ -77,12 +79,16 @@ export function FileInputWithPreview({
         style={{ display: "none" }}
       />
 
-      {fileName && <Text size="1">Selecionado: {fileName}</Text>}
+      {fileName && (
+        <Text size="1">
+          {t("ProductModal.SelectedImage")}: {fileName}
+        </Text>
+      )}
 
-      {previewUrl && (
+      {(previewUrl || imageUrl) && (
         <Card style={{ width: 160, height: 160, overflow: "hidden" }}>
           <img
-            src={previewUrl}
+            src={previewUrl ? previewUrl : imageUrl}
             alt="Pré-visualização"
             style={{ objectFit: "cover", width: "100%", height: "100%" }}
           />

@@ -5,9 +5,23 @@
     "AddProduct": "Add Product"
   },
   "ProductModal": {
-    "SuccessMessage": "Product added successfully",
-    "ErrorMessage": "Failed to add product",
-    "DeleteSuccessMessage": "Product deleted successfully"
+    "AddSuccessMessage": "Product added successfully",
+    "AddErrorMessage": "Failed to add product",
+    "DeleteSuccessMessage": "Product deleted successfully",
+    "EditSuccessMessage": "Product updated successfully",
+    "EditTitle": "Edit Product",
+    "AddTitle": "Add Product",
+    "Name": "Name",
+    "Description": "Description",
+    "Price": "Price",
+    "Category": "Category",
+    "Image": "Image",
+    "SelectImage": "Select Image",
+    "SelectCategory": "Select Category",
+    "Save": "Save",
+    "Cancel": "Cancel",
+    "RemoveImage": "Remove Image",
+    "SelectedImage": "Selected Image"
   },
   "DeleteDialog": {
     "Title": "Delete Product",
