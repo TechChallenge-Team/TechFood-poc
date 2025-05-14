@@ -1,32 +1,37 @@
 {
-  "MenuManagement": {
-    "Products": "Products",
-    "Categories": "Categories",
-    "AddProduct": "Add Product"
+  "menuManagementPage": {
+    "products": "Products",
+    "categories": "Categories",
+    "addProduct": "Add Product",
+    "deleteDialog": {
+      "title": "Delete Product",
+      "message": "Are you sure you want to delete the product {{name}}?",
+      "confirm": "Delete",
+      "cancel": "Cancel"
+    },
+    "editDialog": {
+      "addSuccessMessage": "Product added successfully",
+      "editSuccessMessage": "Product edited successfully",
+      "addErrorMessage": "Failed to add product",
+      "editErrorMessage": "Failed to edit product",
+      "editTitle": "Edit Product",
+      "addTitle": "Add Product",
+      "selectCategory": "Select Category"
+    }
   },
-  "ProductModal": {
-    "AddSuccessMessage": "Product added successfully",
-    "AddErrorMessage": "Failed to add product",
-    "DeleteSuccessMessage": "Product deleted successfully",
-    "EditSuccessMessage": "Product updated successfully",
-    "EditTitle": "Edit Product",
-    "AddTitle": "Add Product",
-    "Name": "Name",
-    "Description": "Description",
-    "Price": "Price",
-    "Category": "Category",
-    "Image": "Image",
-    "SelectImage": "Select Image",
-    "SelectCategory": "Select Category",
-    "Save": "Save",
-    "Cancel": "Cancel",
-    "RemoveImage": "Remove Image",
-    "SelectedImage": "Selected Image"
+  "fileInput": {
+    "selectImage": "Select Image",
+    "removeImage": "Remove Image",
+    "selectedImage": "Selected Image"
   },
-  "DeleteDialog": {
-    "Title": "Delete Product",
-    "Message": "Are you sure you want to delete this product?",
-    "Confirm": "Delete",
-    "Cancel": "Cancel"
+  "labels": {
+    "save": "Save",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "name": "Name",
+    "description": "Description",
+    "price": "Price",
+    "category": "Category",
+    "image": "Image"
   }
 }
