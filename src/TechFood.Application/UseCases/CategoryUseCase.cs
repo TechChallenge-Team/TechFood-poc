@@ -16,14 +16,14 @@ internal class CategoryUseCase(
     IMapper mapper,
     ICategoryRepository categoryRepository,
     IUnitOfWork unitOfWork,
-    ILocalDiskImageStorageService localDiskImageStorageService,
+    IImageStorageService imageStorageService,
     IImageUrlResolver imageUrlResolver
     ) : ICategoryUseCase
 {
     private readonly IMapper _mapper = mapper;
     private readonly ICategoryRepository _categoryRepository = categoryRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
-    private readonly ILocalDiskImageStorageService _localDiskImageStorageService = localDiskImageStorageService;
+    private readonly IImageStorageService _imageStorageService = imageStorageService;
     private readonly IImageUrlResolver _imageUrlResolver = imageUrlResolver;
 
     public async Task<CategoryResponse> AddAsync(CreateCategoryRequest category)
@@ -32,7 +32,7 @@ internal class CategoryUseCase(
 
         var categoryEntity = new Category(category.Name, imageFileName, 0);
 
-        await _localDiskImageStorageService.SaveAsync(
+        await _imageStorageService.SaveAsync(
             category.File.OpenReadStream(),
             imageFileName, nameof(Category));
 
@@ -56,7 +56,7 @@ internal class CategoryUseCase(
             await _categoryRepository.DeleteAsync(category);
             await _unitOfWork.CommitAsync();
 
-            await _localDiskImageStorageService.DeleteAsync(category.ImageFileName, nameof(Category));
+            await _imageStorageService.DeleteAsync(category.ImageFileName, nameof(Category));
 
             return true;
         }
@@ -106,11 +106,11 @@ internal class CategoryUseCase(
         {
             imageFileName = _imageUrlResolver.CreateImageFileName(updateCategoryRequest.Name, updateCategoryRequest.File.ContentType);
 
-            await _localDiskImageStorageService.SaveAsync(
+            await _imageStorageService.SaveAsync(
                     updateCategoryRequest.File.OpenReadStream(),
                     imageFileName, nameof(Category));
 
-            await _localDiskImageStorageService.DeleteAsync(category.ImageFileName, nameof(Category));
+            await _imageStorageService.DeleteAsync(category.ImageFileName, nameof(Category));
         }
 
         category.UpdateAsync(updateCategoryRequest.Name, imageFileName);

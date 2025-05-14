@@ -3,8 +3,9 @@ using System.Threading.Tasks;
 
 namespace TechFood.Application.Common.Services.Interfaces;
 
-public interface ILocalDiskImageStorageService
+public interface IImageStorageService
 {
     Task SaveAsync(Stream imageStream, string fileName, string folder);
+
     Task DeleteAsync(string fileName, string folder);
 }
