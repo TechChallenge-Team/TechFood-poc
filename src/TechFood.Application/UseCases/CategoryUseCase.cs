@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using TechFood.Application.Common.Services.Interfaces;
 using TechFood.Application.Models.Category;
 using TechFood.Application.UseCases.Interfaces;
@@ -18,7 +17,6 @@ internal class CategoryUseCase(
     ICategoryRepository categoryRepository,
     IUnitOfWork unitOfWork,
     ILocalDiskImageStorageService localDiskImageStorageService,
-    IHttpContextAccessor httpContextAccessor,
     IImageUrlResolver imageUrlResolver
     ) : ICategoryUseCase
 {
@@ -26,7 +24,6 @@ internal class CategoryUseCase(
     private readonly ICategoryRepository _categoryRepository = categoryRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly ILocalDiskImageStorageService _localDiskImageStorageService = localDiskImageStorageService;
-    private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
     private readonly IImageUrlResolver _imageUrlResolver = imageUrlResolver;
 
     public async Task<CategoryResponse> AddAsync(CreateCategoryRequest category)
@@ -45,7 +42,7 @@ internal class CategoryUseCase(
 
         var result = _mapper.Map<CategoryResponse>(categoryEntity, options => options.AfterMap((category, dto) =>
         {
-            dto.ImageUrl = _imageUrlResolver.BuildFilePath(_httpContextAccessor.HttpContext!.Request, nameof(Category).ToLower(), imageFileName);
+            dto.ImageUrl = _imageUrlResolver.BuildFilePath(nameof(Category).ToLower(), imageFileName);
         }));
         return result;
     }
@@ -76,8 +73,7 @@ internal class CategoryUseCase(
                 category,
                 options => options.AfterMap((category, dto) =>
                 {
-                    dto.ImageUrl = _imageUrlResolver.BuildFilePath(_httpContextAccessor.HttpContext!.Request,
-                                                                    nameof(Category).ToLower(),
+                    dto.ImageUrl = _imageUrlResolver.BuildFilePath(nameof(Category).ToLower(),
                                                                     category.ImageFileName);
                 })));
     }
@@ -89,9 +85,8 @@ internal class CategoryUseCase(
         return category is null ? null : _mapper.Map<Category, CategoryResponse>(category,
                options => options.AfterMap((category, dto) =>
                {
-                   dto.ImageUrl = _imageUrlResolver.BuildFilePath(_httpContextAccessor.HttpContext!.Request,
-                                                                    nameof(Category).ToLower(),
-                                                                    category.ImageFileName);
+                   dto.ImageUrl = _imageUrlResolver.BuildFilePath(nameof(Category).ToLower(),
+                                                                   category.ImageFileName);
                }));
     }
 
@@ -124,9 +119,8 @@ internal class CategoryUseCase(
 
         return _mapper.Map<Category, CategoryResponse>(category, options => options.AfterMap((category, dto) =>
         {
-            dto.ImageUrl = _imageUrlResolver.BuildFilePath(_httpContextAccessor.HttpContext!.Request,
-                                                                nameof(Category).ToLower(),
-                                                                category.ImageFileName);
+            dto.ImageUrl = _imageUrlResolver.BuildFilePath(nameof(Category).ToLower(),
+                                                            category.ImageFileName);
         }));
 
     }

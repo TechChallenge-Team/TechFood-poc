@@ -9,16 +9,20 @@ namespace TechFood.Application.Common.Services;
 public partial class ImageUrlResolver : IImageUrlResolver
 {
     private readonly IConfiguration _appConfiguration;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
     [GeneratedRegex(@"\s+")]
     private static partial Regex ImageNameRegex();
 
-    public ImageUrlResolver(IConfiguration appConfiguration)
+    public ImageUrlResolver(
+        IConfiguration appConfiguration,
+        IHttpContextAccessor httpContextAccessor)
     {
         _appConfiguration = appConfiguration;
+        _httpContextAccessor = httpContextAccessor;
     }
 
-    public string BuildFilePath(HttpRequest request, string folderName, string imageFileName)
+    public string BuildFilePath(string folderName, string imageFileName)
     {
         if (
             string.IsNullOrWhiteSpace(folderName) ||
@@ -27,6 +31,7 @@ public partial class ImageUrlResolver : IImageUrlResolver
             throw new Exceptions.ApplicationException(Resources.Exceptions.ImageUrlResolver_FolderCannotBeNull);
         }
 
+        var request = _httpContextAccessor.HttpContext!.Request;
         var basePath = request.PathBase.Value?.Trim('/');
         var baseUrl = _appConfiguration["TechFoodStaticImagesUrl"]?.Trim('/');
 
