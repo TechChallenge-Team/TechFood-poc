@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import { Flex } from "@radix-ui/themes";
-import { TOrder } from "../../models/TOrder";
+import { Order } from "../../models";
 import { t } from "../../i18n";
-
 import classNames from "./StartPage.module.css";
 import axios from "axios";
-import { OrderCard } from "../../components/OrderCard/OrderCard";
+import { OrderCard } from "../../components";
 
 export const StartPage = () => {
-  const [orders, setOrders] = useState<TOrder[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
 
   useEffect(() => {
     const timer = setInterval(async () => {

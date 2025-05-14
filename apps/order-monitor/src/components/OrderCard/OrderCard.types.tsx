@@ -1,7 +1,7 @@
-import { TOrder } from "../../models/TOrder";
+import { Order } from "../../models/order";
 
 export type TOrderCardProps = {
-  orders: TOrder[];
+  orders: Order[];
   title: string;
   type: string;
 };

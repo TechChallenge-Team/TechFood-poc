@@ -1,6 +1,6 @@
 export type TOrderStatus = "INPREPARATION" | "DONE";
 
-export type TOrder = {
+export interface Order {
   number: number;
   status: TOrderStatus;
-};
+}
