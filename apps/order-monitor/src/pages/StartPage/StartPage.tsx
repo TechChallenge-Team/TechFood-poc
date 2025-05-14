@@ -5,6 +5,7 @@ import { t } from "../../i18n";
 import classNames from "./StartPage.module.css";
 import axios from "axios";
 import { OrderCard } from "../../components";
+import { ORDER_STATUS } from "../../const";
 
 export const StartPage = () => {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -18,9 +19,9 @@ export const StartPage = () => {
   }, []);
 
   const inPreparation = orders.filter(
-    (order) => order.status === "INPREPARATION"
+    (order) => order.status === ORDER_STATUS.INPREPARATION
   );
-  const done = orders.filter((order) => order.status === "DONE");
+  const done = orders.filter((order) => order.status === ORDER_STATUS.DONE);
 
   const cardConfigs = [
     {
