@@ -10,6 +10,14 @@ public class OrdersController(IOrderUseCase orderUseCase) : ControllerBase
 {
     private readonly IOrderUseCase _orderUseCase = orderUseCase;
 
+    [HttpGet("done-and-preparation")]
+    public async Task<IActionResult> GetAllDoneAndInPreparationAsync()
+    {
+        var result = await _orderUseCase.GetAllDoneAndInPreparationAsync();
+
+        return Ok(result);
+    }
+
     [HttpPost]
     public async Task<IActionResult> CreateAsync([FromBody] CreateOrderRequest data)
     {

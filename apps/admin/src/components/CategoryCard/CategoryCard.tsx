@@ -1,6 +1,7 @@
 import { Flex, Text } from "@radix-ui/themes";
 import { CategoryCardProps } from "./CategoryCard.types";
 import classNames from "./CategoryCard.module.css";
+import clsx from "clsx";
 
 export const CategoryCard = ({
   name,
@@ -11,9 +12,7 @@ export const CategoryCard = ({
 }: CategoryCardProps) => {
   return (
     <Flex
-      className={[classNames.root, selected ? classNames.selected : ""].join(
-        " "
-      )}
+      className={clsx(classNames.root, selected && classNames.selected)}
       direction="column"
       gap="2"
       align="center"
