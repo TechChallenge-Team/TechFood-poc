@@ -1,9 +1,9 @@
-import { Flex, Section } from "@radix-ui/themes";
+import { Flex, Heading } from "@radix-ui/themes";
 import { t } from "../../i18n";
 import { useState } from "react";
 import { OrderCard } from "../../components";
 import { OrderMonitor, OrderStatusType } from "../../models/OrderMonitor";
-
+import classNames from "./Monitoring.module.css";
 export const items: OrderMonitor[] = [
   {
     id: "a1b2c3",
@@ -75,6 +75,18 @@ export const items: OrderMonitor[] = [
   },
 ];
 
+const Section = ({ title, direction, children }: any) => {
+  return (
+    <Flex className={classNames.section} direction="column" gap="4">
+      <Heading size="4" as="h2">
+        {title}
+      </Heading>
+      <Flex gap="4" wrap="wrap" direction={direction}>
+        {children}
+      </Flex>
+    </Flex>
+  );
+};
 export const Monitoring = () => {
   const [orders, setOrders] = useState<OrderMonitor[]>([]);
   // useEffect(
@@ -92,13 +104,23 @@ export const Monitoring = () => {
 
   return (
     <Flex direction="column">
-      <h1>Orders</h1>
-
-      <Flex gap="3" title={t("MenuManagement.Monitoring")}>
-        {items.map((order) => (
-          <OrderCard key={order.id} orderMonitor={order} />
-        ))}
-      </Flex>
+      <div>
+        <Section gap="3" title={t("MenuManagement.Monitoring")}>
+          {items
+            .sort((a, b) => {
+              const statusOrder = {
+                [OrderStatusType.Received]: 1,
+                [OrderStatusType.InPreparation]: 2,
+                [OrderStatusType.Done]: 3,
+                [OrderStatusType.Finished]: 4, // opcional
+              };
+              return statusOrder[a.status] - statusOrder[b.status];
+            })
+            .map((order) => (
+              <OrderCard key={order.id} orderMonitor={order} />
+            ))}
+        </Section>
+      </div>
     </Flex>
   );
 };

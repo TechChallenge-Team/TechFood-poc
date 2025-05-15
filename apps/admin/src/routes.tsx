@@ -27,7 +27,7 @@ const router = createBrowserRouter(
         {
           path: "monitoring",
           element: <Monitoring />,
-          handle: { title: "Monitoring", menu: true, icon: <MonitorDot /> },
+          handle: { title: "Monitor", menu: true, icon: <MonitorDot /> },
         },
         // {
         //   path: "reviews",
