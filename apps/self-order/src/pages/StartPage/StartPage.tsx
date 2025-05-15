@@ -10,10 +10,11 @@ import {
 import { ArrowRightIcon } from "lucide-react";
 import { useNavigate } from "react-router";
 import { t } from "../../i18n";
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 import { LanguageSwitch, CustomDialog } from "../../components";
 import { validateCPF } from "../../utilities";
-import { useOrder } from "../../contexts";
+import { useCustomer, useOrder } from "../../contexts";
+import { Customer } from "../../models";
 
 import classNames from "./StartPage.module.css";
 
@@ -25,10 +26,12 @@ export const StartPage = () => {
   const navigate = useNavigate();
 
   const { clearOrder } = useOrder();
+  const { setCustomer } = useCustomer();
 
   useEffect(() => {
     clearOrder();
-  }, [clearOrder]);
+    setCustomer(null);
+  }, [clearOrder, setCustomer]);
 
   const handleRegister = () => {
     if (validateCPF(documentNumber)) {
@@ -38,22 +41,20 @@ export const StartPage = () => {
     setErrorMessage(t("startPage.invalidDocument"));
   };
 
-  const handleCustomer = async () => {
+  const handleIdentify = async () => {
     if (!documentNumber) return;
 
     try {
-      const { status } = await axios.get(
-        `/api/v1/customers/${documentNumber}`,
-        {
-          headers: { Accept: "application/json" },
-        }
+      const { status, data } = await axios.get<Customer>(
+        `/api/v1/customers/${documentNumber}`
       );
 
       if (status === 200) {
+        setCustomer(data);
         navigate("/menu");
       }
     } catch (error) {
-      if (!axios.isAxiosError(error)) {
+      if (!isAxiosError(error)) {
         console.error("Erro inesperado:", error);
         return;
       }
@@ -106,7 +107,7 @@ export const StartPage = () => {
             <IconButton
               size="3"
               disabled={documentNumber.length < 11}
-              onClick={handleCustomer}
+              onClick={handleIdentify}
             >
               <ArrowRightIcon size="40" />
             </IconButton>
