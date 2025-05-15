@@ -3,7 +3,9 @@
     "documentNumber": "Nº do documento",
     "register": "Cadastra-se",
     "dontIdentify": "Não se identificar",
-    "invalidDocument": "Número do documento inválido!"
+    "invalidDocument": "Número do documento inválido!",
+    "yes": "Sim",
+    "no": "Não"
   },
   "menuPage": {
     "choose": "Montar",
