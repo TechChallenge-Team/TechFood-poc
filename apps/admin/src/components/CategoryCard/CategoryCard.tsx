@@ -3,7 +3,6 @@ import { CategoryCardProps } from "./CategoryCard.types";
 import clsx from "clsx";
 
 import classNames from "./CategoryCard.module.css";
-import clsx from "clsx";
 
 export const CategoryCard = ({
   category,
