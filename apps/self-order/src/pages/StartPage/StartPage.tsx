@@ -10,15 +10,17 @@ import {
 import { ArrowRightIcon } from "lucide-react";
 import { useNavigate } from "react-router";
 import { t } from "../../i18n";
-import { LanguageSwitch } from "../../components";
+import axios from "axios";
+import { LanguageSwitch, CustomDialog } from "../../components";
 import { validateCPF } from "../../utilities";
+import { useOrder } from "../../contexts";
 
 import classNames from "./StartPage.module.css";
-import { useOrder } from "../../contexts";
 
 export const StartPage = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [documentNumber, setDocumentNumber] = useState("");
+  const [showRegisterModal, setRegisterModal] = useState(false);
 
   const navigate = useNavigate();
 
@@ -33,12 +35,55 @@ export const StartPage = () => {
       navigate("/register/" + documentNumber);
       return;
     }
-
     setErrorMessage(t("startPage.invalidDocument"));
+  };
+
+  const handleCustomer = async () => {
+    if (!documentNumber) return;
+
+    try {
+      const { status } = await axios.get(
+        `/api/v1/customers/${documentNumber}`,
+        {
+          headers: { Accept: "application/json" },
+        }
+      );
+
+      if (status === 200) {
+        navigate("/menu");
+      }
+    } catch (error) {
+      if (!axios.isAxiosError(error)) {
+        console.error("Erro inesperado:", error);
+        return;
+      }
+
+      const status = error.response?.status;
+
+      switch (status) {
+        case 404:
+          setRegisterModal(true);
+          break;
+        case 400:
+          handleRegister();
+          break;
+        default:
+          console.error("Erro inesperado:", error);
+      }
+    }
   };
 
   const handlerDontIdentify = () => {
     navigate("/menu");
+  };
+
+  const closeModal = () => {
+    setRegisterModal(false);
+  };
+
+  const confirmRegister = () => {
+    closeModal();
+    handleRegister();
   };
 
   return (
@@ -46,6 +91,7 @@ export const StartPage = () => {
       <Flex className={classNames.languageSwitch} justify="end">
         <LanguageSwitch />
       </Flex>
+
       <Flex direction="column" align="center" justify="center" flexGrow="1">
         <Flex direction="column" gap="4">
           <Flex gap="2" align="center">
@@ -57,22 +103,21 @@ export const StartPage = () => {
                 onChange={(e) => setDocumentNumber(e.target.value)}
               />
             </Box>
-            <IconButton size="3" disabled={documentNumber.length < 11}>
+            <IconButton
+              size="3"
+              disabled={documentNumber.length < 11}
+              onClick={handleCustomer}
+            >
               <ArrowRightIcon size="40" />
             </IconButton>
           </Flex>
-          <Button
-            onClick={handleRegister}
-            size="3"
-            disabled={documentNumber.length < 11}
-          >
-            {t("startPage.register")}
-          </Button>
+
           <Button onClick={handlerDontIdentify} variant="outline" size="3">
             {t("startPage.dontIdentify")}
           </Button>
         </Flex>
       </Flex>
+
       {errorMessage && (
         <AlertDialog.Root open={true}>
           <AlertDialog.Content>
@@ -89,6 +134,17 @@ export const StartPage = () => {
           </AlertDialog.Content>
         </AlertDialog.Root>
       )}
+
+      <CustomDialog
+        dialogOpen={showRegisterModal}
+        setDialogOpen={setRegisterModal}
+        textBotton1="startPage.yes"
+        textBotton2="startPage.no"
+        title="Cliente não cadastrado"
+        description="Identificamos que você não está cadastrado. Gostaria de se cadastrar?"
+        onConfirm={confirmRegister}
+        onCancel={closeModal}
+      />
     </Flex>
   );
 };
