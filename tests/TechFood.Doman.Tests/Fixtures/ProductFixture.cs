@@ -11,9 +11,9 @@ namespace TechFood.Doman.Tests.Fixtures
             _faker = new Faker("pt_BR");
         }
 
-        private readonly string[] _productName = new[] { "coca", "X-Bacon", "Milk Shake de Baunilha", "Fanta", "Batata Frita" };
-        private readonly string[] _productDescription = new[] { "Coca-Cola", "Delicioso X-Bacon", "Milk Shake de Baunilha", "Fanta", "Batata Frita" };
-        private readonly string[] _productImageFileName = new[] { "coca-cola.png", "x-bacon.png", "milk-shake-baunilha.png", "milk-shake-chocolate.png", "fanta.png" };
+        private readonly string[] _productName = { "coca", "X-Bacon", "Milk Shake de Baunilha", "Fanta", "Batata Frita" };
+        private readonly string[] _productDescription = { "Coca-Cola", "Delicioso X-Bacon", "Milk Shake de Baunilha", "Fanta", "Batata Frita" };
+        private readonly string[] _productImageFileName = { "coca-cola.png", "x-bacon.png", "milk-shake-baunilha.png", "milk-shake-chocolate.png", "fanta.png" };
 
         public Product CreateProductNameIsEmpty()
             => new(string.Empty,

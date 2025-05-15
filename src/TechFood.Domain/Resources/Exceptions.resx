@@ -192,4 +192,7 @@
   <data name="Category_ThrowIndexIsLessThanZero" xml:space="preserve">
     <value>Category order must be greater than or equal to 0.</value>
   </data>
+  <data name="Customer_ThrowEmailInvalid" xml:space="preserve">
+    <value>Email Invalid</value>
+  </data>
 </root>

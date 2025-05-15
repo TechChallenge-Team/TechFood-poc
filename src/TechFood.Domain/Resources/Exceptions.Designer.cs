@@ -97,6 +97,15 @@ namespace TechFood.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Email Invalid.
+        /// </summary>
+        public static string Customer_ThrowEmailInvalid {
+            get {
+                return ResourceManager.GetString("Customer_ThrowEmailInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Payment amount is not equal to the order total amount..
         /// </summary>
         public static string Order_AmountIsNotEqualOrderAmount {
