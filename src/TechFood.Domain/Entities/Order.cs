@@ -74,7 +74,7 @@ public class Order : Entity, IAggregateRoot
             throw new DomainException(Resources.Exceptions.Order_CannotPayToNonCreatedStatus);
         }
 
-        UpdateStatus(OrderStatusType.Paid);
+        UpdateStatus(OrderStatusType.Received);
     }
 
     public void RefusedPayment()
@@ -139,7 +139,7 @@ public class Order : Entity, IAggregateRoot
 
     public void Prepare()
     {
-        if (Status != OrderStatusType.Paid)
+        if (Status != OrderStatusType.Received)
         {
             throw new DomainException(Resources.Exceptions.Order_CannotPrepareToNonPaidStatus);
         }

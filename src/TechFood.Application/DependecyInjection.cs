@@ -22,7 +22,7 @@ public static class DependecyInjection
         services.AddTransient<IProductUseCase, ProductUseCase>();
         services.AddTransient<IOrderUseCase, OrderUseCase>();
         services.AddTransient<IPaymentUseCase, PaymentUseCase>();
-
+        services.AddScoped<IOrderMonitorUseCase, OrderMonitorUseCase>();
         services.AddTransient<ICustomerUseCase, CustomerUseCase>();
         services.AddTransient<IImageUrlResolver, ImageUrlResolver>();
 

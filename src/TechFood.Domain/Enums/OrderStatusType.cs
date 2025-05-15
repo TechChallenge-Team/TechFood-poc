@@ -4,7 +4,7 @@ public enum OrderStatusType
 {
     Created,
     WaitingPayment,
-    Paid,
+    Received,
     RefusedPayment,
     InPreparation,
     Done,

@@ -1,0 +1,20 @@
+.root {
+  width: 280px;
+  padding: var(--space-4);
+  background-color: var(--gray-1);
+  border: 1px solid var(--gray-2);
+  border-radius: var(--radius-3);
+  transition: border-color 0.3s ease;
+}
+
+.info {
+  margin-left: var(--space-2);
+}
+
+.description {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
