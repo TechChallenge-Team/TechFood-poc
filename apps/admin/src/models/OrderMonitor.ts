@@ -5,6 +5,8 @@ export interface OrderMonitor {
   products: OrderProduct[];
 }
 
+// export type OrderStatusType = "Received" | "InPreparation" | "Done" | "Finished"
+
 export enum OrderStatusType {
   Received = "Criado",
   InPreparation = "Em Preparação",

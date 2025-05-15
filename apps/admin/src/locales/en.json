@@ -2,6 +2,7 @@
   "MenuManagement": {
     "Products": "Products",
     "Categories": "Categories",
+    "Monitoring": "Monitoring",
     "AddProduct": "Add Product"
   },
   "ProductModal": {

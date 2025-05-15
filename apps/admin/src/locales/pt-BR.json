@@ -2,6 +2,7 @@
   "MenuManagement": {
     "Products": "Produtos",
     "Categories": "Categorias",
+    "Monitoring": "Monitor",
     "AddProduct": "Adicionar Produtos"
   },
   "ProductModal": {
@@ -15,6 +16,7 @@
     "Description": "Descrição",
     "Price": "Preço",
     "Category": "Categoria",
+    "Monitoring": "Monitor",
     "Image": "Imagem",
     "SelectImage": "Selecionar Imagem",
     "SelectCategory": "Selecionar Categoria",

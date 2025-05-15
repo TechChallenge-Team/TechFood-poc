@@ -27,20 +27,17 @@ export const OrderCard = ({ orderMonitor }: IOrderMonitorCardProps) => {
       </Flex>
       <Flex direction="row" align={"center"} gap="2" justify="start">
         <Flex className={classNames.info} direction="column" gap="1">
-          <Flex gap="1" className={classNames.description}>
-            {orderMonitor.status}
+          <Flex gap="1">
+            <Strong>{orderMonitor.status}</Strong>
           </Flex>
           <Flex direction="row" gap="2" align="center">
-            {/* <Text
-              className={classNames.description}
-              size="2"
-              weight="medium"
-              color="gray"
-            > */}
-            {orderMonitor.products.map((item) => (
-              <li key={item.id}>{item.name}</li>
-            ))}
-            {/* </Text> */}
+            <ul className={classNames.description}>
+              {orderMonitor.products.map((item) => (
+                <li key={item.id} className={classNames.listItem}>
+                  {item.name}
+                </li>
+              ))}
+            </ul>
           </Flex>
         </Flex>
       </Flex>

@@ -12,9 +12,18 @@
 }
 
 .description {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.listItem {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.title {
+  display: flex;
+  justify-content: center; /* centraliza no eixo horizontal */
+  align-items: center;
 }
