@@ -39,6 +39,12 @@
     "creditCard": "Cartão de Crédito",
     "creditCardInstructions": "Insira os dados do cartão de crédito para concluir o pagamento."
   },
+  "confirmationPage": {
+    "title": "Obrigado pelo seu pedido!",
+    "subtitle": "Estamos preparando seu pedido, por favor, pegue seu recibo.",
+    "yourOrder": "Seu Pedido",
+    "orderNumber": "Nº"
+  },
   "labels": {
     "currency": "R$",
     "name": "Nome",

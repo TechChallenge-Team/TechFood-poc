@@ -3,6 +3,7 @@ import { Outlet, useMatches } from "react-router";
 import { Avatar, Flex, Grid, Heading, IconButton } from "@radix-ui/themes";
 import { Sidebar, useSidebar } from "../Sidebar";
 import { BellIcon, MessageSquareQuoteIcon, SettingsIcon } from "lucide-react";
+import { LanguageSwitch } from "../LanguageSwitch/LanguageSwitch";
 
 import classNames from "./AdminLayout.module.css";
 
@@ -44,6 +45,9 @@ export const AdminLayout = () => {
               <IconButton variant="ghost" color="gray">
                 <SettingsIcon />
               </IconButton>
+              <Flex className={classNames.languageSwitch}>
+                <LanguageSwitch />
+              </Flex>
             </Flex>
             <Avatar
               src="https://i.pravatar.cc/300"

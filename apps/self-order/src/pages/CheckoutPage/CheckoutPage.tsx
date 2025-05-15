@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
   Flex,
@@ -88,16 +88,12 @@ const MercadoPagoPayment = ({
   qrCode,
   total,
   onFinish,
-  onCancel,
 }: {
   qrCode: string;
   total: number;
   onFinish: () => void;
-  onCancel: () => void;
 }) => {
-  const handleCancel = () => {
-    onCancel();
-  };
+  useEffect(() => {}, []);
 
   const handleFinish = () => {
     onFinish();
@@ -119,8 +115,8 @@ const MercadoPagoPayment = ({
           {t("checkoutPage.mercadoPagoInstructions")}
         </Text>
         <QRCodeSVG value={qrCode!} size={350} />
-        <Button color="tomato" onClick={handleCancel}>
-          {t("checkoutPage.cancel")}
+        <Button color="grass" onClick={handleFinish}>
+          Simulate Payment
         </Button>
       </Flex>
     </BottomSheet>
@@ -149,7 +145,9 @@ export const CheckoutPage = () => {
     }
   };
 
-  const handleFinish = () => {};
+  const handleFinish = () => {
+    navigate("/confirmation", { replace: true });
+  };
 
   return (
     <Flex className={classNames.root} direction="column" align="center" gap="9">
@@ -218,7 +216,6 @@ export const CheckoutPage = () => {
         <MercadoPagoPayment
           qrCode={paymentQrCode!}
           onFinish={handleFinish}
-          onCancel={() => setShowPayment(false)}
           total={total}
         />
       )}

@@ -7,7 +7,7 @@ namespace TechFood.Infra.ImageStore.LocalDisk.Configuration
     {
         public static IServiceCollection AddInfraImageStore(this IServiceCollection services)
         {
-            services.AddScoped<ILocalDiskImageStorageService, LocalDiskImageStorageService>();
+            services.AddScoped<IImageStorageService, LocalDiskImageStorageService>();
 
             return services;
         }

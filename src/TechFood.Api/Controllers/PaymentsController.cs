@@ -17,4 +17,12 @@ public class PaymentsController(IPaymentUseCase paymentUseCase) : ControllerBase
 
         return result != null ? Ok(result) : NotFound();
     }
+
+    //[HttpPost("mercadopago")]
+    //public async Task<IActionResult> MercadoPagoPaymentCallback([FromBody] MercadoPagoPaymentRequest data)
+    //{
+    //    await _paymentUseCase.PayWithMercadoPagoAsync(data);
+
+    //    return Ok();
+    //}
 }

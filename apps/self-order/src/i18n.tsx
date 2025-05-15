@@ -48,7 +48,7 @@ const findPartsForData = (data: any, parts: any) => {
 
 export const t = (
   path: any,
-  replacement: any[] | null = null,
+  replacement: any | null = null,
   fallback: string | null = null
 ) => {
   if (currentLang.code.startsWith(TEST_LANG_CODE)) {

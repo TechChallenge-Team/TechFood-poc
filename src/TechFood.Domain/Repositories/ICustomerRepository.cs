@@ -3,17 +3,16 @@ using System.Threading.Tasks;
 using TechFood.Domain.Entities;
 using TechFood.Domain.Enums;
 
-namespace TechFood.Domain.Repositories
+namespace TechFood.Domain.Repositories;
+
+public interface ICustomerRepository
 {
-    public interface ICustomerRepository
-    {
-        Task<Guid> CreateAsync(Customer customer);
-        
-        Task<Customer> GetByDocument(DocumentType documentType, string documentValue);
-        
-        Task<Customer> GetByDocumentAsync(DocumentType documentType, string documentValue);
-        
-        
-        
-    }
+    Task<Guid> CreateAsync(Customer customer);
+    
+    Task<Customer> GetByDocument(DocumentType documentType, string documentValue);
+    
+    Task<Customer> GetByDocumentAsync(DocumentType documentType, string documentValue);
+    
+    
+    
 }

@@ -19,6 +19,7 @@ export type OrderContextType = {
   applyDiscount: (code: string) => Promise<void>;
   createPayment: (method: PaymentType) => Promise<void>;
   createOrder: () => Promise<void>;
+  clearOrder: () => void;
 };
 
 const OrderContext = createContext<OrderContextType | undefined>(undefined);
@@ -93,6 +94,16 @@ export const OrderProvider: React.FC<{ children: React.ReactNode }> = ({
     [id]
   );
 
+  const clearOrder = useCallback(() => {
+    setId(undefined);
+    setItems([]);
+    setNumber(undefined);
+    setDiscount(0);
+    setCuponCode(undefined);
+    setPaymentMethod(undefined);
+    setPaymentQrCode(undefined);
+  }, []);
+
   return (
     <OrderContext.Provider
       value={{
@@ -111,6 +122,7 @@ export const OrderProvider: React.FC<{ children: React.ReactNode }> = ({
         createPayment,
         applyDiscount,
         createOrder,
+        clearOrder,
       }}
     >
       {children}

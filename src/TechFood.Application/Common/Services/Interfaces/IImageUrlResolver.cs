@@ -1,11 +1,8 @@
-using Microsoft.AspNetCore.Http;
+namespace TechFood.Application.Common.Services.Interfaces;
 
-namespace TechFood.Application.Common.Services.Interfaces
+public interface IImageUrlResolver
 {
-    public interface IImageUrlResolver
-    {
-        string BuildFilePath(HttpRequest request, string folderName, string imageFileName);
+    string BuildFilePath(string folderName, string imageFileName);
 
-        string CreateImageFileName(string categoryName, string contentType);
-    }
+    string CreateImageFileName(string categoryName, string contentType);
 }

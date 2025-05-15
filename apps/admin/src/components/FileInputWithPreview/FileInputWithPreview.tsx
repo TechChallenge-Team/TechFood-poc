@@ -1,19 +1,15 @@
-import { Button, Text, Flex, Box, Card } from "@radix-ui/themes";
-import * as Label from "@radix-ui/react-label";
 import { useState, useRef, useEffect } from "react";
-
-interface FileInputWithPreviewProps {
-  value?: FileList;
-  onChange: (files: FileList | undefined) => void;
-  error?: any;
-  name: string;
-}
+import { Button, Text, Flex, Card } from "@radix-ui/themes";
+import * as Label from "@radix-ui/react-label";
+import { t } from "../../i18n";
+import { FileInputWithPreviewProps } from "./FileInputWithPreview.types";
 
 export function FileInputWithPreview({
   value,
   onChange,
   error,
   name,
+  imageUrl,
 }: FileInputWithPreviewProps) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -21,7 +17,6 @@ export function FileInputWithPreview({
   const file = value?.[0];
   const fileName = file?.name ?? "";
 
-  // Atualiza o preview sempre que o arquivo mudar
   useEffect(() => {
     if (file) {
       const objectUrl = URL.createObjectURL(file);
@@ -52,7 +47,7 @@ export function FileInputWithPreview({
       <Flex gap="2" align="center">
         <Button asChild>
           <Label.Root htmlFor={name} style={{ cursor: "pointer" }}>
-            Escolher Imagem
+            {t("fileInput.selectImage")}
           </Label.Root>
         </Button>
 
@@ -63,7 +58,7 @@ export function FileInputWithPreview({
             onClick={handleClear}
             type="button"
           >
-            Remover
+            {t("fileInput.removeImage")}
           </Button>
         )}
       </Flex>
@@ -77,12 +72,16 @@ export function FileInputWithPreview({
         style={{ display: "none" }}
       />
 
-      {fileName && <Text size="1">Selecionado: {fileName}</Text>}
+      {fileName && (
+        <Text size="1">
+          {t("fileInput.selectedImage")}: {fileName}
+        </Text>
+      )}
 
-      {previewUrl && (
+      {(previewUrl || imageUrl) && (
         <Card style={{ width: 160, height: 160, overflow: "hidden" }}>
           <img
-            src={previewUrl}
+            src={previewUrl ? previewUrl : imageUrl}
             alt="Pré-visualização"
             style={{ objectFit: "cover", width: "100%", height: "100%" }}
           />

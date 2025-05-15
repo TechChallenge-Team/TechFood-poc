@@ -1,1 +1,2 @@
-export * from "./CurrencyInputProps";
+export * from "./CurrencyInput";
+export * from "./CurrencyInput.types";

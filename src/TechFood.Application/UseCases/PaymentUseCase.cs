@@ -17,11 +17,13 @@ internal class PaymentUseCase(
     IUnitOfWork unitOfWork,
     IOrderRepository orderRepository,
     IPaymentRepository paymentRepository,
+    IProductRepository productRepository,
     IServiceProvider serviceProvider) : IPaymentUseCase
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IOrderRepository _orderRepository = orderRepository;
     private readonly IPaymentRepository _paymentRepository = paymentRepository;
+    private readonly IProductRepository _productRepository = productRepository;
     private readonly IServiceProvider _serviceProvider = serviceProvider;
 
     public async Task<CreatePaymentResult?> CreateAsync(CreatePaymentRequest data)
@@ -39,6 +41,8 @@ internal class PaymentUseCase(
 
         var paymentService = _serviceProvider.GetRequiredKeyedService<IPaymentService>(data.Type);
 
+        var products = await _productRepository.GetAllAsync();
+
         if (data.Type == PaymentType.MercadoPago)
         {
             var paymentRequest = await paymentService.GenerateQrCodePaymentAsync(
@@ -48,7 +52,7 @@ internal class PaymentUseCase(
                     "TechFood - Order #" + order.Number,
                     order.Amount,
                     order.Items.ToList().ConvertAll(i => new PaymentItem(
-                        i.ProductId.ToString(),
+                        products.FirstOrDefault(p => p.Id == i.ProductId)?.Name ?? "",
                         i.Quantity,
                         "unit",
                         i.UnitPrice,
@@ -62,6 +66,8 @@ internal class PaymentUseCase(
             // TODO: Implement credit card payment
             throw new NotImplementedException("Credit card payment is not implemented yet.");
         }
+
+        order.CreatePayment();
 
         await _paymentRepository.AddAsync(payment);
 

@@ -1,18 +1,37 @@
 {
-  "MenuManagement": {
-    "Products": "Produtos",
-    "Categories": "Categorias",
-    "AddProduct": "Adicionar Produtos"
+  "menuManagementPage": {
+    "products": "Produtos",
+    "categories": "Categorias",
+    "addProduct": "Adicionar Produtos",
+    "deleteDialog": {
+      "title": "Deletar Produto",
+      "message": "Você tem certeza que deseja deletar o produto {{name}}?",
+      "confirm": "Deletar",
+      "cancel": "Cancelar"
+    },
+    "editDialog": {
+      "addSuccessMessage": "Produto adicionado com sucesso",
+      "editSuccessMessage": "Produto editado com sucesso",
+      "addErrorMessage": "Falha ao adicionar produto",
+      "editErrorMessage": "Falha ao editar produto",
+      "editTitle": "Editar Produto",
+      "addTitle": "Adicionar Produto",
+      "selectCategory": "Selecionar Categoria"
+    }
   },
-  "ProductModal": {
-    "SuccessMessage": "Produto adicionado com sucesso",
-    "ErrorMessage": "Falha ao adicionar produto",
-    "DeleteSuccessMessage": "Produto deletado com sucesso"
+  "fileInput": {
+    "selectImage": "Selecionar Imagem",
+    "removeImage": "Remover Imagem",
+    "selectedImage": "Imagem Selecionada"
   },
-  "DeleteDialog": {
-    "Title": "Deletar Produto",
-    "Message": "Você tem certeza que deseja deletar este produto?",
-    "Confirm": "Deletar",
-    "Cancel": "Cancelar"
+  "labels": {
+    "save": "Salvar",
+    "confirm": "Confirmar",
+    "cancel": "Cancelar",
+    "name": "Nome",
+    "description": "Descrição",
+    "price": "Preço",
+    "category": "Categoria",
+    "image": "Imagem"
   }
 }

@@ -28,3 +28,8 @@
 .content {
   padding: var(--space-1) 0;
 }
+
+.languageSwitch {
+  width: 20px;
+  height: 15px;
+}

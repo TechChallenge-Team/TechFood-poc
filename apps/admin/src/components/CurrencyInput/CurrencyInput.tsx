@@ -1,25 +1,18 @@
 import { NumericFormat } from "react-number-format";
 import { Text, TextField } from "@radix-ui/themes";
+import { CurrencyInputProps } from "./CurrencyInput.types";
 
-interface CurrencyInputProps {
-  value: number | undefined;
-  onChange: (value: number | undefined) => void;
-  error?: string;
-  id: string;
-  name: string;
-}
-
-export function CurrencyInput({
+export const CurrencyInput = ({
   value,
   onChange,
   error,
   id,
-}: CurrencyInputProps) {
+}: CurrencyInputProps) => {
   return (
     <div>
       <NumericFormat
         id={id}
-        value={value}
+        value={value ?? undefined}
         thousandSeparator="."
         decimalSeparator=","
         prefix="R$ "
@@ -36,4 +29,4 @@ export function CurrencyInput({
       {error && <Text color="red">{error}</Text>}
     </div>
   );
-}
+};

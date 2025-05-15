@@ -2,7 +2,7 @@ using TechFood.Application.Common.Services.Interfaces;
 
 namespace TechFood.Infra.ImageStore.LocalDisk
 {
-    public class LocalDiskImageStorageService : ILocalDiskImageStorageService
+    public class LocalDiskImageStorageService : IImageStorageService
     {
         private const string ImageFolderName = "images";
 

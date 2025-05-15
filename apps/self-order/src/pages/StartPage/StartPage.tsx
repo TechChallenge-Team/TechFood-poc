@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   AlertDialog,
   Box,
@@ -10,11 +10,12 @@ import {
 import { ArrowRightIcon } from "lucide-react";
 import { useNavigate } from "react-router";
 import { t } from "../../i18n";
+import axios from "axios";
 import { LanguageSwitch, CustomDialog } from "../../components";
 import { validateCPF } from "../../utilities";
+import { useOrder } from "../../contexts";
 
 import classNames from "./StartPage.module.css";
-import axios from "axios";
 
 export const StartPage = () => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -22,6 +23,12 @@ export const StartPage = () => {
   const [showRegisterModal, setRegisterModal] = useState(false);
 
   const navigate = useNavigate();
+
+  const { clearOrder } = useOrder();
+
+  useEffect(() => {
+    clearOrder();
+  }, [clearOrder]);
 
   const handleRegister = () => {
     if (validateCPF(documentNumber)) {

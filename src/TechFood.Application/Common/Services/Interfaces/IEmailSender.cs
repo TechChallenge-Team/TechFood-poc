@@ -1,9 +1,8 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 
-namespace TechFood.Application.Common.Services.Interfaces
+namespace TechFood.Application.Common.Services.Interfaces;
+
+public interface IEmailSender
 {
-    public interface IEmailSender
-    {
-        Task Send(string from, string to, string message);
-    }
+    Task Send(string from, string to, string message);
 }

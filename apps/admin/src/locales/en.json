@@ -1,18 +1,37 @@
 {
-  "MenuManagement": {
-    "Products": "Products",
-    "Categories": "Categories",
-    "AddProduct": "Add Product"
+  "menuManagementPage": {
+    "products": "Products",
+    "categories": "Categories",
+    "addProduct": "Add Product",
+    "deleteDialog": {
+      "title": "Delete Product",
+      "message": "Are you sure you want to delete the product {{name}}?",
+      "confirm": "Delete",
+      "cancel": "Cancel"
+    },
+    "editDialog": {
+      "addSuccessMessage": "Product added successfully",
+      "editSuccessMessage": "Product edited successfully",
+      "addErrorMessage": "Failed to add product",
+      "editErrorMessage": "Failed to edit product",
+      "editTitle": "Edit Product",
+      "addTitle": "Add Product",
+      "selectCategory": "Select Category"
+    }
   },
-  "ProductModal": {
-    "SuccessMessage": "Product added successfully",
-    "ErrorMessage": "Failed to add product",
-    "DeleteSuccessMessage": "Product deleted successfully"
+  "fileInput": {
+    "selectImage": "Select Image",
+    "removeImage": "Remove Image",
+    "selectedImage": "Selected Image"
   },
-  "DeleteDialog": {
-    "Title": "Delete Product",
-    "Message": "Are you sure you want to delete this product?",
-    "Confirm": "Delete",
-    "Cancel": "Cancel"
+  "labels": {
+    "save": "Save",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "name": "Name",
+    "description": "Description",
+    "price": "Price",
+    "category": "Category",
+    "image": "Image"
   }
 }

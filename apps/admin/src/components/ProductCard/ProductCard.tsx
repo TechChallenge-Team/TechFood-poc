@@ -1,20 +1,14 @@
 import { Flex, Text, Strong, Heading } from "@radix-ui/themes";
-
 import { Pencil1Icon, TrashIcon } from "@radix-ui/react-icons";
-import classNames from "./ProductCard.module.css";
-import { Product } from "../../models/Product";
+import { ProductCardProps } from "./ProductCard.types";
 
-interface IProductCardProps {
-  product: Product;
-  handleOpenDeleteAlertDialog: (id: string) => void;
-  handleOpenEditDialog: (product: Product) => void;
-}
+import classNames from "./ProductCard.module.css";
 
 export const ProductCard = ({
   product,
-  handleOpenDeleteAlertDialog,
-  handleOpenEditDialog,
-}: IProductCardProps) => {
+  onDeleteClick: handleOpenDeleteAlertDialog,
+  onEditClick: handleOpenEditDialog,
+}: ProductCardProps) => {
   return (
     <Flex className={classNames.root} direction="column" gap="2">
       <Flex

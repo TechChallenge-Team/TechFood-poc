@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using TechFood.Application.Common.Exceptions;
 using TechFood.Application.Common.Resources;
 using TechFood.Application.Common.Services.Interfaces;
@@ -21,17 +20,15 @@ internal class ProductUseCase(
     ICategoryRepository categoryRepository,
     IUnitOfWork unitOfWork,
     IImageUrlResolver imageUrlResolver,
-    ILocalDiskImageStorageService localDiskImageStorageService,
-    IHttpContextAccessor httpContextAccessor,
+    IImageStorageService imageStorageService,
     IMapper mapper)
     : IProductUseCase
 {
     private readonly IProductRepository _productRepository = productRepository;
     private readonly ICategoryRepository _categoryRepository = categoryRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
-    private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
     private readonly IMapper _mapper = mapper;
-    private readonly ILocalDiskImageStorageService _localDiskImageStorageService = localDiskImageStorageService;
+    private readonly IImageStorageService _imageStorageService = imageStorageService;
     private readonly IImageUrlResolver _imageUrlResolver = imageUrlResolver;
 
     public async Task<IEnumerable<GetProductResult>> GetAllAsync()
@@ -45,8 +42,7 @@ internal class ProductUseCase(
                     product,
                     options => options.AfterMap((product, dto) =>
                     {
-                        dto.ImageUrl = _imageUrlResolver.BuildFilePath(_httpContextAccessor.HttpContext!.Request,
-                                                                        nameof(Product).ToLower(),
+                        dto.ImageUrl = _imageUrlResolver.BuildFilePath(nameof(Product).ToLower(),
                                                                         product.ImageFileName);
                     })));
     }
@@ -58,9 +54,8 @@ internal class ProductUseCase(
         return product is null ?
             null : _mapper.Map<Product, GetProductResult>(product, options => options.AfterMap((product, dto) =>
             {
-                dto.ImageUrl = _imageUrlResolver.BuildFilePath(_httpContextAccessor.HttpContext!.Request,
-                                                                 nameof(Product).ToLower(),
-                                                                 product.ImageFileName);
+                dto.ImageUrl = _imageUrlResolver.BuildFilePath(nameof(Product).ToLower(),
+                                                                product.ImageFileName);
             }));
     }
 
@@ -71,7 +66,7 @@ internal class ProductUseCase(
 
         var imageFileName = _imageUrlResolver.CreateImageFileName(request.Name, request.File.ContentType);
 
-        await _localDiskImageStorageService.SaveAsync(
+        await _imageStorageService.SaveAsync(
                 request.File.OpenReadStream(),
                 imageFileName, nameof(Product));
 
@@ -83,7 +78,7 @@ internal class ProductUseCase(
 
         var response = _mapper.Map<CreateProductResult>(productEntity, options => options.AfterMap((product, dto) =>
         {
-            dto.ImageUrl = _imageUrlResolver.BuildFilePath(_httpContextAccessor.HttpContext!.Request, nameof(Product).ToLower(), imageFileName);
+            dto.ImageUrl = _imageUrlResolver.BuildFilePath(nameof(Product).ToLower(), imageFileName);
         }));
         return response;
     }
@@ -105,11 +100,11 @@ internal class ProductUseCase(
         if (request.File != null)
         {
             imageFileName = _imageUrlResolver.CreateImageFileName(request.Name, request.File.ContentType);
-            await _localDiskImageStorageService.SaveAsync(
+            await _imageStorageService.SaveAsync(
                     request.File.OpenReadStream(),
                     imageFileName, nameof(Product));
 
-            await _localDiskImageStorageService.DeleteAsync(product.ImageFileName, nameof(Product));
+            await _imageStorageService.DeleteAsync(product.ImageFileName, nameof(Product));
         }
 
         product!.Update(
@@ -123,9 +118,8 @@ internal class ProductUseCase(
 
         return _mapper.Map<Product, UpdateProductResult>(product, options => options.AfterMap((product, dto) =>
         {
-            dto.ImageUrl = _imageUrlResolver.BuildFilePath(_httpContextAccessor.HttpContext!.Request,
-                                                                nameof(Product).ToLower(),
-                                                                product.ImageFileName);
+            dto.ImageUrl = _imageUrlResolver.BuildFilePath(nameof(Product).ToLower(),
+                                                            product.ImageFileName);
         }));
     }
 
@@ -153,7 +147,7 @@ internal class ProductUseCase(
         {
             return false;
         }
-        await _localDiskImageStorageService.DeleteAsync(product.ImageFileName, nameof(Product));
+        await _imageStorageService.DeleteAsync(product.ImageFileName, nameof(Product));
 
         await _productRepository.DeleteAsync(product);
 

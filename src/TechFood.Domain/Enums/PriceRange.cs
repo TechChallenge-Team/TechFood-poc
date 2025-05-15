@@ -1,11 +1,10 @@
-﻿namespace TechFood.Domain.Enums
+namespace TechFood.Domain.Enums;
+
+public enum PriceRange
 {
-    public enum PriceRange
-    {
-        Cheapest,
-        Cheap,
-        Moderate,
-        Expansive,
-        MostExpansive
-    }
+    Cheapest,
+    Cheap,
+    Moderate,
+    Expansive,
+    MostExpansive
 }
