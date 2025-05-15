@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TechFood.Infra.Data.Contexts;
 
@@ -11,9 +12,11 @@ using TechFood.Infra.Data.Contexts;
 namespace TechFood.Infra.Data.Migrations
 {
     [DbContext(typeof(TechFoodContext))]
-    partial class TechFoodContextModelSnapshot : ModelSnapshot
+    [Migration("20250514225817_SoftDelete")]
+    partial class SoftDelete
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -99,11 +102,6 @@ namespace TechFood.Infra.Data.Migrations
                         {
                             Id = new Guid("25b58f54-63bc-42da-8cf6-8162097e72c8"),
                             IsDeleted = false
-                        },
-                        new
-                        {
-                            Id = new Guid("9887b301-605f-46a6-93db-ac1ce8685723"),
-                            IsDeleted = false
                         });
                 });
 
@@ -141,30 +139,6 @@ namespace TechFood.Infra.Data.Migrations
                     b.HasIndex("CustomerId");
 
                     b.ToTable("Order", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("d1b5f3a2-4c8e-4b7c-9f0e-5a2d6f3b8c1e"),
-                            Amount = 39.97m,
-                            CreatedAt = new DateTime(2025, 5, 13, 22, 2, 36, 0, DateTimeKind.Utc).AddTicks(6053),
-                            CustomerId = new Guid("25b58f54-63bc-42da-8cf6-8162097e72c8"),
-                            Discount = 0m,
-                            IsDeleted = false,
-                            Number = 1,
-                            Status = 5
-                        },
-                        new
-                        {
-                            Id = new Guid("f2b5f3a2-4c8e-4b7c-9f0e-5a2d6f3b8c1e"),
-                            Amount = 26.98m,
-                            CreatedAt = new DateTime(2025, 5, 13, 22, 2, 36, 0, DateTimeKind.Utc).AddTicks(6354),
-                            CustomerId = new Guid("9887b301-605f-46a6-93db-ac1ce8685723"),
-                            Discount = 0m,
-                            IsDeleted = false,
-                            Number = 2,
-                            Status = 4
-                        });
                 });
 
             modelBuilder.Entity("TechFood.Domain.Entities.OrderHistory", b =>
@@ -218,44 +192,6 @@ namespace TechFood.Infra.Data.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("OrderItem", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("ea31fb90-4bc3-418f-95fc-56516d5bc634"),
-                            IsDeleted = false,
-                            OrderId = new Guid("d1b5f3a2-4c8e-4b7c-9f0e-5a2d6f3b8c1e"),
-                            ProductId = new Guid("090d8eb0-f514-4248-8512-cf0d61a262f0"),
-                            Quantity = 1,
-                            UnitPrice = 19.99m
-                        },
-                        new
-                        {
-                            Id = new Guid("b0f1c3a2-4c8e-4b7c-9f0e-5a2d6f3b8c1e"),
-                            IsDeleted = false,
-                            OrderId = new Guid("d1b5f3a2-4c8e-4b7c-9f0e-5a2d6f3b8c1e"),
-                            ProductId = new Guid("55f32e65-c82f-4a10-981c-cdb7b0d2715a"),
-                            Quantity = 2,
-                            UnitPrice = 9.99m
-                        },
-                        new
-                        {
-                            Id = new Guid("82e5700b-c33e-40a6-bb68-7279f0509421"),
-                            IsDeleted = false,
-                            OrderId = new Guid("f2b5f3a2-4c8e-4b7c-9f0e-5a2d6f3b8c1e"),
-                            ProductId = new Guid("a62dc225-416a-4e36-ba35-a2bd2bbb80f7"),
-                            Quantity = 1,
-                            UnitPrice = 21.99m
-                        },
-                        new
-                        {
-                            Id = new Guid("900f65fe-47ca-4b4b-9a7c-a82c6d9c52cd"),
-                            IsDeleted = false,
-                            OrderId = new Guid("f2b5f3a2-4c8e-4b7c-9f0e-5a2d6f3b8c1e"),
-                            ProductId = new Guid("86c50c81-c46e-4e79-a591-3b68c75cefda"),
-                            Quantity = 1,
-                            UnitPrice = 4.99m
-                        });
                 });
 
             modelBuilder.Entity("TechFood.Domain.Entities.Payment", b =>
@@ -503,12 +439,6 @@ namespace TechFood.Infra.Data.Migrations
                                     CustomerId = new Guid("25b58f54-63bc-42da-8cf6-8162097e72c8"),
                                     Type = 0,
                                     Value = "4511554544"
-                                },
-                                new
-                                {
-                                    CustomerId = new Guid("9887b301-605f-46a6-93db-ac1ce8685723"),
-                                    Type = 0,
-                                    Value = "000000000191"
                                 });
                         });
 
@@ -535,11 +465,6 @@ namespace TechFood.Infra.Data.Migrations
                                 {
                                     CustomerId = new Guid("25b58f54-63bc-42da-8cf6-8162097e72c8"),
                                     Address = "john.dev@gmail.com"
-                                },
-                                new
-                                {
-                                    CustomerId = new Guid("9887b301-605f-46a6-93db-ac1ce8685723"),
-                                    Address = "john.silva@gmail.com"
                                 });
                         });
 
@@ -566,11 +491,6 @@ namespace TechFood.Infra.Data.Migrations
                                 {
                                     CustomerId = new Guid("25b58f54-63bc-42da-8cf6-8162097e72c8"),
                                     FullName = "John"
-                                },
-                                new
-                                {
-                                    CustomerId = new Guid("9887b301-605f-46a6-93db-ac1ce8685723"),
-                                    FullName = "John Silva"
                                 });
                         });
 
@@ -608,13 +528,6 @@ namespace TechFood.Infra.Data.Migrations
                                 new
                                 {
                                     CustomerId = new Guid("25b58f54-63bc-42da-8cf6-8162097e72c8"),
-                                    CountryCode = "55",
-                                    DDD = "11",
-                                    Number = "9415452222"
-                                },
-                                new
-                                {
-                                    CustomerId = new Guid("9887b301-605f-46a6-93db-ac1ce8685723"),
                                     CountryCode = "55",
                                     DDD = "11",
                                     Number = "9415452222"

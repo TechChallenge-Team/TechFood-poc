@@ -12,7 +12,7 @@ using TechFood.Infra.Data.Contexts;
 namespace TechFood.Infra.Data.Migrations
 {
     [DbContext(typeof(TechFoodContext))]
-    [Migration("20250514193617_SeedUpdate")]
+    [Migration("20250515001252_SeedUpdate")]
     partial class SeedUpdate
     {
         /// <inheritdoc />
@@ -35,6 +35,9 @@ namespace TechFood.Infra.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -52,6 +55,7 @@ namespace TechFood.Infra.Data.Migrations
                         {
                             Id = new Guid("eaa76b46-2e6b-42eb-8f5d-b213f85f25ea"),
                             ImageFileName = "lanche.png",
+                            IsDeleted = false,
                             Name = "Lanche",
                             SortOrder = 0
                         },
@@ -59,6 +63,7 @@ namespace TechFood.Infra.Data.Migrations
                         {
                             Id = new Guid("c65e2cec-bd44-446d-8ed3-a7045cd4876a"),
                             ImageFileName = "acompanhamento.png",
+                            IsDeleted = false,
                             Name = "Acompanhamento",
                             SortOrder = 1
                         },
@@ -66,6 +71,7 @@ namespace TechFood.Infra.Data.Migrations
                         {
                             Id = new Guid("c3a70938-9e88-437d-a801-c166d2716341"),
                             ImageFileName = "bebida.png",
+                            IsDeleted = false,
                             Name = "Bebida",
                             SortOrder = 2
                         },
@@ -73,6 +79,7 @@ namespace TechFood.Infra.Data.Migrations
                         {
                             Id = new Guid("ec2fb26d-99a4-4eab-aa5c-7dd18d88a025"),
                             ImageFileName = "sobremesa.png",
+                            IsDeleted = false,
                             Name = "Sobremesa",
                             SortOrder = 3
                         });
@@ -83,6 +90,9 @@ namespace TechFood.Infra.Data.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.ToTable("Customer", (string)null);
@@ -90,11 +100,13 @@ namespace TechFood.Infra.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("25b58f54-63bc-42da-8cf6-8162097e72c8")
+                            Id = new Guid("25b58f54-63bc-42da-8cf6-8162097e72c8"),
+                            IsDeleted = false
                         },
                         new
                         {
-                            Id = new Guid("9887b301-605f-46a6-93db-ac1ce8685723")
+                            Id = new Guid("9887b301-605f-46a6-93db-ac1ce8685723"),
+                            IsDeleted = false
                         });
                 });
 
@@ -118,6 +130,9 @@ namespace TechFood.Infra.Data.Migrations
                     b.Property<DateTime?>("FinishedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<int>("Number")
                         .HasColumnType("int");
 
@@ -138,6 +153,7 @@ namespace TechFood.Infra.Data.Migrations
                             CreatedAt = new DateTime(2025, 5, 13, 22, 2, 36, 0, DateTimeKind.Utc).AddTicks(6053),
                             CustomerId = new Guid("25b58f54-63bc-42da-8cf6-8162097e72c8"),
                             Discount = 0m,
+                            IsDeleted = false,
                             Number = 1,
                             Status = 5
                         },
@@ -148,6 +164,7 @@ namespace TechFood.Infra.Data.Migrations
                             CreatedAt = new DateTime(2025, 5, 13, 22, 2, 36, 0, DateTimeKind.Utc).AddTicks(6354),
                             CustomerId = new Guid("9887b301-605f-46a6-93db-ac1ce8685723"),
                             Discount = 0m,
+                            IsDeleted = false,
                             Number = 2,
                             Status = 4
                         });
@@ -160,6 +177,9 @@ namespace TechFood.Infra.Data.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier");
@@ -178,6 +198,9 @@ namespace TechFood.Infra.Data.Migrations
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier");
@@ -203,6 +226,7 @@ namespace TechFood.Infra.Data.Migrations
                         new
                         {
                             Id = new Guid("ea31fb90-4bc3-418f-95fc-56516d5bc634"),
+                            IsDeleted = false,
                             OrderId = new Guid("d1b5f3a2-4c8e-4b7c-9f0e-5a2d6f3b8c1e"),
                             ProductId = new Guid("090d8eb0-f514-4248-8512-cf0d61a262f0"),
                             Quantity = 1,
@@ -211,6 +235,7 @@ namespace TechFood.Infra.Data.Migrations
                         new
                         {
                             Id = new Guid("b0f1c3a2-4c8e-4b7c-9f0e-5a2d6f3b8c1e"),
+                            IsDeleted = false,
                             OrderId = new Guid("d1b5f3a2-4c8e-4b7c-9f0e-5a2d6f3b8c1e"),
                             ProductId = new Guid("55f32e65-c82f-4a10-981c-cdb7b0d2715a"),
                             Quantity = 2,
@@ -219,6 +244,7 @@ namespace TechFood.Infra.Data.Migrations
                         new
                         {
                             Id = new Guid("82e5700b-c33e-40a6-bb68-7279f0509421"),
+                            IsDeleted = false,
                             OrderId = new Guid("f2b5f3a2-4c8e-4b7c-9f0e-5a2d6f3b8c1e"),
                             ProductId = new Guid("a62dc225-416a-4e36-ba35-a2bd2bbb80f7"),
                             Quantity = 1,
@@ -227,6 +253,7 @@ namespace TechFood.Infra.Data.Migrations
                         new
                         {
                             Id = new Guid("900f65fe-47ca-4b4b-9a7c-a82c6d9c52cd"),
+                            IsDeleted = false,
                             OrderId = new Guid("f2b5f3a2-4c8e-4b7c-9f0e-5a2d6f3b8c1e"),
                             ProductId = new Guid("86c50c81-c46e-4e79-a591-3b68c75cefda"),
                             Quantity = 1,
@@ -244,6 +271,9 @@ namespace TechFood.Infra.Data.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier");
@@ -280,6 +310,9 @@ namespace TechFood.Infra.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -304,6 +337,7 @@ namespace TechFood.Infra.Data.Migrations
                             CategoryId = new Guid("eaa76b46-2e6b-42eb-8f5d-b213f85f25ea"),
                             Description = "Delicioso X-Burguer",
                             ImageFileName = "x-burguer.png",
+                            IsDeleted = false,
                             Name = "X-Burguer",
                             OutOfStock = false,
                             Price = 19.99m
@@ -314,6 +348,7 @@ namespace TechFood.Infra.Data.Migrations
                             CategoryId = new Guid("eaa76b46-2e6b-42eb-8f5d-b213f85f25ea"),
                             Description = "Delicioso X-Salada",
                             ImageFileName = "x-salada.png",
+                            IsDeleted = false,
                             Name = "X-Salada",
                             OutOfStock = false,
                             Price = 21.99m
@@ -324,6 +359,7 @@ namespace TechFood.Infra.Data.Migrations
                             CategoryId = new Guid("eaa76b46-2e6b-42eb-8f5d-b213f85f25ea"),
                             Description = "Delicioso X-Bacon",
                             ImageFileName = "x-bacon.png",
+                            IsDeleted = false,
                             Name = "X-Bacon",
                             OutOfStock = false,
                             Price = 22.99m
@@ -334,6 +370,7 @@ namespace TechFood.Infra.Data.Migrations
                             CategoryId = new Guid("c65e2cec-bd44-446d-8ed3-a7045cd4876a"),
                             Description = "Crocante Batata Frita",
                             ImageFileName = "batata.png",
+                            IsDeleted = false,
                             Name = "Batata Frita",
                             OutOfStock = false,
                             Price = 9.99m
@@ -344,6 +381,7 @@ namespace TechFood.Infra.Data.Migrations
                             CategoryId = new Guid("c65e2cec-bd44-446d-8ed3-a7045cd4876a"),
                             Description = "Crocante Batata Frita",
                             ImageFileName = "batata-grande.png",
+                            IsDeleted = false,
                             Name = "Batata Frita Grande",
                             OutOfStock = false,
                             Price = 12.99m
@@ -354,6 +392,7 @@ namespace TechFood.Infra.Data.Migrations
                             CategoryId = new Guid("c65e2cec-bd44-446d-8ed3-a7045cd4876a"),
                             Description = "Delicioso Nuggets de Frango",
                             ImageFileName = "nuggets.png",
+                            IsDeleted = false,
                             Name = "Nuggets de Frango",
                             OutOfStock = false,
                             Price = 13.99m
@@ -364,6 +403,7 @@ namespace TechFood.Infra.Data.Migrations
                             CategoryId = new Guid("c3a70938-9e88-437d-a801-c166d2716341"),
                             Description = "Coca-Cola",
                             ImageFileName = "coca-cola.png",
+                            IsDeleted = false,
                             Name = "Coca-Cola",
                             OutOfStock = false,
                             Price = 4.99m
@@ -374,6 +414,7 @@ namespace TechFood.Infra.Data.Migrations
                             CategoryId = new Guid("c3a70938-9e88-437d-a801-c166d2716341"),
                             Description = "Guaraná",
                             ImageFileName = "guarana.png",
+                            IsDeleted = false,
                             Name = "Guaraná",
                             OutOfStock = false,
                             Price = 4.99m
@@ -384,6 +425,7 @@ namespace TechFood.Infra.Data.Migrations
                             CategoryId = new Guid("c3a70938-9e88-437d-a801-c166d2716341"),
                             Description = "Fanta",
                             ImageFileName = "fanta.png",
+                            IsDeleted = false,
                             Name = "Fanta",
                             OutOfStock = false,
                             Price = 4.99m
@@ -394,6 +436,7 @@ namespace TechFood.Infra.Data.Migrations
                             CategoryId = new Guid("c3a70938-9e88-437d-a801-c166d2716341"),
                             Description = "Sprite",
                             ImageFileName = "sprite.png",
+                            IsDeleted = false,
                             Name = "Sprite",
                             OutOfStock = false,
                             Price = 4.99m
@@ -404,6 +447,7 @@ namespace TechFood.Infra.Data.Migrations
                             CategoryId = new Guid("ec2fb26d-99a4-4eab-aa5c-7dd18d88a025"),
                             Description = "Milk Shake de Morango",
                             ImageFileName = "milk-shake-morango.png",
+                            IsDeleted = false,
                             Name = "Milk Shake de Morango",
                             OutOfStock = false,
                             Price = 7.99m
@@ -414,6 +458,7 @@ namespace TechFood.Infra.Data.Migrations
                             CategoryId = new Guid("ec2fb26d-99a4-4eab-aa5c-7dd18d88a025"),
                             Description = "Milk Shake de Chocolate",
                             ImageFileName = "milk-shake-chocolate.png",
+                            IsDeleted = false,
                             Name = "Milk Shake de Chocolate",
                             OutOfStock = false,
                             Price = 7.99m
@@ -424,6 +469,7 @@ namespace TechFood.Infra.Data.Migrations
                             CategoryId = new Guid("ec2fb26d-99a4-4eab-aa5c-7dd18d88a025"),
                             Description = "Milk Shake de Baunilha",
                             ImageFileName = "milk-shake-baunilha.png",
+                            IsDeleted = false,
                             Name = "Milk Shake de Baunilha",
                             OutOfStock = false,
                             Price = 7.99m

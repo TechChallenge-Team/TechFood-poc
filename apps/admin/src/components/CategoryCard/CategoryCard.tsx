@@ -1,15 +1,16 @@
 import { Flex, Text } from "@radix-ui/themes";
 import { CategoryCardProps } from "./CategoryCard.types";
+import clsx from "clsx";
+
 import classNames from "./CategoryCard.module.css";
 import clsx from "clsx";
 
 export const CategoryCard = ({
-  name,
-  id,
-  imageUrl,
-  handleFilterByCategory,
+  category,
+  onSelect,
   selected = false,
 }: CategoryCardProps) => {
+  const { name, imageUrl } = category;
   return (
     <Flex
       className={clsx(classNames.root, selected && classNames.selected)}
@@ -17,9 +18,7 @@ export const CategoryCard = ({
       gap="2"
       align="center"
       justify="center"
-      onClick={() => {
-        handleFilterByCategory(id);
-      }}
+      onClick={() => onSelect(category)}
     >
       <img src={imageUrl} alt={name} />
       <Text

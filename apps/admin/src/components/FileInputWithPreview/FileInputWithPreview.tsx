@@ -1,15 +1,8 @@
-import { Button, Text, Flex, Box, Card } from "@radix-ui/themes";
-import * as Label from "@radix-ui/react-label";
 import { useState, useRef, useEffect } from "react";
+import { Button, Text, Flex, Card } from "@radix-ui/themes";
+import * as Label from "@radix-ui/react-label";
 import { t } from "../../i18n";
-
-interface FileInputWithPreviewProps {
-  value?: FileList;
-  onChange: (files: FileList | undefined) => void;
-  error?: any;
-  name: string;
-  imageUrl?: string;
-}
+import { FileInputWithPreviewProps } from "./FileInputWithPreview.types";
 
 export function FileInputWithPreview({
   value,
@@ -54,7 +47,7 @@ export function FileInputWithPreview({
       <Flex gap="2" align="center">
         <Button asChild>
           <Label.Root htmlFor={name} style={{ cursor: "pointer" }}>
-            {t("ProductModal.SelectImage")}
+            {t("fileInput.selectImage")}
           </Label.Root>
         </Button>
 
@@ -65,7 +58,7 @@ export function FileInputWithPreview({
             onClick={handleClear}
             type="button"
           >
-            {t("ProductModal.RemoveImage")}
+            {t("fileInput.removeImage")}
           </Button>
         )}
       </Flex>
@@ -81,7 +74,7 @@ export function FileInputWithPreview({
 
       {fileName && (
         <Text size="1">
-          {t("ProductModal.SelectedImage")}: {fileName}
+          {t("fileInput.selectedImage")}: {fileName}
         </Text>
       )}
 
