@@ -264,7 +264,7 @@ export const MenuManagement = () => {
 
   const handleSaveProduct = async (formData: FormData) => {
     const isNewProduct = !selectedProduct?.id;
-    const { data, status } = await api.request<Product>({
+    const { data } = await api.request<Product>({
       method: isNewProduct ? "post" : "put",
       url: `/v1/Products/${selectedProduct?.id || ""}`,
       data: formData,
@@ -275,11 +275,7 @@ export const MenuManagement = () => {
 
     const msgKey = isNewProduct ? "add" : "edit";
 
-    if (status === 200) {
-      toast.success(t(`menuManagementPage.editDialog.${msgKey}SuccessMessage`));
-    } else {
-      toast.error(t(`menuManagementPage.editDialog.${msgKey}ErrorMessage`));
-    }
+    toast.success(t(`menuManagementPage.editDialog.${msgKey}SuccessMessage`));
 
     setMenu((prev) => {
       return {
