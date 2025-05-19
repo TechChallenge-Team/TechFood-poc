@@ -19,6 +19,12 @@
       "selectCategory": "Selecionar Categoria"
     }
   },
+  "forbidden": {
+    "title": "Você não tem permissão para ver isso.",
+    "message": "A página que você está tentando acessar tem acesso restrito.",
+    "contactMessage": "Se você acha que isso é um erro, entre em contato com seu administrador.",
+    "backToHome": "Voltar para a Página Inicial"
+  },
   "fileInput": {
     "selectImage": "Selecionar Imagem",
     "removeImage": "Remover Imagem",
@@ -33,5 +39,12 @@
     "price": "Preço",
     "category": "Categoria",
     "image": "Imagem"
+  },
+  "errors": {
+    "expiredSession": "Sua sessão expirou. Por favor, faça login novamente.",
+    "unauthorizedAccess": "Você não tem permissão para acessar este recurso.",
+    "notFound": "O recurso solicitado não foi encontrado.",
+    "internalServerError": "Ocorreu um erro interno do servidor. Por favor, tente novamente mais tarde.",
+    "unexpectedError": "Ocorreu um erro inesperado. Por favor, tente novamente mais tarde."
   }
 }

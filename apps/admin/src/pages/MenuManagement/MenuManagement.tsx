@@ -12,10 +12,10 @@ import {
 } from "@radix-ui/themes";
 import * as Label from "@radix-ui/react-label";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import api from "../../api";
 import { t } from "../../i18n";
 import { normalizeText } from "../../utilities";
 import { Product, Category, Menu } from "../../models/";
@@ -255,7 +255,7 @@ export const MenuManagement = () => {
 
   useEffect(() => {
     const fetch = async () => {
-      const menu = await axios.get<Menu>("/api/v1/menu");
+      const menu = await api.get<Menu>("/v1/menu");
       setMenu(menu.data);
     };
 
@@ -264,9 +264,9 @@ export const MenuManagement = () => {
 
   const handleSaveProduct = async (formData: FormData) => {
     const isNewProduct = !selectedProduct?.id;
-    const { data, status } = await axios.request<Product>({
+    const { data, status } = await api.request<Product>({
       method: isNewProduct ? "post" : "put",
-      url: `/api/v1/Products/${selectedProduct?.id || ""}`,
+      url: `/v1/Products/${selectedProduct?.id || ""}`,
       data: formData,
       headers: {
         "Content-Type": "multipart/form-data",
@@ -309,7 +309,7 @@ export const MenuManagement = () => {
   };
 
   const handleDeleteProduct = async (product: Product) => {
-    await axios.delete(`/api/v1/products/${product.id}`);
+    await api.delete(`/v1/products/${product.id}`);
 
     setMenu((prev) => {
       if (!prev) return null;

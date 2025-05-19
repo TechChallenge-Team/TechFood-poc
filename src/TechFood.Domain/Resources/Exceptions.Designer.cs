@@ -293,5 +293,23 @@ namespace TechFood.Domain.Resources {
                 return ResourceManager.GetString("Product_ThrowPriceIsGreaterThanZero", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The password hash cannot be empty.
+        /// </summary>
+        public static string User_PasswordHashIsEmpty {
+            get {
+                return ResourceManager.GetString("User_PasswordHashIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The role name cannot be empty.
+        /// </summary>
+        public static string User_RoleIsEmpty {
+            get {
+                return ResourceManager.GetString("User_RoleIsEmpty", resourceCulture);
+            }
+        }
     }
 }

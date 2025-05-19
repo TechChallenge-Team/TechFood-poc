@@ -1,10 +1,11 @@
+using System;
 using TechFood.Domain.Shared.Exceptions;
 using TechFood.Domain.Shared.Validations;
 using TechFood.Domain.Shared.ValueObjects;
 
 namespace TechFood.Domain.ValueObjects;
 
-public class Email : ValueObject
+public class Email : ValueObject, IEquatable<Email>
 {
     public Email(string address)
     {
@@ -13,6 +14,12 @@ public class Email : ValueObject
     }
 
     public string Address { get; set; }
+
+    public bool Equals(Email? other)
+    {
+        return other is not null &&
+               Address == other.Address;
+    }
 
     public static implicit operator Email(string address) => new(address);
 

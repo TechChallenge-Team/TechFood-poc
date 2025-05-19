@@ -23,6 +23,8 @@ public class TechFoodContext(
 
     public DbSet<Payment> Payments { get; set; } = null!;
 
+    public DbSet<User> Users { get; set; } = null!;
+
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         foreach (var entry in ChangeTracker
@@ -162,6 +164,22 @@ public class TechFoodContext(
           .HasData(
               new { CustomerId = new Guid("9887b301-605f-46a6-93db-ac1ce8685723"), CountryCode = "55", DDD = "11", Number = "9415452222" }
           );
+
+        modelBuilder.Entity<User>().OwnsOne(c => c.Name)
+           .HasData(
+               new { UserId = new Guid("fa09f3a0-f22d-40a8-9cca-0c64e5ed50e4"), FullName = "John Admin" }
+           );
+
+        modelBuilder.Entity<User>().OwnsOne(c => c.Email)
+         .HasData(
+             new { UserId = new Guid("fa09f3a0-f22d-40a8-9cca-0c64e5ed50e4"), Address = "john.admin@techfood.com" }
+         );
+
+        modelBuilder.Entity<User>()
+            .HasData(
+                // password: 123456
+                new { Id = new Guid("fa09f3a0-f22d-40a8-9cca-0c64e5ed50e4"), Username = "john.admin", Role = "admin", PasswordHash = "AQAAAAIAAYagAAAAEKs0I0Zk5QKKieJTm20PwvTmpkSfnp5BhSl5E35ny8DqffCJA+CiDRnnKRCeOx8+mg==", IsDeleted = false }
+            );
 
         modelBuilder.Entity<Category>()
             .HasData(

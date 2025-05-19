@@ -24,6 +24,7 @@ public static class DependecyInjection
         services.AddTransient<IPaymentUseCase, PaymentUseCase>();
         services.AddTransient<ICustomerUseCase, CustomerUseCase>();
         services.AddTransient<IMenuUseCase, MenuUseCase>();
+        services.AddTransient<IAuthUseCase, AuthUseCase>();
 
         services.AddTransient<IImageUrlResolver, ImageUrlResolver>();
 

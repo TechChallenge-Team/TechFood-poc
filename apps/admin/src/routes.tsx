@@ -6,13 +6,13 @@ import {
   UtensilsIcon,
 } from "lucide-react";
 import { AdminLayout } from "./components";
-import { Dashboard, MenuManagement } from "./pages";
+import { Dashboard, Forbidden, MenuManagement, SignIn } from "./pages";
 
 const router = createBrowserRouter(
   [
     {
       path: "/",
-      Component: AdminLayout,
+      element: <AdminLayout />,
       children: [
         {
           index: true,
@@ -20,13 +20,19 @@ const router = createBrowserRouter(
           handle: {
             title: "Dashboard",
             menu: true,
+            roles: ["admin"],
             icon: <SquareKanbanIcon />,
           },
         },
         {
           path: "menu",
+          handle: {
+            title: "Menu",
+            menu: true,
+            roles: ["admin"],
+            icon: <UtensilsIcon />,
+          },
           element: <MenuManagement />,
-          handle: { title: "Menu", menu: true, icon: <UtensilsIcon /> },
         },
         // {
         //   path: "reviews",
@@ -34,6 +40,14 @@ const router = createBrowserRouter(
         //   handle: { title: "Reviews", menu: true, icon: <StarIcon /> },
         // },
       ],
+    },
+    {
+      path: "/signin",
+      element: <SignIn />,
+    },
+    {
+      path: "/forbidden",
+      element: <Forbidden />,
     },
   ],
   {

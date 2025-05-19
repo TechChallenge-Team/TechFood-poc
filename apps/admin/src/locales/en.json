@@ -19,6 +19,12 @@
       "selectCategory": "Select Category"
     }
   },
+  "forbidden": {
+    "title": "You're not permitted to see this.",
+    "message": "The page you're trying to access has restricted access.",
+    "contactMessage": "If you feel this is a mistake, please contact your admin.",
+    "backToHome": "Back to Home"
+  },
   "fileInput": {
     "selectImage": "Select Image",
     "removeImage": "Remove Image",
@@ -33,5 +39,12 @@
     "price": "Price",
     "category": "Category",
     "image": "Image"
+  },
+  "errors": {
+    "expiredSession": "Your session has expired. Please log in again.",
+    "unauthorizedAccess": "You do not have permission to access this resource.",
+    "notFound": "The requested resource was not found.",
+    "internalServerError": "An internal server error occurred. Please try again later.",
+    "unexpectedError": "An unexpected error occurred. Please try again later."
   }
 }
