@@ -151,11 +151,11 @@ namespace TechFood.Domain.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot pay for an order that is not in the Created status..
+        ///   Looks up a localized string similar to Cannot pay for an order that is not in the Waiting Payment status..
         /// </summary>
-        public static string Order_CannotPayToNonCreatedStatus {
+        public static string Order_CannotPayToNonWaitingPaymentStatus {
             get {
-                return ResourceManager.GetString("Order_CannotPayToNonCreatedStatus", resourceCulture);
+                return ResourceManager.GetString("Order_CannotPayToNonWaitingPaymentStatus", resourceCulture);
             }
         }
         
@@ -169,11 +169,11 @@ namespace TechFood.Domain.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot refuse payment for an order that is not in the Created status..
+        ///   Looks up a localized string similar to Cannot refuse payment for an order that is not in the Waiting Payment status..
         /// </summary>
-        public static string Order_CannotRefusePaymentToNonCreatedStatus {
+        public static string Order_CannotRefuseToNonWaitingPaymentStatus {
             get {
-                return ResourceManager.GetString("Order_CannotRefusePaymentToNonCreatedStatus", resourceCulture);
+                return ResourceManager.GetString("Order_CannotRefuseToNonWaitingPaymentStatus", resourceCulture);
             }
         }
         

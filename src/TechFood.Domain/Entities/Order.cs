@@ -69,9 +69,9 @@ public class Order : Entity, IAggregateRoot
 
     public void PayPayment()
     {
-        if (Status != OrderStatusType.Created)
+        if (Status != OrderStatusType.WaitingPayment)
         {
-            throw new DomainException(Resources.Exceptions.Order_CannotPayToNonCreatedStatus);
+            throw new DomainException(Resources.Exceptions.Order_CannotPayToNonWaitingPaymentStatus);
         }
 
         UpdateStatus(OrderStatusType.Paid);
@@ -79,9 +79,9 @@ public class Order : Entity, IAggregateRoot
 
     public void RefusedPayment()
     {
-        if (Status != OrderStatusType.Created)
+        if (Status != OrderStatusType.WaitingPayment)
         {
-            throw new DomainException(Resources.Exceptions.Order_CannotRefusePaymentToNonCreatedStatus);
+            throw new DomainException(Resources.Exceptions.Order_CannotRefuseToNonWaitingPaymentStatus);
         }
 
         UpdateStatus(OrderStatusType.RefusedPayment);

@@ -99,9 +99,9 @@ namespace TechFood.Doman.Tests
             Assert.Equal(Domain.Resources.Exceptions.Order_CannotApplyDiscountToNonCreatedStatus, result.Message);
         }
 
-        [Fact(DisplayName = "Validate Payment when Order is Created")]
+        [Fact(DisplayName = "Validate Payment when Order is Wainting Payment")]
         [Trait("Order", "Order Status")]
-        public void ShoudThrowException_WhenPayingPaymentToOrderThatIsNotCreatedStatus()
+        public void ShoudThrowException_WhenPayingPaymentToOrderThatIsNotWaintingPaymentStatus()
         {
             // Arrange
             var customer = _customerFixture.CreateValidCustomer();
@@ -113,10 +113,10 @@ namespace TechFood.Doman.Tests
             var result = Assert.Throws<DomainException>(order.PayPayment);
 
             // Assert
-            Assert.Equal(Domain.Resources.Exceptions.Order_CannotPayToNonCreatedStatus, result.Message);
+            Assert.Equal(Domain.Resources.Exceptions.Order_CannotPayToNonWaitingPaymentStatus, result.Message);
         }
 
-        [Fact(DisplayName = "Validate Payment Refusal when Order is Created")]
+        [Fact(DisplayName = "Validate Payment Refusal when Order is Wainting Payment")]
         [Trait("Order", "Order Status")]
         public void ShoudThrowException_WhenRefusingPaymentToOrderThatIsNotCreatedStatus()
         {
@@ -130,7 +130,7 @@ namespace TechFood.Doman.Tests
             var result = Assert.Throws<DomainException>(order.RefusedPayment);
 
             // Assert
-            Assert.Equal(Domain.Resources.Exceptions.Order_CannotRefusePaymentToNonCreatedStatus, result.Message);
+            Assert.Equal(Domain.Resources.Exceptions.Order_CannotRefuseToNonWaitingPaymentStatus, result.Message);
         }
 
         [Fact(DisplayName = "Validate Done when Order is not in Preparation")]
