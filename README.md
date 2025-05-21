@@ -32,3 +32,15 @@ The project is organized into several key components, including:
 To get started with the project, follow these steps:
 
 1. Clone the repository to your local machine.
+
+2. With docker installed in the project root run:
+
+```bash
+  docker-compose up -d
+```
+3. Container http addresses
+
+* api swagger: http://localhost:5000/api/swagger/index.html
+* app self-order: http://localhost:5000/self-order/
+* app order-monitor: http://localhost:5000/order-monitor/
+* app admin: http://localhost:5000/admin/
