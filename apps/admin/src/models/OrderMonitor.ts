@@ -1,21 +1,19 @@
 export interface OrderMonitor {
-  id: string;
+  orderId: string;
   number: number;
-  status: OrderStatusType;
+  status: OrderStatus;
   products: OrderProduct[];
 }
 
-// export type OrderStatusType = "Received" | "InPreparation" | "Done" | "Finished"
-
-export enum OrderStatusType {
-  Received = "Criado",
-  InPreparation = "Em Preparação",
-  Done = "Pronto",
-  Finished = "Finalizado",
-}
-
 export interface OrderProduct {
-  id: string;
+  imageUrl: string;
   name: string;
   quantity: number;
 }
+
+export type OrderStatus =
+  | "PAID"
+  | "INPREPARATION"
+  | "DONE"
+  | "FINISH"
+  | "REJECT";

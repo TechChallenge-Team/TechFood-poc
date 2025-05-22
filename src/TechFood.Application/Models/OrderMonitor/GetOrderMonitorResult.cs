@@ -12,5 +12,5 @@ public class GetOrderMonitorResult
 
     public OrderStatusType Status { get; set; }
 
-    public List<ProductResult> Products { get; set; }
+    public IEnumerable<ProductResult> Products { get; set; }
 }

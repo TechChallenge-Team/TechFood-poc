@@ -1,126 +1,158 @@
-import { Flex, Heading } from "@radix-ui/themes";
+import {
+  Button,
+  Flex,
+  Heading,
+  SegmentedControl,
+  Text,
+} from "@radix-ui/themes";
 import { t } from "../../i18n";
-import { useState } from "react";
-import { OrderCard } from "../../components";
-import { OrderMonitor, OrderStatusType } from "../../models/OrderMonitor";
+import { useEffect, useState } from "react";
+import { OrderMonitor, OrderStatus } from "../../models/OrderMonitor";
 import classNames from "./Monitoring.module.css";
-export const items: OrderMonitor[] = [
-  {
-    id: "a1b2c3",
-    number: 1001,
-    status: OrderStatusType.Received, // Criado
-    products: [
-      { id: "p1", name: "Café Expresso", quantity: 2 },
-      { id: "p2", name: "Pão na Chapa", quantity: 1 },
-    ],
-  },
-  {
-    id: "d4e5f6",
-    number: 1002,
-    status: OrderStatusType.InPreparation, // Em Preparação
-    products: [
-      { id: "p3", name: "Suco de Laranja", quantity: 3 },
-      { id: "p4", name: "Muffin de Chocolate", quantity: 2 },
-    ],
-  },
-  {
-    id: "g7h8i9",
-    number: 1003,
-    status: OrderStatusType.Done, // Pronto
-    products: [{ id: "p5", name: "Sanduíche Natural", quantity: 1 }],
-  },
-  {
-    id: "j1k2l3",
-    number: 1004,
-    status: OrderStatusType.Finished, // Finalizado
-    products: [
-      { id: "p6", name: "Água Mineral", quantity: 2 },
-      { id: "p7", name: "Cookie de Aveia", quantity: 4 },
-    ],
-  },
-  // mais exemplos...
-  {
-    id: "k4l5m6",
-    number: 1005,
-    status: OrderStatusType.Received,
-    products: [
-      { id: "p8", name: "Capuccino", quantity: 1 },
-      { id: "p9", name: "Brownie de Chocolate", quantity: 2 },
-      { id: "p10", name: "Suco Detox", quantity: 1 },
-    ],
-  },
-  {
-    id: "n7o8p9",
-    number: 1006,
-    status: OrderStatusType.InPreparation,
-    products: [{ id: "p11", name: "Torrada Integral", quantity: 3 }],
-  },
-  {
-    id: "q1r2s3",
-    number: 1007,
-    status: OrderStatusType.Done,
-    products: [
-      { id: "p12", name: "Pão de Queijo", quantity: 5 },
-      { id: "p13", name: "Chá Gelado", quantity: 2 },
-    ],
-  },
-  {
-    id: "t4u5v6",
-    number: 1008,
-    status: OrderStatusType.Finished,
-    products: [
-      { id: "p14", name: "Salada de Frutas", quantity: 1 },
-      { id: "p15", name: "Granola", quantity: 2 },
-    ],
-  },
+import { OrderItem } from "./OrderCard";
+import axios from "axios";
+
+const segments = [
+  { key: "PAID", value: "Received" },
+  { key: "INPREPARATION", value: "In-Preparation" },
+  { key: "DONE", value: "Done" },
 ];
 
-const Section = ({ title, direction, children }: any) => {
+type IOrderInformation = {
+  order: OrderMonitor | null;
+  updateOrderStatus: (id: string, status: OrderStatus) => any;
+};
+
+const OrderInformation = ({ order, updateOrderStatus }: IOrderInformation) => {
+  const redButtonName = () =>
+    order?.status === "INPREPARATION" || order?.status === "DONE"
+      ? "Cancel"
+      : "Reject";
+
+  const greenButtonName = () => {
+    if (order?.status === "INPREPARATION") return "Finish";
+    else if (order?.status === "DONE") return "Delivered";
+    else return "Accept";
+  };
+
+  const greenButtonUpdateAction = () => {
+    if (order?.orderId == null) return;
+
+    let status: OrderStatus = "INPREPARATION";
+    if (order?.status === "INPREPARATION") status = "DONE";
+    else if (order?.status === "DONE") status = "FINISH";
+
+    updateOrderStatus(order?.orderId, status);
+  };
+
+  const redButtonUpdateAction = () => {
+    if (!order?.orderId) return;
+    updateOrderStatus(order?.orderId, "REJECT");
+  };
+
   return (
-    <Flex className={classNames.section} direction="column" gap="4">
-      <Heading size="4" as="h2">
-        {title}
-      </Heading>
-      <Flex gap="4" wrap="wrap" direction={direction}>
-        {children}
+    <Flex className={classNames.orderDescribe} direction="column" gap="4">
+      <Flex justify="between" align="center">
+        <Heading size="5" weight="bold">
+          Order #{order?.number}
+        </Heading>
+        <Flex gap="3">
+          <Button onClick={redButtonUpdateAction} color="red" size="3">
+            {redButtonName()}
+          </Button>
+          <Button onClick={greenButtonUpdateAction} size="3">
+            {greenButtonName()}
+          </Button>
+        </Flex>
+      </Flex>
+
+      <hr style={{ width: "100%", borderTop: "1px solid #ccc" }} />
+
+      <Flex direction="column" gap="3">
+        <Heading size="5">Items</Heading>
+
+        {order?.products.map((x) => (
+          <Flex
+            className={classNames.product}
+            key={x.name}
+            gap="5"
+            align="center"
+          >
+            <Flex className={classNames.imageContainer}>
+              <img src={x.imageUrl} alt={x.name} />
+            </Flex>
+            <Flex direction="column">
+              <Text>Name: {x.name}</Text>
+              <Text>Quantity: {x.quantity}</Text>
+            </Flex>
+          </Flex>
+        ))}
       </Flex>
     </Flex>
   );
 };
-export const Monitoring = () => {
-  const [orders, setOrders] = useState<OrderMonitor[]>([]);
-  // useEffect(
-  //   const fetchProductsAndCategories = async () => {
-  //     const [productsResponse, categoriesResponse] = await Promise.all([
-  //       axios.get<OrderMonitor[]>("/api/v1/OrderMonitor"),
-  //     ]);
-  //     setProducts(productsResponse.data);
-  //     setProductsFiltered(productsResponse.data);
-  //     setCategories(categoriesResponse.data);
-  //   };
 
-  //   fetchProductsAndCategories();
-  // )
+export const Monitoring = () => {
+  const [orderList, setOrderList] = useState<OrderMonitor[]>([]);
+  const [statusOrder, setStatusOrder] = useState<string>("CREATED");
+  const [orderItem, setOrderItem] = useState<OrderMonitor | null>(null);
+
+  const handleUpdateOrderStatus = (id: string, status: OrderStatus) => {
+    const updatedList = orderList.map((order) =>
+      order.orderId === id ? { ...order, status } : order
+    );
+
+    setOrderList(updatedList);
+  };
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const response = await axios.get<OrderMonitor[]>("/api/v1/OrderMonitor");
+      setOrderList(response.data);
+    };
+
+    fetchProducts();
+  }, []);
 
   return (
-    <Flex direction="column">
-      <div>
-        <Section gap="3" title={t("MenuManagement.Monitoring")}>
-          {items
-            .sort((a, b) => {
-              const statusOrder = {
-                [OrderStatusType.Received]: 1,
-                [OrderStatusType.InPreparation]: 2,
-                [OrderStatusType.Done]: 3,
-                [OrderStatusType.Finished]: 4, // opcional
-              };
-              return statusOrder[a.status] - statusOrder[b.status];
-            })
+    <Flex className={classNames.root} gap="4">
+      <Flex className={classNames.orderIn} direction="column" gap="4">
+        <Heading>Order In</Heading>
+
+        <SegmentedControl.Root
+          onValueChange={setStatusOrder}
+          defaultValue="CREATED"
+        >
+          {segments.map((x) => (
+            <SegmentedControl.Item key={x.key} value={x.key}>
+              {x.value}
+            </SegmentedControl.Item>
+          ))}
+        </SegmentedControl.Root>
+
+        <Flex direction="column" className={classNames.orders} gap="4">
+          {orderList
+            .filter((x) => x.status == statusOrder)
             .map((order) => (
-              <OrderCard key={order.id} orderMonitor={order} />
+              <OrderItem
+                key={order.orderId}
+                orderMonitor={order}
+                onClick={() => setOrderItem(order)}
+              />
             ))}
-        </Section>
-      </div>
+        </Flex>
+      </Flex>
+
+      <Flex className={classNames.details} direction="column" gap="4">
+        <Heading>Order Information</Heading>
+
+        {orderItem && (
+          <OrderInformation
+            order={orderItem}
+            updateOrderStatus={handleUpdateOrderStatus}
+          />
+        )}
+      </Flex>
     </Flex>
   );
 };

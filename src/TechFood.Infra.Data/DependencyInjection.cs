@@ -6,6 +6,7 @@ using TechFood.Domain.Repositories;
 using TechFood.Domain.Shared.Interfaces;
 using TechFood.Domain.UoW;
 using TechFood.Infra.Data.Contexts;
+using TechFood.Infra.Data.Queries;
 using TechFood.Infra.Data.Repositories;
 using TechFood.Infra.Data.UoW;
 
@@ -35,7 +36,7 @@ public static class DependencyInjection
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<ICustomerRepository, CustomerRepository>();
         services.AddScoped<IPaymentRepository, PaymentRepository>();
-        services.AddScoped<IReadOnlyQuery<GetOrderMonitorResult>, OrderMonitorRepository>();
+        services.AddScoped<IReadOnlyQuery<GetOrderMonitorResult>, OrderMonitorQuery>();
 
         return services;
     }
