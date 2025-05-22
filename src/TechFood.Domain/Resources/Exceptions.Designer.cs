@@ -97,6 +97,15 @@ namespace TechFood.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Email Invalid.
+        /// </summary>
+        public static string Customer_ThrowEmailInvalid {
+            get {
+                return ResourceManager.GetString("Customer_ThrowEmailInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Payment amount is not equal to the order total amount..
         /// </summary>
         public static string Order_AmountIsNotEqualOrderAmount {
@@ -142,11 +151,11 @@ namespace TechFood.Domain.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot pay for an order that is not in the Created status..
+        ///   Looks up a localized string similar to Cannot pay for an order that is not in the Waiting Payment status..
         /// </summary>
-        public static string Order_CannotPayToNonCreatedStatus {
+        public static string Order_CannotPayToNonWaitingPaymentStatus {
             get {
-                return ResourceManager.GetString("Order_CannotPayToNonCreatedStatus", resourceCulture);
+                return ResourceManager.GetString("Order_CannotPayToNonWaitingPaymentStatus", resourceCulture);
             }
         }
         
@@ -160,11 +169,11 @@ namespace TechFood.Domain.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot refuse payment for an order that is not in the Created status..
+        ///   Looks up a localized string similar to Cannot refuse payment for an order that is not in the Waiting Payment status..
         /// </summary>
-        public static string Order_CannotRefusePaymentToNonCreatedStatus {
+        public static string Order_CannotRefuseToNonWaitingPaymentStatus {
             get {
-                return ResourceManager.GetString("Order_CannotRefusePaymentToNonCreatedStatus", resourceCulture);
+                return ResourceManager.GetString("Order_CannotRefuseToNonWaitingPaymentStatus", resourceCulture);
             }
         }
         
@@ -282,6 +291,24 @@ namespace TechFood.Domain.Resources {
         public static string Product_ThrowPriceIsGreaterThanZero {
             get {
                 return ResourceManager.GetString("Product_ThrowPriceIsGreaterThanZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The password hash cannot be empty.
+        /// </summary>
+        public static string User_PasswordHashIsEmpty {
+            get {
+                return ResourceManager.GetString("User_PasswordHashIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The role name cannot be empty.
+        /// </summary>
+        public static string User_RoleIsEmpty {
+            get {
+                return ResourceManager.GetString("User_RoleIsEmpty", resourceCulture);
             }
         }
     }

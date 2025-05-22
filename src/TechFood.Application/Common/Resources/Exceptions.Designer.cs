@@ -61,6 +61,15 @@ namespace TechFood.Application.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid user or password..
+        /// </summary>
+        internal static string Auth_InvalidUseOrPassword {
+            get {
+                return ResourceManager.GetString("Auth_InvalidUseOrPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Folder name and image file name cannot be null or empty..
         /// </summary>
         internal static string ImageUrlResolver_FolderCannotBeNull {

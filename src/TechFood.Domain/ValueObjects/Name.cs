@@ -1,8 +1,9 @@
+using System;
 using TechFood.Domain.Shared.ValueObjects;
 
 namespace TechFood.Domain.ValueObjects;
 
-public class Name : ValueObject
+public class Name : ValueObject, IEquatable<Name>
 {
     public Name(string fullName)
     {
@@ -10,6 +11,12 @@ public class Name : ValueObject
     }
 
     public string FullName { get; private set; } = null!;
+
+    public bool Equals(Name? other)
+    {
+        return other is not null &&
+               FullName == other.FullName;
+    }
 
     //public string First { get; private set; }
 

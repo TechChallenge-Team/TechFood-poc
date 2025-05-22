@@ -1,16 +1,34 @@
-import { Flex, Heading, TextField, Button } from "@radix-ui/themes";
+import { useEffect, useMemo, useState } from "react";
+import {
+  Flex,
+  Heading,
+  TextField,
+  Button,
+  Dialog,
+  Box,
+  Text,
+  TextArea,
+  Select,
+} from "@radix-ui/themes";
+import * as Label from "@radix-ui/react-label";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import { CategoryCard, ProductCard } from "../../components";
-import { ProductModal } from "../../components/ProductModal";
-import { Category } from "../../models/Category";
-import { t } from "../../i18n";
-import { normalizeText } from "../../utilities/normalizeText";
-import { CustomDialog } from "../../components/CustomDialog";
-import classNames from "./MenuManagement.module.css";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { Product } from "../../models/Product";
+import api from "../../api";
+import { t } from "../../i18n";
+import { normalizeText } from "../../utilities";
+import { Product, Category, Menu } from "../../models/";
+import { ProductFormData, productSchema } from "../../schemas";
+import {
+  CategoryCard,
+  ProductCard,
+  AlertDialog,
+  CurrencyInput,
+  FileInputWithPreview,
+} from "../../components";
+
+import classNames from "./MenuManagement.module.css";
 
 const Section = ({ title, direction, children }: any) => {
   return (
@@ -25,139 +43,317 @@ const Section = ({ title, direction, children }: any) => {
   );
 };
 
-export const MenuManagement = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [productsFiltered, setProductsFiltered] = useState<Product[]>([]);
-  const [productFormIsOpen, setProductFormIsOpen] = useState(false);
-  const [search, setSearch] = useState("");
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [categorySelected, setCategorySelected] = useState("");
-  const [dialogDeleteOpen, setDialogDeleteOpen] = useState(false);
-  const [selectedDeleteProduct, setSelectedDeleteProduct] =
-    useState<string>("");
-  const [selectedEditProduct, setSelectedEditProduct] =
-    useState<Product | null>(null);
+const DeleteProductDialog = ({
+  product,
+  onConfirm,
+  onCancel,
+}: {
+  product: Product;
+  onConfirm: (product: Product) => void;
+  onCancel: () => void;
+}) => {
+  return (
+    <AlertDialog
+      title={t("menuManagementPage.deleteDialog.title")}
+      description={t("menuManagementPage.deleteDialog.message", {
+        name: product.name,
+      })}
+      open={true}
+      onConfirm={() => onConfirm(product)}
+      onCancel={onCancel}
+    />
+  );
+};
 
-  const handleFilterByCategory = (category: string) => {
-    if (category === categorySelected) {
-      setProductsFiltered(products);
-      setCategorySelected("");
-      return;
+const EditProductDialog = ({
+  product,
+  categories,
+  onSave,
+  onCancel,
+}: {
+  product: Product | null;
+  categories: Category[];
+  onSave: (form: FormData) => void;
+  onCancel: () => void;
+}) => {
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    control,
+    reset,
+    formState: { errors },
+  } = useForm<ProductFormData>({
+    resolver: zodResolver(productSchema),
+    defaultValues: {
+      name: "",
+      description: "",
+      categoryId: "",
+      file: undefined,
+      price: undefined,
+      imageUrl: "",
+    },
+  });
+
+  useEffect(() => {
+    if (product) {
+      reset({
+        name: product.name,
+        description: product.description,
+        categoryId: product.categoryId,
+        file: undefined,
+        price: product.price,
+        imageUrl: product.imageUrl,
+      });
+    } else {
+      reset({
+        name: "",
+        description: "",
+        categoryId: "",
+        file: undefined,
+        price: undefined,
+        imageUrl: "",
+      });
     }
+  }, [product, reset]);
 
-    const filtered = products.filter(
-      (product) => product.categoryId === category
-    );
-    setProductsFiltered(filtered);
-    setCategorySelected(category);
+  const onSubmit = async (data: ProductFormData) => {
+    const formData = new FormData();
+    formData.append("Name", data.name);
+    formData.append("Description", data.description);
+    formData.append("CategoryId", data.categoryId);
+    formData.append("Price", String(data.price));
+    formData.append("File", data.file ? data.file[0] : "");
+
+    onSave(formData);
   };
 
-  const handleProduct = async (formData: FormData, id?: string) => {
-    const url = id ? `/api/v1/Products/${id}` : "/api/v1/Products";
-    const method = id ? "put" : "post";
-    const result = await axios({
-      method,
-      url,
+  return (
+    <Dialog.Root open={true}>
+      <Dialog.Content maxWidth="450px">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Dialog.Title>
+            {product
+              ? t("menuManagementPage.editDialog.editTitle")
+              : t("menuManagementPage.editDialog.addTitle")}
+          </Dialog.Title>
+          <Flex direction="column" gap="3">
+            <Box>
+              <Label.Root htmlFor="name">{t("labels.name")}</Label.Root>
+              <TextField.Root id="name" {...register("name")} />
+              {errors.name && <Text color="red">{errors.name.message}</Text>}
+            </Box>
+
+            <Box>
+              <Label.Root htmlFor="description">
+                {t("labels.description")}
+              </Label.Root>
+              <Controller
+                control={control}
+                name="description"
+                render={({ field }) => <TextArea id="description" {...field} />}
+              />
+              {errors.description && (
+                <Text color="red">{errors.description.message}</Text>
+              )}
+            </Box>
+
+            <Flex direction="column">
+              <Controller
+                control={control}
+                name="categoryId"
+                render={({ field }) => (
+                  <>
+                    <Label.Root htmlFor="categoryId">
+                      {t("labels.category")}
+                    </Label.Root>
+                    <Select.Root
+                      onValueChange={field.onChange}
+                      value={field.value}
+                    >
+                      <Select.Trigger
+                        className={classNames.selectButton}
+                        placeholder={t(
+                          "menuManagementPage.editDialog.selectCategory"
+                        )}
+                      />
+                      <Select.Content position="popper">
+                        <Select.Group>
+                          {categories.map((category) => (
+                            <Select.Item key={category.id} value={category.id}>
+                              {category.name}
+                            </Select.Item>
+                          ))}
+                        </Select.Group>
+                      </Select.Content>
+                    </Select.Root>
+                  </>
+                )}
+              />
+              {errors.categoryId && (
+                <Text color="red">{errors.categoryId.message}</Text>
+              )}
+            </Flex>
+
+            <Box>
+              <Label.Root htmlFor="price">{t("labels.price")}</Label.Root>
+              <Controller
+                control={control}
+                name="price"
+                defaultValue={undefined}
+                render={({ field }) => (
+                  <CurrencyInput
+                    id="price"
+                    name="price"
+                    value={field.value}
+                    onChange={field.onChange}
+                    error={errors.price?.message}
+                  />
+                )}
+              />
+            </Box>
+
+            <Box>
+              <Controller
+                control={control}
+                name="file"
+                render={({ field }) => (
+                  <FileInputWithPreview
+                    name="file"
+                    value={field.value}
+                    onChange={field.onChange}
+                    error={errors.file}
+                    imageUrl={getValues("imageUrl")}
+                  />
+                )}
+              />
+            </Box>
+
+            <Flex gap="3" mt="4" justify="end">
+              <Dialog.Close>
+                <Button variant="soft" color="gray" onClick={onCancel}>
+                  {t("labels.cancel")}
+                </Button>
+              </Dialog.Close>
+              <Button type="submit">{t("labels.save")}</Button>
+            </Flex>
+          </Flex>
+        </form>
+      </Dialog.Content>
+    </Dialog.Root>
+  );
+};
+
+export const MenuManagement = () => {
+  const [menu, setMenu] = useState<Menu | null>(null);
+  const [search, setSearch] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
+    null
+  );
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [action, setAction] = useState<"edit" | "delete" | null>(null);
+
+  useEffect(() => {
+    const fetch = async () => {
+      const menu = await api.get<Menu>("/v1/menu");
+      setMenu(menu.data);
+    };
+
+    fetch();
+  }, []);
+
+  const handleSaveProduct = async (formData: FormData) => {
+    const isNewProduct = !selectedProduct?.id;
+    const { data } = await api.request<Product>({
+      method: isNewProduct ? "post" : "put",
+      url: `/v1/Products/${selectedProduct?.id || ""}`,
       data: formData,
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
 
-    if (result.status === 200) {
-      if (!id) {
-        toast.success(t("ProductModal.AddSuccessMessage"));
-        setProducts((prev) => [...prev, result.data]);
-        setProductsFiltered((prev) => [...prev, result.data]);
-      } else {
-        toast.success(t("ProductModal.EditSuccessMessage"));
-        setProducts((prev) =>
-          prev.map((product) =>
-            product.id === id ? { ...product, ...result.data } : product
-          )
+    const msgKey = isNewProduct ? "add" : "edit";
+
+    toast.success(t(`menuManagementPage.editDialog.${msgKey}SuccessMessage`));
+
+    setMenu((prev) => {
+      return {
+        ...prev,
+        categories: prev!.categories.map((category) => {
+          const newProducts = category.products.filter(
+            (p) => p.id !== selectedProduct?.id
+          );
+
+          if (category.id === data.categoryId) {
+            const index = category.products.findIndex(
+              (p) => p.id === selectedProduct?.id
+            );
+            if (index !== -1) {
+              newProducts.splice(index, 0, data);
+            } else {
+              newProducts.push(data);
+            }
+            return { ...category, products: newProducts };
+          }
+
+          return { ...category, products: [...newProducts] };
+        }),
+      };
+    });
+    clearAction();
+  };
+
+  const handleDeleteProduct = async (product: Product) => {
+    await api.delete(`/v1/products/${product.id}`);
+
+    setMenu((prev) => {
+      if (!prev) return null;
+      const newCategories = prev.categories.map((category) => {
+        const newProducts = category.products.filter(
+          (p) => p.id !== product.id
         );
-        setProductsFiltered((prev) =>
-          prev.map((product) =>
-            product.id === id ? { ...product, ...result.data } : product
-          )
-        );
-      }
-
-      setProductFormIsOpen(false);
-    } else {
-      if (!id) {
-        toast.error(t("ProductModal.AddErrorMessage"));
-      } else {
-        toast.error(t("ProductModal.EditErrorMessage"));
-      }
-    }
+        return { ...category, products: newProducts };
+      });
+      return { ...prev, categories: newCategories };
+    });
+    clearAction();
   };
 
-  const handleOpenDeleteAlertDialog = (id: string) => {
-    setSelectedDeleteProduct(id);
-    setDialogDeleteOpen(true);
+  const clearAction = () => {
+    setAction(null);
+    setSelectedProduct(null);
   };
 
-  const handleOpenEditDialog = (product: Product) => {
-    setSelectedEditProduct(product);
-    setProductFormIsOpen(true);
-  };
+  const products = useMemo(() => {
+    if (!menu) return [];
 
-  const handleDeleteProduct = async () => {
-    if (selectedDeleteProduct) {
-      const result = await axios.delete(
-        `/api/v1/Products/${selectedDeleteProduct}`
-      );
-      setSelectedDeleteProduct("");
-      setDialogDeleteOpen(false);
-
-      if (result.status !== 204) {
-        toast.error("Error deleting product");
-        return;
-      }
-
-      toast.success(t("ProductModal.DeleteSuccessMessage"));
-      setProducts((prev) =>
-        prev.filter((product) => product.id !== selectedDeleteProduct)
-      );
-      setProductsFiltered((prev) =>
-        prev.filter((product) => product.id !== selectedDeleteProduct)
-      );
-    }
-  };
-
-  useEffect(() => {
-    const filtered = products.filter((product) =>
-      normalizeText(product.name).includes(normalizeText(search))
+    const allProducts = menu.categories.flatMap(
+      (category) => category.products
     );
-    setProductsFiltered(filtered);
-    setCategorySelected("");
-  }, [search, products]);
 
-  useEffect(() => {
-    const fetchProductsAndCategories = async () => {
-      const [productsResponse, categoriesResponse] = await Promise.all([
-        axios.get<Product[]>("/api/v1/Products"),
-        axios.get<Category[]>("/api/v1/Categories"),
-      ]);
-      setProducts(productsResponse.data);
-      setProductsFiltered(productsResponse.data);
-      setCategories(categoriesResponse.data);
-    };
+    return allProducts.filter((product) => {
+      const matchesSearch = search
+        ? normalizeText(product.name).includes(normalizeText(search))
+        : true;
 
-    fetchProductsAndCategories();
-  }, []);
+      const matchesCategory =
+        !search && selectedCategory
+          ? product.categoryId === selectedCategory.id
+          : true;
 
-  return (
+      return matchesSearch && matchesCategory;
+    });
+  }, [menu, search, selectedCategory]);
+
+  return menu ? (
     <Flex direction="column">
       <Flex gap="8" align="center">
         <TextField.Root
           className={classNames.search}
           placeholder="Search"
           size="3"
-          onChange={(e) => {
-            setSearch(e.target.value);
-          }}
+          onChange={(e) => setSearch(e.target.value)}
         >
           <TextField.Slot>
             <MagnifyingGlassIcon height="25" width="25" />
@@ -166,50 +362,63 @@ export const MenuManagement = () => {
         <Button
           size={"3"}
           onClick={() => {
-            setProductFormIsOpen(true);
-            setSelectedEditProduct(null);
+            setAction("edit");
+            setSelectedProduct(null);
           }}
         >
-          {t("MenuManagement.AddProduct")}
+          {t("menuManagementPage.addProduct")}
         </Button>
       </Flex>
       <Flex direction="row" justify="between"></Flex>
       {!search && (
-        <Section title={t("MenuManagement.Categories")}>
-          {categories.map((category) => (
+        <Section title={t("menuManagementPage.categories")}>
+          {menu.categories.map((category) => (
             <CategoryCard
               key={category.id}
-              {...category}
-              selected={categorySelected === category.id}
-              handleFilterByCategory={handleFilterByCategory}
+              category={category}
+              selected={selectedCategory === category}
+              onSelect={(category) => {
+                if (selectedCategory === category) {
+                  setSelectedCategory(null);
+                  return;
+                }
+                setSelectedCategory(category);
+              }}
             />
           ))}
         </Section>
       )}
-      <Section title={t("MenuManagement.Products")}>
-        {productsFiltered.map((product) => (
+      <Section title={t("menuManagementPage.products")}>
+        {products.map((product) => (
           <ProductCard
             key={product.id}
             product={product}
-            handleOpenDeleteAlertDialog={handleOpenDeleteAlertDialog}
-            handleOpenEditDialog={handleOpenEditDialog}
+            onDeleteClick={() => {
+              setAction("delete");
+              setSelectedProduct(product);
+            }}
+            onEditClick={() => {
+              setAction("edit");
+              setSelectedProduct(product);
+            }}
           />
         ))}
       </Section>
-      <CustomDialog
-        title={t("DeleteDialog.Title")}
-        description={t("DeleteDialog.Message")}
-        dialogOpen={dialogDeleteOpen}
-        setDialogOpen={setDialogDeleteOpen}
-        onConfirm={handleDeleteProduct}
-      />
-      <ProductModal
-        isOpen={productFormIsOpen}
-        setIsOpen={setProductFormIsOpen}
-        categories={categories}
-        handleProduct={handleProduct}
-        selectedEditProduct={selectedEditProduct}
-      />
+      {action === "edit" && (
+        <EditProductDialog
+          categories={menu.categories}
+          product={selectedProduct}
+          onSave={handleSaveProduct}
+          onCancel={clearAction}
+        />
+      )}
+      {selectedProduct && action === "delete" && (
+        <DeleteProductDialog
+          product={selectedProduct}
+          onConfirm={handleDeleteProduct}
+          onCancel={clearAction}
+        />
+      )}
     </Flex>
-  );
+  ) : null;
 };

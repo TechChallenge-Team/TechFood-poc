@@ -15,7 +15,7 @@ internal class CustomerUseCase(
 {
     private readonly ICustomerRepository _customerRepository = customerRepository;
 
-    public async Task<CreateCustomerResult> CreateCustomerAsync(CreateCustomerRequest data)
+    public async Task<CreateCustomerResult?> CreateCustomerAsync(CreateCustomerRequest data)
     {
         var document = new Document(DocumentType.CPF, data.CPF);
 
@@ -24,7 +24,7 @@ internal class CustomerUseCase(
         {
             throw new ApplicationException("Já existe um cliente com esse CPF.");
         }
-        
+
         var customer = new Customer(
             new Name(data.Name),
             new Email(data.Email),
@@ -40,7 +40,7 @@ internal class CustomerUseCase(
         };
     }
 
-    public async Task<CustomerResponse> GetByDocumentAsync(string documentType, string documentValue)
+    public async Task<CustomerResponse?> GetByDocumentAsync(string documentType, string documentValue)
     {
         var document = new Document((DocumentType)Enum.Parse(typeof(DocumentType), documentType), documentValue);
 
@@ -55,10 +55,8 @@ internal class CustomerUseCase(
             Id = customer.Id,
             Name = customer.Name.FullName,
             Email = customer.Email.Address,
-            DocumentType = customer.Document.Type.ToString(),
+            DocumentType = customer.Document.Type,
             DocumentValue = customer.Document.Value,
         };
     }
-    
-   
 }

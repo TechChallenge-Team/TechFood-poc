@@ -141,14 +141,14 @@
   <data name="Order_CannotFinishToNonInPreparationStatus" xml:space="preserve">
     <value>Cannot done an order that is not in the InPreparation status.</value>
   </data>
-  <data name="Order_CannotPayToNonCreatedStatus" xml:space="preserve">
-    <value>Cannot pay for an order that is not in the Created status.</value>
+  <data name="Order_CannotPayToNonWaitingPaymentStatus" xml:space="preserve">
+    <value>Cannot pay for an order that is not in the Waiting Payment status.</value>
   </data>
   <data name="Order_CannotPrepareToNonPaidStatus" xml:space="preserve">
     <value>Cannot prepare an order that is not in the Paid status.</value>
   </data>
-  <data name="Order_CannotRefusePaymentToNonCreatedStatus" xml:space="preserve">
-    <value>Cannot refuse payment for an order that is not in the Created status.</value>
+  <data name="Order_CannotRefuseToNonWaitingPaymentStatus" xml:space="preserve">
+    <value>Cannot refuse payment for an order that is not in the Waiting Payment status.</value>
   </data>
   <data name="Order_CannotRemoveItemToNonCreatedStatus" xml:space="preserve">
     <value>Cannot remove items from an order that is not in the Created status.</value>
@@ -191,5 +191,14 @@
   </data>
   <data name="Category_ThrowIndexIsLessThanZero" xml:space="preserve">
     <value>Category order must be greater than or equal to 0.</value>
+  </data>
+  <data name="User_PasswordHashIsEmpty" xml:space="preserve">
+    <value>The password hash cannot be empty</value>
+  </data>
+  <data name="User_RoleIsEmpty" xml:space="preserve">
+    <value>The role name cannot be empty</value>
+  </data>
+  <data name="Customer_ThrowEmailInvalid" xml:space="preserve">
+    <value>Email Invalid</value>
   </data>
 </root>

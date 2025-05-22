@@ -1,12 +1,13 @@
-import { Box, Button, Flex, IconButton, TextField } from "@radix-ui/themes";
 import { useEffect, useState } from "react";
+import { Box, Button, Flex, IconButton, TextField } from "@radix-ui/themes";
 import * as Label from "@radix-ui/react-label";
 import { Form, useNavigate, useParams } from "react-router";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeftIcon } from "lucide-react";
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
+import { useCustomer } from "../../contexts";
 
 import classNames from "./RegisterPage.module.css";
 
@@ -21,6 +22,7 @@ export const RegisterPage = () => {
   const [documentNumber, setDocumentNumber] = useState("");
   const navigate = useNavigate();
   const params = useParams();
+  const { setCustomer } = useCustomer();
 
   const {
     register,
@@ -32,15 +34,20 @@ export const RegisterPage = () => {
 
   const onSubmit = async ({ name, email }: CreateCustomerSchema) => {
     try {
-      const result = await axios.post<{
+      const { data } = await axios.post<{
         id: string;
-        name: string;
-        email: string;
-        cpf: string;
       }>("/api/v1/customers", {
         cpf: params.doc,
         name,
         email,
+      });
+
+      setCustomer({
+        id: data.id,
+        name,
+        email,
+        documentType: "CPF",
+        documentNumber: params.doc!,
       });
 
       navigate("/menu");
@@ -90,8 +97,9 @@ export const RegisterPage = () => {
             {errors.email && <span>{errors.email.message}</span>}
             <Flex direction="row" justify="between">
               <IconButton
+                type="button"
                 onClick={() => {
-                  navigate("/");
+                  navigate("/start");
                 }}
                 size="3"
               >
