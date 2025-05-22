@@ -10,7 +10,7 @@ services:
     depends_on:
       - techfood.admin
       - techfood.self-order
-      - techfood.preparation-monitor
+      - techfood.monitor
       - techfood.api
 
   techfood.admin:
@@ -33,12 +33,12 @@ services:
       techfood.api:
         condition: service_healthy
 
-  techfood.preparation-monitor:
-    image: ${DOCKER_REGISTRY-}techfood.preparation-monitor
+  techfood.monitor:
+    image: ${DOCKER_REGISTRY-}techfood.monitor
     build:
       context: .
-      dockerfile: apps/preparation-monitor/Dockerfile
-    container_name: techfood.preparation-monitor
+      dockerfile: apps/monitor/Dockerfile
+    container_name: techfood.monitor
     depends_on:
       techfood.api:
         condition: service_healthy

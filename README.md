@@ -43,5 +43,5 @@ To get started with the project, follow these steps:
 
 - api swagger: http://localhost:5000/api/swagger/index.html
 - app self-order: http://localhost:5000/self-order/
-- app preparation-monitor: http://localhost:5000/preparation-monitor/
+- app monitor: http://localhost:5000/monitor/
 - app admin: http://localhost:5000/admin/
