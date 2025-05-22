@@ -25,6 +25,8 @@ public class TechFoodContext(
 
     public DbSet<User> Users { get; set; } = null!;
 
+    public DbSet<Preparation> Preparations { get; set; } = null!;
+
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         foreach (var entry in ChangeTracker
@@ -216,7 +218,7 @@ public class TechFoodContext(
                     CreatedAt = new DateTime(2025, 5, 13, 22, 2, 36, DateTimeKind.Utc)
             .AddTicks(6053),
                     Amount = 39.97m,
-                    Status = OrderStatusType.Done,
+                    Status = OrderStatusType.PreparationDone,
                     Discount = 0m,
                     IsDeleted = false
                 },

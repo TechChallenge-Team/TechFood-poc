@@ -16,12 +16,14 @@ namespace TechFood.Application.UseCases;
 internal class PaymentUseCase(
     IUnitOfWork unitOfWork,
     IOrderRepository orderRepository,
+    IPreparationRepository preparationRepository,
     IPaymentRepository paymentRepository,
     IProductRepository productRepository,
     IServiceProvider serviceProvider) : IPaymentUseCase
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IOrderRepository _orderRepository = orderRepository;
+    private readonly IPreparationRepository _preparationRepository = preparationRepository;
     private readonly IPaymentRepository _paymentRepository = paymentRepository;
     private readonly IProductRepository _productRepository = productRepository;
     private readonly IServiceProvider _serviceProvider = serviceProvider;
@@ -76,5 +78,30 @@ internal class PaymentUseCase(
         result.Id = payment.Id;
 
         return result;
+    }
+
+    public async Task ConfirmAsync(Guid id)
+    {
+        var payment = await _paymentRepository.GetByIdAsync(id);
+        if (payment == null)
+        {
+            throw new Common.Exceptions.ApplicationException("Payment not found.");
+        }
+
+        var order = await _orderRepository.GetByIdAsync(payment.OrderId);
+        if (order == null)
+        {
+            throw new Common.Exceptions.ApplicationException("Order not found.");
+        }
+
+        payment.Confirm();
+
+        order.ConfirmPayment();
+
+        var preparation = new Preparation(payment.OrderId);
+
+        await _preparationRepository.AddAsync(preparation);
+
+        await _unitOfWork.CommitAsync();
     }
 }

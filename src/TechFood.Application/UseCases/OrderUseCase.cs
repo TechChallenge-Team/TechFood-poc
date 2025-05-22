@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using TechFood.Application.Common.Services.Interfaces;
 using TechFood.Application.Models.Order;
 using TechFood.Application.UseCases.Interfaces;
@@ -16,22 +14,13 @@ internal class OrderUseCase(
     IOrderRepository orderRepository,
     IProductRepository productRepository,
     IOrderNumberService orderNumberService,
-    IUnitOfWork unitOfWork,
-    IMapper mapper
+    IUnitOfWork unitOfWork
     ) : IOrderUseCase
 {
     private readonly IOrderRepository _orderRepository = orderRepository;
     private readonly IProductRepository _productRepository = productRepository;
     private readonly IOrderNumberService _orderNumberService = orderNumberService;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
-    private readonly IMapper _mapper = mapper;
-
-    public async Task<List<GetAllOrderResponse>> GetAllDoneAndInPreparationAsync()
-    {
-        var order = await _orderRepository.GetAllDoneAndInPreparationAsync();
-
-        return _mapper.Map<List<GetAllOrderResponse>>(order);
-    }
 
     public async Task<CreateOrderResult> CreateAsync(CreateOrderRequest request)
     {
@@ -74,7 +63,7 @@ internal class OrderUseCase(
             return false;
         }
 
-        order.Prepare();
+        order.StartPreparation();
 
         await _unitOfWork.CommitAsync();
 

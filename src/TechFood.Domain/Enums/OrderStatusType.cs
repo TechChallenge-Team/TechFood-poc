@@ -7,6 +7,6 @@ public enum OrderStatusType
     Paid,
     RefusedPayment,
     InPreparation,
-    Done,
+    PreparationDone,
     Finished
 }

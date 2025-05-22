@@ -110,7 +110,7 @@ namespace TechFood.Doman.Tests
             order.Finish();
 
             // Act
-            var result = Assert.Throws<DomainException>(order.PayPayment);
+            var result = Assert.Throws<DomainException>(order.ConfirmPayment);
 
             // Assert
             Assert.Equal(Domain.Resources.Exceptions.Order_CannotPayToNonWaitingPaymentStatus, result.Message);
@@ -144,7 +144,7 @@ namespace TechFood.Doman.Tests
             order.Finish();
 
             // Act
-            var result = Assert.Throws<DomainException>(order.Done);
+            var result = Assert.Throws<DomainException>(order.FinishPreparation);
 
             // Assert
             Assert.Equal(Domain.Resources.Exceptions.Order_CannotFinishToNonInPreparationStatus, result.Message);
@@ -161,7 +161,7 @@ namespace TechFood.Doman.Tests
             order.Finish();
 
             // Act
-            var result = Assert.Throws<DomainException>(order.Prepare);
+            var result = Assert.Throws<DomainException>(order.StartPreparation);
 
             // Assert
             Assert.Equal(Domain.Resources.Exceptions.Order_CannotPrepareToNonPaidStatus, result.Message);

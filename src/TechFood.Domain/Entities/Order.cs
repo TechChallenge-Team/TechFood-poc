@@ -67,7 +67,7 @@ public class Order : Entity, IAggregateRoot
         UpdateStatus(OrderStatusType.WaitingPayment);
     }
 
-    public void PayPayment()
+    public void ConfirmPayment()
     {
         if (Status != OrderStatusType.WaitingPayment)
         {
@@ -127,17 +127,17 @@ public class Order : Entity, IAggregateRoot
         Amount -= Discount;
     }
 
-    public void Done()
+    public void FinishPreparation()
     {
         if (Status != OrderStatusType.InPreparation)
         {
             throw new DomainException(Resources.Exceptions.Order_CannotFinishToNonInPreparationStatus);
         }
 
-        UpdateStatus(OrderStatusType.Done);
+        UpdateStatus(OrderStatusType.PreparationDone);
     }
 
-    public void Prepare()
+    public void StartPreparation()
     {
         if (Status != OrderStatusType.Paid)
         {

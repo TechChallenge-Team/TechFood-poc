@@ -1,4 +1,4 @@
-@rootUrl=https://localhost:44310/v1
+@rootUrl=http://localhost:49752/v1
 
 ### Create Order
 POST {{rootUrl}}/orders/
@@ -6,7 +6,6 @@ Content-Type: application/json
 
 {
     "customerId": "25b58f54-63bc-42da-8cf6-8162097e72c8",
-    "cuponCode": null,
     "items": [
         {
             "productId": "090d8eb0-f514-4248-8512-cf0d61a262f0",
@@ -19,8 +18,6 @@ Content-Type: application/json
     ]
 }
 
-### Prepare Order
-POST {{rootUrl}}/orders/963d122b-72c4-42ec-9e37-5953322931f9/prepare
-
 ### Finish Order
-POST {{rootUrl}}/orders/963d122b-72c4-42ec-9e37-5953322931f9/finish
+PATCH {{rootUrl}}/orders/0c252e6f-8b4c-47ec-be2b-ab5525d80d29/finish
+

@@ -7,4 +7,6 @@ namespace TechFood.Domain.Repositories;
 public interface IPaymentRepository
 {
     Task<Guid> AddAsync(Payment payment);
+
+    Task<Payment?> GetByIdAsync(Guid id);
 }

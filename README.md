@@ -38,9 +38,10 @@ To get started with the project, follow these steps:
 ```bash
   docker-compose up -d
 ```
+
 3. Container http addresses
 
-* api swagger: http://localhost:5000/api/swagger/index.html
-* app self-order: http://localhost:5000/self-order/
-* app order-monitor: http://localhost:5000/order-monitor/
-* app admin: http://localhost:5000/admin/
+- api swagger: http://localhost:5000/api/swagger/index.html
+- app self-order: http://localhost:5000/self-order/
+- app preparation-monitor: http://localhost:5000/preparation-monitor/
+- app admin: http://localhost:5000/admin/

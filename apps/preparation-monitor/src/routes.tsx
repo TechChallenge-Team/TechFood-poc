@@ -10,7 +10,7 @@ const router = createBrowserRouter(
     },
   ],
   {
-    basename: "/order-monitor",
+    basename: "/preparation-monitor",
   }
 );
 

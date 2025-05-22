@@ -4,7 +4,7 @@ import react from "@vitejs/plugin-react";
 import { configureCss, configureServer } from "../../scripts";
 
 export default defineConfig({
-  base: "/order-monitor",
+  base: "/preparation-monitor",
   ...configureCss(),
   ...configureServer(),
   plugins: [
