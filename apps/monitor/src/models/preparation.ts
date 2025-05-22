@@ -1,4 +1,4 @@
-import { PreparationStatus } from "./preparation-status";
+export type PreparationStatus = "PENDING" | "INPROGRESS" | "DONE";
 
 export interface Preparation {
   number: number;
