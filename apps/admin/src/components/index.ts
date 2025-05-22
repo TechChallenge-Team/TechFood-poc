@@ -6,4 +6,5 @@ export * from "./AlertDialog";
 export * from "./Sidebar";
 export * from "./CategoryCard";
 export * from "./ProductCard";
+export * from "../pages/Monitoring/OrderCard";
 export * from "./SecureRoute";
