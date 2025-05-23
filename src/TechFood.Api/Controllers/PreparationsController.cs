@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using TechFood.Application.Models.OrderMonitor;
 using TechFood.Application.UseCases.Interfaces;
 
 namespace TechFood.Api.Controllers;
@@ -8,6 +9,13 @@ namespace TechFood.Api.Controllers;
 public class PreparationsController(IPreparationUseCase preparationUseCase) : ControllerBase
 {
     private readonly IPreparationUseCase _preparationUseCase = preparationUseCase;
+
+    [HttpGet]
+    [Route("orders")]
+    public Task<IEnumerable<GetPreparationMonitorResult>> GetAllPreparationOrdersAsync()
+    {
+        return _preparationUseCase.GetAllPreparationOrdersAsync();
+    }
 
     [HttpGet]
     public async Task<IActionResult> GetAllAsync()

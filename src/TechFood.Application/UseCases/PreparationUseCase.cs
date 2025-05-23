@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TechFood.Application.Models.OrderMonitor;
 using TechFood.Application.Models.Preparation;
 using TechFood.Application.UseCases.Interfaces;
 using TechFood.Domain.Repositories;
+using TechFood.Domain.Shared.Interfaces;
 using TechFood.Domain.UoW;
 
 namespace TechFood.Application.UseCases;
@@ -12,11 +14,18 @@ namespace TechFood.Application.UseCases;
 internal class PreparationUseCase(
     IPreparationRepository preparationRepository,
     IOrderRepository orderRepository,
+    IReadOnlyQuery<GetPreparationMonitorResult> readOnlyQuery,
     IUnitOfWork unitOfWork) : IPreparationUseCase
 {
     private readonly IPreparationRepository _preparationRepository = preparationRepository;
+    private readonly IReadOnlyQuery<GetPreparationMonitorResult> _readOnlyQuery = readOnlyQuery;
     private readonly IOrderRepository _orderRepository = orderRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
+
+    public async Task<IEnumerable<GetPreparationMonitorResult>> GetAllPreparationOrdersAsync()
+    {
+        return await _readOnlyQuery.GetAllAsync();
+    }
 
     public async Task<IEnumerable<GetPreparationResult>> GetAllAsync()
     {
@@ -43,6 +52,7 @@ internal class PreparationUseCase(
     public async Task<GetPreparationResult> GetByIdAsync(Guid id)
     {
         var preparation = await _preparationRepository.GetByIdAsync(id);
+
         if (preparation is null)
         {
             throw new Common.Exceptions.ApplicationException("Preparation not found");

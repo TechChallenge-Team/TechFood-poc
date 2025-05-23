@@ -1,12 +1,8 @@
 import { createBrowserRouter } from "react-router";
-import {
-  SettingsIcon,
-  SquareKanbanIcon,
-  StarIcon,
-  UtensilsIcon,
-} from "lucide-react";
+import { MonitorDot, SquareKanbanIcon, UtensilsIcon } from "lucide-react";
 import { AdminLayout } from "./components";
 import { Dashboard, Forbidden, MenuManagement, SignIn } from "./pages";
+import { Monitor } from "./pages/Monitor";
 
 const router = createBrowserRouter(
   [
@@ -33,6 +29,11 @@ const router = createBrowserRouter(
             icon: <UtensilsIcon />,
           },
           element: <MenuManagement />,
+        },
+        {
+          path: "Monitor",
+          element: <Monitor />,
+          handle: { title: "Monitor", menu: true, icon: <MonitorDot /> },
         },
         // {
         //   path: "reviews",
