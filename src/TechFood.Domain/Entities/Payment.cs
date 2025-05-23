@@ -1,5 +1,6 @@
 using System;
 using TechFood.Domain.Enums;
+using TechFood.Domain.Events.Payment;
 using TechFood.Domain.Shared.Entities;
 using TechFood.Domain.Shared.Exceptions;
 
@@ -19,6 +20,13 @@ public class Payment : Entity, IAggregateRoot
         Amount = amount;
         CreatedAt = DateTime.Now;
         Status = PaymentStatusType.Pending;
+
+        _events.Add(new PaymentCreatedEvent(
+            Id,
+            OrderId,
+            CreatedAt,
+            Type,
+            Amount));
     }
 
     public Guid OrderId { get; private set; }
@@ -42,6 +50,13 @@ public class Payment : Entity, IAggregateRoot
 
         PaidAt = DateTime.Now;
         Status = PaymentStatusType.Approved;
+
+        _events.Add(new PaymentConfirmedEvent(
+            Id,
+            OrderId,
+            CreatedAt,
+            Type,
+            Amount));
     }
 
     public void Refused()
@@ -52,5 +67,12 @@ public class Payment : Entity, IAggregateRoot
         }
 
         Status = PaymentStatusType.Refused;
+
+        _events.Add(new PaymentRefusedEvent(
+            Id,
+            OrderId,
+            DateTime.Now,
+            Type,
+            Amount));
     }
 }

@@ -70,6 +70,24 @@ namespace TechFood.Application.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Category not found..
+        /// </summary>
+        internal static string Category_CategoryNotFound {
+            get {
+                return ResourceManager.GetString("Category_CategoryNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This CPF is already registered..
+        /// </summary>
+        internal static string Customer_CpfAlreadyExists {
+            get {
+                return ResourceManager.GetString("Customer_CpfAlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Folder name and image file name cannot be null or empty..
         /// </summary>
         internal static string ImageUrlResolver_FolderCannotBeNull {
@@ -79,7 +97,7 @@ namespace TechFood.Application.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Item Not Found.
+        ///   Looks up a localized string similar to Item Not Found..
         /// </summary>
         internal static string Order_ItemNotFound {
             get {
@@ -97,7 +115,25 @@ namespace TechFood.Application.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Category Not Found.
+        ///   Looks up a localized string similar to Payment not found..
+        /// </summary>
+        internal static string Payment_PaymentNotFound {
+            get {
+                return ResourceManager.GetString("Payment_PaymentNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preparation not found..
+        /// </summary>
+        internal static string Preparation_PreparationNotFound {
+            get {
+                return ResourceManager.GetString("Preparation_PreparationNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Category Not Found..
         /// </summary>
         internal static string Product_CaregoryNotFound {
             get {
@@ -106,7 +142,7 @@ namespace TechFood.Application.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Product Not Found.
+        ///   Looks up a localized string similar to Product Not Found..
         /// </summary>
         internal static string Product_ProductNotFound {
             get {

@@ -1,27 +1,38 @@
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using TechFood.Application.UseCases.Interfaces;
+using TechFood.Application.UseCases.Preparation.Commands;
+using TechFood.Application.UseCases.Preparation.Queries;
 
 namespace TechFood.Api.Controllers;
 
 [ApiController()]
 [Route("v1/[controller]")]
-public class PreparationsController(IPreparationUseCase preparationUseCase) : ControllerBase
+public class PreparationsController(IMediator useCase) : ControllerBase
 {
-    private readonly IPreparationUseCase _preparationUseCase = preparationUseCase;
+    private readonly IMediator _useCase = useCase;
 
     [HttpGet]
     public async Task<IActionResult> GetAllAsync()
     {
-        var result = await _preparationUseCase.GetAllAsync();
+        var result = await _useCase.Send(new GetMonitorPreparationsQuery());
+
+        return Ok(result);
+    }
+
+    [HttpGet]
+    [Route("{id:guid}")]
+    public async Task<IActionResult> GetByIdAsync(Guid id)
+    {
+        var result = await _useCase.Send(new GetPreparationByIdQuery(id));
 
         return Ok(result);
     }
 
     [HttpPatch]
     [Route("{id:guid}/start")]
-    public async Task<IActionResult> PrepareAsync(Guid id)
+    public async Task<IActionResult> StartAsync(Guid id)
     {
-        await _preparationUseCase.StartAsync(id);
+        await _useCase.Send(new StartPreparationCommand(id));
 
         return Ok();
     }
@@ -30,7 +41,7 @@ public class PreparationsController(IPreparationUseCase preparationUseCase) : Co
     [Route("{id:guid}/finish")]
     public async Task<IActionResult> FinishAsync(Guid id)
     {
-        await _preparationUseCase.FinishAsync(id);
+        await _useCase.Send(new FinishPreparationCommand(id));
 
         return Ok();
     }

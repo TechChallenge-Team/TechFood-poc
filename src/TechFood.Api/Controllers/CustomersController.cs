@@ -1,19 +1,20 @@
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using TechFood.Application.Models.Customer;
-using TechFood.Application.UseCases.Interfaces;
+using TechFood.Application.UseCases.Customer.Commands;
+using TechFood.Application.UseCases.Customer.Queries;
 
 namespace TechFood.Api.Controllers;
 
 [ApiController()]
 [Route("v1/[controller]")]
-public class CustomersController(ICustomerUseCase customerUseCase) : ControllerBase
+public class CustomersController(IMediator useCase) : ControllerBase
 {
-    private readonly ICustomerUseCase _customerUseCase = customerUseCase;
+    private readonly IMediator _useCase = useCase;
 
     [HttpPost]
-    public async Task<IActionResult> CreateAsync([FromBody] CreateCustomerRequest request)
+    public async Task<IActionResult> CreateAsync([FromBody] CreateCustomerCommand command)
     {
-        var result = await _customerUseCase.CreateCustomerAsync(request);
+        var result = await _useCase.Send(command);
 
         return Ok(result);
     }
@@ -21,8 +22,8 @@ public class CustomersController(ICustomerUseCase customerUseCase) : ControllerB
     [HttpGet("{document}")]
     public async Task<IActionResult> GetByDocumentAsync(string document)
     {
-        var result = await _customerUseCase.GetByDocumentAsync(TechFood.Domain.Enums.DocumentType.CPF.ToString(), document);
-    
+        var result = await _useCase.Send(new GetCustomerByDocumentQuery() { DocumentValue = document });
+
         return result != null ? Ok(result) : NotFound();
     }
 }

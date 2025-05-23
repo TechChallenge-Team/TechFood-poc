@@ -90,6 +90,8 @@ using (var scope = app.Services.CreateScope())
     dataContext.Database.Migrate();
 }
 
+app.UseApplication();
+
 app.UseForwardedHeaders();
 
 if (!app.Environment.IsDevelopment())

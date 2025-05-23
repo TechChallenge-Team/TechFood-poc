@@ -8,11 +8,8 @@ namespace TechFood.Domain.Repositories;
 public interface ICustomerRepository
 {
     Task<Guid> CreateAsync(Customer customer);
-    
-    Task<Customer> GetByDocument(DocumentType documentType, string documentValue);
-    
-    Task<Customer> GetByDocumentAsync(DocumentType documentType, string documentValue);
-    
-    
-    
+
+    Task<Customer?> GetByDocument(DocumentType documentType, string documentValue);
+
+    Task<Customer?> GetByDocumentAsync(DocumentType documentType, string documentValue);
 }

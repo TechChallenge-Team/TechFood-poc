@@ -14,7 +14,7 @@ public class ProductRepository(TechFoodContext dbContext) : IProductRepository
     private readonly DbSet<Product> _products = dbContext.Products;
 
     public async Task<IEnumerable<Product>> GetAllAsync()
-        => await _products.AsNoTracking().ToListAsync();
+        => await _products.ToListAsync();
 
     public async Task<Product?> GetByIdAsync(Guid id)
         => await _products.Where(x => x.Id == id).FirstOrDefaultAsync();

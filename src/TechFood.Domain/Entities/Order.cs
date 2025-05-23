@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using TechFood.Domain.Enums;
+using TechFood.Domain.Events.Order;
 using TechFood.Domain.Shared.Entities;
 using TechFood.Domain.Shared.Exceptions;
 using TechFood.Domain.Shared.Validations;
@@ -19,6 +20,11 @@ public class Order : Entity, IAggregateRoot
         CustomerId = customerId;
         CreatedAt = DateTime.Now;
         Status = OrderStatusType.Created;
+
+        _events.Add(new OrderCreatedEvent(
+            Id,
+            CustomerId,
+            CreatedAt));
     }
 
     private readonly List<OrderItem> _items = [];
@@ -57,7 +63,7 @@ public class Order : Entity, IAggregateRoot
         CalculateAmount();
     }
 
-    public void CreatePayment()
+    public void WaitPayment()
     {
         if (Status != OrderStatusType.Created)
         {
@@ -152,6 +158,11 @@ public class Order : Entity, IAggregateRoot
         FinishedAt = DateTime.Now;
 
         UpdateStatus(OrderStatusType.Finished);
+
+        _events.Add(new OrderFinishedEvent(
+            Id,
+            CustomerId,
+            FinishedAt.Value));
     }
 
     private void UpdateStatus(OrderStatusType status)

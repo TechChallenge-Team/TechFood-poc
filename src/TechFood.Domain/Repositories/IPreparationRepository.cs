@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using TechFood.Domain.Entities;
 
@@ -11,5 +10,5 @@ public interface IPreparationRepository
 
     Task<Preparation?> GetByIdAsync(Guid id);
 
-    Task<List<(Preparation Preparation, Order Order)>> GetAllAsync();
+    Task<Preparation?> GetByOrderIdAsync(Guid orderId);
 }

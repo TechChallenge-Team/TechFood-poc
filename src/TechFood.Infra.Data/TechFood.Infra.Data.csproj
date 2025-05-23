@@ -24,8 +24,4 @@
     <ProjectReference Include="..\TechFood.Domain\TechFood.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <EditorConfigFiles Remove="C:\Users\lc\Desktop\FIAP\tech-challenge\fase1\TechFood\src\TechFood.Infra.Data\.editorconfig" />
-  </ItemGroup>
-
 </Project>

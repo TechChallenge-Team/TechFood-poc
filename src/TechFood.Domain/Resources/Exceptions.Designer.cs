@@ -250,6 +250,24 @@ namespace TechFood.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Preparation can only be finished if it is in progress..
+        /// </summary>
+        public static string Preparation_CanOnlyFinishIfInProgress {
+            get {
+                return ResourceManager.GetString("Preparation_CanOnlyFinishIfInProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preparation can only be started if it is pending..
+        /// </summary>
+        public static string Preparation_CanOnlyStartIfInPending {
+            get {
+                return ResourceManager.GetString("Preparation_CanOnlyStartIfInPending", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The product CategoryId is not valid.
         /// </summary>
         public static string Product_ThrowCategoryIdInvalid {
@@ -291,6 +309,15 @@ namespace TechFood.Domain.Resources {
         public static string Product_ThrowPriceIsGreaterThanZero {
             get {
                 return ResourceManager.GetString("Product_ThrowPriceIsGreaterThanZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preparation can only be started if it is pending..
+        /// </summary>
+        public static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
             }
         }
         

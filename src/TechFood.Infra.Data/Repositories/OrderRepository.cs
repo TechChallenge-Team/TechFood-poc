@@ -1,10 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TechFood.Domain.Entities;
-using TechFood.Domain.Enums;
 using TechFood.Domain.Repositories;
 using TechFood.Infra.Data.Contexts;
 
@@ -19,15 +16,6 @@ internal class OrderRepository(TechFoodContext dbContext) : IOrderRepository
         var entry = await _orders.AddAsync(order);
 
         return entry.Entity.Id;
-    }
-
-    public async Task<List<Order>> GetAllDoneAndInPreparationAsync()
-    {
-        var orders = await _orders.AsNoTracking()
-                                  .Where(x => x.Status == OrderStatusType.PreparationDone || x.Status == OrderStatusType.InPreparation)
-                                  .OrderBy(c => c.CreatedAt).ToListAsync();
-
-        return orders;
     }
 
     public async Task<Order?> GetByIdAsync(Guid id)

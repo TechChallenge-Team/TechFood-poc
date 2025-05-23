@@ -201,4 +201,13 @@
   <data name="Customer_ThrowEmailInvalid" xml:space="preserve">
     <value>Email Invalid</value>
   </data>
+  <data name="Preparation_CanOnlyFinishIfInProgress" xml:space="preserve">
+    <value>Preparation can only be finished if it is in progress.</value>
+  </data>
+  <data name="Preparation_CanOnlyStartIfInPending" xml:space="preserve">
+    <value>Preparation can only be started if it is pending.</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value>Preparation can only be started if it is pending.</value>
+  </data>
 </root>
