@@ -10,11 +10,15 @@ public interface IPreparationUseCase
 {
     Task<IEnumerable<GetPreparationMonitorResult>> GetAllPreparationOrdersAsync();
 
-    Task FinishAsync(Guid id);
+    Task<int> GetPreparationByOrderIdAsync(Guid orderId);
 
     Task<IEnumerable<GetPreparationResult>> GetAllAsync();
 
     Task<GetPreparationResult> GetByIdAsync(Guid id);
 
     Task StartAsync(Guid id);
+
+    Task FinishAsync(Guid id);
+
+    Task CancelAsync(Guid id);
 }

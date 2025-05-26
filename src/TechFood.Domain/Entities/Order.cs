@@ -12,10 +12,8 @@ public class Order : Entity, IAggregateRoot
     private Order() { }
 
     public Order(
-        int number,
         Guid? customerId = null)
     {
-        Number = number;
         CustomerId = customerId;
         CreatedAt = DateTime.Now;
         Status = OrderStatusType.Created;
@@ -24,9 +22,7 @@ public class Order : Entity, IAggregateRoot
     private readonly List<OrderItem> _items = [];
 
     private readonly List<OrderHistory> _historical = [];
-
-    public int Number { get; private set; }
-
+    
     public Guid? CustomerId { get; private set; }
 
     public DateTime CreatedAt { get; private set; }
@@ -145,6 +141,17 @@ public class Order : Entity, IAggregateRoot
         }
 
         UpdateStatus(OrderStatusType.InPreparation);
+    }
+
+    public void CancelPreparation()
+    {
+        if (Status == OrderStatusType.Cancelled)
+        {
+            //TODO: Adjust message
+            throw new DomainException("Pedido ja foi cancelado");
+        }
+
+        UpdateStatus(OrderStatusType.Cancelled);
     }
 
     public void Finish()

@@ -7,54 +7,63 @@ import {
 } from "@radix-ui/themes";
 import { t } from "../../i18n";
 import { useEffect, useState } from "react";
-import { OrderMonitor, OrderStatus } from "../../models/OrderMonitor";
+
 import classNames from "./Monitor.module.css";
-import { OrderItem } from "./OrderCard";
 import axios from "axios";
+import { PreparationMonitor } from "../../models/PreparationMonitor";
+import { PreparationItem } from "./PreparationCard";
 
 const segments = [
-  { key: "PAID", value: "Received" },
-  { key: "INPREPARATION", value: "In-Preparation" },
+  { key: "PENDING", value: "Received" },
+  { key: "INPROGRESS", value: "In-Preparation" },
   { key: "DONE", value: "Done" },
 ];
 
+type ActionVerb = "start" | "finish" | "cancel";
+
 type IOrderInformation = {
-  order: OrderMonitor | null;
-  updateOrderStatus: (id: string, status: OrderStatus) => any;
+  preparation: PreparationMonitor | null;
+  updatePreparationStatus: (id: string, status: ActionVerb) => any;
+  updateOrderStatusToFinish: (id: string) => any;
 };
 
-const OrderInformation = ({ order, updateOrderStatus }: IOrderInformation) => {
+const OrderInformation = ({
+  preparation,
+  updatePreparationStatus,
+  updateOrderStatusToFinish,
+}: IOrderInformation) => {
   const redButtonName = () =>
-    order?.status === "INPREPARATION" || order?.status === "DONE"
+    preparation?.status === "INPROGRESS" || preparation?.status === "DONE"
       ? "Cancel"
       : "Reject";
 
   const greenButtonName = () => {
-    if (order?.status === "INPREPARATION") return "Finish";
-    else if (order?.status === "DONE") return "Delivered";
+    if (preparation?.status === "INPROGRESS") return "Finish";
+    else if (preparation?.status === "DONE") return "Delivered";
     else return "Accept";
   };
 
   const greenButtonUpdateAction = () => {
-    if (order?.orderId == null) return;
-
-    let status: OrderStatus = "INPREPARATION";
-    if (order?.status === "INPREPARATION") status = "DONE";
-    else if (order?.status === "DONE") status = "FINISH";
-
-    updateOrderStatus(order?.orderId, status);
+    if (preparation?.preparationId == null) return;
+    let status: ActionVerb = "start";
+    if (preparation?.status === "INPROGRESS") status = "finish";
+    if (preparation?.status === "DONE") {
+      updateOrderStatusToFinish(preparation?.orderId);
+      return;
+    }
+    updatePreparationStatus(preparation?.preparationId, status);
   };
 
   const redButtonUpdateAction = () => {
-    if (!order?.orderId) return;
-    updateOrderStatus(order?.orderId, "REJECT");
+    if (!preparation?.preparationId) return;
+    updatePreparationStatus(preparation?.preparationId, "cancel");
   };
 
   return (
     <Flex className={classNames.orderDescribe} direction="column" gap="4">
       <Flex justify="between" align="center">
         <Heading size="5" weight="bold">
-          Order #{order?.number}
+          Order #{preparation?.number}
         </Heading>
         <Flex gap="3">
           <Button onClick={redButtonUpdateAction} color="red" size="3">
@@ -71,7 +80,7 @@ const OrderInformation = ({ order, updateOrderStatus }: IOrderInformation) => {
       <Flex direction="column" gap="3">
         <Heading size="5">Items</Heading>
 
-        {order?.products.map((x) => (
+        {preparation?.products.map((x) => (
           <Flex
             className={classNames.product}
             key={x.name}
@@ -93,27 +102,35 @@ const OrderInformation = ({ order, updateOrderStatus }: IOrderInformation) => {
 };
 
 export const Monitor = () => {
-  const [orderList, setOrderList] = useState<OrderMonitor[]>([]);
+  const [orderList, setOrderList] = useState<PreparationMonitor[]>([]);
+  const [preparationItem, setPreparationItem] =
+    useState<PreparationMonitor | null>(null);
   const [statusOrder, setStatusOrder] = useState<string>("CREATED");
-  const [orderItem, setOrderItem] = useState<OrderMonitor | null>(null);
 
-  const handleUpdateOrderStatus = (id: string, status: OrderStatus) => {
-    const updatedList = orderList.map((order) =>
-      order.orderId === id ? { ...order, status } : order
+  const getPreparationOrder = async () => {
+    const response = await axios.get<PreparationMonitor[]>(
+      "/api/v1/Preparations/orders"
     );
+    setOrderList(response.data);
+  };
 
-    setOrderList(updatedList);
+  const handleUpdatePreparationStatus = async (
+    id: string,
+    ActionVerb: ActionVerb
+  ) => {
+    await axios.patch(`/api/v1/Preparations/${id}/${ActionVerb}`);
+    await getPreparationOrder();
+    setPreparationItem(null);
+  };
+
+  const handleUpdateOrderStatusToFinish = async (id: string) => {
+    await axios.patch(`/api/v1/Orders/${id}/finish`);
+    await getPreparationOrder();
   };
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      const response = await axios.get<OrderMonitor[]>(
-        "/api/v1/Preparations/orders"
-      );
-      setOrderList(response.data);
-    };
-
-    fetchProducts();
+    getPreparationOrder();
+    console.log(orderList);
   }, []);
 
   return (
@@ -136,10 +153,10 @@ export const Monitor = () => {
           {orderList
             .filter((x) => x.status == statusOrder)
             .map((order) => (
-              <OrderItem
-                key={order.orderId}
-                orderMonitor={order}
-                onClick={() => setOrderItem(order)}
+              <PreparationItem
+                key={order.preparationId}
+                PreparationMonitor={order}
+                onClick={() => setPreparationItem(order)}
               />
             ))}
         </Flex>
@@ -148,10 +165,11 @@ export const Monitor = () => {
       <Flex className={classNames.details} direction="column" gap="4">
         <Heading>Order Information</Heading>
 
-        {orderItem && (
+        {preparationItem && (
           <OrderInformation
-            order={orderItem}
-            updateOrderStatus={handleUpdateOrderStatus}
+            preparation={preparationItem}
+            updatePreparationStatus={handleUpdatePreparationStatus}
+            updateOrderStatusToFinish={handleUpdateOrderStatusToFinish}
           />
         )}
       </Flex>

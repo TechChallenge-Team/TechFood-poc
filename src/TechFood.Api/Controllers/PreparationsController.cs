@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using TechFood.Application.Models.OrderMonitor;
 using TechFood.Application.UseCases.Interfaces;
 
 namespace TechFood.Api.Controllers;
@@ -12,9 +11,16 @@ public class PreparationsController(IPreparationUseCase preparationUseCase) : Co
 
     [HttpGet]
     [Route("orders")]
-    public Task<IEnumerable<GetPreparationMonitorResult>> GetAllPreparationOrdersAsync()
+    public async Task<IActionResult> GetAllPreparationOrdersAsync()
     {
-        return _preparationUseCase.GetAllPreparationOrdersAsync();
+        return Ok(await _preparationUseCase.GetAllPreparationOrdersAsync());
+    }
+
+    [HttpGet]
+    [Route("{orderId:guid}/number")]
+    public async Task<IActionResult> GetPreparationByOrderIdAsync(Guid orderId)
+    {
+        return Ok(await _preparationUseCase.GetPreparationByOrderIdAsync(orderId));
     }
 
     [HttpGet]
@@ -39,6 +45,15 @@ public class PreparationsController(IPreparationUseCase preparationUseCase) : Co
     public async Task<IActionResult> FinishAsync(Guid id)
     {
         await _preparationUseCase.FinishAsync(id);
+
+        return Ok();
+    }
+
+    [HttpPatch]
+    [Route("{id:guid}/cancel")]
+    public async Task<IActionResult> CancelAsync(Guid id)
+    {
+        await _preparationUseCase.CancelAsync(id);
 
         return Ok();
     }

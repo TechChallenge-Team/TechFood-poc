@@ -12,7 +12,6 @@ namespace TechFood.Infra.Data.Repositories;
 
 public class PreparationRepository(TechFoodContext dbContext) : IPreparationRepository
 {
-    private readonly DbSet<Order> _orders = dbContext.Orders;
     private readonly DbSet<Preparation> _preparations = dbContext.Preparations;
 
     public async Task<Guid> AddAsync(Preparation preparation)
@@ -31,24 +30,19 @@ public class PreparationRepository(TechFoodContext dbContext) : IPreparationRepo
     }
 
     //NOTES: Check the queryobject pattern
-    public async Task<List<(Preparation Preparation, Order Order)>> GetAllAsync()
+    public async Task<IEnumerable<Preparation>> GetAllAsync()
     {
-        var result = await _orders
-            .Join(
-                _preparations,
-                order => order.Id,
-                preparation => preparation.OrderId,
-                (order, preparation) => new
-                {
-                    Order = order,
-                    Preparation = preparation
-                }
-            )
-            .Where(query => query.Order.Status == OrderStatusType.Paid ||
-                             query.Order.Status == OrderStatusType.InPreparation ||
-                             query.Order.Status == OrderStatusType.PreparationDone)
+        var result = await _preparations
+            .Where(query => query.Status == PreparationStatusType.Pending ||
+                             query.Status == PreparationStatusType.InProgress||
+                             query.Status == PreparationStatusType.Done)
             .ToListAsync();
 
-        return result.Select(q => (q.Preparation, q.Order)).ToList();
+        return result;
+    }
+
+    public async Task<Preparation?> GetByOrderIdAsync(Guid orderId)
+    {
+        return await _preparations.Where(x => x.OrderId == orderId).FirstOrDefaultAsync();
     }
 }

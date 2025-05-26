@@ -1,11 +1,11 @@
-import { Flex, Heading, IconButton, Text } from "@radix-ui/themes";
-import classNames from "./OrderItem.module.css";
+import { Flex, Heading, IconButton } from "@radix-ui/themes";
+import classNames from "./PreparationItem.module.css";
 import { ArrowRightIcon } from "lucide-react";
-import { OrderMonitor } from "../../../models/OrderMonitor";
+import { PreparationMonitor } from "../../../models/PreparationMonitor";
 import clsx from "clsx";
 
-type IOrderMonitorItemProps = {
-  orderMonitor: OrderMonitor;
+type IPreparationMonitorItemProps = {
+  PreparationMonitor: PreparationMonitor;
   selected?: boolean;
   onClick?: () => void;
 };
@@ -20,11 +20,11 @@ const InfoButton = () => {
   );
 };
 
-export const OrderItem = ({
-  orderMonitor,
+export const PreparationItem = ({
+  PreparationMonitor,
   selected,
   onClick,
-}: IOrderMonitorItemProps) => {
+}: IPreparationMonitorItemProps) => {
   return (
     <Flex
       className={clsx(classNames.orderItem, selected && classNames.selected)}
@@ -47,7 +47,7 @@ export const OrderItem = ({
               weight="bold"
               color="gray"
             >
-              Order #{orderMonitor.number}
+              Order #{PreparationMonitor.number}
             </Heading>
           </Flex>
 

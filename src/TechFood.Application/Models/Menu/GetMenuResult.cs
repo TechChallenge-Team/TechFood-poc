@@ -17,10 +17,10 @@ namespace TechFood.Application.Models.Menu
 
             public int SortOrder { get; set; }
 
-            public List<Product> Products { get; set; } = [];
+            public List<ProductMenu> Products { get; set; } = [];
         }
 
-        public class Product
+        public class ProductMenu
         {
             public Guid Id { get; set; }
 

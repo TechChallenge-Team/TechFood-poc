@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using TechFood.Application.Common.Data;
+using TechFood.Application.Common.Services;
 using TechFood.Application.Common.Services.Interfaces;
 using TechFood.Application.Models.Payment;
 using TechFood.Application.UseCases.Interfaces;
@@ -19,6 +20,7 @@ internal class PaymentUseCase(
     IPreparationRepository preparationRepository,
     IPaymentRepository paymentRepository,
     IProductRepository productRepository,
+    IOrderNumberService orderNumberService,
     IServiceProvider serviceProvider) : IPaymentUseCase
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
@@ -27,6 +29,7 @@ internal class PaymentUseCase(
     private readonly IPaymentRepository _paymentRepository = paymentRepository;
     private readonly IProductRepository _productRepository = productRepository;
     private readonly IServiceProvider _serviceProvider = serviceProvider;
+    private readonly IOrderNumberService _orderNumberService = orderNumberService;
 
     public async Task<CreatePaymentResult?> CreateAsync(CreatePaymentRequest data)
     {
@@ -51,7 +54,7 @@ internal class PaymentUseCase(
                 new(
                     "TOTEM01",
                     order.Id,
-                    "TechFood - Order #" + order.Number,
+                    "TechFood - Order #" + order.Id,
                     order.Amount,
                     order.Items.ToList().ConvertAll(i => new PaymentItem(
                         products.FirstOrDefault(p => p.Id == i.ProductId)?.Name ?? "",
@@ -80,9 +83,10 @@ internal class PaymentUseCase(
         return result;
     }
 
-    public async Task ConfirmAsync(Guid id)
+    public async Task<int> ConfirmAsync(Guid id)
     {
         var payment = await _paymentRepository.GetByIdAsync(id);
+
         if (payment == null)
         {
             throw new Common.Exceptions.ApplicationException("Payment not found.");
@@ -97,11 +101,13 @@ internal class PaymentUseCase(
         payment.Confirm();
 
         order.ConfirmPayment();
-
-        var preparation = new Preparation(payment.OrderId);
+        var preparationNumber = await _orderNumberService.GetAsync();
+        var preparation = new Preparation(payment.OrderId, preparationNumber );
 
         await _preparationRepository.AddAsync(preparation);
 
         await _unitOfWork.CommitAsync();
+
+        return preparationNumber;
     }
 }

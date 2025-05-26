@@ -8,14 +8,17 @@ public class Preparation : Entity, IAggregateRoot
 {
     private Preparation() { }
 
-    public Preparation(Guid orderId)
+    public Preparation(Guid orderId, int number)
     {
         OrderId = orderId;
+        Number = number;
         CreatedAt = DateTime.Now;
         Status = PreparationStatusType.Pending;
     }
 
     public Guid OrderId { get; private set; }
+
+    public int Number { get; private set; }
 
     public DateTime CreatedAt { get; private set; }
 
@@ -44,6 +47,17 @@ public class Preparation : Entity, IAggregateRoot
         }
 
         Status = PreparationStatusType.Done;
+        FinishedAt = DateTime.Now;
+    }
+
+    public void Cancel()
+    {
+        if (Status == PreparationStatusType.Cancelled)
+        {
+            throw new InvalidOperationException("Preparation can only be already cancelled.");
+        }
+
+        Status = PreparationStatusType.Cancelled;
         FinishedAt = DateTime.Now;
     }
 }

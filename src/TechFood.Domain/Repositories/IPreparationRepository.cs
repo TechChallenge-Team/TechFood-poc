@@ -11,5 +11,7 @@ public interface IPreparationRepository
 
     Task<Preparation?> GetByIdAsync(Guid id);
 
-    Task<List<(Preparation Preparation, Order Order)>> GetAllAsync();
+    Task<Preparation?> GetByOrderIdAsync(Guid orderId);
+
+    Task<IEnumerable<Preparation>> GetAllAsync();
 }

@@ -6,19 +6,19 @@ namespace TechFood.Application.Models.OrderMonitor;
 
 public class GetPreparationMonitorResult
 {
+    public Guid preparationId { get; set; }
+
     public Guid OrderId { get; set; }
 
     public int Number { get; set; }
 
-    public OrderStatusType Status { get; set; }
+    public PreparationStatusType Status { get; set; }
 
-    public IEnumerable<ProductResult> Products { get; set; }
+    public IEnumerable<ProductResult>? Products { get; set; }
 }
 
 public class ProductResult
 {
-    public Guid Id { get; set; }
-
     public string? ImageUrl { get; set; }
 
     public string Name { get; set; } = null!;

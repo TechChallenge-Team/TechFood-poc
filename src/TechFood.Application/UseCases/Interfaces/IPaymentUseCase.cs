@@ -6,7 +6,7 @@ namespace TechFood.Application.UseCases.Interfaces;
 
 public interface IPaymentUseCase
 {
-    Task ConfirmAsync(Guid id);
+    Task<int> ConfirmAsync(Guid id);
 
     Task<CreatePaymentResult?> CreateAsync(CreatePaymentRequest data);
 }
