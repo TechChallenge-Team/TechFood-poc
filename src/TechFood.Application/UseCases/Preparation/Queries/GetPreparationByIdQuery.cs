@@ -11,10 +11,10 @@ public class GetPreparationByIdQuery(Guid id) : IRequest<GetPreparationByIdQuery
 {
     public Guid Id { get; set; } = id;
 
-    public class Handler(IPreparationQueryProvider query) : IRequestHandler<GetPreparationByIdQuery, Result?>
+    public class Handler(IPreparationQueryProvider queries) : IRequestHandler<GetPreparationByIdQuery, Result?>
     {
         public Task<Result?> Handle(GetPreparationByIdQuery request, CancellationToken cancellationToken)
-            => query.GetByIdAsync(request);
+            => queries.GetByIdAsync(request);
     }
 
     public class Result

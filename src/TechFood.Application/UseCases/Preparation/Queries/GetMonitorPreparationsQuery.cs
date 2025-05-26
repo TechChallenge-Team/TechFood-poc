@@ -10,10 +10,10 @@ namespace TechFood.Application.UseCases.Preparation.Queries;
 
 public class GetMonitorPreparationsQuery : IRequest<IEnumerable<GetMonitorPreparationsQuery.Result>>
 {
-    public class Handler(IPreparationQueryProvider query) : IRequestHandler<GetMonitorPreparationsQuery, IEnumerable<Result>>
+    public class Handler(IPreparationQueryProvider queries) : IRequestHandler<GetMonitorPreparationsQuery, IEnumerable<Result>>
     {
         public Task<IEnumerable<Result>> Handle(GetMonitorPreparationsQuery request, CancellationToken cancellationToken)
-            => query.GetMonitorPreparationsAsync(request);
+            => queries.GetMonitorPreparationsAsync(request);
     }
 
     public class Result

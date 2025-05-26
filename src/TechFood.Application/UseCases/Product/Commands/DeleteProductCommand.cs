@@ -6,28 +6,27 @@ using TechFood.Application.Common.Resources;
 using TechFood.Application.Common.Services.Interfaces;
 using TechFood.Domain.Repositories;
 
-namespace TechFood.Application.UseCases.Product.Commands
+namespace TechFood.Application.UseCases.Product.Commands;
+
+public class DeleteProductCommand(Guid id) : IRequest<Unit>
 {
-    public class DeleteProductCommand(Guid id) : IRequest<Unit>
+    public Guid Id { get; set; } = id;
+
+    public class Handler(IProductRepository repo, IImageStorageService imageStorage) : IRequestHandler<DeleteProductCommand, Unit>
     {
-        public Guid Id { get; set; } = id;
-
-        public class Handler(IProductRepository repo, IImageStorageService imageStorage) : IRequestHandler<DeleteProductCommand, Unit>
+        public async Task<Unit> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
         {
-            public async Task<Unit> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
+            var product = await repo.GetByIdAsync(request.Id);
+            if (product == null)
             {
-                var product = await repo.GetByIdAsync(request.Id);
-                if (product == null)
-                {
-                    throw new Common.Exceptions.ApplicationException(Exceptions.Product_ProductNotFound);
-                }
-
-                await imageStorage.DeleteAsync(product.ImageFileName, nameof(Product));
-
-                await repo.DeleteAsync(product);
-
-                return Unit.Value;
+                throw new Common.Exceptions.ApplicationException(Exceptions.Product_ProductNotFound);
             }
+
+            await imageStorage.DeleteAsync(product.ImageFileName, nameof(Product));
+
+            await repo.DeleteAsync(product);
+
+            return Unit.Value;
         }
     }
 }

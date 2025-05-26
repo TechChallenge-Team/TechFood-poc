@@ -16,10 +16,10 @@ public class GetCustomerByDocumentQuery : IRequest<GetCustomerByDocumentQuery.Re
     [Required]
     public string DocumentValue { get; set; } = null!;
 
-    public class Handler(ICustomerQueryProvider query) : IRequestHandler<GetCustomerByDocumentQuery, Result?>
+    public class Handler(ICustomerQueryProvider queries) : IRequestHandler<GetCustomerByDocumentQuery, Result?>
     {
         public Task<Result?> Handle(GetCustomerByDocumentQuery request, CancellationToken cancellationToken)
-            => query.GetByDocumentAsync(request);
+            => queries.GetByDocumentAsync(request);
     }
 
     public class Result

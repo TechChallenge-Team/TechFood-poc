@@ -9,10 +9,10 @@ namespace TechFood.Application.UseCases.Menu.Queries
 {
     public class GetMenuQuery : IRequest<GetMenuQuery.Result>
     {
-        public class Handler(IMenuQueryProvider query) : IRequestHandler<GetMenuQuery, Result>
+        public class Handler(IMenuQueryProvider queries) : IRequestHandler<GetMenuQuery, Result>
         {
             public Task<Result> Handle(GetMenuQuery request, CancellationToken cancellationToken)
-                => query.GetAsync(request);
+                => queries.GetAsync(request);
         }
 
         public class Result
