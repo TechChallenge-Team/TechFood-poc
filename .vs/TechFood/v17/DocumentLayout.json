@@ -1,0 +1,171 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\PosGraduacao\\TechFood-poc\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{C48990EA-241C-42D4-9592-23CA0362570B}|src\\TechFood.Infra.Data\\TechFood.Infra.Data.csproj|c:\\posgraduacao\\techfood-poc\\src\\techfood.infra.data\\migrations\\techfoodcontextmodelsnapshot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C48990EA-241C-42D4-9592-23CA0362570B}|src\\TechFood.Infra.Data\\TechFood.Infra.Data.csproj|solutionrelative:src\\techfood.infra.data\\migrations\\techfoodcontextmodelsnapshot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7A68BD09-3BED-4C0E-9188-EAC2FEBC0AEE}|src\\TechFood.Domain\\TechFood.Domain.csproj|c:\\posgraduacao\\techfood-poc\\src\\techfood.domain\\entities\\orderitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7A68BD09-3BED-4C0E-9188-EAC2FEBC0AEE}|src\\TechFood.Domain\\TechFood.Domain.csproj|solutionrelative:src\\techfood.domain\\entities\\orderitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7A68BD09-3BED-4C0E-9188-EAC2FEBC0AEE}|src\\TechFood.Domain\\TechFood.Domain.csproj|c:\\posgraduacao\\techfood-poc\\src\\techfood.domain\\entities\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7A68BD09-3BED-4C0E-9188-EAC2FEBC0AEE}|src\\TechFood.Domain\\TechFood.Domain.csproj|solutionrelative:src\\techfood.domain\\entities\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8B1BD942-35AA-49B2-B5F2-5D5EF56EDD66}|src\\TechFood.Api\\TechFood.Api.csproj|c:\\posgraduacao\\techfood-poc\\src\\techfood.api\\controllers\\orderscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8B1BD942-35AA-49B2-B5F2-5D5EF56EDD66}|src\\TechFood.Api\\TechFood.Api.csproj|solutionrelative:src\\techfood.api\\controllers\\orderscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7C0FDF26-D329-41E9-B142-746F3A5AA6ED}|src\\TechFood.Application\\TechFood.Application.csproj|c:\\posgraduacao\\techfood-poc\\src\\techfood.application\\usecases\\orderusecase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7C0FDF26-D329-41E9-B142-746F3A5AA6ED}|src\\TechFood.Application\\TechFood.Application.csproj|solutionrelative:src\\techfood.application\\usecases\\orderusecase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Leonardo\\AppData\\Local\\Temp\\4psrffa3..sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7C0FDF26-D329-41E9-B142-746F3A5AA6ED}|src\\TechFood.Application\\TechFood.Application.csproj|c:\\posgraduacao\\techfood-poc\\src\\techfood.application\\models\\order\\createorderresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7C0FDF26-D329-41E9-B142-746F3A5AA6ED}|src\\TechFood.Application\\TechFood.Application.csproj|solutionrelative:src\\techfood.application\\models\\order\\createorderresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7A68BD09-3BED-4C0E-9188-EAC2FEBC0AEE}|src\\TechFood.Domain\\TechFood.Domain.csproj|c:\\posgraduacao\\techfood-poc\\src\\techfood.domain\\entities\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7A68BD09-3BED-4C0E-9188-EAC2FEBC0AEE}|src\\TechFood.Domain\\TechFood.Domain.csproj|solutionrelative:src\\techfood.domain\\entities\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Leonardo\\AppData\\Local\\Temp\\lrgeocwx..sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "TechFoodContextModelSnapshot.cs",
+              "DocumentMoniker": "C:\\PosGraduacao\\TechFood-poc\\src\\TechFood.Infra.Data\\Migrations\\TechFoodContextModelSnapshot.cs",
+              "RelativeDocumentMoniker": "src\\TechFood.Infra.Data\\Migrations\\TechFoodContextModelSnapshot.cs",
+              "ToolTip": "C:\\PosGraduacao\\TechFood-poc\\src\\TechFood.Infra.Data\\Migrations\\TechFoodContextModelSnapshot.cs",
+              "RelativeToolTip": "src\\TechFood.Infra.Data\\Migrations\\TechFoodContextModelSnapshot.cs",
+              "ViewState": "AgIAAK8BAAAAAAAAAAAawMUBAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-27T01:49:32.893Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Customer.cs",
+              "DocumentMoniker": "C:\\PosGraduacao\\TechFood-poc\\src\\TechFood.Domain\\Entities\\Customer.cs",
+              "RelativeDocumentMoniker": "src\\TechFood.Domain\\Entities\\Customer.cs",
+              "ToolTip": "C:\\PosGraduacao\\TechFood-poc\\src\\TechFood.Domain\\Entities\\Customer.cs",
+              "RelativeToolTip": "src\\TechFood.Domain\\Entities\\Customer.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-27T01:55:58.341Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "OrderItem.cs",
+              "DocumentMoniker": "C:\\PosGraduacao\\TechFood-poc\\src\\TechFood.Domain\\Entities\\OrderItem.cs",
+              "RelativeDocumentMoniker": "src\\TechFood.Domain\\Entities\\OrderItem.cs",
+              "ToolTip": "C:\\PosGraduacao\\TechFood-poc\\src\\TechFood.Domain\\Entities\\OrderItem.cs",
+              "RelativeToolTip": "src\\TechFood.Domain\\Entities\\OrderItem.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAowBgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-23T14:06:03.901Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "OrdersController.cs",
+              "DocumentMoniker": "C:\\PosGraduacao\\TechFood-poc\\src\\TechFood.Api\\Controllers\\OrdersController.cs",
+              "RelativeDocumentMoniker": "src\\TechFood.Api\\Controllers\\OrdersController.cs",
+              "ToolTip": "C:\\PosGraduacao\\TechFood-poc\\src\\TechFood.Api\\Controllers\\OrdersController.cs",
+              "RelativeToolTip": "src\\TechFood.Api\\Controllers\\OrdersController.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAEIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-23T13:42:59.92Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "OrderUseCase.cs",
+              "DocumentMoniker": "C:\\PosGraduacao\\TechFood-poc\\src\\TechFood.Application\\UseCases\\OrderUseCase.cs",
+              "RelativeDocumentMoniker": "src\\TechFood.Application\\UseCases\\OrderUseCase.cs",
+              "ToolTip": "C:\\PosGraduacao\\TechFood-poc\\src\\TechFood.Application\\UseCases\\OrderUseCase.cs",
+              "RelativeToolTip": "src\\TechFood.Application\\UseCases\\OrderUseCase.cs",
+              "ViewState": "AgIAAC8AAAAAAAAAAIA0wFAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-23T13:43:05.646Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "4psrffa3..sql",
+              "DocumentMoniker": "C:\\Users\\Leonardo\\AppData\\Local\\Temp\\4psrffa3..sql",
+              "RelativeDocumentMoniker": "..\\..\\Users\\Leonardo\\AppData\\Local\\Temp\\4psrffa3..sql",
+              "ToolTip": "C:\\Users\\Leonardo\\AppData\\Local\\Temp\\4psrffa3..sql",
+              "RelativeToolTip": "..\\..\\Users\\Leonardo\\AppData\\Local\\Temp\\4psrffa3..sql",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
+              "WhenOpened": "2025-05-23T22:38:03.336Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "CreateOrderResult.cs",
+              "DocumentMoniker": "C:\\PosGraduacao\\TechFood-poc\\src\\TechFood.Application\\Models\\Order\\CreateOrderResult.cs",
+              "RelativeDocumentMoniker": "src\\TechFood.Application\\Models\\Order\\CreateOrderResult.cs",
+              "ToolTip": "C:\\PosGraduacao\\TechFood-poc\\src\\TechFood.Application\\Models\\Order\\CreateOrderResult.cs",
+              "RelativeToolTip": "src\\TechFood.Application\\Models\\Order\\CreateOrderResult.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-27T01:04:11.35Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Order.cs",
+              "DocumentMoniker": "C:\\PosGraduacao\\TechFood-poc\\src\\TechFood.Domain\\Entities\\Order.cs",
+              "RelativeDocumentMoniker": "src\\TechFood.Domain\\Entities\\Order.cs",
+              "ToolTip": "C:\\PosGraduacao\\TechFood-poc\\src\\TechFood.Domain\\Entities\\Order.cs",
+              "RelativeToolTip": "src\\TechFood.Domain\\Entities\\Order.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-23T14:06:04.797Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "lrgeocwx..sql",
+              "DocumentMoniker": "C:\\Users\\Leonardo\\AppData\\Local\\Temp\\lrgeocwx..sql",
+              "RelativeDocumentMoniker": "..\\..\\Users\\Leonardo\\AppData\\Local\\Temp\\lrgeocwx..sql",
+              "ToolTip": "C:\\Users\\Leonardo\\AppData\\Local\\Temp\\lrgeocwx..sql",
+              "RelativeToolTip": "..\\..\\Users\\Leonardo\\AppData\\Local\\Temp\\lrgeocwx..sql",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
+              "WhenOpened": "2025-05-23T13:22:21.65Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
