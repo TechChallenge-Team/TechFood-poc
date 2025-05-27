@@ -12,11 +12,7 @@ using TechFood.Infra.Data.Contexts;
 namespace TechFood.Infra.Data.Migrations
 {
     [DbContext(typeof(TechFoodContext))]
-<<<<<<<< HEAD:src/TechFood.Infra.Data/Migrations/20250430001507_InitialCreate.Designer.cs
-    [Migration("20250430001507_InitialCreate")]
-========
     [Migration("20250502161609_InitialCreate")]
->>>>>>>> develop:src/TechFood.Infra.Data/Migrations/20250502161609_InitialCreate.Designer.cs
     partial class InitialCreate
     {
         /// <inheritdoc />
