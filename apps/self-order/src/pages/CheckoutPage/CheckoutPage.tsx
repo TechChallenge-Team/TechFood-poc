@@ -16,6 +16,7 @@ import { BottomSheet } from "../../components";
 import { useOrder } from "../../contexts";
 
 import classNames from "./CheckoutPage.module.css";
+import axios from "axios";
 
 const paymentMethods: {
   type: PaymentType;
@@ -130,8 +131,14 @@ export const CheckoutPage = () => {
 
   const navigate = useNavigate();
 
-  const { discount, total, subtotal, paymentQrCode, createPayment } =
-    useOrder();
+  const {
+    discount,
+    total,
+    subtotal,
+    paymentQrCode,
+    createPayment,
+    confirmPayment,
+  } = useOrder();
 
   const handlePayment = async () => {
     setIsLoading(true);
@@ -145,7 +152,8 @@ export const CheckoutPage = () => {
     }
   };
 
-  const handleFinish = () => {
+  const handleFinish = async () => {
+    await confirmPayment();
     navigate("/confirmation", { replace: true });
   };
 

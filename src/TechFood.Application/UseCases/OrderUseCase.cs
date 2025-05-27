@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
-using TechFood.Application.Common.Services.Interfaces;
 using TechFood.Application.Models.Order;
 using TechFood.Application.UseCases.Interfaces;
 using TechFood.Domain.Entities;
@@ -15,23 +12,14 @@ namespace TechFood.Application.UseCases;
 internal class OrderUseCase(
     IOrderRepository orderRepository,
     IProductRepository productRepository,
-    IOrderNumberService orderNumberService,
-    IUnitOfWork unitOfWork,
-    IMapper mapper
+    IPreparationRepository preparationRepository,
+    IUnitOfWork unitOfWork
     ) : IOrderUseCase
 {
     private readonly IOrderRepository _orderRepository = orderRepository;
     private readonly IProductRepository _productRepository = productRepository;
-    private readonly IOrderNumberService _orderNumberService = orderNumberService;
+    private readonly IPreparationRepository _preparationRepository = preparationRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
-    private readonly IMapper _mapper = mapper;
-
-    public async Task<List<GetAllOrderResponse>> GetAllDoneAndInPreparationAsync()
-    {
-        var order = await _orderRepository.GetAllDoneAndInPreparationAsync();
-
-        return _mapper.Map<List<GetAllOrderResponse>>(order);
-    }
 
     public async Task<CreateOrderResult> CreateAsync(CreateOrderRequest request)
     {
@@ -47,8 +35,7 @@ internal class OrderUseCase(
             })
             .ToList();
 
-        var number = await _orderNumberService.GetAsync();
-        var order = new Order(number, request.CustomerId);
+        var order = new Order(request.CustomerId);
 
         foreach (var item in items)
         {
@@ -60,7 +47,6 @@ internal class OrderUseCase(
         await _unitOfWork.CommitAsync();
 
         result.Id = order.Id;
-        result.Number = order.Number;
 
         return result;
     }
@@ -74,7 +60,7 @@ internal class OrderUseCase(
             return false;
         }
 
-        order.Prepare();
+        order.StartPreparation();
 
         await _unitOfWork.CommitAsync();
 
@@ -89,6 +75,15 @@ internal class OrderUseCase(
         {
             return false;
         }
+
+        var preparation = await _preparationRepository.GetByOrderIdAsync(orderId);
+
+        if (preparation == null)
+        {
+            return false;
+        }
+
+        preparation.Delivered();
 
         order.Finish();
 

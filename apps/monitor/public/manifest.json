@@ -1,7 +1,7 @@
 {
-  "name": "Techfood - Order Monitor",
-  "short_name": "techfood_order_monitor",
-  "start_url": "/order-monitor",
+  "name": "Techfood - Monitor",
+  "short_name": "techfood_monitor",
+  "start_url": "/monitor",
   "display": "standalone",
   "background_color": "#121212",
   "theme_color": "#4f4d6f",

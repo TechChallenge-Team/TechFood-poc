@@ -33,7 +33,7 @@ public class Payment : Entity, IAggregateRoot
 
     public decimal Amount { get; private set; }
 
-    public void Pay()
+    public void Confirm()
     {
         if (PaidAt.HasValue)
         {

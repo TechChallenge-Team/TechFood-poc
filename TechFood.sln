@@ -34,9 +34,9 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechFood.Infra.Payments.MercadoPago", "src\TechFood.Infra.Payments.MercadoPago\TechFood.Infra.Payments.MercadoPago.csproj", "{B854FAD4-06AA-45E8-97F0-1B7098A359AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechFood.Doman.Tests", "tests\TechFood.Doman.Tests\TechFood.Doman.Tests.csproj", "{FBF40740-BDA6-4E28-AE7C-D791D0F43A50}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechFood.Doman.Tests", "tests\TechFood.Doman.Tests\TechFood.Doman.Tests.csproj", "{FBF40740-BDA6-4E28-AE7C-D791D0F43A50}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechFood.Infra.ImageStore.LocalDisk", "src\TechFood.Infra.ImageStore.LocalDisk\TechFood.Infra.ImageStore.LocalDisk.csproj", "{9671BFDC-08B1-4555-B77A-89FD8C171F04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechFood.Infra.ImageStore.LocalDisk", "src\TechFood.Infra.ImageStore.LocalDisk\TechFood.Infra.ImageStore.LocalDisk.csproj", "{9671BFDC-08B1-4555-B77A-89FD8C171F04}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

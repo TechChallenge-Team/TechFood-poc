@@ -16,10 +16,10 @@ namespace TechFood.Doman.Tests
                 type: PaymentType.CreditCard,
                 amount: 10);
 
-            payment.Pay();
+            payment.Confirm();
 
             // Act
-            var result = Assert.Throws<DomainException>(payment.Pay);
+            var result = Assert.Throws<DomainException>(payment.Confirm);
 
             //// Assert
             Assert.Equal(Domain.Resources.Exceptions.Payment_AlreadyPaid, result.Message);
@@ -35,7 +35,7 @@ namespace TechFood.Doman.Tests
                 type: PaymentType.CreditCard,
                 amount: 10);
 
-            payment.Pay();
+            payment.Confirm();
 
             // Act
             var result = Assert.Throws<DomainException>(payment.Refused);

@@ -6,7 +6,6 @@ import { useCustomer } from "./CustomerProvider";
 export type OrderContextType = {
   id?: string;
   items: OrderItem[];
-  number?: string;
   discount: number;
   cuponCode?: string;
   paymentMethod: PaymentType | undefined;
@@ -18,6 +17,7 @@ export type OrderContextType = {
   updateItem: (item: OrderItem) => void;
   applyDiscount: (code: string) => Promise<void>;
   createPayment: (method: PaymentType) => Promise<void>;
+  confirmPayment: () => Promise<void>;
   createOrder: () => Promise<void>;
   clearOrder: () => void;
 };
@@ -29,9 +29,9 @@ export const OrderProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [id, setId] = useState<string | undefined>();
   const [items, setItems] = useState<OrderItem[]>([]);
-  const [number, setNumber] = useState<string | undefined>();
   const [discount, setDiscount] = useState<number>(0);
   const [cuponCode, setCuponCode] = useState<string | undefined>();
+  const [paymentId, setPaymentId] = useState<string | undefined>();
   const [paymentMethod, setPaymentMethod] = useState<PaymentType | undefined>();
   const [paymentQrCode, setPaymentQrCode] = useState<string | undefined>();
 
@@ -59,14 +59,12 @@ export const OrderProvider: React.FC<{ children: React.ReactNode }> = ({
   const createOrder = useCallback(async () => {
     const result = await axios.post<{
       id: string;
-      number: string;
     }>("/api/v1/orders", {
       customerId: customer?.id,
       items,
     });
 
     setId(result.data.id);
-    setNumber(result.data.number);
   }, [customer?.id, items]);
 
   const applyDiscount = useCallback(async (code: string) => {
@@ -81,23 +79,28 @@ export const OrderProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const createPayment = useCallback(
     async (method: PaymentType) => {
-      const result = await axios.post<{
+      const { data } = await axios.post<{
+        id: string;
         qrCodeData: string;
       }>("/api/v1/payments", {
         orderId: id,
         type: method,
       });
 
+      setPaymentId(data.id);
       setPaymentMethod(method);
-      setPaymentQrCode(result.data.qrCodeData);
+      setPaymentQrCode(data.qrCodeData);
     },
     [id]
   );
 
+  const confirmPayment = useCallback(async () => {
+    await axios.patch(`/api/v1/payments/${paymentId}`);
+  }, [paymentId]);
+
   const clearOrder = useCallback(() => {
     setId(undefined);
     setItems([]);
-    setNumber(undefined);
     setDiscount(0);
     setCuponCode(undefined);
     setPaymentMethod(undefined);
@@ -109,7 +112,6 @@ export const OrderProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         id,
         items,
-        number,
         discount,
         cuponCode,
         paymentMethod,
@@ -120,6 +122,7 @@ export const OrderProvider: React.FC<{ children: React.ReactNode }> = ({
         removeItem,
         updateItem,
         createPayment,
+        confirmPayment,
         applyDiscount,
         createOrder,
         clearOrder,

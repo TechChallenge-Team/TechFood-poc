@@ -130,9 +130,6 @@ namespace TechFood.Infra.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Number")
-                        .HasColumnType("int");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -151,7 +148,6 @@ namespace TechFood.Infra.Data.Migrations
                             CustomerId = new Guid("25b58f54-63bc-42da-8cf6-8162097e72c8"),
                             Discount = 0m,
                             IsDeleted = false,
-                            Number = 1,
                             Status = 5
                         },
                         new
@@ -162,7 +158,6 @@ namespace TechFood.Infra.Data.Migrations
                             CustomerId = new Guid("9887b301-605f-46a6-93db-ac1ce8685723"),
                             Discount = 0m,
                             IsDeleted = false,
-                            Number = 2,
                             Status = 4
                         });
                 });
@@ -287,6 +282,37 @@ namespace TechFood.Infra.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Payment", (string)null);
+                });
+
+            modelBuilder.Entity("TechFood.Domain.Entities.Preparation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime?>("FinishedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("StartedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Preparation", (string)null);
                 });
 
             modelBuilder.Entity("TechFood.Domain.Entities.Product", b =>

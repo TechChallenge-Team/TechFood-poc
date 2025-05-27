@@ -1,27 +1,32 @@
 import { useEffect, useState } from "react";
 import { Flex } from "@radix-ui/themes";
-import { Order } from "../../models";
-import { t } from "../../i18n";
-import classNames from "./StartPage.module.css";
 import axios from "axios";
+import { Preparation } from "../../models";
+import { t } from "../../i18n";
 import { OrderCard } from "../../components";
 import { ORDER_STATUS } from "../../const";
 
+import classNames from "./StartPage.module.css";
+
 export const StartPage = () => {
-  const [orders, setOrders] = useState<Order[]>([]);
+  const [preparations, setPreparations] = useState<Preparation[]>([]);
 
   useEffect(() => {
     const timer = setInterval(async () => {
-      const response = await axios.get("/api/v1/orders/done-and-preparation");
-      setOrders(response.data);
+      const response = await axios.get("/api/v1/preparations");
+      setPreparations(response.data);
     }, 2000);
     return () => clearTimeout(timer);
   }, []);
 
-  const inPreparation = orders.filter(
-    (order) => order.status === ORDER_STATUS.INPREPARATION
+  const inPreparation = preparations.filter(
+    (order) =>
+      order.status === ORDER_STATUS.PENDING ||
+      order.status === ORDER_STATUS.INPROGRESS
   );
-  const done = orders.filter((order) => order.status === ORDER_STATUS.DONE);
+  const done = preparations.filter(
+    (order) => order.status === ORDER_STATUS.DONE
+  );
 
   const cardConfigs = [
     {

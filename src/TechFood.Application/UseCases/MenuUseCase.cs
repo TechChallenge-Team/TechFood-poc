@@ -32,7 +32,7 @@ internal class MenuUseCase(
                 ImageUrl = _imageUrlResolver.BuildFilePath(
                     nameof(Category).ToLower(),
                     c.ImageFileName),
-                Products = products.Where(p => p.CategoryId == c.Id).Select(p => new GetMenuResult.Product
+                Products = products.Where(p => p.CategoryId == c.Id).Select(p => new GetMenuResult.ProductMenu
                 {
                     Id = p.Id,
                     Name = p.Name,

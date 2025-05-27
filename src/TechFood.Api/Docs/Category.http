@@ -1,4 +1,4 @@
-@rootUrl=https://localhost:44310/v1
+@rootUrl=http://localhost:49752/v1
 
 ### Create Category
 POST {{rootUrl}}/categories
