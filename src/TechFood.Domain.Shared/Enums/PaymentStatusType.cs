@@ -1,9 +1,8 @@
-namespace TechFood.Domain.Enums
+namespace TechFood.Domain.Enums;
+
+public enum PaymentStatusType
 {
-    public enum PaymentStatusType
-    {
-        Pending,
-        Approved,
-        Refused,
-    }
+    Pending,
+    Approved,
+    Refused,
 }

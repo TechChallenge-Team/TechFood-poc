@@ -1,10 +1,17 @@
+using System.Text;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.IdentityModel.Tokens;
 using TechFood.Application;
 using TechFood.Application.Common.Filters;
 using TechFood.Application.Common.NamingPolicy;
 using TechFood.Infra.Data;
 using TechFood.Infra.Data.Contexts;
+using TechFood.Infra.ImageStore.LocalDisk.Configuration;
+using TechFood.Infra.Services.MercadoPago;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -29,6 +36,13 @@ var builder = WebApplication.CreateBuilder(args);
 
     builder.Services.AddCors();
 
+    builder.Services.Configure<ForwardedHeadersOptions>(options =>
+    {
+        options.ForwardedHeaders = ForwardedHeaders.All;
+        options.KnownNetworks.Clear();
+        options.KnownProxies.Clear();
+    });
+
     builder.Services.AddHttpContextAccessor();
 
     builder.Services.AddEndpointsApiExplorer();
@@ -43,8 +57,28 @@ var builder = WebApplication.CreateBuilder(args);
         });
     });
 
+    builder.Services.AddHealthChecks();
+
+    builder.Services
+        .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(o =>
+        {
+            o.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                ValidAudience = builder.Configuration["Jwt:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
+            };
+        });
+
     builder.Services.AddApplication();
     builder.Services.AddInfraData();
+    builder.Services.AddInfraMercadoPagoPayment();
+    builder.Services.AddInfraImageStore();
 }
 
 var app = builder.Build();
@@ -56,9 +90,18 @@ using (var scope = app.Services.CreateScope())
     dataContext.Database.Migrate();
 }
 
+app.UseForwardedHeaders();
+
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHsts();
+    app.UseHttpsRedirection();
+}
+
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
+
     app.UseSwagger(options =>
     {
         options.OpenApiVersion = Microsoft.OpenApi.OpenApiSpecVersion.OpenApi2_0;
@@ -66,7 +109,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseHealthChecks("/health");
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    RequestPath = app.Configuration["TechFoodStaticImagesUrl"],
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "images")),
+});
 
 app.UseRouting();
 
@@ -77,4 +126,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-

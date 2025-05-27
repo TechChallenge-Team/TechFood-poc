@@ -1,22 +1,25 @@
 import { Flex, Text } from "@radix-ui/themes";
 import { CategoryCardProps } from "./CategoryCard.types";
+import clsx from "clsx";
 
 import classNames from "./CategoryCard.module.css";
 
-const assetsPath = "../../assets/categories/";
-
-export const CategoryCard = ({ name, img }: CategoryCardProps) => {
-  const src = new URL(`${assetsPath}${img}`, import.meta.url).href;
-
+export const CategoryCard = ({
+  category,
+  onSelect,
+  selected = false,
+}: CategoryCardProps) => {
+  const { name, imageUrl } = category;
   return (
     <Flex
-      className={classNames.root}
+      className={clsx(classNames.root, selected && classNames.selected)}
       direction="column"
       gap="2"
       align="center"
       justify="center"
+      onClick={() => onSelect(category)}
     >
-      <img src={src} alt={name} />
+      <img src={imageUrl} alt={name} />
       <Text
         as="p"
         size="2"

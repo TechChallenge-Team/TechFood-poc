@@ -117,6 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Product_ThrowDescriptionIsEmpty" xml:space="preserve">
+    <value>The product description cannot be empty</value>
+  </data>
+  <data name="Product_ThrowNameIsEmpty" xml:space="preserve">
+    <value>The Name cannot empty </value>
+  </data>
+  <data name="Product_ThrowCategoryIdInvalid" xml:space="preserve">
+    <value>The product CategoryId is not valid</value>
+  </data>
   <data name="Order_AmountIsNotEqualOrderAmount" xml:space="preserve">
     <value>Payment amount is not equal to the order total amount.</value>
   </data>
@@ -132,14 +141,14 @@
   <data name="Order_CannotFinishToNonInPreparationStatus" xml:space="preserve">
     <value>Cannot done an order that is not in the InPreparation status.</value>
   </data>
-  <data name="Order_CannotPayToNonCreatedStatus" xml:space="preserve">
-    <value>Cannot pay for an order that is not in the Created status.</value>
+  <data name="Order_CannotPayToNonWaitingPaymentStatus" xml:space="preserve">
+    <value>Cannot pay for an order that is not in the Waiting Payment status.</value>
   </data>
   <data name="Order_CannotPrepareToNonPaidStatus" xml:space="preserve">
     <value>Cannot prepare an order that is not in the Paid status.</value>
   </data>
-  <data name="Order_CannotRefusePaymentToNonCreatedStatus" xml:space="preserve">
-    <value>Cannot refuse payment for an order that is not in the Created status.</value>
+  <data name="Order_CannotRefuseToNonWaitingPaymentStatus" xml:space="preserve">
+    <value>Cannot refuse payment for an order that is not in the Waiting Payment status.</value>
   </data>
   <data name="Order_CannotRemoveItemToNonCreatedStatus" xml:space="preserve">
     <value>Cannot remove items from an order that is not in the Created status.</value>
@@ -155,5 +164,41 @@
   </data>
   <data name="Payment_AlreadyPaid" xml:space="preserve">
     <value>Payment has already been paid.</value>
+  </data>
+  <data name="Product_ThrowCategoryImageFileIsEmpty" xml:space="preserve">
+    <value>The category image file cannot be empty</value>
+  </data>
+  <data name="Product_ThrowPriceIsGreaterThanZero" xml:space="preserve">
+    <value>The product price cannot be empty</value>
+  </data>
+  <data name="OrderItem_ThrowUnitPriceGreaterThanZero" xml:space="preserve">
+    <value>The orderItem UnitPrice have be greater than zero</value>
+  </data>
+  <data name="OrderItem_ThrowQuantityGreaterThanZero" xml:space="preserve">
+    <value>The OrdemItem quantity have be greater than zero</value>
+  </data>
+  <data name="OrderItem_ThrowProductIdIsInvalid" xml:space="preserve">
+    <value>The ProductId is not valid</value>
+  </data>
+  <data name="Category_ThrowNameIsEmpty" xml:space="preserve">
+    <value>The category name cannot be empty</value>
+  </data>
+  <data name="Category_ThrowFileImageIsEmpty" xml:space="preserve">
+    <value>The category file image cannot be empty</value>
+  </data>
+  <data name="Customer_ThrowDocumentCPFInvalid" xml:space="preserve">
+    <value>The Document CPF is invalid</value>
+  </data>
+  <data name="Category_ThrowIndexIsLessThanZero" xml:space="preserve">
+    <value>Category order must be greater than or equal to 0.</value>
+  </data>
+  <data name="User_PasswordHashIsEmpty" xml:space="preserve">
+    <value>The password hash cannot be empty</value>
+  </data>
+  <data name="User_RoleIsEmpty" xml:space="preserve">
+    <value>The role name cannot be empty</value>
+  </data>
+  <data name="Customer_ThrowEmailInvalid" xml:space="preserve">
+    <value>Email Invalid</value>
   </data>
 </root>

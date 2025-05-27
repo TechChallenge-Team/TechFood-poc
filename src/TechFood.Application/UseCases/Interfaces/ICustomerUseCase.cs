@@ -1,10 +1,11 @@
 using System.Threading.Tasks;
 using TechFood.Application.Models.Customer;
 
-namespace TechFood.Application.UseCases.Interfaces
+namespace TechFood.Application.UseCases.Interfaces;
+
+public interface ICustomerUseCase
 {
-    public interface ICustomerUseCase
-    {
-        Task<AddCustomerItemResult> AddItemAsync(CreateCustomerRequest data);
-    }
+    Task<CreateCustomerResult?> CreateCustomerAsync(CreateCustomerRequest data);
+
+    Task<CustomerResponse?> GetByDocumentAsync(string documentType, string documentValue);
 }

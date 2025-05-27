@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TechFood.Domain.Entities;
 using TechFood.Domain.Repositories;
-using TechFood.Domain.UoW;
 using TechFood.Infra.Data.Contexts;
 
 namespace TechFood.Infra.Data.Repositories;
@@ -17,12 +16,16 @@ public class ProductRepository(TechFoodContext dbContext) : IProductRepository
     public async Task<IEnumerable<Product>> GetAllAsync()
         => await _products.AsNoTracking().ToListAsync();
 
-    public async Task<Product> GetByIdAsync(Guid id)
-        => await _products.Where(x => x.Id == id).FirstAsync();
+    public async Task<Product?> GetByIdAsync(Guid id)
+        => await _products.Where(x => x.Id == id).FirstOrDefaultAsync();
 
-    public async Task CreateAsync(Product product)
-        => await _products.AddAsync(product);
+    public async Task<Guid> AddAsync(Product product)
+    {
+        var session = await _products.AddAsync(product);
+
+        return session.Entity.Id;
+    }
 
     public async Task DeleteAsync(Product product)
-        => _products.Remove(product);
+        => await Task.FromResult(_products.Remove(product));
 }

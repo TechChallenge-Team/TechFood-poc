@@ -1,9 +1,20 @@
 using System;
+using System.Collections.Generic;
 
-namespace TechFood.Application.Models.Order
+namespace TechFood.Application.Models.Order;
+
+public class CreateOrderRequest
 {
-    public class CreateOrderRequest
+    public Guid? CustomerId { get; set; }
+
+    public string? CuponCode { get; set; }
+
+    public List<Item> Items { get; set; } = [];
+
+    public class Item
     {
-        public Guid? CustomerId { get; set; }
+        public Guid ProductId { get; set; }
+
+        public int Quantity { get; set; }
     }
 }

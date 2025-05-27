@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TechFood.Application.Models.Customer;
 using TechFood.Application.Models.Product;
 
 namespace TechFood.Application.UseCases.Interfaces;
@@ -9,13 +10,13 @@ public interface IProductUseCase
 {
     Task<IEnumerable<GetProductResult>> GetAllAsync();
 
-    Task<GetProductResult> GetByIdAsync(Guid id);
+    Task<GetProductResult?> GetByIdAsync(Guid id);
 
-    Task CreateAsync(CreateProductRequest request);
+    Task<CreateProductResult> CreateAsync(CreateProductRequest request);
 
-    Task UpdateAsync(Guid id, UpdateProductRequest request);
+    Task<UpdateProductResult?> UpdateAsync(Guid id, UpdateProductRequest request);
 
-    Task UpdateOutOfStockAsync(Guid id, bool request);
+    Task<UpdateProductResult?> UpdateOutOfStockAsync(Guid id, bool request);
 
-    Task DeleteAsync(Guid id);
+    Task<bool> DeleteAsync(Guid id);
 }

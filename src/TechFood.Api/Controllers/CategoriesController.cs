@@ -11,42 +11,42 @@ public class CategoriesController(ICategoryUseCase categoryUseCase) : Controller
     private readonly ICategoryUseCase _categoryUseCase = categoryUseCase;
 
     [HttpGet]
-    public async Task<IActionResult> GetCategoriesAsync()
+    public async Task<IActionResult> GetAsync()
     {
-        var result = await _categoryUseCase.GetCategoriesAsync();
+        var result = await _categoryUseCase.ListAllAsync();
 
         return Ok(result);
     }
 
     [HttpGet("{id:Guid}")]
-    public async Task<IActionResult> GetCategoryByIdAsync(Guid id)
+    public async Task<IActionResult> GetByIdAsync(Guid id)
     {
-        var result = await _categoryUseCase.GetCategoryByIdAsync(id);
+        var result = await _categoryUseCase.GetByIdAsync(id);
 
         return result != null ? Ok(result) : NotFound();
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddCategoryAsync(CreateCategoryRequest category)
+    public async Task<IActionResult> AddAsync(CreateCategoryRequest category)
     {
-        var result = await _categoryUseCase.AddCategoryAsync(category);
+        var result = await _categoryUseCase.AddAsync(category);
 
         return Ok(result);
     }
 
     [HttpPut("{id:Guid}")]
-    public async Task<IActionResult> UpdateCategoryAsync(Guid id, CreateCategoryRequest category)
+    public async Task<IActionResult> UpdateAsync(Guid id, UpdateCategoryRequest category)
     {
-        var result = await _categoryUseCase.UpdateCategoryAsync(id, category);
+        var result = await _categoryUseCase.UpdateAsync(id, category);
 
         return result != null ? Ok(result) : NotFound();
     }
 
     [HttpDelete("{id:Guid}")]
-    public async Task<IActionResult> DeleteCategoryAsync(Guid id)
+    public async Task<IActionResult> DeleteAsync(Guid id)
     {
-        var result = await _categoryUseCase.DeleteCategoryAsync(id);
+        var result = await _categoryUseCase.DeleteAsync(id);
 
-        return result ? Ok(result) : NotFound();
+        return result ? NoContent() : NotFound();
     }
 }

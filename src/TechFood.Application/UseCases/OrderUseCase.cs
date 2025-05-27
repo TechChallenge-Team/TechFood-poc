@@ -1,89 +1,94 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
-using TechFood.Application.Common.Services.Interfaces;
 using TechFood.Application.Models.Order;
 using TechFood.Application.UseCases.Interfaces;
 using TechFood.Domain.Entities;
 using TechFood.Domain.Repositories;
+using TechFood.Domain.UoW;
 
-namespace TechFood.Application.UseCases
+namespace TechFood.Application.UseCases;
+
+internal class OrderUseCase(
+    IOrderRepository orderRepository,
+    IProductRepository productRepository,
+    IPreparationRepository preparationRepository,
+    IUnitOfWork unitOfWork
+    ) : IOrderUseCase
 {
-    internal class OrderUseCase(
-        IOrderRepository orderRepo,
-        IOrderNumberService orderNumberService
-        ) : IOrderUseCase
+    private readonly IOrderRepository _orderRepository = orderRepository;
+    private readonly IProductRepository _productRepository = productRepository;
+    private readonly IPreparationRepository _preparationRepository = preparationRepository;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
+
+    public async Task<CreateOrderResult> CreateAsync(CreateOrderRequest request)
     {
-        private readonly IOrderRepository _orderRepo = orderRepo;
-        private readonly IOrderNumberService _orderNumberService = orderNumberService;
+        var result = new CreateOrderResult();
 
-        public async Task<CreateOrderResult> CreateAsync(CreateOrderRequest request)
-        {
-            var number = await _orderNumberService.GetNumberAsync();
-            var order = new Order(number, request.CustomerId);
+        var products = await _productRepository.GetAllAsync();
 
-            return new()
+        var items = request.Items
+            .Select(i =>
             {
-                Id = await _orderRepo.CreateAsync(order)
-            };
-        }
+                var product = products.First(p => p!.Id == i.ProductId)!;
+                return new OrderItem(product.Id, product.Price, i.Quantity);
+            })
+            .ToList();
 
-        public async Task<AddOrderItemResult> AddItemAsync(Guid orderId, AddOrderItemRequest data)
+        var order = new Order(request.CustomerId);
+
+        foreach (var item in items)
         {
-            var order = await _orderRepo.FindByIdAsync(orderId);
-
-            //var product = await _orderRepo.GetProductByIdAsync(data.ProductId!.Value);
-
-            var item = new OrderItem(data.ProductId!.Value, 1, data.Quantity);
-
             order.AddItem(item);
-
-            await _orderRepo.UpdateAsync(order);
-
-            return new()
-            {
-                Id = item.Id
-            };
         }
 
-        public async Task RemoveItemAsync(Guid orderId, Guid itemId)
+        await _orderRepository.AddAsync(order);
+
+        await _unitOfWork.CommitAsync();
+
+        result.Id = order.Id;
+
+        return result;
+    }
+
+    public async Task<bool> PrepareAsync(Guid orderId)
+    {
+        var order = await _orderRepository.GetByIdAsync(orderId);
+
+        if (order == null)
         {
-            var order = await _orderRepo.FindByIdAsync(orderId);
-
-            order.RemoveItem(itemId);
-
-            await _orderRepo.UpdateAsync(order);
+            return false;
         }
 
-        public async Task<CreatePaymentResult> CreatePaymentAsync(Guid orderId, CreatePaymentRequest data)
+        order.StartPreparation();
+
+        await _unitOfWork.CommitAsync();
+
+        return true;
+    }
+
+    public async Task<bool> FinishAsync(Guid orderId)
+    {
+        var order = await _orderRepository.GetByIdAsync(orderId);
+
+        if (order == null)
         {
-            var order = await _orderRepo.FindByIdAsync(orderId);
-
-            order.CreatePayment(data.Type);
-
-            await _orderRepo.UpdateAsync(order);
-
-            return new()
-            {
-                Id = order.Payment!.Id
-            };
+            return false;
         }
 
-        public async Task PrepareAsync(Guid orderId)
+        var preparation = await _preparationRepository.GetByOrderIdAsync(orderId);
+
+        if (preparation == null)
         {
-            var order = await _orderRepo.FindByIdAsync(orderId);
-
-            order.Prepare();
-
-            await _orderRepo.UpdateAsync(order);
+            return false;
         }
 
-        public async Task FinishAsync(Guid orderId)
-        {
-            var order = await _orderRepo.FindByIdAsync(orderId);
+        preparation.Delivered();
 
-            order.Finish();
+        order.Finish();
 
-            await _orderRepo.UpdateAsync(order);
-        }
+        await _unitOfWork.CommitAsync();
+
+        return true;
     }
 }

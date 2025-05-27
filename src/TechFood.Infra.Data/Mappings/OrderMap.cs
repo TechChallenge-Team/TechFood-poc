@@ -15,11 +15,6 @@ public class OrderMap : IEntityTypeConfiguration<Order>
             .HasForeignKey(o => o.CustomerId)
             .IsRequired(false);
 
-        builder.HasOne(o => o.Payment)
-            .WithOne()
-            .HasForeignKey<Order>("PaymentId")
-            .IsRequired(false);
-
         builder.HasMany(o => o.Items)
             .WithOne()
             .HasForeignKey("OrderId")

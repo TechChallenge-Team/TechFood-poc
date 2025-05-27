@@ -3,8 +3,6 @@ import { useI18n } from "../../i18n";
 
 import classNames from "./LanguageSwitch.module.css";
 
-const assetsPath = "../../assets/flags/";
-
 export const LanguageSwitch = () => {
   const { langCode, setLanguage, languages } = useI18n();
 
@@ -12,12 +10,13 @@ export const LanguageSwitch = () => {
     setLanguage(code);
   };
 
-  const langSrc = new URL(`${assetsPath}${langCode}.svg`, import.meta.url).href;
+  const langSrc = new URL(`../../assets/flags/${langCode}.svg`, import.meta.url)
+    .href;
 
   const langs = languages.map(({ code, label }: any) => ({
     code,
     label,
-    src: new URL(`${assetsPath}${code}.svg`, import.meta.url).href,
+    src: new URL(`../../assets/flags/${code}.svg`, import.meta.url).href,
   }));
 
   return (

@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using TechFood.Application.Common.Exceptions;
+using TechFood.Application.Common.Resources;
+using TechFood.Application.Common.Services.Interfaces;
+using TechFood.Application.Models.Customer;
 using TechFood.Application.Models.Product;
 using TechFood.Application.UseCases.Interfaces;
 using TechFood.Domain.Entities;
 using TechFood.Domain.Repositories;
-using TechFood.Domain.Shared.Exceptions;
 using TechFood.Domain.UoW;
 
 namespace TechFood.Application.UseCases;
@@ -16,47 +19,17 @@ internal class ProductUseCase(
     IProductRepository productRepository,
     ICategoryRepository categoryRepository,
     IUnitOfWork unitOfWork,
+    IImageUrlResolver imageUrlResolver,
+    IImageStorageService imageStorageService,
     IMapper mapper)
     : IProductUseCase
 {
     private readonly IProductRepository _productRepository = productRepository;
-    private readonly IMapper _mapper = mapper;
     private readonly ICategoryRepository _categoryRepository = categoryRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
-
-    public async Task<GetProductResult> GetByIdAsync(Guid id)
-    {
-        var product = await _productRepository.GetByIdAsync(id);
-
-        await _unitOfWork.CommitAsync();
-
-        return _mapper.Map<Product, GetProductResult>(product);
-    }
-
-    public async Task DeleteAsync(Guid id)
-    {
-        var product = await _productRepository.GetByIdAsync(id);
-
-        await _productRepository.DeleteAsync(product);
-
-        await _unitOfWork.CommitAsync();
-
-        return;
-    }
-
-    public async Task CreateAsync(CreateProductRequest request)
-    {
-        await GetCategoryByIdAsync(request.CategoryId);
-
-        await _productRepository.CreateAsync(_mapper.Map<CreateProductRequest, Product>(request, destination =>
-        destination.AfterMap((src, dest) => {
-            dest.SetCategory(request.CategoryId);
-            dest.SetOutOfStock(true);
-        }
-        )));
-
-        await _unitOfWork.CommitAsync();
-    }
+    private readonly IMapper _mapper = mapper;
+    private readonly IImageStorageService _imageStorageService = imageStorageService;
+    private readonly IImageUrlResolver _imageUrlResolver = imageUrlResolver;
 
     public async Task<IEnumerable<GetProductResult>> GetAllAsync()
     {
@@ -64,51 +37,129 @@ internal class ProductUseCase(
 
         await _unitOfWork.CommitAsync();
 
-        return products.Select(_mapper.Map<Product, GetProductResult>);
+        return products
+                .Select(product => _mapper.Map<Product, GetProductResult>(
+                    product,
+                    options => options.AfterMap((product, dto) =>
+                    {
+                        dto.ImageUrl = _imageUrlResolver.BuildFilePath(nameof(Product).ToLower(),
+                                                                        product.ImageFileName);
+                    })));
     }
 
-    public async Task UpdateAsync(Guid id, UpdateProductRequest request)
+    public async Task<GetProductResult?> GetByIdAsync(Guid id)
     {
         var product = await _productRepository.GetByIdAsync(id);
 
-        if (product is null)
-        {
-            throw new DomainException("Produto não encontrado.");
-        }
+        return product is null ?
+            null : _mapper.Map<Product, GetProductResult>(product, options => options.AfterMap((product, dto) =>
+            {
+                dto.ImageUrl = _imageUrlResolver.BuildFilePath(nameof(Product).ToLower(),
+                                                                product.ImageFileName);
+            }));
+    }
 
-        var category = await GetCategoryByIdAsync(request.CategoryId);
+    public async Task<CreateProductResult> CreateAsync(CreateProductRequest request)
+    {
+        var category = await GetCategoryByIdAsync(request.CategoryId)
+                ?? throw new NotFoundException(Exceptions.Product_CaregoryNotFound);
 
-        product.Update(request.Name, request.Description,
-            request.ImageFileName, request.Price, category.Id);
+        var imageFileName = _imageUrlResolver.CreateImageFileName(request.Name, request.File.ContentType);
+
+        await _imageStorageService.SaveAsync(
+                request.File.OpenReadStream(),
+                imageFileName, nameof(Product));
+
+        var productEntity = new Product(request.Name, request.Description, request.CategoryId, imageFileName, request.Price);
+
+        await _productRepository.AddAsync(productEntity);
 
         await _unitOfWork.CommitAsync();
 
-        return;
+        var response = _mapper.Map<CreateProductResult>(productEntity, options => options.AfterMap((product, dto) =>
+        {
+            dto.ImageUrl = _imageUrlResolver.BuildFilePath(nameof(Product).ToLower(), imageFileName);
+        }));
+        return response;
     }
 
-    public async Task UpdateOutOfStockAsync(Guid id, bool outOfStock)
+    public async Task<UpdateProductResult?> UpdateAsync(Guid id, UpdateProductRequest request)
     {
         var product = await _productRepository.GetByIdAsync(id);
 
         if (product is null)
         {
-            throw new DomainException("Produto não encontrado.");
+            return null;
+        }
+
+        var category = await GetCategoryByIdAsync(request.CategoryId)
+                ?? throw new NotFoundException(Exceptions.Product_CaregoryNotFound);
+
+        var imageFileName = product.ImageFileName;
+
+        if (request.File != null)
+        {
+            imageFileName = _imageUrlResolver.CreateImageFileName(request.Name, request.File.ContentType);
+            await _imageStorageService.SaveAsync(
+                    request.File.OpenReadStream(),
+                    imageFileName, nameof(Product));
+
+            await _imageStorageService.DeleteAsync(product.ImageFileName, nameof(Product));
+        }
+
+        product!.Update(
+            request.Name,
+            request.Description,
+            imageFileName,
+            request.Price,
+            category.Id);
+
+        await _unitOfWork.CommitAsync();
+
+        return _mapper.Map<Product, UpdateProductResult>(product, options => options.AfterMap((product, dto) =>
+        {
+            dto.ImageUrl = _imageUrlResolver.BuildFilePath(nameof(Product).ToLower(),
+                                                            product.ImageFileName);
+        }));
+    }
+
+    public async Task<UpdateProductResult?> UpdateOutOfStockAsync(Guid id, bool outOfStock)
+    {
+        var product = await _productRepository.GetByIdAsync(id);
+
+        if (product is null)
+        {
+            return null;
         }
 
         product.SetOutOfStock(outOfStock);
 
         await _unitOfWork.CommitAsync();
+
+        return _mapper.Map<UpdateProductResult>(product);
+    }
+
+    public async Task<bool> DeleteAsync(Guid id)
+    {
+        var product = await _productRepository.GetByIdAsync(id);
+
+        if (product is null)
+        {
+            return false;
+        }
+        await _imageStorageService.DeleteAsync(product.ImageFileName, nameof(Product));
+
+        await _productRepository.DeleteAsync(product);
+
+        await _unitOfWork.CommitAsync();
+
+        return true;
     }
 
     private async Task<Category> GetCategoryByIdAsync(Guid categoryId)
     {
         var category = await _categoryRepository.GetByIdAsync(categoryId);
 
-        if (category == null)
-        {
-            throw new DomainException("Categoria inválida");
-        }
-
-        return category;
+        return category ?? throw new NotFoundException(Exceptions.Product_CaregoryNotFound);
     }
 }

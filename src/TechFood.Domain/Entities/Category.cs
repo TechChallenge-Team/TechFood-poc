@@ -7,10 +7,11 @@ public class Category : Entity, IAggregateRoot
 {
     public Category() { }
 
-    public Category(string name, string imageFileName)
+    public Category(string name, string imageFileName, int sortOrder)
     {
         Name = name;
         ImageFileName = imageFileName;
+        SortOrder = sortOrder;
 
         Validate();
     }
@@ -19,15 +20,20 @@ public class Category : Entity, IAggregateRoot
 
     public string ImageFileName { get; private set; } = null!;
 
-    public void UpdateCategory(string name, string imageFileName)
+    public int SortOrder { get; private set; }
+
+    public void UpdateAsync(string name, string imageFileName)
     {
         Name = name;
         ImageFileName = imageFileName;
+
+        Validate();
     }
 
     private void Validate()
     {
-        Validations.ThrowIfEmpty(Name, "The category name cannot be empty");
-        Validations.ThrowIfEmpty(ImageFileName, "The category file image cannot be empty");
+        Validations.ThrowIfEmpty(Name, Resources.Exceptions.Category_ThrowNameIsEmpty);
+        Validations.ThrowIfEmpty(ImageFileName, Resources.Exceptions.Category_ThrowFileImageIsEmpty);
+        Validations.ThrowIfLessThan(SortOrder, 0, Resources.Exceptions.Category_ThrowIndexIsLessThanZero);
     }
 }

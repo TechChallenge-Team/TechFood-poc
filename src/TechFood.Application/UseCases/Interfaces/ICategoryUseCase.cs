@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TechFood.Application.Models.Category;
 
-namespace TechFood.Application.UseCases.Interfaces
+namespace TechFood.Application.UseCases.Interfaces;
+
+public interface ICategoryUseCase
 {
-    public interface ICategoryUseCase
-    {
-        Task<IEnumerable<CreateCategoryResponse>> GetCategoriesAsync();
+    Task<IEnumerable<CategoryResponse>> ListAllAsync();
 
-        Task<CreateCategoryResponse> GetCategoryByIdAsync(Guid id);
+    Task<CategoryResponse?> GetByIdAsync(Guid id);
 
-        Task<CreateCategoryResponse> AddCategoryAsync(CreateCategoryRequest category);
+    Task<CategoryResponse> AddAsync(CreateCategoryRequest category);
 
-        Task<CreateCategoryResponse> UpdateCategoryAsync(Guid id, CreateCategoryRequest category);
+    Task<CategoryResponse?> UpdateAsync(Guid id, UpdateCategoryRequest category);
 
-        Task<bool> DeleteCategoryAsync(Guid id);
-    }
+    Task<bool> DeleteAsync(Guid id);
 }

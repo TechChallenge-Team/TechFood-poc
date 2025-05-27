@@ -22,7 +22,7 @@ namespace TechFood.Domain.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Exceptions {
+    public class Exceptions {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace TechFood.Domain.Resources {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TechFood.Domain.Resources.Exceptions", typeof(Exceptions).Assembly);
@@ -51,7 +51,7 @@ namespace TechFood.Domain.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,9 +61,54 @@ namespace TechFood.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The category file image cannot be empty.
+        /// </summary>
+        public static string Category_ThrowFileImageIsEmpty {
+            get {
+                return ResourceManager.GetString("Category_ThrowFileImageIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Category order must be greater than or equal to 0..
+        /// </summary>
+        public static string Category_ThrowIndexIsLessThanZero {
+            get {
+                return ResourceManager.GetString("Category_ThrowIndexIsLessThanZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The category name cannot be empty.
+        /// </summary>
+        public static string Category_ThrowNameIsEmpty {
+            get {
+                return ResourceManager.GetString("Category_ThrowNameIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Document CPF is invalid.
+        /// </summary>
+        public static string Customer_ThrowDocumentCPFInvalid {
+            get {
+                return ResourceManager.GetString("Customer_ThrowDocumentCPFInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email Invalid.
+        /// </summary>
+        public static string Customer_ThrowEmailInvalid {
+            get {
+                return ResourceManager.GetString("Customer_ThrowEmailInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Payment amount is not equal to the order total amount..
         /// </summary>
-        internal static string Order_AmountIsNotEqualOrderAmount {
+        public static string Order_AmountIsNotEqualOrderAmount {
             get {
                 return ResourceManager.GetString("Order_AmountIsNotEqualOrderAmount", resourceCulture);
             }
@@ -72,7 +117,7 @@ namespace TechFood.Domain.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Cannot add items to an order that is not in the Created status..
         /// </summary>
-        internal static string Order_CannotAddItemToNonCreatedStatus {
+        public static string Order_CannotAddItemToNonCreatedStatus {
             get {
                 return ResourceManager.GetString("Order_CannotAddItemToNonCreatedStatus", resourceCulture);
             }
@@ -81,7 +126,7 @@ namespace TechFood.Domain.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Cannot apply discount to an order that is not in the Created status..
         /// </summary>
-        internal static string Order_CannotApplyDiscountToNonCreatedStatus {
+        public static string Order_CannotApplyDiscountToNonCreatedStatus {
             get {
                 return ResourceManager.GetString("Order_CannotApplyDiscountToNonCreatedStatus", resourceCulture);
             }
@@ -90,7 +135,7 @@ namespace TechFood.Domain.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Cannot create a payment for an order that is not in the Created status..
         /// </summary>
-        internal static string Order_CannotCreatePaymentToNonCreatedStatus {
+        public static string Order_CannotCreatePaymentToNonCreatedStatus {
             get {
                 return ResourceManager.GetString("Order_CannotCreatePaymentToNonCreatedStatus", resourceCulture);
             }
@@ -99,43 +144,43 @@ namespace TechFood.Domain.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Cannot done an order that is not in the InPreparation status..
         /// </summary>
-        internal static string Order_CannotFinishToNonInPreparationStatus {
+        public static string Order_CannotFinishToNonInPreparationStatus {
             get {
                 return ResourceManager.GetString("Order_CannotFinishToNonInPreparationStatus", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot pay for an order that is not in the Created status..
+        ///   Looks up a localized string similar to Cannot pay for an order that is not in the Waiting Payment status..
         /// </summary>
-        internal static string Order_CannotPayToNonCreatedStatus {
+        public static string Order_CannotPayToNonWaitingPaymentStatus {
             get {
-                return ResourceManager.GetString("Order_CannotPayToNonCreatedStatus", resourceCulture);
+                return ResourceManager.GetString("Order_CannotPayToNonWaitingPaymentStatus", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Cannot prepare an order that is not in the Paid status..
         /// </summary>
-        internal static string Order_CannotPrepareToNonPaidStatus {
+        public static string Order_CannotPrepareToNonPaidStatus {
             get {
                 return ResourceManager.GetString("Order_CannotPrepareToNonPaidStatus", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot refuse payment for an order that is not in the Created status..
+        ///   Looks up a localized string similar to Cannot refuse payment for an order that is not in the Waiting Payment status..
         /// </summary>
-        internal static string Order_CannotRefusePaymentToNonCreatedStatus {
+        public static string Order_CannotRefuseToNonWaitingPaymentStatus {
             get {
-                return ResourceManager.GetString("Order_CannotRefusePaymentToNonCreatedStatus", resourceCulture);
+                return ResourceManager.GetString("Order_CannotRefuseToNonWaitingPaymentStatus", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Cannot remove items from an order that is not in the Created status..
         /// </summary>
-        internal static string Order_CannotRemoveItemToNonCreatedStatus {
+        public static string Order_CannotRemoveItemToNonCreatedStatus {
             get {
                 return ResourceManager.GetString("Order_CannotRemoveItemToNonCreatedStatus", resourceCulture);
             }
@@ -144,7 +189,7 @@ namespace TechFood.Domain.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Discount cannot be negative..
         /// </summary>
-        internal static string Order_DiscountCannotBeNegative {
+        public static string Order_DiscountCannotBeNegative {
             get {
                 return ResourceManager.GetString("Order_DiscountCannotBeNegative", resourceCulture);
             }
@@ -153,7 +198,7 @@ namespace TechFood.Domain.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Order item not found..
         /// </summary>
-        internal static string Order_ItemNotFound {
+        public static string Order_ItemNotFound {
             get {
                 return ResourceManager.GetString("Order_ItemNotFound", resourceCulture);
             }
@@ -162,18 +207,108 @@ namespace TechFood.Domain.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Payment cannot be null..
         /// </summary>
-        internal static string Order_PaymentIsNull {
+        public static string Order_PaymentIsNull {
             get {
                 return ResourceManager.GetString("Order_PaymentIsNull", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The ProductId is not valid.
+        /// </summary>
+        public static string OrderItem_ThrowProductIdIsInvalid {
+            get {
+                return ResourceManager.GetString("OrderItem_ThrowProductIdIsInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The OrdemItem quantity have be greater than zero.
+        /// </summary>
+        public static string OrderItem_ThrowQuantityGreaterThanZero {
+            get {
+                return ResourceManager.GetString("OrderItem_ThrowQuantityGreaterThanZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The orderItem UnitPrice have be greater than zero.
+        /// </summary>
+        public static string OrderItem_ThrowUnitPriceGreaterThanZero {
+            get {
+                return ResourceManager.GetString("OrderItem_ThrowUnitPriceGreaterThanZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Payment has already been paid..
         /// </summary>
-        internal static string Payment_AlreadyPaid {
+        public static string Payment_AlreadyPaid {
             get {
                 return ResourceManager.GetString("Payment_AlreadyPaid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The product CategoryId is not valid.
+        /// </summary>
+        public static string Product_ThrowCategoryIdInvalid {
+            get {
+                return ResourceManager.GetString("Product_ThrowCategoryIdInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The category image file cannot be empty.
+        /// </summary>
+        public static string Product_ThrowCategoryImageFileIsEmpty {
+            get {
+                return ResourceManager.GetString("Product_ThrowCategoryImageFileIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The product description cannot be empty.
+        /// </summary>
+        public static string Product_ThrowDescriptionIsEmpty {
+            get {
+                return ResourceManager.GetString("Product_ThrowDescriptionIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Name cannot empty .
+        /// </summary>
+        public static string Product_ThrowNameIsEmpty {
+            get {
+                return ResourceManager.GetString("Product_ThrowNameIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The product price cannot be empty.
+        /// </summary>
+        public static string Product_ThrowPriceIsGreaterThanZero {
+            get {
+                return ResourceManager.GetString("Product_ThrowPriceIsGreaterThanZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The password hash cannot be empty.
+        /// </summary>
+        public static string User_PasswordHashIsEmpty {
+            get {
+                return ResourceManager.GetString("User_PasswordHashIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The role name cannot be empty.
+        /// </summary>
+        public static string User_RoleIsEmpty {
+            get {
+                return ResourceManager.GetString("User_RoleIsEmpty", resourceCulture);
             }
         }
     }

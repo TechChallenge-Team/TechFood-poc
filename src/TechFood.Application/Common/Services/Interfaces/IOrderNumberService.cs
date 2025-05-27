@@ -1,9 +1,8 @@
 using System.Threading.Tasks;
 
-namespace TechFood.Application.Common.Services.Interfaces
+namespace TechFood.Application.Common.Services.Interfaces;
+
+public interface IOrderNumberService
 {
-    public interface IOrderNumberService
-    {
-        Task<int> GetNumberAsync();
-    }
+    Task<int> GetAsync();
 }

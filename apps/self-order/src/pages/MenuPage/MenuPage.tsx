@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Box,
   Flex,
@@ -6,220 +7,39 @@ import {
   Strong,
   TextField,
   Text,
+  Button,
+  Spinner,
 } from "@radix-ui/themes";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import { CategoryCard, ItemCard, ItemDetailCard } from "../../components";
+import axios from "axios";
+import { useNavigate } from "react-router";
+import { t } from "../../i18n";
+import { Category, Product } from "../../models";
+import {
+  CategoryCard,
+  ProductCard,
+  OrderItemBuilderCard,
+  OrderItemCard,
+  LanguageSwitch,
+} from "../../components";
+import { useOrder } from "../../contexts";
 
 import classNames from "./MenuPage.module.css";
-import { useState } from "react";
 
-const categories = [
-  { id: 1, name: "Hambugers", img: "hamburger.png" },
-  { id: 2, name: "Bebidas", img: "soda.png" },
-  { id: 3, name: "Acompanhamentos", img: "fried-chicken.png" },
-  { id: 4, name: "Sobremesas", img: "donut.png" },
+const sortByOptions = [
+  { value: "name", label: () => t("menuPage.sort.name") },
+  { value: "price", label: () => t("menuPage.sort.price") },
 ];
 
-const items = [
-  {
-    id: 1,
-    title: "Hambuger",
-    category: 1,
-    price: "10,00",
-    size: "180g",
-    img: "2.png",
-    garnishes: [
-      { id: 1, title: "Option 1", subtitle: "Option 1", img: "1.png" },
-      { id: 2, title: "Option 2", subtitle: "Option 2", img: "1.png" },
-      { id: 3, title: "Option 3", subtitle: "Option 3", img: "1.png" },
-      { id: 4, title: "Option 4", subtitle: "Option 4", img: "1.png" },
-      { id: 5, title: "Option 5", subtitle: "Option 5", img: "1.png" },
-      { id: 6, title: "Option 6", subtitle: "Option 6", img: "1.png" },
-      { id: 7, title: "Option 7", subtitle: "Option 7", img: "1.png" },
-      { id: 8, title: "Option 8", subtitle: "Option 8", img: "1.png" },
-    ],
-  },
-  {
-    id: 2,
-    title: "Hambuger 2",
-    category: 1,
-    price: "12,00",
-    size: "280g",
-    img: "2.png",
-    garnishes: [
-      { id: 1, title: "Option 1", subtitle: "Option 1", img: "1.png" },
-      { id: 2, title: "Option 2", subtitle: "Option 2", img: "1.png" },
-      { id: 3, title: "Option 3", subtitle: "Option 3", img: "1.png" },
-      { id: 4, title: "Option 4", subtitle: "Option 4", img: "1.png" },
-      { id: 5, title: "Option 5", subtitle: "Option 5", img: "1.png" },
-      { id: 6, title: "Option 6", subtitle: "Option 6", img: "1.png" },
-      { id: 7, title: "Option 7", subtitle: "Option 7", img: "1.png" },
-      { id: 8, title: "Option 8", subtitle: "Option 8", img: "1.png" },
-    ],
-  },
-  {
-    id: 3,
-    title: "Hambuger 3",
-    category: 1,
-    price: "12,00",
-    size: "280g",
-    img: "2.png",
-    garnishes: [
-      { id: 1, title: "Option 1", subtitle: "Option 1", img: "1.png" },
-      { id: 2, title: "Option 2", subtitle: "Option 2", img: "1.png" },
-      { id: 3, title: "Option 3", subtitle: "Option 3", img: "1.png" },
-      { id: 4, title: "Option 4", subtitle: "Option 4", img: "1.png" },
-      { id: 5, title: "Option 5", subtitle: "Option 5", img: "1.png" },
-      { id: 6, title: "Option 6", subtitle: "Option 6", img: "1.png" },
-      { id: 7, title: "Option 7", subtitle: "Option 7", img: "1.png" },
-      { id: 8, title: "Option 8", subtitle: "Option 8", img: "1.png" },
-    ],
-  },
-  {
-    id: 4,
-    title: "Hambuger 4",
-    category: 1,
-    price: "12,00",
-    size: "280g",
-    img: "2.png",
-    garnishes: [
-      { id: 1, title: "Option 1", subtitle: "Option 1", img: "1.png" },
-      { id: 2, title: "Option 2", subtitle: "Option 2", img: "1.png" },
-      { id: 3, title: "Option 3", subtitle: "Option 3", img: "1.png" },
-      { id: 4, title: "Option 4", subtitle: "Option 4", img: "1.png" },
-      { id: 5, title: "Option 5", subtitle: "Option 5", img: "1.png" },
-      { id: 6, title: "Option 6", subtitle: "Option 6", img: "1.png" },
-      { id: 7, title: "Option 7", subtitle: "Option 7", img: "1.png" },
-      { id: 8, title: "Option 8", subtitle: "Option 8", img: "1.png" },
-    ],
-  },
-  {
-    id: 5,
-    title: "Hambuger 5",
-    category: 1,
-    price: "12,00",
-    size: "280g",
-    img: "2.png",
-    garnishes: [
-      { id: 1, title: "Option 1", subtitle: "Option 1", img: "1.png" },
-      { id: 2, title: "Option 2", subtitle: "Option 2", img: "1.png" },
-      { id: 3, title: "Option 3", subtitle: "Option 3", img: "1.png" },
-      { id: 4, title: "Option 4", subtitle: "Option 4", img: "1.png" },
-      { id: 5, title: "Option 5", subtitle: "Option 5", img: "1.png" },
-      { id: 6, title: "Option 6", subtitle: "Option 6", img: "1.png" },
-      { id: 7, title: "Option 7", subtitle: "Option 7", img: "1.png" },
-      { id: 8, title: "Option 8", subtitle: "Option 8", img: "1.png" },
-    ],
-  },
-  {
-    id: 6,
-    title: "Hambuger 6",
-    category: 1,
-    price: "12,00",
-    size: "280g",
-    img: "2.png",
-    garnishes: [
-      { id: 1, title: "Option 1", subtitle: "Option 1", img: "1.png" },
-      { id: 2, title: "Option 2", subtitle: "Option 2", img: "1.png" },
-      { id: 3, title: "Option 3", subtitle: "Option 3", img: "1.png" },
-      { id: 4, title: "Option 4", subtitle: "Option 4", img: "1.png" },
-      { id: 5, title: "Option 5", subtitle: "Option 5", img: "1.png" },
-      { id: 6, title: "Option 6", subtitle: "Option 6", img: "1.png" },
-      { id: 7, title: "Option 7", subtitle: "Option 7", img: "1.png" },
-      { id: 8, title: "Option 8", subtitle: "Option 8", img: "1.png" },
-    ],
-  },
-  {
-    id: 7,
-    title: "Hambuger 7",
-    category: 1,
-    price: "12,00",
-    size: "280g",
-    img: "2.png",
-    garnishes: [
-      { id: 1, title: "Option 1", subtitle: "Option 1", img: "1.png" },
-      { id: 2, title: "Option 2", subtitle: "Option 2", img: "1.png" },
-      { id: 3, title: "Option 3", subtitle: "Option 3", img: "1.png" },
-      { id: 4, title: "Option 4", subtitle: "Option 4", img: "1.png" },
-      { id: 5, title: "Option 5", subtitle: "Option 5", img: "1.png" },
-      { id: 6, title: "Option 6", subtitle: "Option 6", img: "1.png" },
-      { id: 7, title: "Option 7", subtitle: "Option 7", img: "1.png" },
-      { id: 8, title: "Option 8", subtitle: "Option 8", img: "1.png" },
-    ],
-  },
-  {
-    id: 8,
-    title: "Hambuger 8",
-    category: 1,
-    price: "12,00",
-    size: "280g",
-    img: "2.png",
-    garnishes: [
-      { id: 1, title: "Option 1", subtitle: "Option 1", img: "1.png" },
-      { id: 2, title: "Option 2", subtitle: "Option 2", img: "1.png" },
-      { id: 3, title: "Option 3", subtitle: "Option 3", img: "1.png" },
-      { id: 4, title: "Option 4", subtitle: "Option 4", img: "1.png" },
-      { id: 5, title: "Option 5", subtitle: "Option 5", img: "1.png" },
-      { id: 6, title: "Option 6", subtitle: "Option 6", img: "1.png" },
-      { id: 7, title: "Option 7", subtitle: "Option 7", img: "1.png" },
-      { id: 8, title: "Option 8", subtitle: "Option 8", img: "1.png" },
-    ],
-  },
-  {
-    id: 9,
-    title: "Hambuger 9",
-    category: 1,
-    price: "25,00",
-    size: "580g",
-    img: "2.png",
-    garnishes: [
-      { id: 1, title: "Option 1", subtitle: "Option 1", img: "1.png" },
-      { id: 2, title: "Option 2", subtitle: "Option 2", img: "1.png" },
-      { id: 3, title: "Option 3", subtitle: "Option 3", img: "1.png" },
-      { id: 4, title: "Option 4", subtitle: "Option 4", img: "1.png" },
-      { id: 5, title: "Option 5", subtitle: "Option 5", img: "1.png" },
-      { id: 6, title: "Option 6", subtitle: "Option 6", img: "1.png" },
-      { id: 7, title: "Option 7", subtitle: "Option 7", img: "1.png" },
-      { id: 8, title: "Option 8", subtitle: "Option 8", img: "1.png" },
-    ],
-  },
-  {
-    id: 10,
-    title: "Hambuger 10",
-    category: 1,
-    price: "30,00",
-    size: "680g",
-    img: "2.png",
-    garnishes: [
-      { id: 1, title: "Option 1", subtitle: "Option 1", img: "1.png" },
-      { id: 2, title: "Option 2", subtitle: "Option 2", img: "1.png" },
-      { id: 3, title: "Option 3", subtitle: "Option 3", img: "1.png" },
-      { id: 4, title: "Option 4", subtitle: "Option 4", img: "1.png" },
-      { id: 5, title: "Option 5", subtitle: "Option 5", img: "1.png" },
-      { id: 6, title: "Option 6", subtitle: "Option 6", img: "1.png" },
-      { id: 7, title: "Option 7", subtitle: "Option 7", img: "1.png" },
-      { id: 8, title: "Option 8", subtitle: "Option 8", img: "1.png" },
-    ],
-  },
-  {
-    id: 11,
-    title: "Coca-Cola",
-    category: 2,
-    price: "5,00",
-    img: "3.png",
-    garnishes: [],
-  },
-  {
-    id: 12,
-    title: "Coca-Cola 2",
-    category: 2,
-    price: "5,00",
-    img: "3.png",
-    garnishes: [],
-  },
-];
-
-const CategoriesCard = ({ categories, selectedItem, onSelectedItem }: any) => {
+const CategoriesCard = ({
+  items,
+  selectedItem,
+  onSelectedItem,
+}: {
+  items: Category[];
+  selectedItem?: Category;
+  onSelectedItem: (item: Category) => void;
+}) => {
   return (
     <Flex
       className={classNames.categoriesCard}
@@ -227,13 +47,13 @@ const CategoriesCard = ({ categories, selectedItem, onSelectedItem }: any) => {
       gap="4"
       overflowX="auto"
     >
-      {categories.map((category: any) => (
+      {items.map((item: Category) => (
         <CategoryCard
-          key={category.id}
-          {...category}
-          selected={category == selectedItem}
+          key={item.id}
+          item={item}
+          selected={item == selectedItem}
           onClick={() => {
-            onSelectedItem(category);
+            onSelectedItem(item);
           }}
         />
       ))}
@@ -241,7 +61,13 @@ const CategoriesCard = ({ categories, selectedItem, onSelectedItem }: any) => {
   );
 };
 
-const ItemsCard = ({ items, onSelectedItem }: any) => {
+const ItemsCard = ({
+  items,
+  onSelectedItem,
+}: {
+  items: Product[];
+  onSelectedItem: (item: Product) => void;
+}) => {
   return (
     <Flex
       className={classNames.itemsCard}
@@ -251,15 +77,18 @@ const ItemsCard = ({ items, onSelectedItem }: any) => {
     >
       <Flex direction="row" justify="between">
         <Heading size="5" as="h1" weight="regular">
-          <Strong>Choose</Strong> Order
+          <Strong>{t("menuPage.choose")}</Strong> {t("menuPage.order")}
         </Heading>
         <Flex align="center" gap="1">
-          <Text size="1">Sort By</Text>
-          <Select.Root defaultValue="popular" size="1">
+          <Text size="1">{t("menuPage.sortBy")}</Text>
+          <Select.Root defaultValue={sortByOptions[0].value} size="1">
             <Select.Trigger className={classNames.sort} variant="ghost" />
             <Select.Content>
-              <Select.Item value="popular">Popular</Select.Item>
-              <Select.Item value="name">Name</Select.Item>
+              {sortByOptions.map((option) => (
+                <Select.Item key={option.value} value={option.value}>
+                  {option.label()}
+                </Select.Item>
+              ))}
             </Select.Content>
           </Select.Root>
         </Flex>
@@ -271,8 +100,12 @@ const ItemsCard = ({ items, onSelectedItem }: any) => {
         wrap="wrap"
         overflowY="auto"
       >
-        {items.map((item: any, i: number) => (
-          <ItemCard key={i} {...item} onClick={() => onSelectedItem(item)} />
+        {items.map((item, i) => (
+          <ProductCard
+            key={i}
+            item={item}
+            onClick={() => onSelectedItem(item)}
+          />
         ))}
       </Flex>
     </Flex>
@@ -280,43 +113,133 @@ const ItemsCard = ({ items, onSelectedItem }: any) => {
 };
 
 export const MenuPage = () => {
-  const [selectedItem, setSelectedItem] = useState<any>(null);
-  const [selectedCategory, setSelectedCategory] = useState(categories[0]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<Product | undefined>();
+  const [selectedCategory, setSelectedCategory] = useState<
+    Category | undefined
+  >();
 
-  const selectedItems = items.filter(
-    (item) => item.category === selectedCategory.id
+  const productsByCategory = products.filter(
+    (product) => product.categoryId === selectedCategory?.id
   );
 
-  return (
-    <Flex className={classNames.root} direction="column" gap="4">
-      <Flex direction="row" justify="between">
-        <Heading size="5" as="h1" weight="regular">
-          <Strong>Menu</Strong> Category
-        </Heading>
-        <Box width="100%" maxWidth="500px">
-          <TextField.Root
-            className={classNames.search}
-            placeholder="Search for food"
-            size="2"
-          >
-            <TextField.Slot>
-              <MagnifyingGlassIcon height="25" width="25" />
-            </TextField.Slot>
-          </TextField.Root>
-        </Box>
-      </Flex>
-      <CategoriesCard
-        categories={categories}
-        selectedItem={selectedCategory}
-        onSelectedItem={setSelectedCategory}
-      />
-      <ItemsCard items={selectedItems} onSelectedItem={setSelectedItem} />
-      {selectedItem && (
-        <ItemDetailCard
-          {...selectedItem}
-          onClose={() => setSelectedItem(null)}
+  const navigate = useNavigate();
+
+  const { items, total, addItem, updateItem, removeItem, createOrder } =
+    useOrder();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+
+      const [categories, products] = await Promise.all([
+        axios.get<Category[]>("/api/v1/categories"),
+        axios.get<Product[]>("/api/v1/products"),
+      ]);
+
+      setProducts(products.data);
+      setCategories(categories.data);
+      setSelectedCategory(categories.data[0]);
+      setIsLoading(false);
+    };
+
+    fetchData();
+  }, []);
+
+  const handleDone = async () => {
+    await createOrder();
+    navigate("/checkout");
+  };
+
+  return isLoading ? (
+    <Spinner size="3" />
+  ) : (
+    <Flex className={classNames.root} direction="row">
+      <Flex className={classNames.left} direction="column" gap="4" flexGrow="1">
+        <Flex direction="row" justify="between">
+          <Heading size="5" as="h1" weight="regular">
+            <Strong>{t("menuPage.menu")}</Strong> {t("menuPage.category")}
+          </Heading>
+          <Box width="100%" maxWidth="500px">
+            <TextField.Root
+              className={classNames.search}
+              placeholder={t("menuPage.search")}
+              size="2"
+            >
+              <TextField.Slot>
+                <MagnifyingGlassIcon height="25" width="25" />
+              </TextField.Slot>
+            </TextField.Root>
+          </Box>
+        </Flex>
+        <CategoriesCard
+          items={categories}
+          selectedItem={selectedCategory}
+          onSelectedItem={setSelectedCategory}
         />
-      )}
+        <ItemsCard
+          items={productsByCategory}
+          onSelectedItem={setSelectedProduct}
+        />
+        {selectedProduct && (
+          <OrderItemBuilderCard
+            item={selectedProduct}
+            onClose={() => setSelectedProduct(undefined)}
+            onAdd={(item) => {
+              addItem(item);
+              setSelectedProduct(undefined);
+            }}
+          />
+        )}
+      </Flex>
+      <Flex className={classNames.right} direction="column">
+        <Flex className={classNames.rightHeader} direction="column" gap="4">
+          <Flex direction="column" align="end">
+            <LanguageSwitch />
+          </Flex>
+          <Heading as="h2" size="5" style={{ maxWidth: "140px" }}>
+            {t("menuPage.myOrder")}
+          </Heading>
+        </Flex>
+        <Flex
+          className={classNames.rightContent}
+          direction="column"
+          overflowY="auto"
+          flexGrow="1"
+        >
+          {items.map((item, i) => (
+            <OrderItemCard
+              key={i}
+              item={item}
+              product={products.find((i) => i.id === item.productId) as Product}
+              onRemove={() => removeItem(item)}
+              onUpdate={(item) => updateItem(item)}
+            />
+          ))}
+        </Flex>
+        <Flex
+          className={classNames.rightFooter}
+          direction="column"
+          gap="2"
+          align="center"
+        >
+          <Text size="2">{t("labels.total")}</Text>
+          <Text size="3" weight="bold">
+            {t("labels.currency")}
+            {total.toFixed(2)}
+          </Text>
+          <Button
+            size="4"
+            className={classNames.doneButton}
+            disabled={!items.length}
+            onClick={handleDone}
+          >
+            {t("labels.done")}
+          </Button>
+        </Flex>
+      </Flex>
     </Flex>
   );
 };

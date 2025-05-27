@@ -1,12 +1,11 @@
-namespace TechFood.Domain.Shared.Enums
+namespace TechFood.Domain.Shared.Enums;
+
+public enum MerchantSort
 {
-    public enum MerchantSort
-    {
-        Default,
-        Price,
-        Rating,
-        DeliveryTime,
-        DeliveryFee,
-        Distance
-    }
+    Default,
+    Price,
+    Rating,
+    DeliveryTime,
+    DeliveryFee,
+    Distance
 }

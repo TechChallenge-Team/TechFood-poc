@@ -11,7 +11,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="images\**\*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="images\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Macross.Json.Extensions" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.16" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.3">
       <PrivateAssets>all</PrivateAssets>
@@ -22,6 +33,8 @@
   <ItemGroup>
     <ProjectReference Include="..\TechFood.Application\TechFood.Application.csproj" />
     <ProjectReference Include="..\TechFood.Infra.Data\TechFood.Infra.Data.csproj" />
+    <ProjectReference Include="..\TechFood.Infra.Payments.MercadoPago\TechFood.Infra.Payments.MercadoPago.csproj" />
+    <ProjectReference Include="..\TechFood.Infra.ImageStore.LocalDisk\TechFood.Infra.ImageStore.LocalDisk.csproj" />
   </ItemGroup>
 
 

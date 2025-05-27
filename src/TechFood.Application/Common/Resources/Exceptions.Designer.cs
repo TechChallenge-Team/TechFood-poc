@@ -61,11 +61,56 @@ namespace TechFood.Application.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid user or password..
+        /// </summary>
+        internal static string Auth_InvalidUseOrPassword {
+            get {
+                return ResourceManager.GetString("Auth_InvalidUseOrPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Folder name and image file name cannot be null or empty..
+        /// </summary>
+        internal static string ImageUrlResolver_FolderCannotBeNull {
+            get {
+                return ResourceManager.GetString("ImageUrlResolver_FolderCannotBeNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item Not Found.
+        /// </summary>
+        internal static string Order_ItemNotFound {
+            get {
+                return ResourceManager.GetString("Order_ItemNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Order not found..
         /// </summary>
         internal static string Order_OrderNotFound {
             get {
                 return ResourceManager.GetString("Order_OrderNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Category Not Found.
+        /// </summary>
+        internal static string Product_CaregoryNotFound {
+            get {
+                return ResourceManager.GetString("Product_CaregoryNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Product Not Found.
+        /// </summary>
+        internal static string Product_ProductNotFound {
+            get {
+                return ResourceManager.GetString("Product_ProductNotFound", resourceCulture);
             }
         }
         

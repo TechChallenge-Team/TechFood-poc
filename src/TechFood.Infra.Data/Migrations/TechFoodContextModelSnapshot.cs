@@ -32,10 +32,16 @@ namespace TechFood.Infra.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("varchar(20)");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -45,26 +51,34 @@ namespace TechFood.Infra.Data.Migrations
                         new
                         {
                             Id = new Guid("eaa76b46-2e6b-42eb-8f5d-b213f85f25ea"),
-                            ImageFileName = "lanche.jpg",
-                            Name = "Lanche"
+                            ImageFileName = "lanche.png",
+                            IsDeleted = false,
+                            Name = "Lanche",
+                            SortOrder = 0
                         },
                         new
                         {
                             Id = new Guid("c65e2cec-bd44-446d-8ed3-a7045cd4876a"),
                             ImageFileName = "acompanhamento.png",
-                            Name = "Acompanhamento"
+                            IsDeleted = false,
+                            Name = "Acompanhamento",
+                            SortOrder = 1
                         },
                         new
                         {
                             Id = new Guid("c3a70938-9e88-437d-a801-c166d2716341"),
-                            ImageFileName = "bebida.jpg",
-                            Name = "Bebida"
+                            ImageFileName = "bebida.png",
+                            IsDeleted = false,
+                            Name = "Bebida",
+                            SortOrder = 2
                         },
                         new
                         {
                             Id = new Guid("ec2fb26d-99a4-4eab-aa5c-7dd18d88a025"),
-                            ImageFileName = "sobremesa.jpg",
-                            Name = "Sobremesa"
+                            ImageFileName = "sobremesa.png",
+                            IsDeleted = false,
+                            Name = "Sobremesa",
+                            SortOrder = 3
                         });
                 });
 
@@ -73,6 +87,9 @@ namespace TechFood.Infra.Data.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.ToTable("Customer", (string)null);
@@ -80,7 +97,13 @@ namespace TechFood.Infra.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("25b58f54-63bc-42da-8cf6-8162097e72c8")
+                            Id = new Guid("25b58f54-63bc-42da-8cf6-8162097e72c8"),
+                            IsDeleted = false
+                        },
+                        new
+                        {
+                            Id = new Guid("9887b301-605f-46a6-93db-ac1ce8685723"),
+                            IsDeleted = false
                         });
                 });
 
@@ -104,11 +127,8 @@ namespace TechFood.Infra.Data.Migrations
                     b.Property<DateTime?>("FinishedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Number")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("PaymentId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -117,11 +137,29 @@ namespace TechFood.Infra.Data.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.HasIndex("PaymentId")
-                        .IsUnique()
-                        .HasFilter("[PaymentId] IS NOT NULL");
-
                     b.ToTable("Order", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("d1b5f3a2-4c8e-4b7c-9f0e-5a2d6f3b8c1e"),
+                            Amount = 39.97m,
+                            CreatedAt = new DateTime(2025, 5, 13, 22, 2, 36, 0, DateTimeKind.Utc).AddTicks(6053),
+                            CustomerId = new Guid("25b58f54-63bc-42da-8cf6-8162097e72c8"),
+                            Discount = 0m,
+                            IsDeleted = false,
+                            Status = 5
+                        },
+                        new
+                        {
+                            Id = new Guid("f2b5f3a2-4c8e-4b7c-9f0e-5a2d6f3b8c1e"),
+                            Amount = 26.98m,
+                            CreatedAt = new DateTime(2025, 5, 13, 22, 2, 36, 0, DateTimeKind.Utc).AddTicks(6354),
+                            CustomerId = new Guid("9887b301-605f-46a6-93db-ac1ce8685723"),
+                            Discount = 0m,
+                            IsDeleted = false,
+                            Status = 4
+                        });
                 });
 
             modelBuilder.Entity("TechFood.Domain.Entities.OrderHistory", b =>
@@ -131,6 +169,9 @@ namespace TechFood.Infra.Data.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier");
@@ -149,6 +190,9 @@ namespace TechFood.Infra.Data.Migrations
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier");
@@ -169,6 +213,44 @@ namespace TechFood.Infra.Data.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("OrderItem", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("ea31fb90-4bc3-418f-95fc-56516d5bc634"),
+                            IsDeleted = false,
+                            OrderId = new Guid("d1b5f3a2-4c8e-4b7c-9f0e-5a2d6f3b8c1e"),
+                            ProductId = new Guid("090d8eb0-f514-4248-8512-cf0d61a262f0"),
+                            Quantity = 1,
+                            UnitPrice = 19.99m
+                        },
+                        new
+                        {
+                            Id = new Guid("b0f1c3a2-4c8e-4b7c-9f0e-5a2d6f3b8c1e"),
+                            IsDeleted = false,
+                            OrderId = new Guid("d1b5f3a2-4c8e-4b7c-9f0e-5a2d6f3b8c1e"),
+                            ProductId = new Guid("55f32e65-c82f-4a10-981c-cdb7b0d2715a"),
+                            Quantity = 2,
+                            UnitPrice = 9.99m
+                        },
+                        new
+                        {
+                            Id = new Guid("82e5700b-c33e-40a6-bb68-7279f0509421"),
+                            IsDeleted = false,
+                            OrderId = new Guid("f2b5f3a2-4c8e-4b7c-9f0e-5a2d6f3b8c1e"),
+                            ProductId = new Guid("a62dc225-416a-4e36-ba35-a2bd2bbb80f7"),
+                            Quantity = 1,
+                            UnitPrice = 21.99m
+                        },
+                        new
+                        {
+                            Id = new Guid("900f65fe-47ca-4b4b-9a7c-a82c6d9c52cd"),
+                            IsDeleted = false,
+                            OrderId = new Guid("f2b5f3a2-4c8e-4b7c-9f0e-5a2d6f3b8c1e"),
+                            ProductId = new Guid("86c50c81-c46e-4e79-a591-3b68c75cefda"),
+                            Quantity = 1,
+                            UnitPrice = 4.99m
+                        });
                 });
 
             modelBuilder.Entity("TechFood.Domain.Entities.Payment", b =>
@@ -182,6 +264,12 @@ namespace TechFood.Infra.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime?>("PaidAt")
                         .HasColumnType("datetime2");
 
@@ -194,6 +282,37 @@ namespace TechFood.Infra.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Payment", (string)null);
+                });
+
+            modelBuilder.Entity("TechFood.Domain.Entities.Preparation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime?>("FinishedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("StartedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Preparation", (string)null);
                 });
 
             modelBuilder.Entity("TechFood.Domain.Entities.Product", b =>
@@ -213,6 +332,9 @@ namespace TechFood.Infra.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -237,28 +359,108 @@ namespace TechFood.Infra.Data.Migrations
                             Id = new Guid("090d8eb0-f514-4248-8512-cf0d61a262f0"),
                             CategoryId = new Guid("eaa76b46-2e6b-42eb-8f5d-b213f85f25ea"),
                             Description = "Delicioso X-Burguer",
-                            ImageFileName = "",
+                            ImageFileName = "x-burguer.png",
+                            IsDeleted = false,
                             Name = "X-Burguer",
                             OutOfStock = false,
                             Price = 19.99m
                         },
                         new
                         {
+                            Id = new Guid("a62dc225-416a-4e36-ba35-a2bd2bbb80f7"),
+                            CategoryId = new Guid("eaa76b46-2e6b-42eb-8f5d-b213f85f25ea"),
+                            Description = "Delicioso X-Salada",
+                            ImageFileName = "x-salada.png",
+                            IsDeleted = false,
+                            Name = "X-Salada",
+                            OutOfStock = false,
+                            Price = 21.99m
+                        },
+                        new
+                        {
+                            Id = new Guid("3c9374f1-58e9-4b07-bdf6-73aa2f4757ff"),
+                            CategoryId = new Guid("eaa76b46-2e6b-42eb-8f5d-b213f85f25ea"),
+                            Description = "Delicioso X-Bacon",
+                            ImageFileName = "x-bacon.png",
+                            IsDeleted = false,
+                            Name = "X-Bacon",
+                            OutOfStock = false,
+                            Price = 22.99m
+                        },
+                        new
+                        {
                             Id = new Guid("55f32e65-c82f-4a10-981c-cdb7b0d2715a"),
                             CategoryId = new Guid("c65e2cec-bd44-446d-8ed3-a7045cd4876a"),
                             Description = "Crocante Batata Frita",
-                            ImageFileName = "",
+                            ImageFileName = "batata.png",
+                            IsDeleted = false,
                             Name = "Batata Frita",
                             OutOfStock = false,
                             Price = 9.99m
                         },
                         new
                         {
+                            Id = new Guid("3249b4e4-11e5-41d9-9d55-e9b1d59bfb23"),
+                            CategoryId = new Guid("c65e2cec-bd44-446d-8ed3-a7045cd4876a"),
+                            Description = "Crocante Batata Frita",
+                            ImageFileName = "batata-grande.png",
+                            IsDeleted = false,
+                            Name = "Batata Frita Grande",
+                            OutOfStock = false,
+                            Price = 12.99m
+                        },
+                        new
+                        {
+                            Id = new Guid("4aeb3ad6-1e06-418e-8878-e66a4ba9337f"),
+                            CategoryId = new Guid("c65e2cec-bd44-446d-8ed3-a7045cd4876a"),
+                            Description = "Delicioso Nuggets de Frango",
+                            ImageFileName = "nuggets.png",
+                            IsDeleted = false,
+                            Name = "Nuggets de Frango",
+                            OutOfStock = false,
+                            Price = 13.99m
+                        },
+                        new
+                        {
                             Id = new Guid("86c50c81-c46e-4e79-a591-3b68c75cefda"),
                             CategoryId = new Guid("c3a70938-9e88-437d-a801-c166d2716341"),
-                            Description = "Gelado Refrigerante",
-                            ImageFileName = "",
-                            Name = "Refrigerante",
+                            Description = "Coca-Cola",
+                            ImageFileName = "coca-cola.png",
+                            IsDeleted = false,
+                            Name = "Coca-Cola",
+                            OutOfStock = false,
+                            Price = 4.99m
+                        },
+                        new
+                        {
+                            Id = new Guid("44c61027-8e16-444d-9f4f-e332410cccaa"),
+                            CategoryId = new Guid("c3a70938-9e88-437d-a801-c166d2716341"),
+                            Description = "Guaraná",
+                            ImageFileName = "guarana.png",
+                            IsDeleted = false,
+                            Name = "Guaraná",
+                            OutOfStock = false,
+                            Price = 4.99m
+                        },
+                        new
+                        {
+                            Id = new Guid("bf90f247-52cc-4bbb-b6e3-9c77b6ff546f"),
+                            CategoryId = new Guid("c3a70938-9e88-437d-a801-c166d2716341"),
+                            Description = "Fanta",
+                            ImageFileName = "fanta.png",
+                            IsDeleted = false,
+                            Name = "Fanta",
+                            OutOfStock = false,
+                            Price = 4.99m
+                        },
+                        new
+                        {
+                            Id = new Guid("8620cf54-0d37-4aa1-832a-eb98e9b36863"),
+                            CategoryId = new Guid("c3a70938-9e88-437d-a801-c166d2716341"),
+                            Description = "Sprite",
+                            ImageFileName = "sprite.png",
+                            IsDeleted = false,
+                            Name = "Sprite",
                             OutOfStock = false,
                             Price = 4.99m
                         },
@@ -266,16 +468,138 @@ namespace TechFood.Infra.Data.Migrations
                         {
                             Id = new Guid("de797d9f-c473-4bed-a560-e7036ca10ab1"),
                             CategoryId = new Guid("ec2fb26d-99a4-4eab-aa5c-7dd18d88a025"),
-                            Description = "Doce Pudim",
-                            ImageFileName = "",
-                            Name = "Pudim",
+                            Description = "Milk Shake de Morango",
+                            ImageFileName = "milk-shake-morango.png",
+                            IsDeleted = false,
+                            Name = "Milk Shake de Morango",
+                            OutOfStock = false,
+                            Price = 7.99m
+                        },
+                        new
+                        {
+                            Id = new Guid("113daae6-f21f-4d38-a778-9364ac64f909"),
+                            CategoryId = new Guid("ec2fb26d-99a4-4eab-aa5c-7dd18d88a025"),
+                            Description = "Milk Shake de Chocolate",
+                            ImageFileName = "milk-shake-chocolate.png",
+                            IsDeleted = false,
+                            Name = "Milk Shake de Chocolate",
+                            OutOfStock = false,
+                            Price = 7.99m
+                        },
+                        new
+                        {
+                            Id = new Guid("2665c2ec-c537-4d95-9a0f-791bcd4cc938"),
+                            CategoryId = new Guid("ec2fb26d-99a4-4eab-aa5c-7dd18d88a025"),
+                            Description = "Milk Shake de Baunilha",
+                            ImageFileName = "milk-shake-baunilha.png",
+                            IsDeleted = false,
+                            Name = "Milk Shake de Baunilha",
                             OutOfStock = false,
                             Price = 7.99m
                         });
                 });
 
+            modelBuilder.Entity("TechFood.Domain.Entities.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("User", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("fa09f3a0-f22d-40a8-9cca-0c64e5ed50e4"),
+                            IsDeleted = false,
+                            PasswordHash = "AQAAAAIAAYagAAAAEKs0I0Zk5QKKieJTm20PwvTmpkSfnp5BhSl5E35ny8DqffCJA+CiDRnnKRCeOx8+mg==",
+                            Role = "admin",
+                            Username = "john.admin"
+                        });
+                });
+
             modelBuilder.Entity("TechFood.Domain.Entities.Customer", b =>
                 {
+                    b.OwnsOne("TechFood.Domain.ValueObjects.Email", "Email", b1 =>
+                        {
+                            b1.Property<Guid>("CustomerId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Address")
+                                .IsRequired()
+                                .HasMaxLength(255)
+                                .HasColumnType("varchar(255)")
+                                .HasColumnName("EmailAddress");
+
+                            b1.HasKey("CustomerId");
+
+                            b1.ToTable("Customer");
+
+                            b1.WithOwner()
+                                .HasForeignKey("CustomerId");
+
+                            b1.HasData(
+                                new
+                                {
+                                    CustomerId = new Guid("25b58f54-63bc-42da-8cf6-8162097e72c8"),
+                                    Address = "john.dev@gmail.com"
+                                },
+                                new
+                                {
+                                    CustomerId = new Guid("9887b301-605f-46a6-93db-ac1ce8685723"),
+                                    Address = "john.silva@gmail.com"
+                                });
+                        });
+
+                    b.OwnsOne("TechFood.Domain.ValueObjects.Name", "Name", b1 =>
+                        {
+                            b1.Property<Guid>("CustomerId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("FullName")
+                                .IsRequired()
+                                .HasMaxLength(255)
+                                .HasColumnType("varchar(255)")
+                                .HasColumnName("NameFullName");
+
+                            b1.HasKey("CustomerId");
+
+                            b1.ToTable("Customer");
+
+                            b1.WithOwner()
+                                .HasForeignKey("CustomerId");
+
+                            b1.HasData(
+                                new
+                                {
+                                    CustomerId = new Guid("25b58f54-63bc-42da-8cf6-8162097e72c8"),
+                                    FullName = "John"
+                                },
+                                new
+                                {
+                                    CustomerId = new Guid("9887b301-605f-46a6-93db-ac1ce8685723"),
+                                    FullName = "John Silva"
+                                });
+                        });
+
                     b.OwnsOne("TechFood.Domain.ValueObjects.Document", "Document", b1 =>
                         {
                             b1.Property<Guid>("CustomerId")
@@ -304,58 +628,12 @@ namespace TechFood.Infra.Data.Migrations
                                     CustomerId = new Guid("25b58f54-63bc-42da-8cf6-8162097e72c8"),
                                     Type = 0,
                                     Value = "4511554544"
-                                });
-                        });
-
-                    b.OwnsOne("TechFood.Domain.ValueObjects.Email", "Email", b1 =>
-                        {
-                            b1.Property<Guid>("CustomerId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("Address")
-                                .IsRequired()
-                                .HasMaxLength(255)
-                                .HasColumnType("varchar(255)")
-                                .HasColumnName("EmailAddress");
-
-                            b1.HasKey("CustomerId");
-
-                            b1.ToTable("Customer");
-
-                            b1.WithOwner()
-                                .HasForeignKey("CustomerId");
-
-                            b1.HasData(
+                                },
                                 new
                                 {
-                                    CustomerId = new Guid("25b58f54-63bc-42da-8cf6-8162097e72c8"),
-                                    Address = "john.dev@gmail.com"
-                                });
-                        });
-
-                    b.OwnsOne("TechFood.Domain.ValueObjects.Name", "Name", b1 =>
-                        {
-                            b1.Property<Guid>("CustomerId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("FullName")
-                                .IsRequired()
-                                .HasMaxLength(255)
-                                .HasColumnType("varchar(255)")
-                                .HasColumnName("NameFullName");
-
-                            b1.HasKey("CustomerId");
-
-                            b1.ToTable("Customer");
-
-                            b1.WithOwner()
-                                .HasForeignKey("CustomerId");
-
-                            b1.HasData(
-                                new
-                                {
-                                    CustomerId = new Guid("25b58f54-63bc-42da-8cf6-8162097e72c8"),
-                                    FullName = "John"
+                                    CustomerId = new Guid("9887b301-605f-46a6-93db-ac1ce8685723"),
+                                    Type = 0,
+                                    Value = "000000000191"
                                 });
                         });
 
@@ -396,6 +674,13 @@ namespace TechFood.Infra.Data.Migrations
                                     CountryCode = "55",
                                     DDD = "11",
                                     Number = "9415452222"
+                                },
+                                new
+                                {
+                                    CustomerId = new Guid("9887b301-605f-46a6-93db-ac1ce8685723"),
+                                    CountryCode = "55",
+                                    DDD = "11",
+                                    Number = "9415452222"
                                 });
                         });
 
@@ -416,12 +701,6 @@ namespace TechFood.Infra.Data.Migrations
                     b.HasOne("TechFood.Domain.Entities.Customer", null)
                         .WithMany()
                         .HasForeignKey("CustomerId");
-
-                    b.HasOne("TechFood.Domain.Entities.Payment", "Payment")
-                        .WithOne()
-                        .HasForeignKey("TechFood.Domain.Entities.Order", "PaymentId");
-
-                    b.Navigation("Payment");
                 });
 
             modelBuilder.Entity("TechFood.Domain.Entities.OrderHistory", b =>
@@ -454,6 +733,66 @@ namespace TechFood.Infra.Data.Migrations
                         .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TechFood.Domain.Entities.User", b =>
+                {
+                    b.OwnsOne("TechFood.Domain.ValueObjects.Email", "Email", b1 =>
+                        {
+                            b1.Property<Guid>("UserId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Address")
+                                .IsRequired()
+                                .HasMaxLength(255)
+                                .HasColumnType("varchar(255)")
+                                .HasColumnName("EmailAddress");
+
+                            b1.HasKey("UserId");
+
+                            b1.ToTable("User");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+
+                            b1.HasData(
+                                new
+                                {
+                                    UserId = new Guid("fa09f3a0-f22d-40a8-9cca-0c64e5ed50e4"),
+                                    Address = "john.admin@techfood.com"
+                                });
+                        });
+
+                    b.OwnsOne("TechFood.Domain.ValueObjects.Name", "Name", b1 =>
+                        {
+                            b1.Property<Guid>("UserId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("FullName")
+                                .IsRequired()
+                                .HasMaxLength(255)
+                                .HasColumnType("varchar(255)")
+                                .HasColumnName("NameFullName");
+
+                            b1.HasKey("UserId");
+
+                            b1.ToTable("User");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+
+                            b1.HasData(
+                                new
+                                {
+                                    UserId = new Guid("fa09f3a0-f22d-40a8-9cca-0c64e5ed50e4"),
+                                    FullName = "John Admin"
+                                });
+                        });
+
+                    b.Navigation("Email");
+
+                    b.Navigation("Name")
                         .IsRequired();
                 });
 

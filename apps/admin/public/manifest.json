@@ -1,7 +1,7 @@
 {
-  "name": "Techfood",
+  "name": "Techfood - Admin",
   "short_name": "techfood_admin",
-  "start_url": "/",
+  "start_url": "/admin",
   "display": "standalone",
   "background_color": "#121212",
   "theme_color": "#4f4d6f",

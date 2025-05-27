@@ -1,7 +1,10 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TechFood.Domain.Entities;
+using TechFood.Domain.Enums;
 using TechFood.Domain.Repositories;
 using TechFood.Infra.Data.Contexts;
 
@@ -9,32 +12,30 @@ namespace TechFood.Infra.Data.Repositories;
 
 internal class OrderRepository(TechFoodContext dbContext) : IOrderRepository
 {
-    private readonly TechFoodContext _dbContext = dbContext;
+    private readonly DbSet<Order> _orders = dbContext.Orders;
 
-    public async Task<Guid> CreateAsync(Order order)
+    public async Task<Guid> AddAsync(Order order)
     {
-        var entry = await _dbContext.AddAsync(order);
-
-        await entry.Context.SaveChangesAsync();
+        var entry = await _orders.AddAsync(order);
 
         return entry.Entity.Id;
     }
 
-    public async Task<Order> FindByIdAsync(Guid id)
+    public async Task<List<Order>> GetAllDoneAndInPreparationAsync()
     {
-        var order = await _dbContext
-            .Orders
-            .Include(o => o.Payment)
-            .Include(o => o.Items)
-            .FirstAsync(o => o.Id == id);
+        var orders = await _orders.AsNoTracking()
+                                  .Where(x => x.Status == OrderStatusType.PreparationDone || x.Status == OrderStatusType.InPreparation)
+                                  .OrderBy(c => c.CreatedAt).ToListAsync();
 
-        return order;
+        return orders;
     }
 
-    public async Task UpdateAsync(Order order)
+    public async Task<Order?> GetByIdAsync(Guid id)
     {
-        _dbContext.Orders.Update(order);
+        var t = await _orders
+            .Include(o => o.Items)
+            .FirstOrDefaultAsync(o => o.Id == id);
 
-        await _dbContext.SaveChangesAsync();
+        return t;
     }
 }

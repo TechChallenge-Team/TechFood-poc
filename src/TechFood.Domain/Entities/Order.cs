@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TechFood.Domain.Enums;
 using TechFood.Domain.Shared.Entities;
 using TechFood.Domain.Shared.Exceptions;
+using TechFood.Domain.Shared.Validations;
 
 namespace TechFood.Domain.Entities;
 
@@ -11,10 +12,8 @@ public class Order : Entity, IAggregateRoot
     private Order() { }
 
     public Order(
-        int number,
         Guid? customerId = null)
     {
-        Number = number;
         CustomerId = customerId;
         CreatedAt = DateTime.Now;
         Status = OrderStatusType.Created;
@@ -23,9 +22,7 @@ public class Order : Entity, IAggregateRoot
     private readonly List<OrderItem> _items = [];
 
     private readonly List<OrderHistory> _historical = [];
-
-    public int Number { get; private set; }
-
+    
     public Guid? CustomerId { get; private set; }
 
     public DateTime CreatedAt { get; private set; }
@@ -36,25 +33,11 @@ public class Order : Entity, IAggregateRoot
 
     public decimal Amount { get; private set; }
 
-    public decimal TotalAmount => Amount - Discount;
-
     public decimal Discount { get; private set; }
-
-    public Payment? Payment { get; private set; }
 
     public IReadOnlyCollection<OrderItem> Items => _items.AsReadOnly();
 
     public IReadOnlyCollection<OrderHistory> Historical => _historical.AsReadOnly();
-
-    public void CreatePayment(PaymentType type)
-    {
-        if (Status != OrderStatusType.Created)
-        {
-            throw new DomainException(Resources.Exceptions.Order_CannotCreatePaymentToNonCreatedStatus);
-        }
-
-        Payment = new Payment(type, TotalAmount);
-    }
 
     public void ApplyDiscount(decimal discount)
     {
@@ -63,46 +46,41 @@ public class Order : Entity, IAggregateRoot
             throw new DomainException(Resources.Exceptions.Order_CannotApplyDiscountToNonCreatedStatus);
         }
 
-        if (discount < 0)
-        {
-            throw new DomainException(Resources.Exceptions.Order_DiscountCannotBeNegative);
-        }
+        Validations.ThrowIsGreaterThanZero(discount, Resources.Exceptions.Order_DiscountCannotBeNegative);
 
         Discount = discount;
 
         CalculateAmount();
     }
 
-    public void PayPayment()
+    public void CreatePayment()
     {
         if (Status != OrderStatusType.Created)
         {
-            throw new DomainException(Resources.Exceptions.Order_CannotPayToNonCreatedStatus);
+            throw new DomainException(Resources.Exceptions.Order_CannotCreatePaymentToNonCreatedStatus);
         }
 
-        if (Payment == null)
+        UpdateStatus(OrderStatusType.WaitingPayment);
+    }
+
+    public void ConfirmPayment()
+    {
+        if (Status != OrderStatusType.WaitingPayment)
         {
-            throw new DomainException(Resources.Exceptions.Order_PaymentIsNull);
+            throw new DomainException(Resources.Exceptions.Order_CannotPayToNonWaitingPaymentStatus);
         }
-
-        Payment.Pay();
 
         UpdateStatus(OrderStatusType.Paid);
     }
 
     public void RefusedPayment()
     {
-        if (Status != OrderStatusType.Created)
+        if (Status != OrderStatusType.WaitingPayment)
         {
-            throw new DomainException(Resources.Exceptions.Order_CannotRefusePaymentToNonCreatedStatus);
+            throw new DomainException(Resources.Exceptions.Order_CannotRefuseToNonWaitingPaymentStatus);
         }
 
-        if (Payment == null)
-        {
-            throw new DomainException(Resources.Exceptions.Order_PaymentIsNull);
-        }
-
-        Payment.Refused();
+        UpdateStatus(OrderStatusType.RefusedPayment);
     }
 
     public void AddItem(OrderItem item)
@@ -125,26 +103,14 @@ public class Order : Entity, IAggregateRoot
         }
 
         var item = _items.Find(i => i.Id == itemId);
-        if (item == null)
-        {
-            throw new DomainException(Resources.Exceptions.Order_ItemNotFound);
-        }
 
-        _items.Remove(item);
+        Validations.ThrowObjectIsNull(item, Resources.Exceptions.Order_ItemNotFound);
+
+        _items.Remove(item!);
 
         CalculateAmount();
     }
 
-    public void Prepare()
-    {
-        if (Status != OrderStatusType.Paid)
-        {
-            throw new DomainException(Resources.Exceptions.Order_CannotPrepareToNonPaidStatus);
-        }
-
-        UpdateStatus(OrderStatusType.InPreparation);
-    }
-   
     private void CalculateAmount()
     {
         Amount = 0;
@@ -153,16 +119,39 @@ public class Order : Entity, IAggregateRoot
         {
             Amount += item.Quantity * item.UnitPrice;
         }
+
+        Amount -= Discount;
     }
 
-    public void Done()
+    public void FinishPreparation()
     {
         if (Status != OrderStatusType.InPreparation)
         {
             throw new DomainException(Resources.Exceptions.Order_CannotFinishToNonInPreparationStatus);
         }
 
-        UpdateStatus(OrderStatusType.Done);
+        UpdateStatus(OrderStatusType.PreparationDone);
+    }
+
+    public void StartPreparation()
+    {
+        if (Status != OrderStatusType.Paid)
+        {
+            throw new DomainException(Resources.Exceptions.Order_CannotPrepareToNonPaidStatus);
+        }
+
+        UpdateStatus(OrderStatusType.InPreparation);
+    }
+
+    public void CancelPreparation()
+    {
+        if (Status == OrderStatusType.Cancelled)
+        {
+            //TODO: Adjust message
+            throw new DomainException("Pedido ja foi cancelado");
+        }
+
+        UpdateStatus(OrderStatusType.Cancelled);
     }
 
     public void Finish()
