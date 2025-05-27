@@ -24,7 +24,7 @@ type ActionVerb = "start" | "finish" | "cancel";
 type IOrderInformation = {
   preparation: PreparationMonitor | null;
   updatePreparationStatus: (id: string, status: ActionVerb) => any;
-  updateOrderStatusToFinish: (id: string) => any;
+  updateOrderStatusToFinish: (orderId: string, preparationId: string) => any;
 };
 
 const OrderInformation = ({
@@ -48,9 +48,13 @@ const OrderInformation = ({
     let status: ActionVerb = "start";
     if (preparation?.status === "INPROGRESS") status = "finish";
     if (preparation?.status === "DONE") {
-      updateOrderStatusToFinish(preparation?.orderId);
+      updateOrderStatusToFinish(
+        preparation?.orderId,
+        preparation?.preparationId
+      );
       return;
     }
+
     updatePreparationStatus(preparation?.preparationId, status);
   };
 
@@ -123,9 +127,10 @@ export const Monitor = () => {
     setPreparationItem(null);
   };
 
-  const handleUpdateOrderStatusToFinish = async (id: string) => {
-    await axios.patch(`/api/v1/Orders/${id}/finish`);
+  const handleUpdateOrderStatusToFinish = async (orderId: string) => {
+    await axios.patch(`/api/v1/Orders/${orderId}/finish`);
     await getPreparationOrder();
+    setPreparationItem(null);
   };
 
   useEffect(() => {

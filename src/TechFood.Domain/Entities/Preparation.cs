@@ -50,6 +50,16 @@ public class Preparation : Entity, IAggregateRoot
         FinishedAt = DateTime.Now;
     }
 
+    public void Delivered()
+    {
+        if (Status != PreparationStatusType.Done)
+        {
+            throw new InvalidOperationException("Preparation can only be finished if it is in done.");
+        }
+
+        Status = PreparationStatusType.Finish;
+    }
+
     public void Cancel()
     {
         if (Status == PreparationStatusType.Cancelled)

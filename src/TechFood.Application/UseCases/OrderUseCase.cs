@@ -12,11 +12,13 @@ namespace TechFood.Application.UseCases;
 internal class OrderUseCase(
     IOrderRepository orderRepository,
     IProductRepository productRepository,
+    IPreparationRepository preparationRepository,
     IUnitOfWork unitOfWork
     ) : IOrderUseCase
 {
     private readonly IOrderRepository _orderRepository = orderRepository;
     private readonly IProductRepository _productRepository = productRepository;
+    private readonly IPreparationRepository _preparationRepository = preparationRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     public async Task<CreateOrderResult> CreateAsync(CreateOrderRequest request)
@@ -73,6 +75,15 @@ internal class OrderUseCase(
         {
             return false;
         }
+
+        var preparation = await _preparationRepository.GetByOrderIdAsync(orderId);
+
+        if (preparation == null)
+        {
+            return false;
+        }
+
+        preparation.Delivered();
 
         order.Finish();
 
