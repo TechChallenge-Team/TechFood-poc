@@ -17,12 +17,14 @@ internal class CategoryQueryProvider(
     public async Task<IEnumerable<GetAllCategoryQuery.Result>> GetAllAsync(GetAllCategoryQuery query)
     {
         return await techFoodContext.Categories
+            .OrderBy(category => category.SortOrder)
             .Select(category => new GetAllCategoryQuery.Result
             {
                 Id = category.Id,
                 Name = category.Name,
                 ImageUrl = imageUrl.BuildFilePath(nameof(Category).ToLower(), category.ImageFileName)
-            }).ToListAsync();
+            })
+            .ToListAsync();
     }
 
     public async Task<GetCategoryByIdQuery.Result?> GetByIdAsync(GetCategoryByIdQuery query)

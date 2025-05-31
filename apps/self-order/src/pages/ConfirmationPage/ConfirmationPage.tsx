@@ -1,34 +1,22 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { Flex, Heading, Text } from "@radix-ui/themes";
 import { useOrder } from "../../contexts";
 import { t } from "../../i18n";
 
 import classNames from "./ConfirmationPage.module.css";
-import axios from "axios";
 
 const timeout = 20000; // 20 seconds
 
 export const ConfirmationPage = () => {
-  const [number, setNumber] = useState<string | undefined>();
   const navigate = useNavigate();
-  const { id } = useOrder();
+  const { number } = useOrder();
 
   useEffect(() => {
     setTimeout(() => {
       navigate("/", { replace: true });
     }, timeout);
-
-    const fetchNumber = async () => {
-      const response = await axios.get<string>(
-        `/api/v1/Preparations/${id}/number`
-      );
-      console.log(response);
-      setNumber(response.data);
-    };
-
-    fetchNumber();
-  }, [number, navigate]);
+  }, [navigate]);
 
   return (
     <Flex
