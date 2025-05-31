@@ -2,9 +2,21 @@
 
 TechFood is a FIAP Post-Graduation project that aims to create a web application for a food delivery service. The project is developed using the dotnet core framework and utilizes the ASP.NET Core MVC architecture. The application is designed to be responsive and user-friendly, providing a seamless experience for both customers and restaurant owner. The project is built with a focus on clean architecture, DDD, and hexagonal architecture principles.
 
-# Project Presentation Video
+## Members
 
-[![Watch the video](https://img.youtube.com/vi/1j4b2g5k8eY/0.jpg)](https://www.youtube.com/watch?v=1j4b2g5k8eY)
+- [Elias Soares - RM 362904](https://github.com/eliassoaressouza)
+- [Paulo Viana - RM 364330](https://github.com/Phviana)
+- [Valdeir Silva - RM 363809](https://github.com/Valdeirsilva2)
+- [Leonardo Borges - RM 363195](https://github.com/ldssBorges)
+- [Leandro Cervantes - RM 361335](https://github.com/leandrocervant)
+
+## Project Presentation
+
+[![Watch the video](https://img.youtube.com/vi/1j4b2g5k8eY/0.jpg)](https://www.youtube.com/watch?v=1Y0qZz30VE0)
+
+## Brainstorming
+
+[![Brainstorming](docs/miro.png)](https://miro.com/app/board/uXjVIuYTFVc=/)
 
 ## Technologies Used
 
@@ -57,7 +69,26 @@ To get started with the project, follow these steps:
 - app monitor: http://localhost:5000/monitor/
 - app admin: http://localhost:5000/admin/
 
-### Order Flow
+### Credentials
+
+Mercado Pago credentials for payment integration:
+
+- **Seller Username**: `TESTUSER1125814911`
+- **Seller Password**: `DD1wLKK8sd`
+- **Customer Username**: `TESTUSER1370967485`
+- **Customer Password**: `ayGV80NpxL`
+- **User ID**: `2414323212`
+- **Access Token**: `APP_USR-5808215342931102-042817-5d5fee5e46fe9a6b08d17f29e741091f-2414323212`
+
+Database connection string for the API:
+
+**Connection String**: `Server=techfood.db;Database=dbtechfood;User Id=sa;Password=123456#4EA;TrustServerCertificate=True;`
+
+## Order Flow - Swagger
+
+TODO: Document the order flow using Swagger for API endpoints.
+
+## Order Flow - Frontend
 
 1. **Consumer**: The consumer uses the self-order application to browse the menu, select items, and place an order. The order is then sent to the restaurant for preparation:
 
