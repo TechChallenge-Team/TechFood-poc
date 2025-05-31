@@ -2,14 +2,6 @@
 
 TechFood is a FIAP Post-Graduation project that aims to create a web application for a food delivery service. The project is developed using the dotnet core framework and utilizes the ASP.NET Core MVC architecture. The application is designed to be responsive and user-friendly, providing a seamless experience for both customers and restaurant owner. The project is built with a focus on clean architecture, DDD, and hexagonal architecture principles.
 
-## Members
-
-- [Elias Soares - RM 362904](https://github.com/eliassoaressouza)
-- [Paulo Viana - RM 364330](https://github.com/Phviana)
-- [Valdeir Silva - RM 363809](https://github.com/Valdeirsilva2)
-- [Leonardo Borges - RM 363195](https://github.com/ldssBorges)
-- [Leandro Cervantes - RM 361335](https://github.com/leandrocervant)
-
 ## Project Presentation
 
 [![Watch the video](https://img.youtube.com/vi/1j4b2g5k8eY/0.jpg)](https://www.youtube.com/watch?v=1Y0qZz30VE0)
@@ -101,3 +93,11 @@ TODO: Document the order flow using Swagger for API endpoints.
 ![Restaurant Order Flow](/docs/admin/start-preparation.png)
 ![Restaurant Order Flow](/docs/admin/finish-preparation.png)
 ![Restaurant Order Flow](/docs/admin/finish-order.png)
+
+## Members
+
+- [Elias Soares - RM 362904](https://github.com/eliassoaressouza)
+- [Paulo Viana - RM 364330](https://github.com/Phviana)
+- [Valdeir Silva - RM 363809](https://github.com/Valdeirsilva2)
+- [Leonardo Borges - RM 363195](https://github.com/ldssBorges)
+- [Leandro Cervantes - RM 361335](https://github.com/leandrocervant)
