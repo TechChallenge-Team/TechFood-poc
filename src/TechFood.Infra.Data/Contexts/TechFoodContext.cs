@@ -10,8 +10,7 @@ using TechFood.Domain.Shared.Entities;
 
 namespace TechFood.Infra.Data.Contexts;
 
-public class TechFoodContext(
-    DbContextOptions<TechFoodContext> options) : DbContext(options)
+public class TechFoodContext(DbContextOptions<TechFoodContext> options) : DbContext(options)
 {
     public DbSet<Category> Categories { get; set; } = null!;
 
@@ -27,7 +26,7 @@ public class TechFoodContext(
 
     public DbSet<Preparation> Preparations { get; set; } = null!;
 
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         foreach (var entry in ChangeTracker
             .Entries<Entity>()
@@ -37,7 +36,7 @@ public class TechFoodContext(
             entry.Entity.IsDeleted = true;
         }
 
-        return base.SaveChangesAsync(cancellationToken);
+        return await base.SaveChangesAsync(cancellationToken);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

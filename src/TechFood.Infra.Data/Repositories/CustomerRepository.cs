@@ -16,18 +16,16 @@ namespace TechFood.Infra.Data.Repositories
         {
             var entry = await _dbContext.AddAsync(customer);
 
-            await entry.Context.SaveChangesAsync();
-
             return entry.Entity.Id;
         }
 
-        public async Task<Customer> GetByDocument(DocumentType type, string value)
+        public async Task<Customer?> GetByDocument(DocumentType type, string value)
         {
             return await _dbContext.Customers
                 .FirstOrDefaultAsync(c => c.Document.Type == type && c.Document.Value == value);
         }
 
-        public Task<Customer> GetByDocumentAsync(DocumentType documentType, string documentValue)
+        public Task<Customer?> GetByDocumentAsync(DocumentType documentType, string documentValue)
         {
             return _dbContext.Customers
                 .FirstOrDefaultAsync(c => c.Document.Type == documentType && c.Document.Value == documentValue);

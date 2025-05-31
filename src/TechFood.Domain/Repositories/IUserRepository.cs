@@ -6,7 +6,7 @@ namespace TechFood.Domain.Repositories;
 
 public interface IUserRepository
 {
-    Task<Guid> CreateAsync(User user);
+    Task<Guid> AddAsync(User user);
 
     Task<User?> GetByUsernameOrEmailAsync(string username);
 }

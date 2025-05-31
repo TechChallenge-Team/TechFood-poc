@@ -1,19 +1,20 @@
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using TechFood.Application.Models.Product;
-using TechFood.Application.UseCases.Interfaces;
+using TechFood.Application.UseCases.Product.Commands;
+using TechFood.Application.UseCases.Product.Queries;
 
 namespace TechFood.Api.Controllers;
 
 [ApiController()]
 [Route("v1/[controller]")]
-public class ProductsController(IProductUseCase categoryUseCase) : ControllerBase
+public class ProductsController(IMediator useCase) : ControllerBase
 {
-    private readonly IProductUseCase _productUseCase = categoryUseCase;
+    private readonly IMediator _useCase = useCase;
 
     [HttpGet]
-    public async Task<IActionResult> ListAsync()
+    public async Task<IActionResult> GetAllAsync()
     {
-        var result = await _productUseCase.GetAllAsync();
+        var result = await _useCase.Send(new GetAllProductQuery());
 
         return Ok(result);
     }
@@ -21,40 +22,42 @@ public class ProductsController(IProductUseCase categoryUseCase) : ControllerBas
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetByIdAsync(Guid id)
     {
-        var result = await _productUseCase.GetByIdAsync(id);
+        var result = await _useCase.Send(new GetProductByIdQuery(id));
 
         return Ok(result);
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateAsync(CreateProductRequest request)
+    public async Task<IActionResult> CreateAsync(CreateProductCommand command)
     {
-        var result = await _productUseCase.CreateAsync(request);
+        var result = await _useCase.Send(command);
 
         return Ok(result);
     }
 
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> UpdateAsync(Guid id, UpdateProductRequest request)
+    public async Task<IActionResult> UpdateAsync(Guid id, UpdateProductCommand command)
     {
-        var result = await _productUseCase.UpdateAsync(id, request);
+        command.Id = id;
 
-        return result != null ? Ok(result) : NotFound();
+        var result = await _useCase.Send(command);
+
+        return Ok(result);
     }
 
     [HttpPatch("{id:guid}/outOfStock")]
     public async Task<IActionResult> PatchOutOfStockAsync(Guid id, bool request)
     {
-        var result = await _productUseCase.UpdateOutOfStockAsync(id, request);
+        var result = await _useCase.Send(new SetProductOutOfStockCommand { Id = id, OutOfStock = request });
 
-        return result != null ? Ok(result) : NotFound();
+        return Ok(result);
     }
 
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> DeleteAsync(Guid id)
     {
-        var result = await _productUseCase.DeleteAsync(id);
+        await _useCase.Send(new DeleteProductCommand(id));
 
-        return result ? NoContent() : NotFound();
+        return NoContent();
     }
 }

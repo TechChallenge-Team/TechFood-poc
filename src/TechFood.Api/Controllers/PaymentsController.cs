@@ -1,27 +1,27 @@
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using TechFood.Application.Models.Payment;
-using TechFood.Application.UseCases.Interfaces;
+using TechFood.Application.UseCases.Payment.Commands;
 
 namespace TechFood.Api.Controllers;
 
 [ApiController()]
 [Route("v1/[controller]")]
-public class PaymentsController(IPaymentUseCase paymentUseCase) : ControllerBase
+public class PaymentsController(IMediator useCase) : ControllerBase
 {
-    private readonly IPaymentUseCase _paymentUseCase = paymentUseCase;
+    private readonly IMediator _useCase = useCase;
 
     [HttpPost]
-    public async Task<IActionResult> CreateAsync(CreatePaymentRequest data)
+    public async Task<IActionResult> CreateAsync(CreatePaymentCommand command)
     {
-        var result = await _paymentUseCase.CreateAsync(data);
+        var result = await _useCase.Send(command);
 
         return result != null ? Ok(result) : NotFound();
     }
 
     [HttpPatch("{id:Guid}")]
-    public async Task<IActionResult> PayAsync(Guid id)
+    public async Task<IActionResult> ConfirmAsync(Guid id)
     {
-        await _paymentUseCase.ConfirmAsync(id);
+        await _useCase.Send(new ConfirmPaymentCommand(id));
 
         return Ok();
     }

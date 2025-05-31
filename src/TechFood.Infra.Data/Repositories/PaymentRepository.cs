@@ -20,8 +20,6 @@ public class PaymentRepository(TechFoodContext dbContext) : IPaymentRepository
 
     public Task<Payment?> GetByIdAsync(Guid id)
     {
-        return _payments
-            .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.Id == id);
+        return _payments.FirstOrDefaultAsync(x => x.Id == id);
     }
 }

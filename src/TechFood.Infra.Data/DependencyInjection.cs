@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using TechFood.Application.Models.OrderMonitor;
+using TechFood.Application.QueryProvider;
 using TechFood.Domain.Repositories;
 using TechFood.Domain.Shared.Interfaces;
 using TechFood.Domain.UoW;
 using TechFood.Infra.Data.Contexts;
-using TechFood.Infra.Data.Queries;
+using TechFood.Infra.Data.QueryProviders;
 using TechFood.Infra.Data.Repositories;
 using TechFood.Infra.Data.UoW;
 
@@ -38,7 +38,16 @@ public static class DependencyInjection
         services.AddScoped<IPaymentRepository, PaymentRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IPreparationRepository, PreparationRepository>();
-        services.AddScoped<IReadOnlyQuery<GetPreparationMonitorResult>, OrderMonitorQuery>();
+
+        //Queries
+        services.AddScoped<IProductQueryProvider, ProductQueryProvider>();
+        services.AddScoped<ICategoryQueryProvider, CategoryQueryProvider>();
+        services.AddScoped<ICustomerQueryProvider, CustomerQueryProvider>();
+        services.AddScoped<IPreparationQueryProvider, PreparationQueryProvider>();
+        services.AddScoped<IMenuQueryProvider, MenuQueryProvider>();
+
+        //DomainEvents
+        services.AddScoped<IDomainEventStore, TechFoodEventsContext>();
 
         return services;
     }

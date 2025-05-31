@@ -76,7 +76,7 @@ namespace TechFood.Doman.Tests
             order.Finish();
 
             // Act
-            var result = Assert.Throws<DomainException>(order.CreatePayment);
+            var result = Assert.Throws<DomainException>(order.WaitPayment);
 
             // Assert
             Assert.Equal(Domain.Resources.Exceptions.Order_CannotCreatePaymentToNonCreatedStatus, result.Message);

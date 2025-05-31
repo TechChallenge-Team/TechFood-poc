@@ -1,19 +1,19 @@
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using TechFood.Application.Models.Order;
-using TechFood.Application.UseCases.Interfaces;
+using TechFood.Application.UseCases.Order.Commands;
 
 namespace TechFood.Api.Controllers;
 
 [ApiController()]
 [Route("v1/[controller]")]
-public class OrdersController(IOrderUseCase orderUseCase) : ControllerBase
+public class OrdersController(IMediator userCase) : ControllerBase
 {
-    private readonly IOrderUseCase _orderUseCase = orderUseCase;
+    private readonly IMediator _userCase = userCase;
 
     [HttpPost]
-    public async Task<IActionResult> CreateAsync([FromBody] CreateOrderRequest data)
+    public async Task<IActionResult> CreateAsync([FromBody] CreateOrderCommand command)
     {
-        var result = await _orderUseCase.CreateAsync(data);
+        var result = await _userCase.Send(command);
 
         return Ok(result);
     }
@@ -21,8 +21,8 @@ public class OrdersController(IOrderUseCase orderUseCase) : ControllerBase
     [HttpPatch("{id:Guid}/finish")]
     public async Task<IActionResult> FinishAsync(Guid id)
     {
-        var result = await _orderUseCase.FinishAsync(id);
+        await _userCase.Send(new FinishOrderCommand(id));
 
-        return result ? Ok() : NotFound();
+        return Ok();
     }
 }

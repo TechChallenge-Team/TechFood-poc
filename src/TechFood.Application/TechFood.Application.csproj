@@ -11,6 +11,7 @@
   
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.1.2" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2" />
   </ItemGroup>
@@ -44,7 +45,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Category\" />
+    <Folder Include="Common\AutoMapper\" />
+    <Folder Include="UseCases\Authentication\EventHandlers\" />
+    <Folder Include="UseCases\Authentication\Queries\" />
+    <Folder Include="UseCases\Category\EventHandlers\" />
+    <Folder Include="UseCases\Customer\EventHandlers\" />
+    <Folder Include="UseCases\Menu\Commands\" />
+    <Folder Include="UseCases\Menu\EventHandlers\" />
+    <Folder Include="UseCases\Order\Queries\" />
+    <Folder Include="UseCases\Payment\EventHandlers\" />
+    <Folder Include="UseCases\Payment\Queries\" />
+    <Folder Include="UseCases\Product\EventHandlers\" />
   </ItemGroup>
 
 </Project>

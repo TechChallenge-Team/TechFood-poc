@@ -11,7 +11,7 @@ namespace TechFood.Infra.Data.Repositories
     {
         private readonly TechFoodContext _dbContext = dbContext;
 
-        public async Task<Guid> CreateAsync(User user)
+        public async Task<Guid> AddAsync(User user)
         {
             var entry = await _dbContext.AddAsync(user);
 

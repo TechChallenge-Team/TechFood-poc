@@ -1,6 +1,8 @@
 using System;
 using TechFood.Domain.Enums;
+using TechFood.Domain.Events.Preparation;
 using TechFood.Domain.Shared.Entities;
+using TechFood.Domain.Shared.Exceptions;
 
 namespace TechFood.Domain.Entities;
 
@@ -8,17 +10,19 @@ public class Preparation : Entity, IAggregateRoot
 {
     private Preparation() { }
 
-    public Preparation(Guid orderId, int number)
+    public Preparation(Guid orderId)
     {
         OrderId = orderId;
-        Number = number;
         CreatedAt = DateTime.Now;
         Status = PreparationStatusType.Pending;
+
+        _events.Add(new PreparationCreatedEvent(
+            Id,
+            OrderId,
+            CreatedAt));
     }
 
     public Guid OrderId { get; private set; }
-
-    public int Number { get; private set; }
 
     public DateTime CreatedAt { get; private set; }
 
@@ -32,22 +36,32 @@ public class Preparation : Entity, IAggregateRoot
     {
         if (Status != PreparationStatusType.Pending)
         {
-            throw new InvalidOperationException("Preparation can only be started if it is pending.");
+            throw new DomainException(Resources.Exceptions.Preparation_CanOnlyStartIfInPending);
         }
 
         StartedAt = DateTime.Now;
         Status = PreparationStatusType.InProgress;
+
+        _events.Add(new PreparationStartedEvent(
+            Id,
+            OrderId,
+            StartedAt.Value));
     }
 
     public void Finish()
     {
         if (Status != PreparationStatusType.InProgress)
         {
-            throw new InvalidOperationException("Preparation can only be finished if it is in progress.");
+            throw new DomainException(Resources.Exceptions.Preparation_CanOnlyFinishIfInProgress);
         }
 
         Status = PreparationStatusType.Done;
         FinishedAt = DateTime.Now;
+
+        _events.Add(new PreparationFinishedEvent(
+            Id,
+            OrderId,
+            FinishedAt.Value));
     }
 
     public void Delivered()

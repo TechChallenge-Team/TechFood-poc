@@ -120,20 +120,32 @@
   <data name="Auth_InvalidUseOrPassword" xml:space="preserve">
     <value>Invalid user or password.</value>
   </data>
+  <data name="Category_CategoryNotFound" xml:space="preserve">
+    <value>Category not found.</value>
+  </data>
+  <data name="Customer_CpfAlreadyExists" xml:space="preserve">
+    <value>This CPF is already registered.</value>
+  </data>
   <data name="ImageUrlResolver_FolderCannotBeNull" xml:space="preserve">
     <value>Folder name and image file name cannot be null or empty.</value>
   </data>
   <data name="Order_ItemNotFound" xml:space="preserve">
-    <value>Item Not Found</value>
+    <value>Item Not Found.</value>
   </data>
   <data name="Order_OrderNotFound" xml:space="preserve">
     <value>Order not found.</value>
   </data>
+  <data name="Payment_PaymentNotFound" xml:space="preserve">
+    <value>Payment not found.</value>
+  </data>
+  <data name="Preparation_PreparationNotFound" xml:space="preserve">
+    <value>Preparation not found.</value>
+  </data>
   <data name="Product_CaregoryNotFound" xml:space="preserve">
-    <value>Category Not Found</value>
+    <value>Category Not Found.</value>
   </data>
   <data name="Product_ProductNotFound" xml:space="preserve">
-    <value>Product Not Found</value>
+    <value>Product Not Found.</value>
   </data>
   <data name="ValidationException_Message" xml:space="preserve">
     <value>The command state is not valid for the current request.</value>

@@ -1,19 +1,20 @@
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using TechFood.Application.Models.Category;
-using TechFood.Application.UseCases.Interfaces;
+using TechFood.Application.UseCases.Category.Commands;
+using TechFood.Application.UseCases.Category.Queries;
 
 namespace TechFood.Api.Controllers;
 
 [ApiController()]
 [Route("v1/[controller]")]
-public class CategoriesController(ICategoryUseCase categoryUseCase) : ControllerBase
+public class CategoriesController(IMediator useCase) : ControllerBase
 {
-    private readonly ICategoryUseCase _categoryUseCase = categoryUseCase;
+    private readonly IMediator _useCase = useCase;
 
     [HttpGet]
     public async Task<IActionResult> GetAsync()
     {
-        var result = await _categoryUseCase.ListAllAsync();
+        var result = await _useCase.Send(new GetAllCategoryQuery());
 
         return Ok(result);
     }
@@ -21,32 +22,34 @@ public class CategoriesController(ICategoryUseCase categoryUseCase) : Controller
     [HttpGet("{id:Guid}")]
     public async Task<IActionResult> GetByIdAsync(Guid id)
     {
-        var result = await _categoryUseCase.GetByIdAsync(id);
+        var result = await _useCase.Send(new GetCategoryByIdQuery(id));
 
         return result != null ? Ok(result) : NotFound();
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddAsync(CreateCategoryRequest category)
+    public async Task<IActionResult> AddAsync(CreateCategoryCommand command)
     {
-        var result = await _categoryUseCase.AddAsync(category);
+        var result = await _useCase.Send(command);
 
         return Ok(result);
     }
 
     [HttpPut("{id:Guid}")]
-    public async Task<IActionResult> UpdateAsync(Guid id, UpdateCategoryRequest category)
+    public async Task<IActionResult> UpdateAsync(Guid id, UpdateCategoryCommand command)
     {
-        var result = await _categoryUseCase.UpdateAsync(id, category);
+        command.Id = id;
 
-        return result != null ? Ok(result) : NotFound();
+        var result = await _useCase.Send(command);
+
+        return Ok(result);
     }
 
     [HttpDelete("{id:Guid}")]
     public async Task<IActionResult> DeleteAsync(Guid id)
     {
-        var result = await _categoryUseCase.DeleteAsync(id);
+        await _useCase.Send(new DeleteCategoryCommand(id));
 
-        return result ? NoContent() : NotFound();
+        return NoContent();
     }
 }

@@ -1,18 +1,19 @@
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using TechFood.Application.UseCases.Interfaces;
+using TechFood.Application.UseCases.Menu.Queries;
 
 namespace TechFood.Api.Controllers;
 
 [ApiController()]
 [Route("v1/[controller]")]
-public class MenuController(IMenuUseCase menuUseCase) : ControllerBase
+public class MenuController(IMediator useCase) : ControllerBase
 {
-    private readonly IMenuUseCase _menuUseCase = menuUseCase;
+    private readonly IMediator _useCase = useCase;
 
     [HttpGet]
     public async Task<IActionResult> GetAsync()
     {
-        var result = await _menuUseCase.GetAsync();
+        var result = await _useCase.Send(new GetMenuQuery());
 
         return Ok(result);
     }
