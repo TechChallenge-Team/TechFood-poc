@@ -94,6 +94,54 @@ TODO: Document the order flow using Swagger for API endpoints.
 ![Restaurant Order Flow](/docs/admin/finish-preparation.png)
 ![Restaurant Order Flow](/docs/admin/finish-order.png)
 
+## Order Flow - Backend
+
+After starting the application, all the endpoints can be tested using Swagger, which is available at the following URL: [http://localhost:5000/api/swagger/index.html](http://localhost:5000/api/swagger/index.html).
+
+**Creating a new order**:
+
+Do a post to endpoint `/v1/orders`:
+
+![Create Order Flow](/docs/backend/create-order-endpoint.png)
+
+Obs: to get the `productId`, you can use the endpoint `/v1/products` to list all products. if there is no products, follow the step - **Creating a new product**
+
+**Creating a new payment**:
+
+After creating an order, you can create a new payment by doing a post to endpoint `/v1/payments`:
+
+![Create Payment Flow](/docs/backend/create-payment-endpoint.png)
+
+You should get as response the QR code to be scanned by the consumer to complete the payment.
+
+![Create Payment Flow](/docs/backend/create-payment-endpoint-response.png)
+
+After the payment a weebhook will be called to update the order status to PAID and the preparation status to PENDING.
+
+Obs: The weebhook is not implemented yet so you can call directly the endpoint `/v1/payments/{paymentId}`
+
+**Changing preparation status**:
+
+To change the preparation status, you can do a PATCH to the following endpoints:
+
+![Change Preparation Status Flow](/docs/backend/change-preparation-status-endpoint.png)
+
+- `/v1/preparations/{preparationId}/start` to change the status to INPROGRESS.
+- `/v1/preparations/{preparationId}/finish` to change the status to DONE.
+- `/v1/preparations/{preparationId}/cancel` to change the status to CANCELLED.
+
+After changing the preparation status to DONE you can finish the order and preparation flow doing a PATCH to the endpoint `/v1/orders/{orderId}/finish`.
+
+**Creating a new product**:
+
+In order to create a new product, first you need to create a catergory by doing a post to endpoint `/v1/categories`:
+
+![Create Product Flow](/docs/backend/create-category-endpoint.png)
+
+Then, you can create a new product by doing a post to endpoint `/v1/products`:
+
+![Create Product Flow](/docs/backend/create-product-endpoint.png)
+
 ## Members
 
 - [Elias Soares - RM 362904](https://github.com/eliassoaressouza)
