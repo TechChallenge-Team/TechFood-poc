@@ -78,24 +78,6 @@ Database connection string for the API:
 
 ## Order Flow - Swagger
 
-TODO: Document the order flow using Swagger for API endpoints.
-
-## Order Flow - Frontend
-
-1. **Consumer**: The consumer uses the self-order application to browse the menu, select items, and place an order. The order is then sent to the restaurant for preparation:
-
-![Consumer Order Flow](/docs/self-order/start.png)
-![Consumer Order Flow](/docs/self-order/menu.png)
-![Consumer Order Flow](/docs/self-order/finish.png)
-
-2. **Restaurant**: The restaurant receives the order through the admin panel, where they can manage the menu and track order preparation and delivery:
-
-![Restaurant Order Flow](/docs/admin/start-preparation.png)
-![Restaurant Order Flow](/docs/admin/finish-preparation.png)
-![Restaurant Order Flow](/docs/admin/finish-order.png)
-
-## Order Flow - Backend
-
 After starting the application, all the endpoints can be tested using Swagger, which is available at the following URL: [http://localhost:5000/api/swagger/index.html](http://localhost:5000/api/swagger/index.html).
 
 **Creating a new order**:
@@ -141,6 +123,20 @@ In order to create a new product, first you need to create a catergory by doing 
 Then, you can create a new product by doing a post to endpoint `/v1/products`:
 
 ![Create Product Flow](/docs/backend/create-product-endpoint.png)
+
+## Order Flow - Frontend
+
+1. **Consumer**: The consumer uses the self-order application to browse the menu, select items, and place an order. The order is then sent to the restaurant for preparation:
+
+![Consumer Order Flow](/docs/self-order/start.png)
+![Consumer Order Flow](/docs/self-order/menu.png)
+![Consumer Order Flow](/docs/self-order/finish.png)
+
+2. **Restaurant**: The restaurant receives the order through the admin panel, where they can manage the menu and track order preparation and delivery:
+
+![Restaurant Order Flow](/docs/admin/start-preparation.png)
+![Restaurant Order Flow](/docs/admin/finish-preparation.png)
+![Restaurant Order Flow](/docs/admin/finish-order.png)
 
 ## Members
 
