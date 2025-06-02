@@ -4,7 +4,7 @@ TechFood is a FIAP Post-Graduation project that aims to create a web application
 
 ## Project Presentation
 
-[![Watch the video](https://img.youtube.com/vi/1j4b2g5k8eY/0.jpg)](https://www.youtube.com/watch?v=1Y0qZz30VE0)
+[![Watch the video](https://img.youtube.com/vi/1j4b2g5k8eY/0.jpg)](https://youtu.be/0T7fcPIKPRI)
 
 ## Brainstorming
 
