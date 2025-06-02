@@ -4,7 +4,7 @@ TechFood is a FIAP Post-Graduation project that aims to create a web application
 
 ## Project Presentation
 
-[![Watch the video](https://img.youtube.com/vi/1j4b2g5k8eY/0.jpg)](https://youtu.be/0T7fcPIKPRI)
+[![Watch the video](https://img.youtube.com/vi/0T7fcPIKPRI/0.jpg)](https://youtu.be/0T7fcPIKPRI)
 
 ## Brainstorming
 
@@ -86,7 +86,7 @@ Do a post to endpoint `/v1/orders`:
 
 ![Create Order Flow](/docs/backend/create-order-endpoint.png)
 
-Obs: to get the `productId`, you can use the endpoint `/v1/products` to list all products. if there is no products, follow the step - **Creating a new product**
+Obs: to get the `productId`, you can use the endpoint `/v1/products` to list all products. if there is no products, follow the step - **Admin Flow - Swagger**
 
 **Creating a new payment**:
 
@@ -114,7 +114,7 @@ To change the preparation status, you can do a PATCH to the following endpoints:
 
 After changing the preparation status to DONE you can finish the order and preparation flow doing a PATCH to the endpoint `/v1/orders/{orderId}/finish`.
 
-**Creating a new product**:
+## Admin Flow - Swagger
 
 In order to create a new product, first you need to create a catergory by doing a post to endpoint `/v1/categories`:
 
