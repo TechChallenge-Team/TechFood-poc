@@ -61,7 +61,7 @@ export const ConfirmationPage = () => {
               weight="medium"
               style={{ borderBottom: "3px solid var(--accent-10)" }}
             >
-              {t("labels.orderNumber")}
+              {t("confirmationPage.orderNumber")}
             </Text>
             <Text size="5" weight="medium">
               {number}
