@@ -43,6 +43,7 @@ internal class Middleware(RequestDelegate next)
         catch (Exception)
         {
             await transaction.RollbackAsync();
+            throw;
         }
         finally
         {

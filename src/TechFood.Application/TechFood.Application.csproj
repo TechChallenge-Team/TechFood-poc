@@ -52,7 +52,6 @@
     <Folder Include="UseCases\Customer\EventHandlers\" />
     <Folder Include="UseCases\Menu\Commands\" />
     <Folder Include="UseCases\Menu\EventHandlers\" />
-    <Folder Include="UseCases\Order\Queries\" />
     <Folder Include="UseCases\Payment\EventHandlers\" />
     <Folder Include="UseCases\Payment\Queries\" />
     <Folder Include="UseCases\Product\EventHandlers\" />

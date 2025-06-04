@@ -8,5 +8,7 @@ public interface IPreparationQueryProvider
 {
     Task<GetPreparationByIdQuery.Result?> GetByIdAsync(GetPreparationByIdQuery query);
 
-    Task<IEnumerable<GetMonitorPreparationsQuery.Result>> GetMonitorPreparationsAsync(GetMonitorPreparationsQuery query);
+    Task<IEnumerable<GetDailyPreparationsQuery.Result>> GetDailyPreparationsAsync(GetDailyPreparationsQuery query);
+
+    Task<IEnumerable<GetTrackingPreparationsQuery.Result>> GetTrackingItemsAsync(GetTrackingPreparationsQuery query);
 }

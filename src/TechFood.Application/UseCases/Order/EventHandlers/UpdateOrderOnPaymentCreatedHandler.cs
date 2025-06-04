@@ -17,6 +17,6 @@ internal class UpdateOrderOnPaymentCreatedHandler(IOrderRepository repo) : INoti
             throw new Common.Exceptions.ApplicationException(Exceptions.Order_OrderNotFound);
         }
 
-        order.WaitPayment();
+        order.Receive();
     }
 }

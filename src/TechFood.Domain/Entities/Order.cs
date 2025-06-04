@@ -19,7 +19,7 @@ public class Order : Entity, IAggregateRoot
         Number = number;
         CustomerId = customerId;
         CreatedAt = DateTime.Now;
-        Status = OrderStatusType.Created;
+        Status = OrderStatusType.Pending;
 
         _events.Add(new OrderCreatedEvent(
             Id,
@@ -37,8 +37,6 @@ public class Order : Entity, IAggregateRoot
 
     public DateTime CreatedAt { get; private set; }
 
-    public DateTime? FinishedAt { get; private set; }
-
     public OrderStatusType Status { get; private set; }
 
     public decimal Amount { get; private set; }
@@ -51,9 +49,9 @@ public class Order : Entity, IAggregateRoot
 
     public void ApplyDiscount(decimal discount)
     {
-        if (Status != OrderStatusType.Created)
+        if (Status != OrderStatusType.Pending)
         {
-            throw new DomainException(Resources.Exceptions.Order_CannotApplyDiscountToNonCreatedStatus);
+            throw new DomainException(Resources.Exceptions.Order_CannotApplyDiscountToNonPendingStatus);
         }
 
         Validations.ThrowIsGreaterThanZero(discount, Resources.Exceptions.Order_DiscountCannotBeNegative);
@@ -63,41 +61,60 @@ public class Order : Entity, IAggregateRoot
         CalculateAmount();
     }
 
-    public void WaitPayment()
+    public void Receive()
     {
-        if (Status != OrderStatusType.Created)
+        if (Status != OrderStatusType.Pending)
         {
-            throw new DomainException(Resources.Exceptions.Order_CannotCreatePaymentToNonCreatedStatus);
+            throw new DomainException(Resources.Exceptions.Order_CannotReceiveToNonPendingStatus);
         }
 
-        UpdateStatus(OrderStatusType.WaitingPayment);
+        UpdateStatus(OrderStatusType.Received);
     }
 
-    public void ConfirmPayment()
+    public void Prepare()
     {
-        if (Status != OrderStatusType.WaitingPayment)
+        if (Status != OrderStatusType.Received)
         {
-            throw new DomainException(Resources.Exceptions.Order_CannotPayToNonWaitingPaymentStatus);
+            throw new DomainException(Resources.Exceptions.Order_CannotPrepareToNonReceivedStatus);
         }
 
-        UpdateStatus(OrderStatusType.Paid);
+        UpdateStatus(OrderStatusType.InPreparation);
     }
 
-    public void RefusedPayment()
+    public void Ready()
     {
-        if (Status != OrderStatusType.WaitingPayment)
+        if (Status != OrderStatusType.InPreparation)
         {
-            throw new DomainException(Resources.Exceptions.Order_CannotRefuseToNonWaitingPaymentStatus);
+            throw new DomainException(Resources.Exceptions.Order_CannotReadyToNonInPreparationStatus);
         }
 
-        UpdateStatus(OrderStatusType.RefusedPayment);
+        UpdateStatus(OrderStatusType.Ready);
+    }
+
+    public void Deliver()
+    {
+        if (Status != OrderStatusType.Ready)
+        {
+            throw new DomainException(Resources.Exceptions.Order_CannotDeliverToNonReadyStatus);
+        }
+
+        UpdateStatus(OrderStatusType.Delivered);
+    }
+
+    public void Cancel()
+    {
+        UpdateStatus(OrderStatusType.Cancelled);
+
+        _events.Add(new OrderCancelledEvent(
+            Id,
+            DateTime.Now));
     }
 
     public void AddItem(OrderItem item)
     {
-        if (Status != OrderStatusType.Created)
+        if (Status != OrderStatusType.Pending)
         {
-            throw new DomainException(Resources.Exceptions.Order_CannotAddItemToNonCreatedStatus);
+            throw new DomainException(Resources.Exceptions.Order_CannotAddItemToNonPendingStatus);
         }
 
         _items.Add(item);
@@ -107,9 +124,9 @@ public class Order : Entity, IAggregateRoot
 
     public void RemoveItem(Guid itemId)
     {
-        if (Status != OrderStatusType.Created)
+        if (Status != OrderStatusType.Pending)
         {
-            throw new DomainException(Resources.Exceptions.Order_CannotRemoveItemToNonCreatedStatus);
+            throw new DomainException(Resources.Exceptions.Order_CannotRemoveItemToNonPendingStatus);
         }
 
         var item = _items.Find(i => i.Id == itemId);
@@ -131,49 +148,6 @@ public class Order : Entity, IAggregateRoot
         }
 
         Amount -= Discount;
-    }
-
-    public void FinishPreparation()
-    {
-        if (Status != OrderStatusType.InPreparation)
-        {
-            throw new DomainException(Resources.Exceptions.Order_CannotFinishToNonInPreparationStatus);
-        }
-
-        UpdateStatus(OrderStatusType.PreparationDone);
-    }
-
-    public void StartPreparation()
-    {
-        if (Status != OrderStatusType.Paid)
-        {
-            throw new DomainException(Resources.Exceptions.Order_CannotPrepareToNonPaidStatus);
-        }
-
-        UpdateStatus(OrderStatusType.InPreparation);
-    }
-
-    public void CancelPreparation()
-    {
-        if (Status == OrderStatusType.Cancelled)
-        {
-            //TODO: Adjust message
-            throw new DomainException("Pedido ja foi cancelado");
-        }
-
-        UpdateStatus(OrderStatusType.Cancelled);
-    }
-
-    public void Finish()
-    {
-        FinishedAt = DateTime.Now;
-
-        UpdateStatus(OrderStatusType.Finished);
-
-        _events.Add(new OrderFinishedEvent(
-            Id,
-            CustomerId,
-            FinishedAt.Value));
     }
 
     private void UpdateStatus(OrderStatusType status)

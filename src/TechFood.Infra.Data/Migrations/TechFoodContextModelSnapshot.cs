@@ -124,9 +124,6 @@ namespace TechFood.Infra.Data.Migrations
                     b.Property<decimal>("Discount")
                         .HasColumnType("decimal(6, 2)");
 
-                    b.Property<DateTime?>("FinishedAt")
-                        .HasColumnType("datetime2");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -152,7 +149,7 @@ namespace TechFood.Infra.Data.Migrations
                             Discount = 0m,
                             IsDeleted = false,
                             Number = 1,
-                            Status = 5
+                            Status = 1
                         },
                         new
                         {
@@ -163,7 +160,7 @@ namespace TechFood.Infra.Data.Migrations
                             Discount = 0m,
                             IsDeleted = false,
                             Number = 2,
-                            Status = 4
+                            Status = 3
                         });
                 });
 
@@ -294,10 +291,13 @@ namespace TechFood.Infra.Data.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime?>("CancelledAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime");
 
-                    b.Property<DateTime?>("FinishedAt")
+                    b.Property<DateTime?>("DeliveredAt")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
@@ -305,6 +305,9 @@ namespace TechFood.Infra.Data.Migrations
 
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("ReadyAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("StartedAt")
                         .HasColumnType("datetime2");
@@ -315,6 +318,24 @@ namespace TechFood.Infra.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Preparation", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("9b50f871-b829-4085-8ae5-118cd1198fbe"),
+                            CreatedAt = new DateTime(2025, 5, 13, 22, 2, 36, 0, DateTimeKind.Utc).AddTicks(6053),
+                            IsDeleted = false,
+                            OrderId = new Guid("d1b5f3a2-4c8e-4b7c-9f0e-5a2d6f3b8c1e"),
+                            Status = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("83874d8f-0bc8-42ab-85d9-540a36dcccf4"),
+                            CreatedAt = new DateTime(2025, 5, 13, 22, 2, 36, 0, DateTimeKind.Utc).AddTicks(6354),
+                            IsDeleted = false,
+                            OrderId = new Guid("f2b5f3a2-4c8e-4b7c-9f0e-5a2d6f3b8c1e"),
+                            Status = 2
+                        });
                 });
 
             modelBuilder.Entity("TechFood.Domain.Entities.Product", b =>

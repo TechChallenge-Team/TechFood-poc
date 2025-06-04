@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TechFood.Application.UseCases.Order.Commands;
+using TechFood.Application.UseCases.Order.Queries;
 
 namespace TechFood.Api.Controllers;
 
@@ -8,20 +9,38 @@ namespace TechFood.Api.Controllers;
 [Route("v1/[controller]")]
 public class OrdersController(IMediator userCase) : ControllerBase
 {
-    private readonly IMediator _userCase = userCase;
+    private readonly IMediator _useCase = userCase;
 
     [HttpPost]
     public async Task<IActionResult> CreateAsync([FromBody] CreateOrderCommand command)
     {
-        var result = await _userCase.Send(command);
+        var result = await _useCase.Send(command);
 
         return Ok(result);
     }
 
-    [HttpPatch("{id:Guid}/finish")]
-    public async Task<IActionResult> FinishAsync(Guid id)
+    [HttpGet]
+    public async Task<IActionResult> GetDailyAsync()
     {
-        await _userCase.Send(new FinishOrderCommand(id));
+        var result = await _useCase.Send(new GetDailyOrdersQuery());
+
+        return Ok(result);
+    }
+
+    [HttpGet]
+    [Route("ready")]
+    public async Task<IActionResult> GetReadyAsync()
+    {
+        var result = await _useCase.Send(new GetReadyOrdersQuery());
+
+        return Ok(result);
+    }
+
+    [HttpPatch]
+    [Route("{id:guid}/deliver")]
+    public async Task<IActionResult> DeliverAsync(Guid id)
+    {
+        await _useCase.Send(new DeliverOrderCommand(id));
 
         return Ok();
     }

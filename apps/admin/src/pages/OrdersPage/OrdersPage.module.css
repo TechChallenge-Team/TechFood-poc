@@ -1,0 +1,64 @@
+.root {
+  height: 100%;
+}
+
+.card-in {
+  display: flex !important;
+  flex-direction: column;
+  min-width: 350px;
+}
+
+.card-in-items {
+  flex: 1;
+  overflow: auto;
+  margin-right: -10px;
+  padding-right: var(--space-3);
+}
+
+.segmented-control {
+  width: 100%;
+}
+
+.segmented-control button[data-state="on"] {
+  background-color: var(--accent-a9);
+}
+
+.order-item {
+  cursor: pointer;
+  padding: var(--space-4);
+  border: 1.5px solid var(--gray-a6);
+  border-radius: var(--radius-4);
+}
+
+.order-item.selected {
+  border-color: var(--accent-a9);
+  background-color: var(--accent-a3);
+}
+
+.order-item:not(.selected):hover {
+  border-color: var(--accent-a9);
+  background-color: var(--accent-a1);
+}
+
+.symbol {
+  color: var(--accent-a9);
+  margin-right: 2px;
+}
+
+.card-details {
+  display: flex !important;
+  flex-direction: column;
+  flex: 1;
+}
+
+.detail-content {
+  border: 1px solid var(--gray-a6);
+  border-radius: var(--radius-4);
+  padding: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+.item-image {
+  height: 50px;
+  width: 50px;
+}

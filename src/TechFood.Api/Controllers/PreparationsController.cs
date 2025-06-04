@@ -11,24 +11,19 @@ public class PreparationsController(IMediator useCase) : ControllerBase
 {
     private readonly IMediator _useCase = useCase;
 
-    //[HttpGet]
-    //[Route("orders")]
-    //public async Task<IActionResult> GetAllPreparationOrdersAsync()
-    //{
-    //    return Ok(await _preparationUseCase.GetAllPreparationOrdersAsync());
-    //}
+    [HttpGet]
+    public async Task<IActionResult> GetDailyAsync()
+    {
+        var result = await _useCase.Send(new GetDailyPreparationsQuery());
 
-    //[HttpGet]
-    //[Route("{orderId:guid}/number")]
-    //public async Task<IActionResult> GetPreparationByOrderIdAsync(Guid orderId)
-    //{
-    //    return Ok(await _preparationUseCase.GetPreparationByOrderIdAsync(orderId));
-    //}
+        return Ok(result);
+    }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllAsync()
+    [Route("tracking")]
+    public async Task<IActionResult> GetTrackingAsync()
     {
-        var result = await _useCase.Send(new GetMonitorPreparationsQuery());
+        var result = await _useCase.Send(new GetTrackingPreparationsQuery());
 
         return Ok(result);
     }
@@ -52,20 +47,11 @@ public class PreparationsController(IMediator useCase) : ControllerBase
     }
 
     [HttpPatch]
-    [Route("{id:guid}/finish")]
-    public async Task<IActionResult> FinishAsync(Guid id)
+    [Route("{id:guid}/complete")]
+    public async Task<IActionResult> CompleteAsync(Guid id)
     {
-        await _useCase.Send(new FinishPreparationCommand(id));
+        await _useCase.Send(new CompletePreparationCommand(id));
 
         return Ok();
     }
-
-    //[HttpPatch]
-    //[Route("{id:guid}/cancel")]
-    //public async Task<IActionResult> CancelAsync(Guid id)
-    //{
-    //    await _preparationUseCase.CancelAsync(id);
-
-    //    return Ok();
-    //}
 }

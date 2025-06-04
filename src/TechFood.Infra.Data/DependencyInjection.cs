@@ -45,6 +45,7 @@ public static class DependencyInjection
         services.AddScoped<ICustomerQueryProvider, CustomerQueryProvider>();
         services.AddScoped<IPreparationQueryProvider, PreparationQueryProvider>();
         services.AddScoped<IMenuQueryProvider, MenuQueryProvider>();
+        services.AddScoped<IOrderQueryProvider, OrderQueryProvider>();
 
         //DomainEvents
         services.AddScoped<IDomainEventStore, TechFoodEventsContext>();

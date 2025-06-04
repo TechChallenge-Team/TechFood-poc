@@ -1,8 +1,21 @@
 import { createBrowserRouter } from "react-router";
-import { MonitorDot, SquareKanbanIcon, UtensilsIcon } from "lucide-react";
+import {
+  CookingPotIcon,
+  ListTodoIcon,
+  MonitorDotIcon,
+  SquareKanbanIcon,
+  UtensilsIcon,
+} from "lucide-react";
 import { AdminLayout } from "./components";
-import { Dashboard, Forbidden, MenuManagement, SignIn } from "./pages";
-import { Monitor } from "./pages/Monitor";
+import {
+  Dashboard,
+  Forbidden,
+  MenuManagement,
+  OrdersPage,
+  PreparationsPage,
+  ReadyOrdersPage,
+  SignIn,
+} from "./pages";
 
 const router = createBrowserRouter(
   [
@@ -31,9 +44,23 @@ const router = createBrowserRouter(
           element: <MenuManagement />,
         },
         {
-          path: "Monitor",
-          element: <Monitor />,
-          handle: { title: "Monitor", menu: true, icon: <MonitorDot /> },
+          path: "orders",
+          element: <OrdersPage />,
+          handle: { title: "Orders", menu: true, icon: <MonitorDotIcon /> },
+        },
+        {
+          path: "preparations",
+          element: <PreparationsPage />,
+          handle: {
+            title: "Preparations",
+            menu: true,
+            icon: <CookingPotIcon />,
+          },
+        },
+        {
+          path: "ready-orders",
+          element: <ReadyOrdersPage />,
+          handle: { title: "Ready Orders", menu: true, icon: <ListTodoIcon /> },
         },
         // {
         //   path: "reviews",

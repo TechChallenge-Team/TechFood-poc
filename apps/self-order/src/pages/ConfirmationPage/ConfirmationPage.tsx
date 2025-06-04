@@ -6,7 +6,7 @@ import { t } from "../../i18n";
 
 import classNames from "./ConfirmationPage.module.css";
 
-const timeout = 20000; // 20 seconds
+const TIMEOUT = 20000; // 20 seconds
 
 export const ConfirmationPage = () => {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ export const ConfirmationPage = () => {
   useEffect(() => {
     setTimeout(() => {
       navigate("/", { replace: true });
-    }, timeout);
+    }, TIMEOUT);
   }, [navigate]);
 
   return (
@@ -61,7 +61,7 @@ export const ConfirmationPage = () => {
               weight="medium"
               style={{ borderBottom: "3px solid var(--accent-10)" }}
             >
-              {t("confirmationPage.orderNumber")}
+              {t("labels.orderNumber")}
             </Text>
             <Text size="5" weight="medium">
               {number}

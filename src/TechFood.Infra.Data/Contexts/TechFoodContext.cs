@@ -217,7 +217,7 @@ public class TechFoodContext(DbContextOptions<TechFoodContext> options) : DbCont
                     CreatedAt = new DateTime(2025, 5, 13, 22, 2, 36, DateTimeKind.Utc)
             .AddTicks(6053),
                     Amount = 39.97m,
-                    Status = OrderStatusType.PreparationDone,
+                    Status = OrderStatusType.Received,
                     Discount = 0m,
                     IsDeleted = false
                 },
@@ -229,7 +229,7 @@ public class TechFoodContext(DbContextOptions<TechFoodContext> options) : DbCont
                     CreatedAt = new DateTime(2025, 5, 13, 22, 2, 36, DateTimeKind.Utc)
             .AddTicks(6354),
                     Amount = 26.98m,
-                    Status = OrderStatusType.InPreparation,
+                    Status = OrderStatusType.Ready,
                     Discount = 0m,
                     IsDeleted = false
                 }
@@ -241,6 +241,30 @@ public class TechFoodContext(DbContextOptions<TechFoodContext> options) : DbCont
                new { Id = new Guid("b0f1c3a2-4c8e-4b7c-9f0e-5a2d6f3b8c1e"), OrderId = new Guid("d1b5f3a2-4c8e-4b7c-9f0e-5a2d6f3b8c1e"), ProductId = new Guid("55f32e65-c82f-4a10-981c-cdb7b0d2715a"), Quantity = 2, UnitPrice = 9.99m, IsDeleted = false },
                new { Id = new Guid("82e5700b-c33e-40a6-bb68-7279f0509421"), OrderId = new Guid("f2b5f3a2-4c8e-4b7c-9f0e-5a2d6f3b8c1e"), ProductId = new Guid("a62dc225-416a-4e36-ba35-a2bd2bbb80f7"), Quantity = 1, UnitPrice = 21.99m, IsDeleted = false },
                new { Id = new Guid("900f65fe-47ca-4b4b-9a7c-a82c6d9c52cd"), OrderId = new Guid("f2b5f3a2-4c8e-4b7c-9f0e-5a2d6f3b8c1e"), ProductId = new Guid("86c50c81-c46e-4e79-a591-3b68c75cefda"), Quantity = 1, UnitPrice = 4.99m, IsDeleted = false }
+            );
+
+        modelBuilder.Entity<Preparation>()
+            .HasData(
+                new
+                {
+                    Id = new Guid("9b50f871-b829-4085-8ae5-118cd1198fbe"),
+                    Number = 1,
+                    OrderId = new Guid("d1b5f3a2-4c8e-4b7c-9f0e-5a2d6f3b8c1e"),
+                    CreatedAt = new DateTime(2025, 5, 13, 22, 2, 36, DateTimeKind.Utc)
+            .AddTicks(6053),
+                    Status = PreparationStatusType.Pending,
+                    IsDeleted = false
+                },
+                new
+                {
+                    Id = new Guid("83874d8f-0bc8-42ab-85d9-540a36dcccf4"),
+                    Number = 2,
+                    OrderId = new Guid("f2b5f3a2-4c8e-4b7c-9f0e-5a2d6f3b8c1e"),
+                    CreatedAt = new DateTime(2025, 5, 13, 22, 2, 36, DateTimeKind.Utc)
+            .AddTicks(6354),
+                    Status = PreparationStatusType.Ready,
+                    IsDeleted = false
+                }
             );
 
         //modelBuilder.Entity<PaymentType>()

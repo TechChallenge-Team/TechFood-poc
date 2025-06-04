@@ -2,12 +2,10 @@ namespace TechFood.Domain.Enums;
 
 public enum OrderStatusType
 {
-    Created,
-    WaitingPayment,
-    Paid,
-    RefusedPayment,
+    Pending,
+    Received,
     InPreparation,
-    PreparationDone,
-    Finished,
+    Ready,
+    Delivered,
     Cancelled,
 }

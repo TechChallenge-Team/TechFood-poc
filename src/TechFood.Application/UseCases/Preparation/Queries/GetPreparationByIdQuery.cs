@@ -27,7 +27,7 @@ public class GetPreparationByIdQuery(Guid id) : IRequest<GetPreparationByIdQuery
 
         public DateTime? StartedAt { get; set; }
 
-        public DateTime? FinishedAt { get; set; }
+        public DateTime? ReadyAt { get; set; }
 
         public PreparationStatusType Status { get; set; }
     }

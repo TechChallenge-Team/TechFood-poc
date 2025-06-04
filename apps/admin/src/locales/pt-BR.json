@@ -2,22 +2,38 @@
   "menuManagementPage": {
     "products": "Produtos",
     "categories": "Categorias",
-    "addProduct": "Adicionar Produtos",
-    "deleteDialog": {
-      "title": "Deletar Produto",
-      "message": "Você tem certeza que deseja deletar o produto {{name}}?",
-      "confirm": "Deletar",
-      "cancel": "Cancelar"
-    },
-    "editDialog": {
-      "addSuccessMessage": "Produto adicionado com sucesso",
-      "editSuccessMessage": "Produto editado com sucesso",
-      "addErrorMessage": "Falha ao adicionar produto",
-      "editErrorMessage": "Falha ao editar produto",
-      "editTitle": "Editar Produto",
-      "addTitle": "Adicionar Produto",
-      "selectCategory": "Selecionar Categoria"
+    "addProduct": "Adicionar Produtos"
+  },
+  "deleteDialog": {
+    "title": "Deletar Produto",
+    "message": "Você tem certeza que deseja deletar o produto {{name}}?",
+    "confirm": "Deletar",
+    "cancel": "Cancelar"
+  },
+  "ordersPage": {
+    "orderIn": "Pedido em",
+    "orderDetails": "Detalhes do Pedido",
+    "cancelOrder": "Cancelar Pedido",
+    "status": {
+      "received": "Recebido",
+      "inPreparation": "Em Preparação",
+      "delivered": "Entregue"
     }
+  },
+  "preparationsPage": {
+    "noOrders": "Nenhum pedido para preparar"
+  },
+  "readyOrdersPage": {
+    "noReadyOrders": "Nenhum pedido pronto"
+  },
+  "editDialog": {
+    "addSuccessMessage": "Produto adicionado com sucesso",
+    "editSuccessMessage": "Produto editado com sucesso",
+    "addErrorMessage": "Falha ao adicionar produto",
+    "editErrorMessage": "Falha ao editar produto",
+    "editTitle": "Editar Produto",
+    "addTitle": "Adicionar Produto",
+    "selectCategory": "Selecionar Categoria"
   },
   "forbidden": {
     "title": "Você não tem permissão para ver isso.",
@@ -30,7 +46,28 @@
     "removeImage": "Remover Imagem",
     "selectedImage": "Imagem Selecionada"
   },
+  "preparationCard": {
+    "waitingTime": "Tempo de Espera",
+    "preparationTime": "Tempo de Preparo",
+    "start": "Iniciar preparo",
+    "finish": "Finalizar preparo",
+    "deliver": "Entregar",
+    "status": {
+      "pending": "Pendente",
+      "started": "Em preparo",
+      "delivered": "Entregue"
+    }
+  },
+  "readyOrderCard": {
+    "waitingTime": "Tempo de Espera",
+    "preparationTime": "Tempo de Preparo",
+    "deliver": "Entregar"
+  },
   "labels": {
+    "status": "Status",
+    "items": "Itens",
+    "orderNumber": "Pedido #{{number}}",
+    "currency": "R$",
     "save": "Salvar",
     "confirm": "Confirmar",
     "cancel": "Cancelar",
@@ -38,7 +75,8 @@
     "description": "Descrição",
     "price": "Preço",
     "category": "Categoria",
-    "image": "Imagem"
+    "image": "Imagem",
+    "total": "Total"
   },
   "errors": {
     "expiredSession": "Sua sessão expirou. Por favor, faça login novamente.",

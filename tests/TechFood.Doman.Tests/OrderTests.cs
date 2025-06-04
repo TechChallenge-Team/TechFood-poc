@@ -19,15 +19,15 @@ namespace TechFood.Doman.Tests
             _customerFixture = customerFixture;
         }
 
-        [Fact(DisplayName = "Cannot add item to an order that is not in the Created status.")]
+        [Fact(DisplayName = "Cannot add item to an order that is not in the Pending status.")]
         [Trait("Order", "Order Status")]
-        public void ShoudThrowException_WhenAddingItemToOrderThatIsNotCreatedStatus()
+        public void ShoudThrowException_WhenAddingItemToOrderThatIsNotPendingStatus()
         {
             // Arrange
             var customer = _customerFixture.CreateValidCustomer();
             var order = _orderFixture.CreateValidOrder(customer.Id);
 
-            order.Finish();
+            order.Cancel();
 
             var item = new OrderItem(
                 productId: Guid.NewGuid(),
@@ -38,12 +38,12 @@ namespace TechFood.Doman.Tests
             var result = Assert.Throws<DomainException>(() => order.AddItem(item));
 
             // Assert
-            Assert.Equal(Domain.Resources.Exceptions.Order_CannotAddItemToNonCreatedStatus, result.Message);
+            Assert.Equal(Domain.Resources.Exceptions.Order_CannotAddItemToNonPendingStatus, result.Message);
         }
 
-        [Fact(DisplayName = "Cannot remove item to an order that is not in the Created status.")]
+        [Fact(DisplayName = "Cannot remove item to an order that is not in the Pending status.")]
         [Trait("Order", "Order Status")]
-        public void ShoudThrowException_WhenRemovingItemToOrderThatIsNotCreatedStatus()
+        public void ShoudThrowException_WhenRemovingItemToOrderThatIsNotPendingStatus()
         {
             // Arrange
             var customer = _customerFixture.CreateValidCustomer();
@@ -56,115 +56,98 @@ namespace TechFood.Doman.Tests
 
             order.AddItem(item);
 
-            order.Finish();
+            order.Cancel();
 
             // Act
             var result = Assert.Throws<DomainException>(() => order.RemoveItem(item.Id));
 
             // Assert
-            Assert.Equal(Domain.Resources.Exceptions.Order_CannotRemoveItemToNonCreatedStatus, result.Message);
+            Assert.Equal(Domain.Resources.Exceptions.Order_CannotRemoveItemToNonPendingStatus, result.Message);
         }
 
-        [Fact(DisplayName = "Validate Payment Creation when Order is Created")]
+        [Fact(DisplayName = "Validate Receive when Order is Pending")]
         [Trait("Order", "Order Status")]
-        public void ShoudThrowException_WhenCreatingPaymentToOrderThatIsNotCreatedStatus()
+        public void ShoudThrowException_WhenReceiveToOrderThatIsNotPendingStatus()
         {
             // Arrange
             var customer = _customerFixture.CreateValidCustomer();
             var order = _orderFixture.CreateValidOrder(customer.Id);
 
-            order.Finish();
+            order.Cancel();
 
             // Act
-            var result = Assert.Throws<DomainException>(order.WaitPayment);
+            var result = Assert.Throws<DomainException>(order.Receive);
 
             // Assert
-            Assert.Equal(Domain.Resources.Exceptions.Order_CannotCreatePaymentToNonCreatedStatus, result.Message);
+            Assert.Equal(Domain.Resources.Exceptions.Order_CannotReceiveToNonPendingStatus, result.Message);
         }
 
-        [Fact(DisplayName = "Validate Discount Application when Order is Created")]
+        [Fact(DisplayName = "Validate Discount Application when Order is Pending")]
         [Trait("Order", "Order Status")]
-        public void ShoudThrowException_WhenApplyingDiscountToOrderThatIsNotCreatedStatus()
+        public void ShoudThrowException_WhenApplyingDiscountToOrderThatIsNotPendingStatus()
         {
             // Arrange
             var customer = _customerFixture.CreateValidCustomer();
             var order = _orderFixture.CreateValidOrder(customer.Id);
 
-            order.Finish();
+            order.Cancel();
 
             // Act
             var result = Assert.Throws<DomainException>(() => order.ApplyDiscount(10));
 
             // Assert
-            Assert.Equal(Domain.Resources.Exceptions.Order_CannotApplyDiscountToNonCreatedStatus, result.Message);
+            Assert.Equal(Domain.Resources.Exceptions.Order_CannotApplyDiscountToNonPendingStatus, result.Message);
         }
 
-        [Fact(DisplayName = "Validate Payment when Order is Wainting Payment")]
+        [Fact(DisplayName = "Validate Prepare when Order is Received")]
         [Trait("Order", "Order Status")]
-        public void ShoudThrowException_WhenPayingPaymentToOrderThatIsNotWaintingPaymentStatus()
+        public void ShoudThrowException_WhenPrepareOrderThatIsNotReceivedStatus()
         {
             // Arrange
             var customer = _customerFixture.CreateValidCustomer();
             var order = _orderFixture.CreateValidOrder(customer.Id);
 
-            order.Finish();
+            order.Cancel();
 
             // Act
-            var result = Assert.Throws<DomainException>(order.ConfirmPayment);
+            var result = Assert.Throws<DomainException>(order.Receive);
 
             // Assert
-            Assert.Equal(Domain.Resources.Exceptions.Order_CannotPayToNonWaitingPaymentStatus, result.Message);
+            Assert.Equal(Domain.Resources.Exceptions.Order_CannotReceiveToNonPendingStatus, result.Message);
         }
 
-        [Fact(DisplayName = "Validate Payment Refusal when Order is Wainting Payment")]
+        [Fact(DisplayName = "Validate Ready when Order is InPreparation")]
         [Trait("Order", "Order Status")]
-        public void ShoudThrowException_WhenRefusingPaymentToOrderThatIsNotCreatedStatus()
+        public void ShoudThrowException_WhenReadyOrderThatIsNotInPreparationStatus()
         {
             // Arrange
             var customer = _customerFixture.CreateValidCustomer();
             var order = _orderFixture.CreateValidOrder(customer.Id);
 
-            order.Finish();
+            order.Cancel();
 
             // Act
-            var result = Assert.Throws<DomainException>(order.RefusedPayment);
+            var result = Assert.Throws<DomainException>(order.Prepare);
 
             // Assert
-            Assert.Equal(Domain.Resources.Exceptions.Order_CannotRefuseToNonWaitingPaymentStatus, result.Message);
+            Assert.Equal(Domain.Resources.Exceptions.Order_CannotPrepareToNonReceivedStatus, result.Message);
         }
 
-        [Fact(DisplayName = "Validate Done when Order is not in Preparation")]
+        [Fact(DisplayName = "Validate Deliver when Order is Ready")]
         [Trait("Order", "Order Status")]
-        public void ShoudThrowException_WhenDoneToOrderThatIsNotInPreparation()
+        public void ShoudThrowException_WhenDeliverOrderThatIsNotReadyStatus()
         {
             // Arrange
             var customer = _customerFixture.CreateValidCustomer();
             var order = _orderFixture.CreateValidOrder(customer.Id);
 
-            order.Finish();
+            order.Cancel();
 
             // Act
-            var result = Assert.Throws<DomainException>(order.FinishPreparation);
+            var result = Assert.Throws<DomainException>(order.Deliver);
 
             // Assert
-            Assert.Equal(Domain.Resources.Exceptions.Order_CannotFinishToNonInPreparationStatus, result.Message);
-        }
-
-        [Fact(DisplayName = "Validate Prepare when Order is not in Paid")]
-        [Trait("Order", "Order Status")]
-        public void ShoudThrowException_WhenPrepareToOrderThatIsNotInPaid()
-        {
-            // Arrange
-            var customer = _customerFixture.CreateValidCustomer();
-            var order = _orderFixture.CreateValidOrder(customer.Id);
-
-            order.Finish();
-
-            // Act
-            var result = Assert.Throws<DomainException>(order.StartPreparation);
-
-            // Assert
-            Assert.Equal(Domain.Resources.Exceptions.Order_CannotPrepareToNonPaidStatus, result.Message);
+            Assert.Equal(Domain.Resources.Exceptions.Order_CannotDeliverToNonReadyStatus, result.Message);
         }
 
         [Fact(DisplayName = "Validate Amount Calculation in Order")]

@@ -19,6 +19,22 @@
       "selectCategory": "Select Category"
     }
   },
+  "ordersPage": {
+    "orderIn": "Order in",
+    "orderDetails": "Order Details",
+    "cancelOrder": "Cancel Order",
+    "status": {
+      "received": "Received",
+      "inPreparation": "In Preparation",
+      "delivered": "Delivered"
+    }
+  },
+  "preparationsPage": {
+    "noOrders": "No orders to prepare"
+  },
+  "readyOrdersPage": {
+    "noReadyOrders": "No ready orders"
+  },
   "forbidden": {
     "title": "You're not permitted to see this.",
     "message": "The page you're trying to access has restricted access.",
@@ -30,7 +46,28 @@
     "removeImage": "Remove Image",
     "selectedImage": "Selected Image"
   },
+  "preparationCard": {
+    "waitingTime": "Waiting Time",
+    "preparationTime": "Preparation Time",
+    "start": "Start preparation",
+    "finish": "Finish preparation",
+    "deliver": "Deliver",
+    "status": {
+      "pending": "Pending",
+      "started": "Started",
+      "delivered": "Delivered"
+    }
+  },
+  "readyOrderCard": {
+    "waitingTime": "Waiting Time",
+    "preparationTime": "Preparation Time",
+    "deliver": "Deliver"
+  },
   "labels": {
+    "status": "Status",
+    "items": "Items",
+    "orderNumber": "Order #{{number}}",
+    "currency": "$",
     "save": "Save",
     "confirm": "Confirm",
     "cancel": "Cancel",
@@ -38,7 +75,8 @@
     "description": "Description",
     "price": "Price",
     "category": "Category",
-    "image": "Image"
+    "image": "Image",
+    "total": "Total"
   },
   "errors": {
     "expiredSession": "Your session has expired. Please log in again.",

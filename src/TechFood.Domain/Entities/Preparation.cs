@@ -28,7 +28,11 @@ public class Preparation : Entity, IAggregateRoot
 
     public DateTime? StartedAt { get; private set; }
 
-    public DateTime? FinishedAt { get; private set; }
+    public DateTime? ReadyAt { get; private set; }
+
+    public DateTime? DeliveredAt { get; private set; }
+
+    public DateTime? CancelledAt { get; private set; }
 
     public PreparationStatusType Status { get; private set; }
 
@@ -39,8 +43,8 @@ public class Preparation : Entity, IAggregateRoot
             throw new DomainException(Resources.Exceptions.Preparation_CanOnlyStartIfInPending);
         }
 
+        Status = PreparationStatusType.Started;
         StartedAt = DateTime.Now;
-        Status = PreparationStatusType.InProgress;
 
         _events.Add(new PreparationStartedEvent(
             Id,
@@ -48,40 +52,30 @@ public class Preparation : Entity, IAggregateRoot
             StartedAt.Value));
     }
 
-    public void Finish()
+    public void Ready()
     {
-        if (Status != PreparationStatusType.InProgress)
+        if (Status != PreparationStatusType.Started)
         {
-            throw new DomainException(Resources.Exceptions.Preparation_CanOnlyFinishIfInProgress);
+            throw new DomainException(Resources.Exceptions.Preparation_CanOnlyCompleteIfInProgress);
         }
 
-        Status = PreparationStatusType.Done;
-        FinishedAt = DateTime.Now;
+        Status = PreparationStatusType.Ready;
+        ReadyAt = DateTime.Now;
 
-        _events.Add(new PreparationFinishedEvent(
+        _events.Add(new PreparationReadyEvent(
             Id,
             OrderId,
-            FinishedAt.Value));
-    }
-
-    public void Delivered()
-    {
-        if (Status != PreparationStatusType.Done)
-        {
-            throw new InvalidOperationException("Preparation can only be finished if it is in done.");
-        }
-
-        Status = PreparationStatusType.Finish;
+            ReadyAt.Value));
     }
 
     public void Cancel()
     {
         if (Status == PreparationStatusType.Cancelled)
         {
-            throw new InvalidOperationException("Preparation can only be already cancelled.");
+            throw new InvalidOperationException(Resources.Exceptions.Preparation_AlreadyCancelled);
         }
 
         Status = PreparationStatusType.Cancelled;
-        FinishedAt = DateTime.Now;
+        CancelledAt = DateTime.Now;
     }
 }

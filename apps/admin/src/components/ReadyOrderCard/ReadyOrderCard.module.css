@@ -1,0 +1,27 @@
+.root {
+  max-width: 300px;
+  min-width: 200px;
+  width: 100%;
+}
+
+.items {
+  height: 200px;
+  overflow-y: auto;
+  margin-right: -15px;
+}
+
+.item-image {
+  height: 50px;
+  width: 50px;
+}
+
+.item {
+  cursor: pointer;
+  border: 1px solid var(--gray-2);
+  border-radius: var(--radius-3);
+  padding: var(--space-1);
+}
+
+.item:hover {
+  border-color: var(--accent-10);
+}
