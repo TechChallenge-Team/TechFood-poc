@@ -34,9 +34,12 @@ export const AdminLayout = () => {
           </Sidebar>
         </Flex>
         <Flex className={classNames.main} direction="column">
-          <Flex className={classNames.header} justify="between" align="center">
-            <Heading>{title}</Heading>
-            <Flex className={classNames.headerControls} align="center" gap="6">
+          <Flex className={classNames.header} align="center" gap="6">
+            <Flex flexGrow="1" gap="4" wrap="wrap">
+              <Heading>{title}</Heading>
+              <Flex id="search-bar-slot" flexGrow="1" justify="end" />
+            </Flex>
+            <Flex className={classNames.headerControls} gap="6">
               <Flex gap="4" align="center">
                 <IconButton variant="ghost" color="gray">
                   <MessageSquareQuoteIcon />

@@ -9,9 +9,9 @@ import {
   Text,
   TextArea,
   Select,
+  IconButton,
 } from "@radix-ui/themes";
 import * as Label from "@radix-ui/react-label";
-import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -26,9 +26,11 @@ import {
   AlertDialog,
   CurrencyInput,
   FileInputWithPreview,
+  SearchBar,
 } from "../../components";
 
 import classNames from "./MenuManagementPage.module.css";
+import { PlusIcon } from "@radix-ui/react-icons";
 
 const Section = ({ title, direction, children }: any) => {
   return (
@@ -346,79 +348,76 @@ export const MenuManagementPage = () => {
     });
   }, [menu, search, selectedCategory]);
 
-  return menu ? (
-    <Flex direction="column">
-      <Flex gap="8" align="center">
-        <TextField.Root
-          className={classNames.search}
-          placeholder="Search"
-          size="3"
-          onChange={(e) => setSearch(e.target.value)}
-        >
-          <TextField.Slot>
-            <MagnifyingGlassIcon height="25" width="25" />
-          </TextField.Slot>
-        </TextField.Root>
-        <Button
-          size={"3"}
-          onClick={() => {
-            setAction("edit");
-            setSelectedProduct(null);
-          }}
-        >
-          {t("menuManagementPage.addProduct")}
-        </Button>
-      </Flex>
-      <Flex direction="row" justify="between"></Flex>
-      {!search && (
-        <Section title={t("menuManagementPage.categories")}>
-          {menu.categories.map((category) => (
-            <CategoryCard
-              key={category.id}
-              category={category}
-              selected={selectedCategory === category}
-              onSelect={(category) => {
-                if (selectedCategory === category) {
-                  setSelectedCategory(null);
-                  return;
-                }
-                setSelectedCategory(category);
-              }}
+  return (
+    <>
+      <SearchBar
+        onChange={(e) => setSearch(e.target.value)}
+        placeholder="Search..."
+      />
+      {menu ? (
+        <Flex direction="column">
+          <Flex direction="row" justify="between"></Flex>
+          {!search && (
+            <Section title={t("menuManagementPage.categories")}>
+              {menu.categories.map((category) => (
+                <CategoryCard
+                  key={category.id}
+                  category={category}
+                  selected={selectedCategory === category}
+                  onSelect={(category) => {
+                    if (selectedCategory === category) {
+                      setSelectedCategory(null);
+                      return;
+                    }
+                    setSelectedCategory(category);
+                  }}
+                />
+              ))}
+            </Section>
+          )}
+          <Section title={t("menuManagementPage.products")}>
+            {products.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                onDeleteClick={() => {
+                  setAction("delete");
+                  setSelectedProduct(product);
+                }}
+                onEditClick={() => {
+                  setAction("edit");
+                  setSelectedProduct(product);
+                }}
+              />
+            ))}
+          </Section>
+          {action === "edit" && (
+            <EditProductDialog
+              categories={menu.categories}
+              product={selectedProduct}
+              onSave={handleSaveProduct}
+              onCancel={clearAction}
             />
-          ))}
-        </Section>
-      )}
-      <Section title={t("menuManagementPage.products")}>
-        {products.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            onDeleteClick={() => {
-              setAction("delete");
-              setSelectedProduct(product);
-            }}
-            onEditClick={() => {
-              setAction("edit");
-              setSelectedProduct(product);
-            }}
-          />
-        ))}
-      </Section>
-      {action === "edit" && (
-        <EditProductDialog
-          categories={menu.categories}
-          product={selectedProduct}
-          onSave={handleSaveProduct}
-          onCancel={clearAction}
-        />
-      )}
-      {selectedProduct && action === "delete" && (
-        <DeleteProductDialog
-          product={selectedProduct}
-          onConfirm={handleDeleteProduct}
-          onCancel={clearAction}
-        />
-      )}
-    </Flex>
-  ) : null;
+          )}
+          {selectedProduct && action === "delete" && (
+            <DeleteProductDialog
+              product={selectedProduct}
+              onConfirm={handleDeleteProduct}
+              onCancel={clearAction}
+            />
+          )}
+        </Flex>
+      ) : null}
+      <IconButton
+        className={classNames.addButton}
+        size="4"
+        onClick={() => {
+          setAction("edit");
+          setSelectedProduct(null);
+        }}
+      >
+        <PlusIcon />
+      </IconButton>
+    </>
+  );
 };

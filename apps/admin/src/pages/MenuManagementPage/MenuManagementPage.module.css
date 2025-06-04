@@ -10,3 +10,11 @@
   gap: var(--space-4);
   padding: var(--space-4) 0;
 }
+
+.add-button {
+  position: fixed !important;
+  bottom: 0 !important;
+  right: 0 !important;
+  margin-right: var(--space-6) !important;
+  margin-bottom: var(--space-6) !important;
+}

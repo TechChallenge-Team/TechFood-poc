@@ -4,6 +4,7 @@ export * from "./CurrencyInput";
 export * from "./FileInputWithPreview";
 export * from "./AlertDialog";
 export * from "./Sidebar";
+export * from "./SearchBar";
 export * from "./CategoryCard";
 export * from "./ProductCard";
 export * from "./PreparationCard";
