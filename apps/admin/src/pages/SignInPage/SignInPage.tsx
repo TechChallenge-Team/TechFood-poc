@@ -13,12 +13,12 @@ import { InfoCircledIcon } from "@radix-ui/react-icons";
 import { User } from "../../models";
 import api from "../../api";
 
-import classNames from "./SignIn.module.css";
+import classNames from "./SignInPage.module.css";
 
 const USERNAME = "john.admin@techfood.com";
 const PASSWORD = "123456";
 
-export const SignIn = () => {
+export const SignInPage = () => {
   const [{ username, password, error }, setState] = useState({
     username: USERNAME,
     password: PASSWORD,

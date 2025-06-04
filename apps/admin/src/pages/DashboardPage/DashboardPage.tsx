@@ -9,11 +9,11 @@ import {
   CountChart,
 } from "../../components";
 
-import classNames from "./Dashboard.module.css";
+import classNames from "./DashboardPage.module.css";
 
 const gap = "5" as any;
 
-export const Dashboard = () => {
+export const DashboardPage = () => {
   return (
     <Flex className={classNames.root} direction="column" gap={gap}>
       <Flex direction="row" gap={gap}>

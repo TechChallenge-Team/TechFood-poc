@@ -2,9 +2,9 @@ import { Button, Flex, Heading, Text } from "@radix-ui/themes";
 import { useNavigate } from "react-router";
 import { t } from "../../i18n";
 
-import classNames from "./Forbidden.module.css";
+import classNames from "./ForbiddenPage.module.css";
 
-export const Forbidden = () => {
+export const ForbiddenPage = () => {
   const imgSrc = new URL(`../../assets/forbidden.png`, import.meta.url).href;
 
   const navigate = useNavigate();

@@ -8,13 +8,13 @@ import {
 } from "lucide-react";
 import { AdminLayout } from "./components";
 import {
-  Dashboard,
-  Forbidden,
-  MenuManagement,
+  DashboardPage,
+  ForbiddenPage,
+  MenuManagementPage,
   OrdersPage,
   PreparationsPage,
   ReadyOrdersPage,
-  SignIn,
+  SignInPage,
 } from "./pages";
 
 const router = createBrowserRouter(
@@ -25,7 +25,7 @@ const router = createBrowserRouter(
       children: [
         {
           index: true,
-          element: <Dashboard />,
+          element: <DashboardPage />,
           handle: {
             title: "Dashboard",
             menu: true,
@@ -41,7 +41,7 @@ const router = createBrowserRouter(
             roles: ["admin"],
             icon: <UtensilsIcon />,
           },
-          element: <MenuManagement />,
+          element: <MenuManagementPage />,
         },
         {
           path: "orders",
@@ -71,11 +71,11 @@ const router = createBrowserRouter(
     },
     {
       path: "/signin",
-      element: <SignIn />,
+      element: <SignInPage />,
     },
     {
       path: "/forbidden",
-      element: <Forbidden />,
+      element: <ForbiddenPage />,
     },
   ],
   {

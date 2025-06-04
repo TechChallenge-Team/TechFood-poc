@@ -1,8 +1,8 @@
-import { Flex } from "@radix-ui/themes";
 import { useEffect, useState } from "react";
-import api from "../../api";
+import { Flex } from "@radix-ui/themes";
 import { PreparationCard } from "../../components";
 import { Preparation } from "../../models";
+import api from "../../api";
 import { t } from "../../i18n";
 
 const INTERVAL = 5000; // 5s

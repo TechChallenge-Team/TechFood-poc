@@ -18,7 +18,7 @@ import { toast } from "react-toastify";
 import api from "../../api";
 import { t } from "../../i18n";
 import { normalizeText } from "../../utilities";
-import { Product, Category, Menu } from "../../models/";
+import { Product, Category, Menu } from "../../models";
 import { ProductFormData, productSchema } from "../../schemas";
 import {
   CategoryCard,
@@ -28,7 +28,7 @@ import {
   FileInputWithPreview,
 } from "../../components";
 
-import classNames from "./MenuManagement.module.css";
+import classNames from "./MenuManagementPage.module.css";
 
 const Section = ({ title, direction, children }: any) => {
   return (
@@ -244,7 +244,7 @@ const EditProductDialog = ({
   );
 };
 
-export const MenuManagement = () => {
+export const MenuManagementPage = () => {
   const [menu, setMenu] = useState<Menu | null>(null);
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(
