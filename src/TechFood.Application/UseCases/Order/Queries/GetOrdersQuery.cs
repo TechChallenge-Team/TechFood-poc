@@ -8,12 +8,12 @@ using TechFood.Domain.Enums;
 
 namespace TechFood.Application.UseCases.Order.Queries;
 
-public class GetDailyOrdersQuery : IRequest<IEnumerable<GetDailyOrdersQuery.Result>>
+public class GetOrdersQuery : IRequest<IEnumerable<GetOrdersQuery.Result>>
 {
-    public class Handler(IOrderQueryProvider queries) : IRequestHandler<GetDailyOrdersQuery, IEnumerable<Result>>
+    public class Handler(IOrderQueryProvider queries) : IRequestHandler<GetOrdersQuery, IEnumerable<Result>>
     {
-        public Task<IEnumerable<Result>> Handle(GetDailyOrdersQuery request, CancellationToken cancellationToken)
-            => queries.GetDailyOrdersAsync(request);
+        public Task<IEnumerable<Result>> Handle(GetOrdersQuery request, CancellationToken cancellationToken)
+            => queries.GetOrdersAsync(request);
     }
 
     public class Result
@@ -26,9 +26,18 @@ public class GetDailyOrdersQuery : IRequest<IEnumerable<GetDailyOrdersQuery.Resu
 
         public DateTime CreatedAt { get; set; }
 
+        public OrderCustomer Customer { get; set; } = null!;
+
         public OrderStatusType Status { get; set; }
 
         public List<OrderItem> Items { get; set; } = [];
+
+        public class OrderCustomer
+        {
+            public string Name { get; set; } = null!;
+
+            public DateTime CreatedAt { get; set; }
+        }
 
         public class OrderItem
         {

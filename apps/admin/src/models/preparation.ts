@@ -1,6 +1,6 @@
 import { PreparationItem } from "./preparation-item";
 
-export type Preparation = {
+export interface Preparation {
   id: string;
   status: "PENDING" | "STARTED" | "READY";
   createdAt: Date;
@@ -8,4 +8,4 @@ export type Preparation = {
   readyAt?: Date;
   number: string;
   items: PreparationItem[];
-};
+}

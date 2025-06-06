@@ -20,9 +20,9 @@ public class OrdersController(IMediator userCase) : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetDailyAsync()
+    public async Task<IActionResult> GetAllAsync()
     {
-        var result = await _useCase.Send(new GetDailyOrdersQuery());
+        var result = await _useCase.Send(new GetOrdersQuery());
 
         return Ok(result);
     }

@@ -1,6 +1,7 @@
+import { Customer } from "./customer";
 import { OrderItem } from "./order-item";
 
-export type Order = {
+export interface Order {
   id: string;
   status: "RECEIVED" | "INPREPARATION" | "DELIVERED";
   createdAt: Date;
@@ -8,5 +9,6 @@ export type Order = {
   readyAt?: Date;
   number: string;
   amount: string;
+  customer: Customer;
   items: OrderItem[];
-};
+}

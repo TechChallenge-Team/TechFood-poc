@@ -18,7 +18,7 @@ internal class PreparationQueryProvider(
     public async Task<GetPreparationByIdQuery.Result?> GetByIdAsync(GetPreparationByIdQuery query)
     {
         return await techFoodContext.Preparations
-           .Where(x => x.Id == query.Id)
+           .Where(order => order.Id == query.Id)
            .Select(preparation => new GetPreparationByIdQuery.Result
            {
                Id = preparation.Id,

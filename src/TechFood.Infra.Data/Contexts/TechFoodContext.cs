@@ -128,7 +128,7 @@ public class TechFoodContext(DbContextOptions<TechFoodContext> options) : DbCont
 
         modelBuilder.Entity<Customer>().OwnsOne(c => c.Document)
           .HasData(
-              new { CustomerId = new Guid("25b58f54-63bc-42da-8cf6-8162097e72c8"), Type = DocumentType.CPF, Value = "4511554544" }
+              new { CustomerId = new Guid("25b58f54-63bc-42da-8cf6-8162097e72c8"), Type = DocumentType.CPF, Value = "63585272070" }
           );
 
         modelBuilder.Entity<Customer>().OwnsOne(c => c.Email)
@@ -153,7 +153,7 @@ public class TechFoodContext(DbContextOptions<TechFoodContext> options) : DbCont
 
         modelBuilder.Entity<Customer>().OwnsOne(c => c.Document)
           .HasData(
-              new { CustomerId = new Guid("9887b301-605f-46a6-93db-ac1ce8685723"), Type = DocumentType.CPF, Value = "000000000191" }
+              new { CustomerId = new Guid("9887b301-605f-46a6-93db-ac1ce8685723"), Type = DocumentType.CPF, Value = "18032939008" }
           );
 
         modelBuilder.Entity<Customer>().OwnsOne(c => c.Email)

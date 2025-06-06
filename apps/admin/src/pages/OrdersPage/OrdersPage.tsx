@@ -90,7 +90,9 @@ const OrderItemCard = ({ item }: { item: OrderItem }) => {
 export const OrdersPage = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [selectedStatus, setSelectedStatus] = useState<string>("RECEIVED");
-  const [selectedItem, setSelectedItem] = useState<Order | null>(null);
+  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
+
+  const selectedOrder = orders.find((item) => item.id === selectedOrderId);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -136,13 +138,13 @@ export const OrdersPage = () => {
               <OrderCard
                 key={item.id}
                 item={item}
-                selected={selectedItem === item}
-                onClick={() => setSelectedItem(item)}
+                selected={selectedOrderId === item.id}
+                onClick={() => setSelectedOrderId(item.id)}
               />
             ))}
         </Flex>
       </Card>
-      {selectedItem ? (
+      {selectedOrder ? (
         <Card className={classNames.cardDetails} size="3">
           <Heading>{t("ordersPage.orderDetails")}</Heading>
           <Flex
@@ -155,23 +157,24 @@ export const OrdersPage = () => {
                 <Flex direction="column">
                   <Text weight="bold">
                     {t("labels.orderNumber", {
-                      number: selectedItem.number,
+                      number: selectedOrder.number,
                     })}
                   </Text>
                   <Text size="1" color="gray">
-                    {selectedItem.createdAt.toLocaleString()}
+                    {selectedOrder.createdAt.toLocaleString()}
                   </Text>
                 </Flex>
                 <Flex direction="column">
-                  <Text weight="bold">Leandro Cervantes</Text>
+                  <Text weight="bold">{selectedOrder.customer.name}</Text>
                   <Text size="1" color="gray">
-                    User since 2023
+                    User since{" "}
+                    {selectedOrder.customer.createdAt.toLocaleString()}
                   </Text>
                 </Flex>
               </Flex>
               <Separator orientation="horizontal" size="4" />
               <Flex direction="column" gap="6" flexGrow="1">
-                {selectedItem.items.map((orderItem) => (
+                {selectedOrder.items.map((orderItem) => (
                   <OrderItemCard key={orderItem.id} item={orderItem} />
                 ))}
               </Flex>
@@ -184,7 +187,7 @@ export const OrdersPage = () => {
                   <Text className={classNames.symbol}>
                     {t("labels.currency")}
                   </Text>
-                  {selectedItem.amount}
+                  {selectedOrder.amount}
                 </Text>
               </Flex>
             </Flex>
@@ -194,7 +197,7 @@ export const OrdersPage = () => {
               size="4"
               variant="outline"
               color="red"
-              disabled={selectedItem.status === "DELIVERED"}
+              disabled={selectedOrder.status === "DELIVERED"}
             >
               {t("ordersPage.cancelOrder")}
             </Button>

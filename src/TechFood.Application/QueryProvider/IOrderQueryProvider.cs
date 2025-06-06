@@ -6,7 +6,7 @@ namespace TechFood.Application.QueryProvider;
 
 public interface IOrderQueryProvider
 {
-    Task<IEnumerable<GetDailyOrdersQuery.Result>> GetDailyOrdersAsync(GetDailyOrdersQuery query);
+    Task<IEnumerable<GetOrdersQuery.Result>> GetOrdersAsync(GetOrdersQuery query);
 
     Task<IEnumerable<GetReadyOrdersQuery.Result>> GetReadyOrdersAsync(GetReadyOrdersQuery query);
 }
