@@ -7,14 +7,14 @@ namespace TechFood.Api.Controllers;
 
 [ApiController()]
 [Route("v1/[controller]")]
-public class CategoriesController(IMediator useCase) : ControllerBase
+public class CategoriesController(IMediator mediator) : ControllerBase
 {
-    private readonly IMediator _useCase = useCase;
+    private readonly IMediator _mediator = mediator;
 
     [HttpGet]
     public async Task<IActionResult> GetAsync()
     {
-        var result = await _useCase.Send(new GetAllCategoryQuery());
+        var result = await _mediator.Send(new GetAllCategoryQuery());
 
         return Ok(result);
     }
@@ -22,7 +22,7 @@ public class CategoriesController(IMediator useCase) : ControllerBase
     [HttpGet("{id:Guid}")]
     public async Task<IActionResult> GetByIdAsync(Guid id)
     {
-        var result = await _useCase.Send(new GetCategoryByIdQuery(id));
+        var result = await _mediator.Send(new GetCategoryByIdQuery(id));
 
         return result != null ? Ok(result) : NotFound();
     }
@@ -30,7 +30,7 @@ public class CategoriesController(IMediator useCase) : ControllerBase
     [HttpPost]
     public async Task<IActionResult> AddAsync(CreateCategoryCommand command)
     {
-        var result = await _useCase.Send(command);
+        var result = await _mediator.Send(command);
 
         return Ok(result);
     }
@@ -40,7 +40,7 @@ public class CategoriesController(IMediator useCase) : ControllerBase
     {
         command.Id = id;
 
-        var result = await _useCase.Send(command);
+        var result = await _mediator.Send(command);
 
         return Ok(result);
     }
@@ -48,7 +48,7 @@ public class CategoriesController(IMediator useCase) : ControllerBase
     [HttpDelete("{id:Guid}")]
     public async Task<IActionResult> DeleteAsync(Guid id)
     {
-        await _useCase.Send(new DeleteCategoryCommand(id));
+        await _mediator.Send(new DeleteCategoryCommand(id));
 
         return NoContent();
     }

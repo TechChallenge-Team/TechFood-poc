@@ -6,14 +6,14 @@ namespace TechFood.Api.Controllers;
 
 [ApiController()]
 [Route("v1/[controller]")]
-public class PaymentsController(IMediator useCase) : ControllerBase
+public class PaymentsController(IMediator mediator) : ControllerBase
 {
-    private readonly IMediator _useCase = useCase;
+    private readonly IMediator _mediator = mediator;
 
     [HttpPost]
     public async Task<IActionResult> CreateAsync(CreatePaymentCommand command)
     {
-        var result = await _useCase.Send(command);
+        var result = await _mediator.Send(command);
 
         return result != null ? Ok(result) : NotFound();
     }
@@ -21,7 +21,7 @@ public class PaymentsController(IMediator useCase) : ControllerBase
     [HttpPatch("{id:Guid}")]
     public async Task<IActionResult> ConfirmAsync(Guid id)
     {
-        await _useCase.Send(new ConfirmPaymentCommand(id));
+        await _mediator.Send(new ConfirmPaymentCommand(id));
 
         return Ok();
     }

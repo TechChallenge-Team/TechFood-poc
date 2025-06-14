@@ -7,14 +7,14 @@ namespace TechFood.Api.Controllers;
 
 [ApiController()]
 [Route("v1/[controller]")]
-public class ProductsController(IMediator useCase) : ControllerBase
+public class ProductsController(IMediator mediator) : ControllerBase
 {
-    private readonly IMediator _useCase = useCase;
+    private readonly IMediator _mediator = mediator;
 
     [HttpGet]
     public async Task<IActionResult> GetAllAsync()
     {
-        var result = await _useCase.Send(new GetAllProductQuery());
+        var result = await _mediator.Send(new GetAllProductQuery());
 
         return Ok(result);
     }
@@ -22,7 +22,7 @@ public class ProductsController(IMediator useCase) : ControllerBase
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetByIdAsync(Guid id)
     {
-        var result = await _useCase.Send(new GetProductByIdQuery(id));
+        var result = await _mediator.Send(new GetProductByIdQuery(id));
 
         return Ok(result);
     }
@@ -30,7 +30,7 @@ public class ProductsController(IMediator useCase) : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateAsync(CreateProductCommand command)
     {
-        var result = await _useCase.Send(command);
+        var result = await _mediator.Send(command);
 
         return Ok(result);
     }
@@ -40,7 +40,7 @@ public class ProductsController(IMediator useCase) : ControllerBase
     {
         command.Id = id;
 
-        var result = await _useCase.Send(command);
+        var result = await _mediator.Send(command);
 
         return Ok(result);
     }
@@ -48,7 +48,7 @@ public class ProductsController(IMediator useCase) : ControllerBase
     [HttpPatch("{id:guid}/outOfStock")]
     public async Task<IActionResult> PatchOutOfStockAsync(Guid id, bool request)
     {
-        var result = await _useCase.Send(new SetProductOutOfStockCommand { Id = id, OutOfStock = request });
+        var result = await _mediator.Send(new SetProductOutOfStockCommand { Id = id, OutOfStock = request });
 
         return Ok(result);
     }
@@ -56,7 +56,7 @@ public class ProductsController(IMediator useCase) : ControllerBase
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> DeleteAsync(Guid id)
     {
-        await _useCase.Send(new DeleteProductCommand(id));
+        await _mediator.Send(new DeleteProductCommand(id));
 
         return NoContent();
     }

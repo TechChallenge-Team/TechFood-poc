@@ -7,14 +7,14 @@ namespace TechFood.Api.Controllers;
 
 [ApiController()]
 [Route("v1/[controller]")]
-public class CustomersController(IMediator useCase) : ControllerBase
+public class CustomersController(IMediator mediator) : ControllerBase
 {
-    private readonly IMediator _useCase = useCase;
+    private readonly IMediator _mediator = mediator;
 
     [HttpPost]
     public async Task<IActionResult> CreateAsync([FromBody] CreateCustomerCommand command)
     {
-        var result = await _useCase.Send(command);
+        var result = await _mediator.Send(command);
 
         return Ok(result);
     }
@@ -22,7 +22,7 @@ public class CustomersController(IMediator useCase) : ControllerBase
     [HttpGet("{document}")]
     public async Task<IActionResult> GetByDocumentAsync(string document)
     {
-        var result = await _useCase.Send(new GetCustomerByDocumentQuery() { DocumentValue = document });
+        var result = await _mediator.Send(new GetCustomerByDocumentQuery() { DocumentValue = document });
 
         return result != null ? Ok(result) : NotFound();
     }

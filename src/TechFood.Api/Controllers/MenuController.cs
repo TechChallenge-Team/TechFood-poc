@@ -6,14 +6,14 @@ namespace TechFood.Api.Controllers;
 
 [ApiController()]
 [Route("v1/[controller]")]
-public class MenuController(IMediator useCase) : ControllerBase
+public class MenuController(IMediator mediator) : ControllerBase
 {
-    private readonly IMediator _useCase = useCase;
+    private readonly IMediator _mediator = mediator;
 
     [HttpGet]
     public async Task<IActionResult> GetAsync()
     {
-        var result = await _useCase.Send(new GetMenuQuery());
+        var result = await _mediator.Send(new GetMenuQuery());
 
         return Ok(result);
     }
