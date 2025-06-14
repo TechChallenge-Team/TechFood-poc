@@ -4,7 +4,7 @@ using MediatR;
 using TechFood.Domain.Events.Payment;
 using TechFood.Domain.Repositories;
 
-namespace TechFood.Application.UseCases.Preparation.EventHandlers;
+namespace TechFood.Application.UseCases.Preparation.Events;
 
 internal class CreatePreparationOnPaymentConfirmedHandler(IPreparationRepository repo) : INotificationHandler<PaymentConfirmedEvent>
 {

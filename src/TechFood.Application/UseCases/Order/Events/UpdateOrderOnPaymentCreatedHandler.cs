@@ -2,14 +2,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using TechFood.Application.Common.Resources;
-using TechFood.Domain.Events.Preparation;
+using TechFood.Domain.Events.Payment;
 using TechFood.Domain.Repositories;
 
-namespace TechFood.Application.UseCases.Order.EventHandlers;
+namespace TechFood.Application.UseCases.Order.Events;
 
-internal class UpdateOrderOnPreparationReadyHandler(IOrderRepository repo) : INotificationHandler<PreparationReadyEvent>
+internal class UpdateOrderOnPaymentCreatedHandler(IOrderRepository repo) : INotificationHandler<PaymentCreatedEvent>
 {
-    public async Task Handle(PreparationReadyEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(PaymentCreatedEvent notification, CancellationToken cancellationToken)
     {
         var order = await repo.GetByIdAsync(notification.OrderId);
         if (order == null)
@@ -17,6 +17,6 @@ internal class UpdateOrderOnPreparationReadyHandler(IOrderRepository repo) : INo
             throw new Common.Exceptions.ApplicationException(Exceptions.Order_OrderNotFound);
         }
 
-        order.Ready();
+        order.Receive();
     }
 }

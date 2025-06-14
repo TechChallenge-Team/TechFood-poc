@@ -5,7 +5,7 @@ using TechFood.Application.Common.Resources;
 using TechFood.Domain.Events.Order;
 using TechFood.Domain.Repositories;
 
-namespace TechFood.Application.UseCases.Preparation.EventHandlers;
+namespace TechFood.Application.UseCases.Preparation.Events;
 
 internal class CancelPreparationOnOrderCancelledHandler(IPreparationRepository repo) : INotificationHandler<OrderCancelledEvent>
 {
