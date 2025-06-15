@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -14,36 +13,27 @@ internal class MenuQueryProvider(TechFoodContext techFoodContext, IImageUrlResol
 {
     public async Task<GetMenuQuery.Result> GetAsync(GetMenuQuery query)
     {
-        var data = await techFoodContext.Products
+        var categories = await techFoodContext.Categories
             .AsNoTracking()
-            .Join(
-                techFoodContext.Categories,
-                product => product.CategoryId,
-                category => category.Id,
-                (product, category) => new
-                {
-                    Product = product,
-                    Category = category
-                })
-            .ToListAsync();
-
-        var categories = data.GroupBy(x => x.Category)
-            .Select(g => new GetMenuQuery.Result.Category
+            .OrderBy(c => c.SortOrder)
+            .Select(category => new GetMenuQuery.Result.Category
             {
-                Id = g.Key.Id,
-                Name = g.Key.Name,
-                ImageUrl = imageUrl.BuildFilePath(nameof(Category).ToLower(), g.Key.ImageFileName),
-                SortOrder = g.Key.SortOrder,
-                Products = g.Select(x => new GetMenuQuery.Result.Product
-                {
-                    Id = x.Product.Id,
-                    CategoryId = x.Product.CategoryId,
-                    Name = x.Product.Name,
-                    Description = x.Product.Description,
-                    Price = x.Product.Price,
-                    ImageUrl = imageUrl.BuildFilePath(nameof(Product).ToLower(), x.Product.ImageFileName)
-                }).ToList()
-            }).ToList();
+                Id = category.Id,
+                Name = category.Name,
+                ImageUrl = imageUrl.BuildFilePath(nameof(Category).ToLower(), category.ImageFileName),
+                SortOrder = category.SortOrder,
+                Products = techFoodContext.Products
+                    .Where(p => p.CategoryId == category.Id)
+                    .Select(product => new GetMenuQuery.Result.Product
+                    {
+                        Id = product.Id,
+                        CategoryId = product.CategoryId,
+                        Name = product.Name,
+                        Description = product.Description,
+                        Price = product.Price,
+                        ImageUrl = imageUrl.BuildFilePath(nameof(Product).ToLower(), product.ImageFileName)
+                    }).ToList()
+            }).ToListAsync();
 
         return new()
         {
