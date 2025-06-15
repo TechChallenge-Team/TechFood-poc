@@ -4,7 +4,7 @@ TechFood is a FIAP Post-Graduation project that aims to create a web application
 
 ## Project Presentation
 
-[![Watch the video](https://img.youtube.com/vi/1j4b2g5k8eY/0.jpg)](https://www.youtube.com/watch?v=1Y0qZz30VE0)
+[![Watch the video](https://img.youtube.com/vi/0T7fcPIKPRI/0.jpg)](https://youtu.be/0T7fcPIKPRI)
 
 ## Brainstorming
 
@@ -78,7 +78,51 @@ Database connection string for the API:
 
 ## Order Flow - Swagger
 
-TODO: Document the order flow using Swagger for API endpoints.
+After starting the application, all the endpoints can be tested using Swagger, which is available at the following URL: [http://localhost:5000/api/swagger/index.html](http://localhost:5000/api/swagger/index.html).
+
+**Creating a new order**:
+
+Do a post to endpoint `/v1/orders`:
+
+![Create Order Flow](/docs/backend/create-order-endpoint.png)
+
+Obs: to get the `productId`, you can use the endpoint `/v1/products` to list all products. if there is no products, follow the step - **Admin Flow - Swagger**
+
+**Creating a new payment**:
+
+After creating an order, you can create a new payment by doing a post to endpoint `/v1/payments`:
+
+![Create Payment Flow](/docs/backend/create-payment-endpoint.png)
+
+You should get as response the QR code to be scanned by the consumer to complete the payment.
+
+![Create Payment Flow](/docs/backend/create-payment-endpoint-response.png)
+
+After the payment a weebhook will be called to update the order status to PAID and the preparation status to PENDING.
+
+Obs: The weebhook is not implemented yet so you can call directly the endpoint `/v1/payments/{paymentId}`
+
+**Changing preparation status**:
+
+To change the preparation status, you can do a PATCH to the following endpoints:
+
+![Change Preparation Status Flow](/docs/backend/change-preparation-status-endpoint.png)
+
+- `/v1/preparations/{preparationId}/start` to change the status to INPROGRESS.
+- `/v1/preparations/{preparationId}/finish` to change the status to DONE.
+- `/v1/preparations/{preparationId}/cancel` to change the status to CANCELLED.
+
+After changing the preparation status to DONE you can finish the order and preparation flow doing a PATCH to the endpoint `/v1/orders/{orderId}/finish`.
+
+## Admin Flow - Swagger
+
+In order to create a new product, first you need to create a catergory by doing a post to endpoint `/v1/categories`:
+
+![Create Product Flow](/docs/backend/create-category-endpoint.png)
+
+Then, you can create a new product by doing a post to endpoint `/v1/products`:
+
+![Create Product Flow](/docs/backend/create-product-endpoint.png)
 
 ## Order Flow - Frontend
 
