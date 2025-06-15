@@ -5,30 +5,30 @@ using Microsoft.Extensions.Options;
 using TechFood.Application.Common.Services.Interfaces;
 using TechFood.Domain.Enums;
 
-namespace TechFood.Infra.Services.MercadoPago
+namespace TechFood.Infra.Services.MercadoPago;
+
+public static class DependecyInjection
 {
-    public static class DependecyInjection
+    public static IServiceCollection AddInfraMercadoPagoPayment(this IServiceCollection services)
     {
-        public static IServiceCollection AddInfraMercadoPagoPayment(this IServiceCollection services)
-        {
-            services
-                .AddOptions<MercadoPagoOptions>()
-                .Configure<IConfiguration>((options, config) =>
-                {
-                    var configSection = config.GetSection(MercadoPagoOptions.SectionName);
-                    configSection.Bind(options);
-                });
-
-            services.AddKeyedTransient<IPaymentService, MercadoPagoPaymentService>(PaymentType.MercadoPago);
-
-            services.AddHttpClient(MercadoPagoOptions.ClientName, (serviceProvider, client) =>
+        services
+            .AddOptions<MercadoPagoOptions>()
+            .Configure<IConfiguration>((options, config) =>
             {
-                client.BaseAddress = new Uri(MercadoPagoOptions.BaseAddress);
-
-                client.DefaultRequestHeaders.Authorization = new("Bearer", serviceProvider.GetRequiredService<IOptions<MercadoPagoOptions>>().Value.AccessToken);
+                var configSection = config.GetSection(MercadoPagoOptions.SectionName);
+                configSection.Bind(options);
             });
 
-            return services;
-        }
+        services.AddKeyedTransient<IPaymentService, MercadoPagoPaymentService>(PaymentType.MercadoPago);
+
+        services.AddHttpClient(MercadoPagoOptions.ClientName, (serviceProvider, client) =>
+        {
+            client.BaseAddress = new Uri(MercadoPagoOptions.BaseAddress);
+            client.DefaultRequestHeaders.Add("X-Idempotency-Key", Guid.NewGuid().ToString());
+
+            client.DefaultRequestHeaders.Authorization = new("Bearer", serviceProvider.GetRequiredService<IOptions<MercadoPagoOptions>>().Value.AccessToken);
+        });
+
+        return services;
     }
 }
