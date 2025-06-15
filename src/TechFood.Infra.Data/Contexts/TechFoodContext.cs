@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
@@ -7,10 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using TechFood.Domain.Entities;
 using TechFood.Domain.Enums;
 using TechFood.Domain.Shared.Entities;
+using TechFood.Domain.Shared.Interfaces;
+using TechFood.Domain.UoW;
 
 namespace TechFood.Infra.Data.Contexts;
 
-public class TechFoodContext(DbContextOptions<TechFoodContext> options) : DbContext(options)
+public class TechFoodContext(DbContextOptions<TechFoodContext> options) : DbContext(options), IUnitOfWork, IDomainEventStore
 {
     public DbSet<Category> Categories { get; set; } = null!;
 
@@ -25,6 +28,27 @@ public class TechFoodContext(DbContextOptions<TechFoodContext> options) : DbCont
     public DbSet<User> Users { get; set; } = null!;
 
     public DbSet<Preparation> Preparations { get; set; } = null!;
+
+    public Task<IEnumerable<IDomainEvent>> GetDomainEventsAsync()
+    {
+        // get hold of all the domain events
+        var domainEvents = ChangeTracker.Entries<Entity>()
+            .Select(entry => entry.Entity.PopEvents())
+            .SelectMany(events => events);
+
+        return Task.FromResult(domainEvents);
+    }
+
+    public async Task<bool> CommitAsync()
+    {
+        var success = await SaveChangesAsync() > 0;
+        return success;
+    }
+
+    public Task RollbackAsync()
+    {
+        return Task.CompletedTask;
+    }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {

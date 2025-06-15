@@ -27,8 +27,10 @@ public static class DependencyInjection
 
         //UoW
         services.AddScoped<IUnitOfWorkTransaction, UnitOfWorkTransaction>();
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.AddScoped<IUnitOfWork, AnotherUnitOfWork>();
+        services.AddScoped<IUnitOfWork>(serviceProvider => serviceProvider.GetRequiredService<TechFoodContext>());
+
+        //DomainEvents
+        services.AddScoped<IDomainEventStore>(serviceProvider => serviceProvider.GetRequiredService<TechFoodContext>());
 
         //Data
         services.AddScoped<ICategoryRepository, CategoryRepository>();
@@ -46,9 +48,6 @@ public static class DependencyInjection
         services.AddScoped<IPreparationQueryProvider, PreparationQueryProvider>();
         services.AddScoped<IMenuQueryProvider, MenuQueryProvider>();
         services.AddScoped<IOrderQueryProvider, OrderQueryProvider>();
-
-        //DomainEvents
-        services.AddScoped<IDomainEventStore, TechFoodEventsContext>();
 
         return services;
     }
