@@ -15,6 +15,7 @@ internal class ProductQueryProvider(TechFoodContext techFoodContext, IImageUrlRe
     public async Task<IEnumerable<GetAllProductQuery.Result>> GetAllAsync(GetAllProductQuery request)
     {
         return await techFoodContext.Products
+            .AsNoTracking()
             .Select(product => new GetAllProductQuery.Result
             {
                 Id = product.Id,
@@ -30,6 +31,7 @@ internal class ProductQueryProvider(TechFoodContext techFoodContext, IImageUrlRe
     public Task<GetProductByIdQuery.Result?> GetByIdAsync(GetProductByIdQuery request)
     {
         return techFoodContext.Products
+            .AsNoTracking()
             .Where(product => product.Id == request.Id)
             .Select(product => new GetProductByIdQuery.Result
             {

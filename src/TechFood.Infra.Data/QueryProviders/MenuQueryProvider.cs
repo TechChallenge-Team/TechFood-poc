@@ -15,6 +15,7 @@ internal class MenuQueryProvider(TechFoodContext techFoodContext, IImageUrlResol
     public async Task<GetMenuQuery.Result> GetAsync(GetMenuQuery query)
     {
         var data = await techFoodContext.Products
+            .AsNoTracking()
             .Join(
                 techFoodContext.Categories,
                 product => product.CategoryId,

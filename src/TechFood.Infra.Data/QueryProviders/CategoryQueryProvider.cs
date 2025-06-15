@@ -17,6 +17,7 @@ internal class CategoryQueryProvider(
     public async Task<IEnumerable<GetAllCategoryQuery.Result>> GetAllAsync(GetAllCategoryQuery query)
     {
         return await techFoodContext.Categories
+            .AsNoTracking()
             .OrderBy(category => category.SortOrder)
             .Select(category => new GetAllCategoryQuery.Result
             {
@@ -30,6 +31,7 @@ internal class CategoryQueryProvider(
     public async Task<GetCategoryByIdQuery.Result?> GetByIdAsync(GetCategoryByIdQuery query)
     {
         return await techFoodContext.Categories
+            .AsNoTracking()
             .Where(x => x.Id == query.Id)
             .Select(category => new GetCategoryByIdQuery.Result
             {

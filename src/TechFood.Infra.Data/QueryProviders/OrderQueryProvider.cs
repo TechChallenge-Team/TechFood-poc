@@ -20,6 +20,7 @@ internal class OrderQueryProvider(
         var products = await techFoodContext.Products.ToListAsync();
 
         var result = await techFoodContext.Orders
+            .AsNoTracking()
             .Include(order => order.Items)
             .OrderBy(order => order.CreatedAt)
             .Join(
@@ -63,6 +64,7 @@ internal class OrderQueryProvider(
     public async Task<IEnumerable<GetReadyOrdersQuery.Result>> GetReadyOrdersAsync(GetReadyOrdersQuery query)
     {
         var result = await techFoodContext.Orders
+            .AsNoTracking()
             .Include(order => order.Items)
             .Where(order => order.Status == OrderStatusType.Ready)
             .OrderBy(order => order.CreatedAt)

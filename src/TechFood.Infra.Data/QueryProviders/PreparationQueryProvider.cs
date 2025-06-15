@@ -18,17 +18,18 @@ internal class PreparationQueryProvider(
     public async Task<GetPreparationByIdQuery.Result?> GetByIdAsync(GetPreparationByIdQuery query)
     {
         return await techFoodContext.Preparations
-           .Where(order => order.Id == query.Id)
-           .Select(preparation => new GetPreparationByIdQuery.Result
-           {
-               Id = preparation.Id,
-               OrderId = preparation.OrderId,
-               CreatedAt = preparation.CreatedAt,
-               StartedAt = preparation.StartedAt,
-               ReadyAt = preparation.ReadyAt,
-               Status = preparation.Status
-           })
-           .FirstOrDefaultAsync();
+            .AsNoTracking()
+            .Where(order => order.Id == query.Id)
+            .Select(preparation => new GetPreparationByIdQuery.Result
+            {
+                Id = preparation.Id,
+                OrderId = preparation.OrderId,
+                CreatedAt = preparation.CreatedAt,
+                StartedAt = preparation.StartedAt,
+                ReadyAt = preparation.ReadyAt,
+                Status = preparation.Status
+            })
+            .FirstOrDefaultAsync();
     }
 
     public async Task<IEnumerable<GetDailyPreparationsQuery.Result>> GetDailyPreparationsAsync(GetDailyPreparationsQuery query)
@@ -39,9 +40,10 @@ internal class PreparationQueryProvider(
             PreparationStatusType.Started
         };
 
-        var products = await techFoodContext.Products.ToListAsync();
+        var products = await techFoodContext.Products.AsNoTracking().ToListAsync();
 
         var result = await techFoodContext.Orders
+            .AsNoTracking()
             .Include(order => order.Items)
             .Join(
                 techFoodContext.Preparations,
@@ -97,6 +99,7 @@ internal class PreparationQueryProvider(
         };
 
         var result = await techFoodContext.Orders
+            .AsNoTracking()
             .Join(
                 techFoodContext.Preparations,
                 order => order.Id,

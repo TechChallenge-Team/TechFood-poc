@@ -12,6 +12,7 @@ internal class CustomerQueryProvider(TechFoodContext techFoodContext) : ICustome
     public Task<GetCustomerByDocumentQuery.Result?> GetByDocumentAsync(GetCustomerByDocumentQuery query)
     {
         return techFoodContext.Customers
+            .AsNoTracking()
             .Where(c => c.Document.Type == query.DocumentType && c.Document.Value == query.DocumentValue)
             .Select(customer => new GetCustomerByDocumentQuery.Result
             {
