@@ -11,7 +11,7 @@ import {
   Spinner,
 } from "@radix-ui/themes";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import axios from "axios";
+import api from "../../api";
 import { useNavigate } from "react-router";
 import { t } from "../../i18n";
 import { Category, Product } from "../../models";
@@ -135,8 +135,8 @@ export const MenuPage = () => {
       setIsLoading(true);
 
       const [categories, products] = await Promise.all([
-        axios.get<Category[]>("/api/v1/categories"),
-        axios.get<Product[]>("/api/v1/products"),
+        api.get<Category[]>("/v1/categories"),
+        api.get<Product[]>("/v1/products"),
       ]);
 
       setProducts(products.data);

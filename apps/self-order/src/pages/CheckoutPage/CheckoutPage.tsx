@@ -16,7 +16,6 @@ import { BottomSheet } from "../../components";
 import { useOrder } from "../../contexts";
 
 import classNames from "./CheckoutPage.module.css";
-import axios from "axios";
 
 const paymentMethods: {
   type: PaymentType;

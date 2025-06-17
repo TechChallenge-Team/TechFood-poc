@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useState } from "react";
-import axios from "axios";
+import api from "../api";
 import { OrderItem, PaymentType } from "../models";
 import { useCustomer } from "./CustomerProvider";
 
@@ -59,10 +59,10 @@ export const OrderProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   const createOrder = useCallback(async () => {
-    const result = await axios.post<{
+    const result = await api.post<{
       id: string;
       number: string;
-    }>("/api/v1/orders", {
+    }>("/v1/orders", {
       customerId: customer?.id,
       items,
     });
@@ -72,9 +72,9 @@ export const OrderProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [customer?.id, items]);
 
   const applyDiscount = useCallback(async (code: string) => {
-    const result = await axios.post<{
+    const result = await api.post<{
       discount: number;
-    }>("/api/v1/coupons", {
+    }>("/v1/coupons", {
       code,
     });
     setCuponCode(code);
@@ -83,10 +83,10 @@ export const OrderProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const createPayment = useCallback(
     async (method: PaymentType) => {
-      const { data } = await axios.post<{
+      const { data } = await api.post<{
         id: string;
         qrCodeData: string;
-      }>("/api/v1/payments", {
+      }>("/v1/payments", {
         orderId: id,
         type: method,
       });
@@ -99,7 +99,7 @@ export const OrderProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 
   const confirmPayment = useCallback(async () => {
-    await axios.patch(`/api/v1/payments/${paymentId}`);
+    await api.patch(`/v1/payments/${paymentId}`);
   }, [paymentId]);
 
   const clearOrder = useCallback(() => {

@@ -64,5 +64,12 @@
     "done": "Done",
     "ok": "OK",
     "close": "Close"
+  },
+  "errors": {
+    "expiredSession": "Your session has expired. Please log in again.",
+    "unauthorizedAccess": "You do not have permission to access this resource.",
+    "notFound": "The requested resource was not found.",
+    "internalServerError": "An internal server error occurred. Please try again later.",
+    "unexpectedError": "An unexpected error occurred. Please try again later."
   }
 }

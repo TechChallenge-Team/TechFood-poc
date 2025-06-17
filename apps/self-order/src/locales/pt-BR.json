@@ -64,5 +64,12 @@
     "done": "Concluir",
     "ok": "OK",
     "close": "Fechar"
+  },
+  "errors": {
+    "expiredSession": "Sua sessão expirou. Por favor, faça login novamente.",
+    "unauthorizedAccess": "Você não tem permissão para acessar este recurso.",
+    "notFound": "O recurso solicitado não foi encontrado.",
+    "internalServerError": "Ocorreu um erro interno do servidor. Por favor, tente novamente mais tarde.",
+    "unexpectedError": "Ocorreu um erro inesperado. Por favor, tente novamente mais tarde."
   }
 }

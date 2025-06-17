@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeftIcon } from "lucide-react";
 import { z } from "zod";
-import axios from "axios";
+import api from "../../api";
 import { useCustomer } from "../../contexts";
 
 import classNames from "./RegisterPage.module.css";
@@ -34,9 +34,9 @@ export const RegisterPage = () => {
 
   const onSubmit = async ({ name, email }: CreateCustomerSchema) => {
     try {
-      const { data } = await axios.post<{
+      const { data } = await api.post<{
         id: string;
-      }>("/api/v1/customers", {
+      }>("/v1/customers", {
         cpf: params.doc,
         name,
         email,

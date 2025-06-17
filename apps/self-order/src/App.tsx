@@ -1,6 +1,7 @@
 import { Theme } from "@radix-ui/themes";
 import { RouterProvider } from "react-router";
 import { CustomerProvider, OrderProvider } from "./contexts";
+import { ToastContainer } from "react-toastify";
 import router from "./routes";
 
 import "@radix-ui/themes/styles.css";
@@ -14,6 +15,14 @@ function App() {
           <RouterProvider router={router} />
         </OrderProvider>
       </CustomerProvider>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </Theme>
   );
 }
