@@ -24,7 +24,6 @@ namespace TechFood.Infra.Services.MercadoPago
             services.AddHttpClient(MercadoPagoOptions.ClientName, (serviceProvider, client) =>
             {
                 client.BaseAddress = new Uri(MercadoPagoOptions.BaseAddress);
-                client.DefaultRequestHeaders.Add("X-Idempotency-Key", Guid.NewGuid().ToString());
 
                 client.DefaultRequestHeaders.Authorization = new("Bearer", serviceProvider.GetRequiredService<IOptions<MercadoPagoOptions>>().Value.AccessToken);
             });

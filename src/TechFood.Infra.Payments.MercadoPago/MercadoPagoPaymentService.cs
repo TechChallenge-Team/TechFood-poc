@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -25,99 +22,74 @@ namespace TechFood.Infra.Services.MercadoPago
 
         private static readonly JsonSerializerOptions _jsonOptions = new()
         {
-            PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
-            Converters =
-            {
-                new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseLower)
-            },
+            PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
         };
 
         public async Task<QrCodePaymentResult> GenerateQrCodePaymentAsync(QrCodePaymentRequest data)
         {
             var http = _httpContextAccessor.HttpContext!.Request;
+            var notificationUrl = $"{http.Scheme}://www.techfood.com/v1/notifications/mercadopago";
 
-            var response = await _client.PostAsJsonAsync("v1/orders",
-                new OrderRequest(
-                    OrderType.QR,
+            var response = await _client.PostAsJsonAsync(
+                string.Format(
+                    "instore/orders/qr/seller/collectors/{0}/pos/{1}/qrs",
+                    _options.UserId,
+                    data.PosId),
+                new QrCodeRequest(
                     data.OrderId.ToString(),
                     data.Title,
-                    //set total as string with bullet separator
-                    data.Amount.ToString(CultureInfo.InvariantCulture),
-                    new(new OrderQRConfig(data.PosId, OrderQRConfigMode.Dynamic)),
-                    new OrderTransaction([new(data.Amount.ToString(CultureInfo.InvariantCulture))]),
+                    data.Title,
+                    notificationUrl,
+                    data.Amount,
                     data.Items.ConvertAll(
-                        i => new OrderItem(
+                        i => new PaymentItem(
                             i.Title,
                             i.Quantity,
                             i.Unit,
-                            i.UnitPrice.ToString(CultureInfo.InvariantCulture)
+                            i.UnitPrice,
+                            i.Amount
                             ))
                     ), _jsonOptions);
 
             if (!response.IsSuccessStatusCode)
             {
-                var errorResult = await response.Content.ReadFromJsonAsync<ErrorResult>();
-                var error = errorResult?.Errors.FirstOrDefault();
-                if (error != null)
-                {
-                    throw new Exception($"Error {error.Code}: {error.Message}");
-                }
+                var error = await response.Content.ReadFromJsonAsync<ErrorResult>();
 
-                throw new Exception("An error occurred while generating the QR code payment.");
+                throw new Exception(error!.Message);
             }
 
-            var result = await response.Content.ReadFromJsonAsync<OrderResult>(_jsonOptions);
+            var result = await response.Content.ReadFromJsonAsync<QrCodeResult>(_jsonOptions);
 
             return new(
-                result!.Id,
-                result.TypeResponse.QrData);
+                result!.InStoreOrderId,
+                result.QrData);
         }
     }
 
-    enum OrderType
-    {
-        QR
-    }
-
-    enum OrderQRConfigMode
-    {
-        Static,
-        Dynamic
-    }
-
-    record OrderRequest(
-        OrderType Type,
+    record QrCodeRequest(
         string ExternalReference,
+        string Title,
         string Description,
-        string TotalAmount,
-        OrderConfig Config,
-        OrderTransaction Transactions,
-        List<OrderItem> Items
+        string NotificationUrl,
+        decimal TotalAmount,
+        List<PaymentItem> Items
         );
 
-    record OrderItem(
+    record QrCodeResult(
+        string QrData,
+        string InStoreOrderId
+        );
+
+    record ErrorResult(
+        string Message,
+        string Error
+        );
+
+    record PaymentItem(
         string Title,
         int Quantity,
         string UnitMeasure,
-        string UnitPrice
-        );
-
-    record OrderTransaction(List<OrderPayment> Payments);
-
-    record OrderPayment(string Amount);
-
-    record OrderConfig(OrderQRConfig? Qr);
-
-    record OrderQRConfig(string ExternalPosId, OrderQRConfigMode Mode);
-
-    record OrderResult(string Id, OrderTypeResponse TypeResponse);
-
-    record OrderTypeResponse(string QrData);
-
-    record ErrorResult(List<ErrorData> Errors);
-
-    record ErrorData(
-        string Code,
-        string Message
+        decimal UnitPrice,
+        decimal TotalAmount
         );
 }
