@@ -45,16 +45,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Authentication\Events\" />
+    <Folder Include="Authentication\Queries\" />
+    <Folder Include="Customers\Events\" />
+    <Folder Include="Products\Commands\" />
+    <Folder Include="Products\Dto\" />
+    <Folder Include="Products\Events\" />
+    <Folder Include="Payments\Events\" />
+    <Folder Include="Payments\Queries\" />
+    <Folder Include="Menu\Commands\" />
+    <Folder Include="Menu\Events\" />
+    <Folder Include="Categories\Events\" />
     <Folder Include="Common\AutoMapper\" />
-    <Folder Include="UseCases\Authentication\Events\" />
-    <Folder Include="UseCases\Authentication\Queries\" />
-    <Folder Include="UseCases\Category\Events\" />
-    <Folder Include="UseCases\Customer\Events\" />
-    <Folder Include="UseCases\Menu\Commands\" />
-    <Folder Include="UseCases\Menu\Events\" />
-    <Folder Include="UseCases\Payment\Events\" />
-    <Folder Include="UseCases\Payment\Queries\" />
-    <Folder Include="UseCases\Product\Events\" />
   </ItemGroup>
 
 </Project>

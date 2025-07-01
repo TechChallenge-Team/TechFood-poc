@@ -19,6 +19,12 @@ namespace TechFood.Infra.Data.Repositories
             return entry.Entity.Id;
         }
 
+        public Task<Customer?> GetByIdAsync(Guid id)
+        {
+            return _dbContext.Customers
+                .FirstOrDefaultAsync(c => c.Id == id);
+        }
+
         public async Task<Customer?> GetByDocument(DocumentType type, string value)
         {
             return await _dbContext.Customers

@@ -1,7 +1,8 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using TechFood.Application.UseCases.Customer.Commands;
-using TechFood.Application.UseCases.Customer.Queries;
+using TechFood.Application.Customers.Commands.CreateCustomer;
+using TechFood.Application.Customers.Queries.GetCustomerByDocument;
+using TechFood.Domain.Enums;
 
 namespace TechFood.Api.Controllers;
 
@@ -12,8 +13,13 @@ public class CustomersController(IMediator mediator) : ControllerBase
     private readonly IMediator _mediator = mediator;
 
     [HttpPost]
-    public async Task<IActionResult> CreateAsync([FromBody] CreateCustomerCommand command)
+    public async Task<IActionResult> CreateAsync([FromBody] CreateCustomerCommand request)
     {
+        var command = new CreateCustomerCommand(
+            request.CPF,
+            request.Name,
+            request.Email);
+
         var result = await _mediator.Send(command);
 
         return Ok(result);
@@ -22,8 +28,12 @@ public class CustomersController(IMediator mediator) : ControllerBase
     [HttpGet("{document}")]
     public async Task<IActionResult> GetByDocumentAsync(string document)
     {
-        var result = await _mediator.Send(new GetCustomerByDocumentQuery() { DocumentValue = document });
+        var query = new GetCustomerByDocumentQuery(DocumentType.CPF, document);
 
-        return result != null ? Ok(result) : NotFound();
+        var result = await _mediator.Send(query);
+
+        return result != null
+            ? Ok(result)
+            : NotFound();
     }
 }

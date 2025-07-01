@@ -1,7 +1,10 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using TechFood.Application.UseCases.Preparation.Commands;
-using TechFood.Application.UseCases.Preparation.Queries;
+using TechFood.Application.Preparations.Commands.CompletePreparation;
+using TechFood.Application.Preparations.Commands.StartPreparation;
+using TechFood.Application.Preparations.Queries.GetDailyPreparations;
+using TechFood.Application.Preparations.Queries.GetPreparation;
+using TechFood.Application.Preparations.Queries.GetTrackingPreparations;
 
 namespace TechFood.Api.Controllers;
 
@@ -14,7 +17,9 @@ public class PreparationsController(IMediator mediator) : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetDailyAsync()
     {
-        var result = await _mediator.Send(new GetDailyPreparationsQuery());
+        var query = new GetDailyPreparationsQuery();
+
+        var result = await _mediator.Send(query);
 
         return Ok(result);
     }
@@ -23,7 +28,9 @@ public class PreparationsController(IMediator mediator) : ControllerBase
     [Route("tracking")]
     public async Task<IActionResult> GetTrackingAsync()
     {
-        var result = await _mediator.Send(new GetTrackingPreparationsQuery());
+        var query = new GetTrackingPreparationsQuery();
+
+        var result = await _mediator.Send(query);
 
         return Ok(result);
     }
@@ -32,7 +39,9 @@ public class PreparationsController(IMediator mediator) : ControllerBase
     [Route("{id:guid}")]
     public async Task<IActionResult> GetByIdAsync(Guid id)
     {
-        var result = await _mediator.Send(new GetPreparationByIdQuery(id));
+        var query = new GetPreparationQuery(id);
+
+        var result = await _mediator.Send(query);
 
         return Ok(result);
     }
@@ -41,7 +50,9 @@ public class PreparationsController(IMediator mediator) : ControllerBase
     [Route("{id:guid}/start")]
     public async Task<IActionResult> StartAsync(Guid id)
     {
-        await _mediator.Send(new StartPreparationCommand(id));
+        var command = new StartPreparationCommand(id);
+
+        await _mediator.Send(command);
 
         return Ok();
     }
@@ -50,7 +61,9 @@ public class PreparationsController(IMediator mediator) : ControllerBase
     [Route("{id:guid}/complete")]
     public async Task<IActionResult> CompleteAsync(Guid id)
     {
-        await _mediator.Send(new CompletePreparationCommand(id));
+        var command = new CompletePreparationCommand(id);
+
+        await _mediator.Send(command);
 
         return Ok();
     }

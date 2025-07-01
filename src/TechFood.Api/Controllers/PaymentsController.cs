@@ -1,6 +1,9 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using TechFood.Application.UseCases.Payment.Commands;
+using TechFood.Application.Payments.Commands.ConfirmPayment;
+using TechFood.Application.Payments.Commands.CreatePayment;
+using TechFood.Application.Payments.Dto;
+using TechFood.Contracts.Payments;
 
 namespace TechFood.Api.Controllers;
 
@@ -11,17 +14,25 @@ public class PaymentsController(IMediator mediator) : ControllerBase
     private readonly IMediator _mediator = mediator;
 
     [HttpPost]
-    public async Task<IActionResult> CreateAsync(CreatePaymentCommand command)
+    public async Task<IActionResult> CreateAsync(CreatePaymentRequest request)
     {
-        var result = await _mediator.Send(command);
+        var command = new CreatePaymentCommand(
+            request.OrderId,
+            request.Type);
 
-        return result != null ? Ok(result) : NotFound();
+        var result = await _mediator.Send(command);
+        
+        return result != null
+            ? Ok(result)
+            : NotFound();
     }
 
     [HttpPatch("{id:Guid}")]
     public async Task<IActionResult> ConfirmAsync(Guid id)
     {
-        await _mediator.Send(new ConfirmPaymentCommand(id));
+        var command = new ConfirmPaymentCommand(id);
+
+        await _mediator.Send(command);
 
         return Ok();
     }

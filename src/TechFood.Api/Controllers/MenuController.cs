@@ -1,6 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using TechFood.Application.UseCases.Menu.Queries;
+using TechFood.Application.Menu.Queries.GetMenu;
 
 namespace TechFood.Api.Controllers;
 
@@ -13,7 +13,9 @@ public class MenuController(IMediator mediator) : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAsync()
     {
-        var result = await _mediator.Send(new GetMenuQuery());
+        var query = new GetMenuQuery();
+
+        var result = await _mediator.Send(query);
 
         return Ok(result);
     }

@@ -1,12 +1,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using TechFood.Application.QueryProvider;
+using TechFood.Application.Categories.Queries;
+using TechFood.Application.Customers.Queries;
+using TechFood.Application.Menu.Queries;
+using TechFood.Application.Orders.Queries;
+using TechFood.Application.Preparations.Queries;
+using TechFood.Application.Products.Queries;
 using TechFood.Domain.Repositories;
 using TechFood.Domain.Shared.Interfaces;
 using TechFood.Domain.UoW;
 using TechFood.Infra.Data.Contexts;
-using TechFood.Infra.Data.QueryProviders;
+using TechFood.Infra.Data.Queries;
 using TechFood.Infra.Data.Repositories;
 using TechFood.Infra.Data.UoW;
 

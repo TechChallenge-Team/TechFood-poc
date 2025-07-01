@@ -168,7 +168,7 @@ export const OrdersPage = () => {
                   <Text weight="bold">{selectedOrder.customer.name}</Text>
                   <Text size="1" color="gray">
                     User since{" "}
-                    {selectedOrder.customer.createdAt.toLocaleString()}
+                    {selectedOrder.customer.createdAt?.toLocaleString()}
                   </Text>
                 </Flex>
               </Flex>
