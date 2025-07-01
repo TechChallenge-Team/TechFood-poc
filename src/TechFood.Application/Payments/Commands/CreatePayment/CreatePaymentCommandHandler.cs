@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -63,6 +63,7 @@ public class CreatePaymentCommandHandler(
 
         return new PaymentDto(
             payment.Id,
+            payment.OrderId,
             payment.CreatedAt,
             payment.PaidAt,
             payment.Type,
