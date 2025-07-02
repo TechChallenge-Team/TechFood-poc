@@ -3,8 +3,8 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Tokens;
-using TechFood.Application.Common.Filters;
-using TechFood.Application.Common.NamingPolicy;
+using TechFood.Api.Common.Filters;
+using TechFood.Api.Common.NamingPolicy;
 
 namespace TechFood.Api;
 

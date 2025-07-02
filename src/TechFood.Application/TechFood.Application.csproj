@@ -6,12 +6,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Common\AutoMapper\**" />
+    <EmbeddedResource Remove="Common\AutoMapper\**" />
+    <None Remove="Common\AutoMapper\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="13.0.1" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.1.2" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2" />
   </ItemGroup>
@@ -56,7 +60,6 @@
     <Folder Include="Menu\Commands\" />
     <Folder Include="Menu\Events\" />
     <Folder Include="Categories\Events\" />
-    <Folder Include="Common\AutoMapper\" />
   </ItemGroup>
 
 </Project>

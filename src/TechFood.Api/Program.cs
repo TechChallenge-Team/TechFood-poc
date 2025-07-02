@@ -2,18 +2,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using TechFood.Api;
 using TechFood.Application;
-using TechFood.Infra.Data;
-using TechFood.Infra.Data.Contexts;
-using TechFood.Infra.ImageStore.LocalDisk.Configuration;
-using TechFood.Infra.Services.MercadoPago;
+using TechFood.Infra;
+using TechFood.Infra.Persistence.Contexts;
 
 var builder = WebApplication.CreateBuilder(args);
 {
     builder.Services.AddPresentation(builder.Configuration);
     builder.Services.AddApplication();
-    builder.Services.AddInfraData();
-    builder.Services.AddInfraMercadoPagoPayment();
-    builder.Services.AddInfraImageStore();
+    builder.Services.AddInfra();
 }
 
 var app = builder.Build();
@@ -41,10 +37,11 @@ var app = builder.Build();
         {
             options.OpenApiVersion = Microsoft.OpenApi.OpenApiSpecVersion.OpenApi2_0;
         });
+
         app.UseSwaggerUI();
     }
 
-    app.UseApplication();
+    app.UseInfra();
 
     app.UseHealthChecks("/health");
 

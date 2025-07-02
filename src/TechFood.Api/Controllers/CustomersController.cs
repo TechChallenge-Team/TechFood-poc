@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TechFood.Application.Customers.Commands.CreateCustomer;
 using TechFood.Application.Customers.Queries.GetCustomerByDocument;
+using TechFood.Contracts.Customers;
 using TechFood.Domain.Enums;
 
 namespace TechFood.Api.Controllers;
@@ -13,7 +14,7 @@ public class CustomersController(IMediator mediator) : ControllerBase
     private readonly IMediator _mediator = mediator;
 
     [HttpPost]
-    public async Task<IActionResult> CreateAsync([FromBody] CreateCustomerCommand request)
+    public async Task<IActionResult> CreateAsync([FromBody] CreateCustomerRequest request)
     {
         var command = new CreateCustomerCommand(
             request.CPF,
