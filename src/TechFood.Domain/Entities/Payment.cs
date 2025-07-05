@@ -1,8 +1,8 @@
 using System;
 using TechFood.Domain.Enums;
 using TechFood.Domain.Events.Payment;
-using TechFood.Domain.Shared.Entities;
-using TechFood.Domain.Shared.Exceptions;
+using TechFood.Domain.Common.Entities;
+using TechFood.Domain.Common.Exceptions;
 
 namespace TechFood.Domain.Entities;
 

@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TechFood.Domain.Entities;
 using TechFood.Domain.Enums;
-using TechFood.Domain.Shared.Entities;
-using TechFood.Domain.Shared.Interfaces;
+using TechFood.Domain.Common.Entities;
+using TechFood.Domain.Common.Interfaces;
 using TechFood.Domain.UoW;
 
 namespace TechFood.Infra.Persistence.Contexts;

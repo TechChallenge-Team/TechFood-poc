@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace TechFood.Domain.Shared.Interfaces;
+namespace TechFood.Domain.Common.Interfaces;
 
 public interface IDomainEventStore
 {

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace TechFood.Domain.Shared.Dto;
+namespace TechFood.Domain.Common.Dto;
 
 public class PagingReponse<TEntity> where TEntity : class
 {

@@ -1,4 +1,4 @@
-namespace TechFood.Domain.Shared.Validations
+namespace TechFood.Domain.Common.Validations
 {
     public class ValidateEmail
     {

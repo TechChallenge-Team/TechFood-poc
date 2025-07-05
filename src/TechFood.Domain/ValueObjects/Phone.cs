@@ -1,4 +1,4 @@
-using TechFood.Domain.Shared.ValueObjects;
+using TechFood.Domain.Common.ValueObjects;
 
 namespace TechFood.Domain.ValueObjects;
 

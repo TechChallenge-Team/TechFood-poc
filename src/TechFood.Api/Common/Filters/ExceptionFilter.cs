@@ -7,7 +7,7 @@ public class ExceptionFilter : IExceptionFilter
 {
     private static readonly Type[] _handledExceptions =
         [
-            typeof(Domain.Shared.Exceptions.DomainException),
+            typeof(Domain.Common.Exceptions.DomainException),
             typeof(Application.Common.Exceptions.ApplicationException)
         ];
 

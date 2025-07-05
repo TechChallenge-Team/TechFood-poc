@@ -1,4 +1,4 @@
-using TechFood.Domain.Shared.Entities;
+using TechFood.Domain.Common.Entities;
 using TechFood.Domain.ValueObjects;
 
 namespace TechFood.Domain.Entities;

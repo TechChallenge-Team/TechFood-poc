@@ -1,7 +1,7 @@
 using System;
-using TechFood.Domain.Shared.Exceptions;
+using TechFood.Domain.Common.Exceptions;
 
-namespace TechFood.Domain.Shared.Validations;
+namespace TechFood.Domain.Common.Validations;
 
 public class Validations
 {

@@ -1,5 +1,5 @@
 using MediatR;
 
-namespace TechFood.Domain.Shared.Interfaces;
+namespace TechFood.Domain.Common.Interfaces;
 
 public interface IDomainEvent : INotification;

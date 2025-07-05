@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using TechFood.Domain.Shared.Interfaces;
+using TechFood.Domain.Common.Interfaces;
 using TechFood.Domain.UoW;
 
 namespace TechFood.Infra.EventualConsistency;

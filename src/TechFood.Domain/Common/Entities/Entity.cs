@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TechFood.Domain.Shared.Interfaces;
+using TechFood.Domain.Common.Interfaces;
 
-namespace TechFood.Domain.Shared.Entities;
+namespace TechFood.Domain.Common.Entities;
 
 public class Entity
 {

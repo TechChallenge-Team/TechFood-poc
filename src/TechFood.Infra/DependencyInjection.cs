@@ -16,7 +16,7 @@ using TechFood.Application.Preparations.Queries;
 using TechFood.Application.Products.Queries;
 using TechFood.Domain.Enums;
 using TechFood.Domain.Repositories;
-using TechFood.Domain.Shared.Interfaces;
+using TechFood.Domain.Common.Interfaces;
 using TechFood.Domain.UoW;
 using TechFood.Infra.Payments.MercadoPago;
 using TechFood.Infra.Persistence.Contexts;

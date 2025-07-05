@@ -1,5 +1,5 @@
 using System;
-using TechFood.Domain.Shared.Interfaces;
+using TechFood.Domain.Common.Interfaces;
 
 namespace TechFood.Domain.Events.Preparation;
 
