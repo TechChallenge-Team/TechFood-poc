@@ -16,6 +16,9 @@ public class CategoryRepository(TechFoodContext dbContext) : ICategoryDataSource
         return result.Entity.Id;
     }
 
+    public async Task UpdateAsync(CategoryDTO category)
+        => await Task.FromResult(_categories.Update(category));
+
     public async Task DeleteAsync(CategoryDTO category)
         => await Task.FromResult(_categories.Remove(category));
 
@@ -23,6 +26,6 @@ public class CategoryRepository(TechFoodContext dbContext) : ICategoryDataSource
         => await _categories.AsNoTracking().OrderBy(c => c.SortOrder).ToListAsync();
 
     public async Task<CategoryDTO?> GetByIdAsync(Guid id)
-        => await _categories.Where(x => x.Id == id).FirstOrDefaultAsync();
+        => await _categories.Where(x => x.Id == id).AsNoTracking().FirstOrDefaultAsync();
 
 }

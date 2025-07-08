@@ -1,5 +1,4 @@
-using TechFoodClean.Common.Category;
-using TechFoodClean.Common.DTO;
+using TechFoodClean.Common.DTO.Category;
 using TechFoodClean.Domain.Entities;
 
 namespace TechFoodClean.Application.Interfaces.UseCase
@@ -12,7 +11,7 @@ namespace TechFoodClean.Application.Interfaces.UseCase
 
         Task<Category> AddAsync(CreateCategoryRequestDTO category, string fileName);
 
-        Task<Category?> UpdateAsync(Guid id, CategoryDTO category);
+        Task<Category?> UpdateAsync(Guid id, UpdateCategoryRequestDTO category, string fileName);
 
         Task<bool> DeleteAsync(Guid id);
     }

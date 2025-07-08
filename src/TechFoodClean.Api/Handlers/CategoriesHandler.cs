@@ -3,7 +3,7 @@ using TechFoodClean.Application.Controllers;
 using TechFoodClean.Application.Interfaces.Controller;
 using TechFoodClean.Application.Interfaces.DataSource;
 using TechFoodClean.Application.Interfaces.Presenter;
-using TechFoodClean.Common.Category;
+using TechFoodClean.Common.DTO.Category;
 
 namespace TechFoodClean.Api.Handlers
 {
@@ -12,6 +12,7 @@ namespace TechFoodClean.Api.Handlers
     public class CategoriesHandler : ControllerBase
     {
         private readonly ICategoryController _categoryController;
+        private readonly IImageUrlResolver _imageUrlResolver;
 
         public CategoriesHandler(ICategoryDataSource _categoryDataSource,
                                  IImageUrlResolver imageUrlResolver,
@@ -22,6 +23,7 @@ namespace TechFoodClean.Api.Handlers
                                                          imageUrlResolver,
                                                          imageDataSource,
                                                          unitOfWorkDataSource);
+            _imageUrlResolver = imageUrlResolver;
         }
 
         [HttpGet]
@@ -48,20 +50,21 @@ namespace TechFoodClean.Api.Handlers
             return Ok(result);
         }
 
-        //[HttpPut("{id:Guid}")]
-        //public async Task<IActionResult> UpdateAsync(Guid id, UpdateCategoryRequest category)
-        //{
-        //    var result = await _categoryUseCase.UpdateAsync(id, category);
+        [HttpPut("{id:Guid}")]
+        public async Task<IActionResult> UpdateAsync(Guid id, UpdateCategoryRequestDTO category)
+        {
 
-        //    return result != null ? Ok(result) : NotFound();
-        //}
+            var result = await _categoryController.UpdateAsync(id, category);
 
-        //[HttpDelete("{id:Guid}")]
-        //public async Task<IActionResult> DeleteAsync(Guid id)
-        //{
-        //    var result = await _categoryUseCase.DeleteAsync(id);
+            return result != null ? Ok(result) : NotFound();
+        }
 
-        //    return result ? NoContent() : NotFound();
-        //}
+        [HttpDelete("{id:Guid}")]
+        public async Task<IActionResult> DeleteAsync(Guid id)
+        {
+            var result = await _categoryController.DeleteAsync(id);
+
+            return result ? NoContent() : NotFound();
+        }
     }
 }

@@ -2,15 +2,18 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 using TechFoodClean.Common.Attributes;
 
-namespace TechFoodClean.Common.Category;
-
-public class CreateCategoryRequestDTO
+namespace TechFoodClean.Common.DTO.Category
 {
-    [Required]
-    public required string Name { get; set; }
+    public class CreateCategoryRequestDTO
+    {
 
-    [Required]
-    [MaxFileSize(5 * 1024 * 1024)]
-    [AllowedExtensions(".jpg", ".jpeg", ".png", ".webp")]
-    public IFormFile File { get; set; }
+        [Required]
+        public required string Name { get; set; }
+
+        [Required]
+        [MaxFileSize(5 * 1024 * 1024)]
+        [AllowedExtensions(".jpg", ".jpeg", ".png", ".webp")]
+        public IFormFile File { get; set; }
+
+    }
 }

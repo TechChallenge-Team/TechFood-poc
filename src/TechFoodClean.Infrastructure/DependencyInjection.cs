@@ -30,7 +30,7 @@ public static class DependencyInjection
         //Data
         services.AddScoped<ICategoryDataSource, CategoryRepository>();
         services.AddTransient<IImageUrlResolver, ImageUrlResolver>();
-        //services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<IProductDataSource, ProductRepository>();
         //services.AddScoped<IOrderRepository, OrderRepository>();
         //services.AddScoped<ICustomerRepository, CustomerRepository>();
         //services.AddScoped<IPaymentRepository, PaymentRepository>();

@@ -1,6 +1,5 @@
 using TechFoodClean.Application.Presenters;
-using TechFoodClean.Common.Category;
-using TechFoodClean.Common.DTO;
+using TechFoodClean.Common.DTO.Category;
 
 namespace TechFoodClean.Application.Interfaces.Controller
 {
@@ -12,7 +11,7 @@ namespace TechFoodClean.Application.Interfaces.Controller
 
         Task<CategoryPresenter?> AddAsync(CreateCategoryRequestDTO category);
 
-        Task<CategoryPresenter?> UpdateAsync(Guid id, CategoryDTO category);
+        Task<CategoryPresenter?> UpdateAsync(Guid id, UpdateCategoryRequestDTO category);
 
         Task<bool> DeleteAsync(Guid id);
     }

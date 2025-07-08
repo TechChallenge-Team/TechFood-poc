@@ -6,8 +6,7 @@ using TechFoodClean.Application.Interfaces.Presenter;
 using TechFoodClean.Application.Interfaces.UseCase;
 using TechFoodClean.Application.Presenters;
 using TechFoodClean.Application.UseCases;
-using TechFoodClean.Common.Category;
-using TechFoodClean.Common.DTO;
+using TechFoodClean.Common.DTO.Category;
 
 namespace TechFoodClean.Application.Controllers
 {
@@ -37,9 +36,9 @@ namespace TechFoodClean.Application.Controllers
                    null;
         }
 
-        public Task<bool> DeleteAsync(Guid id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await _categoryUseCase.DeleteAsync(id);
         }
 
         public async Task<CategoryPresenter?> GetByIdAsync(Guid id)
@@ -58,9 +57,19 @@ namespace TechFoodClean.Application.Controllers
             return categories.Select(category => CategoryPresenter.Create(category, _imageUrlResolver)).ToList();
         }
 
-        public Task<CategoryPresenter?> UpdateAsync(Guid id, CategoryDTO category)
+        public async Task<CategoryPresenter?> UpdateAsync(Guid id, UpdateCategoryRequestDTO categoryDTO)
         {
-            throw new NotImplementedException();
+            var fileName = string.Empty;
+
+            if (categoryDTO.File != null)
+            {
+                fileName = _imageUrlResolver.CreateImageFileName(categoryDTO.Name, categoryDTO.File.ContentType);
+            }
+
+            var categories = await _categoryUseCase.UpdateAsync(id, categoryDTO, fileName);
+            return categories is not null ?
+                   CategoryPresenter.Create(categories, _imageUrlResolver) :
+                   null;
         }
     }
 }

@@ -1,7 +1,6 @@
 using TechFoodClean.Application.Interfaces.Gateway;
 using TechFoodClean.Application.Interfaces.UseCase;
-using TechFoodClean.Common.Category;
-using TechFoodClean.Common.DTO;
+using TechFoodClean.Common.DTO.Category;
 using TechFoodClean.Domain.Entities;
 
 namespace TechFoodClean.Application.UseCases
@@ -18,16 +17,27 @@ namespace TechFoodClean.Application.UseCases
         {
             var categoryEntity = new Category(categoryDTO.Name, fileName, 0);
 
-            await _categoryGateway.SaveImageAsync(categoryDTO, fileName);
+            await _categoryGateway.SaveImageAsync(categoryDTO.File, fileName);
 
             await _categoryGateway.AddAsync(categoryEntity);
 
             return categoryEntity;
         }
 
-        public Task<bool> DeleteAsync(Guid id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var category = await _categoryGateway.GetByIdAsync(id);
+
+            if (category != null)
+            {
+                await _categoryGateway.DeleteAsync(category);
+
+                await _categoryGateway.DeleteImageAsync(category);
+
+                return true;
+            }
+
+            return false;
         }
 
         public Task<Category?> GetByIdAsync(Guid id)
@@ -40,9 +50,29 @@ namespace TechFoodClean.Application.UseCases
             return _categoryGateway.GetAllAsync();
         }
 
-        public Task<Category?> UpdateAsync(Guid id, CategoryDTO category)
+        public async Task<Category?> UpdateAsync(Guid id, UpdateCategoryRequestDTO categoryDTO, string fileName)
         {
-            throw new NotImplementedException();
+            var category = await _categoryGateway.GetByIdAsync(id);
+
+            if (category == null)
+            {
+                return null;
+            }
+
+            var imageFileName = string.IsNullOrEmpty(fileName) ? category.ImageFileName : fileName;
+
+            if (categoryDTO.File != null)
+            {
+                await _categoryGateway.SaveImageAsync(categoryDTO.File, imageFileName);
+
+                await _categoryGateway.DeleteImageAsync(category);
+            }
+
+            category.UpdateAsync(categoryDTO.Name, imageFileName);
+
+            await _categoryGateway.UpdateAsync(category);
+
+            return category;
         }
     }
 }

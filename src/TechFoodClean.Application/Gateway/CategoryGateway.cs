@@ -1,6 +1,6 @@
+using Microsoft.AspNetCore.Http;
 using TechFoodClean.Application.Interfaces.DataSource;
 using TechFoodClean.Application.Interfaces.Gateway;
-using TechFoodClean.Common.Category;
 using TechFoodClean.Common.DTO;
 using TechFoodClean.Domain.Entities;
 
@@ -36,9 +36,36 @@ namespace TechFoodClean.Application.Gateway
             await _unitOfWorkDataSource.CommitAsync();
         }
 
-        public Task DeleteAsync(Category entity)
+        public async Task DeleteAsync(Category category)
         {
-            throw new NotImplementedException();
+            var categoryDTO = new CategoryDTO
+            {
+                Id = category.Id,
+                Name = category.Name,
+                ImageFileName = category.ImageFileName,
+                SortOrder = category.SortOrder,
+                IsDeleted = category.IsDeleted
+            };
+
+            await _categoryDataSource.DeleteAsync(categoryDTO);
+
+            await _unitOfWorkDataSource.CommitAsync();
+        }
+
+        public async Task UpdateAsync(Category category)
+        {
+            var categoryDTO = new CategoryDTO
+            {
+                Id = category.Id,
+                Name = category.Name,
+                ImageFileName = category.ImageFileName,
+                SortOrder = category.SortOrder,
+                IsDeleted = category.IsDeleted
+            };
+
+            await _categoryDataSource.UpdateAsync(categoryDTO);
+
+            await _unitOfWorkDataSource.CommitAsync();
         }
 
         public async Task<Category?> GetByIdAsync(Guid id)
@@ -67,9 +94,14 @@ namespace TechFoodClean.Application.Gateway
                         ).ToList();
         }
 
-        public async Task SaveImageAsync(CreateCategoryRequestDTO categoryDTO, string fileName)
+        public async Task SaveImageAsync(IFormFile file, string fileName)
         {
-            await _imageDataSource.SaveAsync(categoryDTO.File.OpenReadStream(), fileName, nameof(Category));
+            await _imageDataSource.SaveAsync(file.OpenReadStream(), fileName, nameof(Category));
+        }
+
+        public async Task DeleteImageAsync(Category category)
+        {
+            await _imageDataSource.DeleteAsync(category.ImageFileName, nameof(Category));
         }
     }
 }

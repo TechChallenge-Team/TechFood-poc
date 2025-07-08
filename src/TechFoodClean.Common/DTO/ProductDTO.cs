@@ -6,9 +6,9 @@ namespace TechFoodClean.Common.Entities;
 public class ProductDTO : EntityDTO
 {
 
-    public string Name { get; private set; } = null!;
+    public string Name { get; set; } = null!;
 
-    public string Description { get; private set; } = null!;
+    public string Description { get; set; } = null!;
 
     [Column("CategoryId")]
     public Guid CategoryDTOId { get; set; }

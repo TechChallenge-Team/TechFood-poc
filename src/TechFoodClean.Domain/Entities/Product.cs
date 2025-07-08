@@ -7,13 +7,20 @@ public class Product : Entity, IAggregateRoot
     private Product() { }
 
     public Product(
+        Guid? id,
         string name,
         string description,
         Guid categoryId,
         string imageFileName,
+        bool outOfStock,
         decimal price
         )
     {
+        if (id is not null)
+        {
+            base.SetId(id.Value);
+        }
+
         Name = name;
         Description = description;
         CategoryId = categoryId;
