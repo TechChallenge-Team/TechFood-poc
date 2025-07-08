@@ -9,6 +9,7 @@ namespace TechFoodClean.Api.Handlers
 {
     [ApiController()]
     [Route("v1/categories")]
+    [Tags("Categories")]
     public class CategoriesHandler : ControllerBase
     {
         private readonly ICategoryController _categoryController;

@@ -9,6 +9,7 @@ namespace TechFoodClean.Api.Handlers
 {
     [ApiController()]
     [Route("v1/products")]
+    [Tags("Products")]
     public class ProductsHandler : ControllerBase
     {
         private readonly IProductController _productController;
