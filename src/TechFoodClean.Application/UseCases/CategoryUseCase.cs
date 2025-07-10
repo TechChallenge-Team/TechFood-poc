@@ -8,6 +8,7 @@ namespace TechFoodClean.Application.UseCases
     public class CategoryUseCase : ICategoryUseCase
     {
         private readonly ICategoryGateway _categoryGateway;
+        private readonly IProductGateway _productGateway;
         public CategoryUseCase(ICategoryGateway categoryGateway)
         {
             _categoryGateway = categoryGateway;
