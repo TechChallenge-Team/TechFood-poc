@@ -1,7 +1,6 @@
 using TechFoodClean.Application.Gateway;
 using TechFoodClean.Application.Interfaces.Controller;
 using TechFoodClean.Application.Interfaces.DataSource;
-using TechFoodClean.Application.Interfaces.Gateway;
 using TechFoodClean.Application.Interfaces.Presenter;
 using TechFoodClean.Application.Interfaces.UseCase;
 using TechFoodClean.Application.Presenters;
@@ -12,7 +11,6 @@ namespace TechFoodClean.Application.Controllers
 {
     public class ProductController : IProductController
     {
-        private readonly IProductGateway _productGateway;
         private readonly IProductUseCase _productUseCase;
         private readonly IImageUrlResolver _imageUrlResolver;
         public ProductController(IProductDataSource productDataSource,
@@ -20,8 +18,8 @@ namespace TechFoodClean.Application.Controllers
                                   IImageDataSource imageDataSource,
                                   IUnitOfWorkDataSource unitOfWorkDataSource)
         {
-            _productGateway = new ProductGateway(productDataSource, imageDataSource, unitOfWorkDataSource);
-            _productUseCase = new ProductUseCase(_productGateway);
+            var productGateway = new ProductGateway(productDataSource, imageDataSource, unitOfWorkDataSource);
+            _productUseCase = new ProductUseCase(productGateway);
             _imageUrlResolver = imageUrlResolver;
         }
 

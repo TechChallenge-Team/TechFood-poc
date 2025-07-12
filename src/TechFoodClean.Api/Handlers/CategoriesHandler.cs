@@ -13,7 +13,6 @@ namespace TechFoodClean.Api.Handlers
     public class CategoriesHandler : ControllerBase
     {
         private readonly ICategoryController _categoryController;
-        private readonly IImageUrlResolver _imageUrlResolver;
 
         public CategoriesHandler(ICategoryDataSource _categoryDataSource,
                                  IImageUrlResolver imageUrlResolver,
@@ -24,7 +23,6 @@ namespace TechFoodClean.Api.Handlers
                                                          imageUrlResolver,
                                                          imageDataSource,
                                                          unitOfWorkDataSource);
-            _imageUrlResolver = imageUrlResolver;
         }
 
         [HttpGet]

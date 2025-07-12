@@ -32,7 +32,7 @@ public static class DependencyInjection
         services.AddTransient<IImageUrlResolver, ImageUrlResolver>();
         services.AddScoped<IProductDataSource, ProductRepository>();
         //services.AddScoped<IOrderRepository, OrderRepository>();
-        //services.AddScoped<ICustomerRepository, CustomerRepository>();
+        services.AddScoped<ICustomerDataSource, CustomerRepository>();
         //services.AddScoped<IPaymentRepository, PaymentRepository>();
         //services.AddScoped<IUserRepository, UserRepository>();
         //services.AddScoped<IPreparationRepository, PreparationRepository>();

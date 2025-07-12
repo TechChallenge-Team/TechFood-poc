@@ -7,8 +7,6 @@ namespace TechFoodClean.Application.Interfaces.DataSource
     {
         Task<Guid> CreateAsync(CustomerDTO customer);
 
-        Task<CustomerDTO> GetByDocument(DocumentTypeDTO documentType, string documentValue);
-
-        Task<CustomerDTO> GetByDocumentAsync(DocumentTypeDTO documentType, string documentValue);
+        Task<CustomerDTO?> GetByDocumentAsync(DocumentTypeDTO documentType, string documentValue);
     }
 }
