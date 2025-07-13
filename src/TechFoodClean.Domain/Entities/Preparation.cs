@@ -1,7 +1,6 @@
-using TechFoodClean.Domain.Entities;
 using TechFoodClean.Domain.Enums;
 
-namespace TechFood.Domain.Entities;
+namespace TechFoodClean.Domain.Entities;
 
 public class Preparation : Entity, IAggregateRoot
 {

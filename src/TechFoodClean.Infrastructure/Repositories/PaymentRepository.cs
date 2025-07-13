@@ -22,4 +22,9 @@ public class PaymentRepository(TechFoodContext dbContext) : IPaymentDataSource
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id);
     }
+
+    public async Task UpdateAsync(PaymentDTO payment)
+    {
+        await Task.FromResult(_payments.Update(payment));
+    }
 }

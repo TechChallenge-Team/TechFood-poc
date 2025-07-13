@@ -73,6 +73,7 @@
   <ItemGroup>
     <ProjectReference Include="..\TechFoodClean.Application\TechFoodClean.Application.csproj" />
     <ProjectReference Include="..\TechFoodClean.Infrastructure.ImageStore.LocalDisk\TechFoodClean.Infrastructure.ImageStore.LocalDisk.csproj" />
+    <ProjectReference Include="..\TechFoodClean.Infrastructure.Payments.MercadoPago\TechFoodClean.Infrastructure.Payments.MercadoPago.csproj" />
     <ProjectReference Include="..\TechFoodClean.Infrastructure\TechFoodClean.Infrastructure.Data.csproj" />
   </ItemGroup>
 

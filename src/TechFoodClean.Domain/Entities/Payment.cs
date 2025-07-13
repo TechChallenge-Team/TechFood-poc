@@ -10,8 +10,13 @@ public class Payment : Entity, IAggregateRoot
     public Payment(
         Guid orderId,
         PaymentType type,
-        decimal amount)
+        decimal amount,
+        Guid? id = null)
     {
+        if (id is not null)
+        {
+            base.SetId(id.Value);
+        }
         OrderId = orderId;
         Type = type;
         Amount = amount;
@@ -30,6 +35,7 @@ public class Payment : Entity, IAggregateRoot
     public PaymentStatusType Status { get; private set; }
 
     public decimal Amount { get; private set; }
+    public string QrCodeData { get; private set; }
 
     public void Confirm()
     {
@@ -50,5 +56,10 @@ public class Payment : Entity, IAggregateRoot
         }
 
         Status = PaymentStatusType.Refused;
+    }
+
+    public void SetQRCodeData(string qrCodeData)
+    {
+        QrCodeData = qrCodeData;
     }
 }

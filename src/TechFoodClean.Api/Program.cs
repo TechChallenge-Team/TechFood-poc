@@ -5,12 +5,13 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
-using TechFood.Application.Common.Filters;
 using TechFoodClean.Api.Filters;
+using TechFoodClean.Application.Common.Filters;
 using TechFoodClean.Infrastructure.Data;
 using TechFoodClean.Infrastructure.Data.Contexts;
 using TechFoodClean.Infrastructure.Data.NamingPolicy;
 using TechFoodClean.Infrastructure.ImageStore.LocalDisk;
+using TechFoodClean.Infrastructure.Payments.MercadoPago;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -76,7 +77,7 @@ var builder = WebApplication.CreateBuilder(args);
 
     //builder.Services.AddApplication();
     builder.Services.AddInfraData();
-    //builder.Services.AddInfraMercadoPagoPayment();
+    builder.Services.AddInfraMercadoPagoPayment();
     builder.Services.AddInfraImageStore();
 }
 

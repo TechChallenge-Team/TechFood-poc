@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Http;
-using TechFoodClean.Common.DTO;
 using TechFoodClean.Domain.Entities;
 
 namespace TechFoodClean.Application.Interfaces.Gateway
@@ -13,6 +12,5 @@ namespace TechFoodClean.Application.Interfaces.Gateway
         Task DeleteImageAsync(Product category);
         Task UpdateAsync(Product category);
         Task DeleteAsync(Product category);
-        Task<CategoryDTO?> GetCategoryByIdAsync(Guid categoryId);
     }
 }

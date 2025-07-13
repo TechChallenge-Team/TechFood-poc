@@ -29,9 +29,30 @@ internal class OrderRepository(TechFoodContext dbContext) : IOrderDataSource
     public async Task<OrderDTO?> GetByIdAsync(Guid id)
     {
         var t = await _orders
+            .AsNoTracking()
             .Include(o => o.Items)
             .FirstOrDefaultAsync(o => o.Id == id);
 
         return t;
     }
+
+    public async Task UpdateAsync(OrderDTO order)
+    {
+        foreach (var hist in order.Historical)
+        {
+            if (hist.Id == Guid.Empty)
+            {
+                hist.Id = Guid.NewGuid();
+                hist.OrderId = order.Id;
+                dbContext.Entry(hist).State = EntityState.Added;
+            }
+            else
+            {
+                dbContext.Entry(hist).State = EntityState.Modified;
+            }
+        }
+
+        await Task.FromResult(_orders.Update(order));
+    }
+
 }

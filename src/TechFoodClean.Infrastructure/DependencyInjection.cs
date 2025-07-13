@@ -1,10 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using TechFoodClean.Application.Interfaces.DataSource;
 using TechFoodClean.Application.Interfaces.Presenter;
+using TechFoodClean.Application.Interfaces.Service;
 using TechFoodClean.Infrastructure.Data.Contexts;
 using TechFoodClean.Infrastructure.Data.Repositories;
+using TechFoodClean.Infrastructure.Data.Services;
 using TechFoodClean.Infrastructure.Data.UoW;
 
 namespace TechFoodClean.Infrastructure.Data;
@@ -19,6 +22,12 @@ public static class DependencyInjection
         {
             var config = serviceProvider.GetRequiredService<IConfiguration>();
 
+            options.LogTo(Console.WriteLine, LogLevel.Information);
+
+            // This is optional but useful for seeing parameter values in your SQL.
+            // WARNING: DO NOT USE IN PRODUCTION, as it may log sensitive data.
+            options.EnableSensitiveDataLogging();
+
             options.UseSqlServer(config.GetConnectionString("DataBaseConection"));
         });
 
@@ -31,11 +40,12 @@ public static class DependencyInjection
         services.AddScoped<ICategoryDataSource, CategoryRepository>();
         services.AddTransient<IImageUrlResolver, ImageUrlResolver>();
         services.AddScoped<IProductDataSource, ProductRepository>();
-        //services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<IOrderDataSource, OrderRepository>();
         services.AddScoped<ICustomerDataSource, CustomerRepository>();
-        //services.AddScoped<IPaymentRepository, PaymentRepository>();
+        services.AddScoped<IPaymentDataSource, PaymentRepository>();
+        services.AddSingleton<IOrderNumberService, OrderNumberService>();
         //services.AddScoped<IUserRepository, UserRepository>();
-        //services.AddScoped<IPreparationRepository, PreparationRepository>();
+        services.AddScoped<IPreparationDataSource, PreparationRepository>();
         //services.AddScoped<IReadOnlyQuery<GetPreparationMonitorResult>, OrderMonitorQuery>();
 
         return services;

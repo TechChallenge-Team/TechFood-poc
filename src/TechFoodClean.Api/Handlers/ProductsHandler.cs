@@ -17,12 +17,14 @@ namespace TechFoodClean.Api.Handlers
         public ProductsHandler(IProductDataSource productDataSource,
                                IImageUrlResolver imageUrlResolver,
                                IUnitOfWorkDataSource unitOfWorkDataSource,
-                               IImageDataSource imageDataSource)
+                               IImageDataSource imageDataSource,
+                               ICategoryDataSource categoryDataSource)
         {
             _productController = new ProductController(productDataSource,
                                                        imageUrlResolver,
                                                        imageDataSource,
-                                                       unitOfWorkDataSource);
+                                                       unitOfWorkDataSource,
+                                                       categoryDataSource);
         }
 
         [HttpGet]

@@ -7,5 +7,7 @@ namespace TechFoodClean.Application.Interfaces.DataSource
         Task<Guid> AddAsync(PaymentDTO payment);
 
         Task<PaymentDTO?> GetByIdAsync(Guid id);
+
+        Task UpdateAsync(PaymentDTO payment);
     }
 }

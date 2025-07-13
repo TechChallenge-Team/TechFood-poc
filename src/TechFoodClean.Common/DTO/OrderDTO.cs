@@ -5,10 +5,6 @@ namespace TechFoodClean.Common.Entities;
 
 public class OrderDTO : EntityDTO
 {
-    private readonly List<OrderItemDTO> _items = [];
-
-    private readonly List<OrderHistoryDTO> _historical = [];
-
     public Guid? CustomerId { get; set; }
 
     public DateTime CreatedAt { get; set; }
@@ -21,8 +17,8 @@ public class OrderDTO : EntityDTO
 
     public decimal Discount { get; set; }
 
-    public IReadOnlyCollection<OrderItemDTO> Items => _items.AsReadOnly();
+    public List<OrderItemDTO> Items { get; set; }
 
-    public IReadOnlyCollection<OrderHistoryDTO> Historical => _historical.AsReadOnly();
+    public List<OrderHistoryDTO> Historical { get; set; }
 
 }

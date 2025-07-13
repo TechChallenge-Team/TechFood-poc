@@ -16,10 +16,12 @@ namespace TechFoodClean.Application.Controllers
         public ProductController(IProductDataSource productDataSource,
                                   IImageUrlResolver imageUrlResolver,
                                   IImageDataSource imageDataSource,
-                                  IUnitOfWorkDataSource unitOfWorkDataSource)
+                                  IUnitOfWorkDataSource unitOfWorkDataSource,
+                                  ICategoryDataSource categoryDataSource)
         {
             var productGateway = new ProductGateway(productDataSource, imageDataSource, unitOfWorkDataSource);
-            _productUseCase = new ProductUseCase(productGateway);
+            var categoryGateway = new CategoryGateway(categoryDataSource, imageDataSource, unitOfWorkDataSource);
+            _productUseCase = new ProductUseCase(productGateway, categoryGateway);
             _imageUrlResolver = imageUrlResolver;
         }
 

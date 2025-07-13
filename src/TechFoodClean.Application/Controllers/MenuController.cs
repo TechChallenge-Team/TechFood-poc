@@ -26,7 +26,7 @@ namespace TechFoodClean.Application.Controllers
         }
         public async Task<MenuPresenter?> GetAsync()
         {
-            var _productUseCase = new ProductUseCase(_productGateway);
+            var _productUseCase = new ProductUseCase(_productGateway, _categoryGateway);
             var _categoryUseCase = new CategoryUseCase(_categoryGateway);
 
             var products = await _productUseCase.ListAllAsync();

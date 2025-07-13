@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using TechFoodClean.Application.Interfaces.DataSource;
 using TechFoodClean.Application.Interfaces.Gateway;
-using TechFoodClean.Common.DTO;
 using TechFoodClean.Common.Entities;
 using TechFoodClean.Domain.Entities;
 
@@ -115,11 +114,6 @@ namespace TechFoodClean.Application.Gateway
         public async Task DeleteImageAsync(Product product)
         {
             await _imageDataSource.DeleteAsync(product.ImageFileName, nameof(Product));
-        }
-
-        public async Task<CategoryDTO?> GetCategoryByIdAsync(Guid categoryId)
-        {
-            return await _productDataSource.GetCategoryByIdAsync(categoryId);
         }
     }
 }

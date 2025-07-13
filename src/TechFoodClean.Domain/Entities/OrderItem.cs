@@ -9,8 +9,13 @@ public class OrderItem : Entity
     public OrderItem(
         Guid productId,
         decimal unitPrice,
-        int quantity)
+        int quantity,
+        Guid? id = null)
     {
+        if (id is not null)
+        {
+            base.SetId(id.Value);
+        }
         ProductId = productId;
         UnitPrice = unitPrice;
         Quantity = quantity;

@@ -17,6 +17,24 @@ public class Order : Entity, IAggregateRoot
         Status = OrderStatusType.Created;
     }
 
+    public Order(Guid? customerId, DateTime createdAt, DateTime? finishedAt,
+    OrderStatusType status, decimal amount, decimal discount,
+    IEnumerable<OrderItem> items, IEnumerable<OrderHistory?> history, Guid? id = null)
+    {
+        if (id is not null)
+        {
+            base.SetId(id.Value);
+        }
+        CustomerId = customerId;
+        CreatedAt = createdAt;
+        FinishedAt = finishedAt;
+        Status = status;
+        Amount = amount;
+        Discount = discount;
+        _items = items.ToList();
+        _historical = history?.ToList() ?? new List<OrderHistory>();
+    }
+
     private readonly List<OrderItem> _items = [];
 
     private readonly List<OrderHistory> _historical = [];
@@ -162,6 +180,6 @@ public class Order : Entity, IAggregateRoot
     private void UpdateStatus(OrderStatusType status)
     {
         Status = status;
-        _historical.Add(new(status));
+        _historical.Add(new(status, null, Guid.Empty));
     }
 }

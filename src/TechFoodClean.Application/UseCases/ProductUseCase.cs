@@ -10,14 +10,17 @@ namespace TechFoodClean.Application.UseCases
     public class ProductUseCase : IProductUseCase
     {
         private readonly IProductGateway _productGateway;
-        public ProductUseCase(IProductGateway productGateway)
+        private readonly ICategoryGateway _categoryGateway;
+        public ProductUseCase(IProductGateway productGateway,
+                              ICategoryGateway categoryGateway)
         {
             _productGateway = productGateway;
+            _categoryGateway = categoryGateway;
         }
 
         public async Task<Product> AddAsync(CreateProductRequestDTO productDTO, string fileName)
         {
-            var categoryDTO = await _productGateway.GetCategoryByIdAsync(productDTO.CategoryId)
+            var categoryDTO = await _categoryGateway.GetByIdAsync(productDTO.CategoryId)
                               ?? throw new NotFoundException(Exceptions.Product_CaregoryNotFound);
 
             var productEntity = new Product(null,
@@ -79,7 +82,7 @@ namespace TechFoodClean.Application.UseCases
                 await _productGateway.DeleteImageAsync(product);
             }
 
-            var categoryDTO = await _productGateway.GetCategoryByIdAsync(productDTO.CategoryId)
+            var category = await _categoryGateway.GetByIdAsync(productDTO.CategoryId)
                               ?? throw new NotFoundException(Exceptions.Product_CaregoryNotFound);
 
             product!.Update(
@@ -87,7 +90,7 @@ namespace TechFoodClean.Application.UseCases
                 productDTO.Description,
                 imageFileName,
                 productDTO.Price,
-                categoryDTO.Id);
+                category.Id);
 
             await _productGateway.UpdateAsync(product);
 

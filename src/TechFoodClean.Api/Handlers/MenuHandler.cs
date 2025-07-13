@@ -6,8 +6,9 @@ using TechFoodClean.Application.Interfaces.Presenter;
 
 namespace TechFoodClean.Api.Handlers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("v1/menu")]
+    [Tags("Menu")]
     public class MenuHandler : ControllerBase
     {
         private readonly IMenuController _menuController;
@@ -21,7 +22,7 @@ namespace TechFoodClean.Api.Handlers
         {
             _imageUrlResolver = imageUrlResolver;
             _menuController = new MenuController(productDataSource,
-                categoryDataSource,imageDataSource, unitOfWorkDataSource, _imageUrlResolver);
+                categoryDataSource, imageDataSource, unitOfWorkDataSource, _imageUrlResolver);
         }
 
         [HttpGet]
