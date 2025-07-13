@@ -218,45 +218,6 @@ minikube addons enable metrics-server
 minikube addons enable ingress  # Opcional
 ```
 
-## 🚨 Troubleshooting
-
-### Problemas Comuns
-
-1. **Pods em CrashLoopBackOff**
-
-   ```bash
-   kubectl logs <pod-name> -n techfood
-   kubectl describe pod <pod-name> -n techfood
-   ```
-
-2. **HPA não funciona**
-
-   ```bash
-   # Verificar se metrics-server está rodando
-   kubectl get pods -n kube-system | grep metrics-server
-
-   # Habilitar metrics-server
-   minikube addons enable metrics-server
-   ```
-
-3. **Imagens não encontradas**
-
-   ```bash
-   # Verificar se está usando o Docker do Minikube
-   eval $(minikube docker-env)
-   docker images | grep techfood
-   ```
-
-4. **Banco de dados não conecta**
-
-   ```bash
-   # Verificar se o serviço do banco está rodando
-   kubectl get svc techfood-db-service -n techfood
-
-   # Verificar logs do banco
-   kubectl logs -f deployment/techfood-db -n techfood
-   ```
-
 ## 📝 Notas de Desenvolvimento
 
 - As imagens Docker são construídas localmente no Minikube
@@ -265,9 +226,26 @@ minikube addons enable ingress  # Opcional
 - O HPA requer o metrics-server habilitado
 - Por padrão, o serviço é exposto via NodePort na porta 30000
 
-## 📚 Recursos Adicionais
+## Principais Comandos
 
-- [Kubernetes Documentation](https://kubernetes.io/docs/)
-- [Minikube Documentation](https://minikube.sigs.k8s.io/docs/)
-- [Kustomize Documentation](https://kustomize.io/)
-- [HPA Documentation](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/)
+```bash
+
+# Testar se a API está respondendo dentro do cluster
+kubectl exec -it deployment/techfood-nginx -n techfood -- curl -v http://techfood-api-service:8080/health
+
+# Reiniciar o deployment Nginx
+kubectl rollout restart deployment/techfood-nginx -n techfood
+
+# Verificar o status do deployment Nginx
+kubectl rollout status deployment/techfood-nginx -n techfood
+
+# Port-forward para acessar o serviço Nginx localmente
+kubectl port-forward -n techfood service/techfood-nginx-service 30000:30000
+
+# Verificar logs do Nginx
+kubectl logs -f deployment/techfood-nginx -n techfood
+
+# Obter a URL do serviço Nginx
+minikube service techfood-nginx-service -n techfood --url
+
+```

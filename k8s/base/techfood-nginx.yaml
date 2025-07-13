@@ -24,7 +24,7 @@ spec:
           image: techfood.nginx:latest
           imagePullPolicy: Never
           ports:
-            - containerPort: 5000
+            - containerPort: 30000
           volumeMounts:
             - name: nginx-config
               mountPath: /etc/nginx/conf.d
@@ -32,7 +32,7 @@ spec:
           livenessProbe:
             httpGet:
               path: /health
-              port: 5000
+              port: 30000
             initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 5
@@ -40,7 +40,7 @@ spec:
           readinessProbe:
             httpGet:
               path: /health
-              port: 5000
+              port: 30000
             initialDelaySeconds: 10
             periodSeconds: 5
             timeoutSeconds: 3
@@ -68,8 +68,8 @@ metadata:
     app.kubernetes.io/part-of: techfood-system
 spec:
   ports:
-    - port: 5000
-      targetPort: 5000
+    - port: 30000
+      targetPort: 30000
       protocol: TCP
       name: http
       nodePort: 30000

@@ -45,10 +45,23 @@ echo.
 echo 🎉 Deploy concluído com sucesso!
 echo.
 echo Para acessar a aplicação:
-echo 1. Execute: minikube service techfood-nginx-service -n techfood
-echo 2. Ou obtenha a URL: minikube service techfood-nginx-service -n techfood --url
 echo.
-echo Endpoints disponíveis:
+echo 🔧 OPÇÃO 1 - Port Forward (Recomendado para Windows):
+echo    Execute: k8s\port-forward.bat
+echo    Depois acesse: http://localhost:30000
+echo.
+echo 🔧 OPÇÃO 2 - Minikube Service (Tunnel):
+echo    Execute: k8s\start-tunnel.bat
+echo    O navegador abrirá automaticamente com a URL correta
+echo.
+echo 🔧 OPÇÃO 3 - Manual:
+echo    Execute: minikube service techfood-nginx-service -n techfood
+echo    Mantenha o terminal aberto e use a URL fornecida
+echo.
+echo ⚠️  IMPORTANTE: No Windows com Docker driver, a porta 30000 não funciona diretamente!
+echo Use uma das opções acima para criar um tunnel ou port-forward.
+echo.
+echo Após estabelecer a conexão, os endpoints estarão disponíveis em:
 echo - Admin: http://localhost:30000/admin
 echo - Self-Order: http://localhost:30000/self-order
 echo - Monitor: http://localhost:30000/monitor
