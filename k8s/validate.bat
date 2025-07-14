@@ -90,20 +90,6 @@ if %PVCS% EQU 0 (
     echo ✅ Encontrados %PVCS% PVCs
 )
 
-REM Verificar se a aplicação está acessível
-echo.
-echo ℹ️ Verificando conectividade da aplicação...
-
-REM Obter a URL do serviço
-for /f "tokens=*" %%i in ('minikube service techfood-nginx-service -n techfood --url 2^>nul') do set SERVICE_URL=%%i
-
-if "%SERVICE_URL%" == "" (
-    echo ❌ Não foi possível obter a URL do serviço
-    set /a ERRORS+=1
-) else (
-    echo ✅ URL do serviço: %SERVICE_URL%
-)
-
 REM Resumo final
 echo.
 echo =================== RESUMO ===================

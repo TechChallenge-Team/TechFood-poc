@@ -2,22 +2,47 @@
 
 Este diretório contém os manifestos e scripts necessários para fazer o deploy da aplicação TechFood no Kubernetes usando Minikube.
 
-## 📋 Pré-requisitos
+## Pré-requisitos
 
 - [Minikube](https://minikube.sigs.k8s.io/docs/start/) instalado e configurado
 - [kubectl](https://kubernetes.io/docs/tasks/tools/) instalado
 - [Docker](https://docs.docker.com/get-docker/) instalado
 - Mínimo de 4GB de RAM disponível para o Minikube
 
-## 🚀 Deploy Rápido
+## Instalação do Minikube
+
+1. Baixe o arquivo .exe do [site oficial](https://minikube.sigs.k8s.io/docs/start/)
+2. Adicione ao PATH do sistema
+
+## Instalação do kubectl
+
+1. Baixe o arquivo .exe do [site oficial](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+2. Adicione ao PATH do sistema
+
+## Deploy Rápido
 
 ### 1. Iniciar o Minikube
 
 ```bash
-minikube start --memory=4096 --cpus=2
+minikube start --memory=4096 --cpus=2 --driver=docker
 ```
 
-### 2. Build das Imagens
+### 2. Habilitar Addons Necessários
+
+```bash
+minikube addons enable metrics-server
+minikube addons enable ingress
+```
+
+### 3. Verificar Instalação
+
+```bash
+minikube status
+kubectl cluster-info
+kubectl get nodes
+```
+
+### 4. Build das Imagens
 
 Execute o script para fazer build das imagens Docker:
 
@@ -29,7 +54,7 @@ k8s\build-images.bat
 ./k8s/build-images.sh
 ```
 
-### 3. Deploy da Aplicação
+### 5. Deploy da Aplicação
 
 Execute o script de deploy:
 
@@ -41,7 +66,7 @@ k8s\deploy.bat
 ./k8s/deploy.sh
 ```
 
-### 4. Validar o Deploy
+### 6. Validar o Deploy
 
 ```bash
 # Windows
@@ -51,13 +76,19 @@ k8s\validate.bat
 ./k8s/validate.sh
 ```
 
-### 5. Acessar a Aplicação
+### 7. Port Forward para o Serviço Nginx
+
+```bash
+kubectl port-forward service/techfood-nginx-service 30000:30000 -n techfood
+```
+
+### 8. Acessar a Aplicação
 
 ```bash
 minikube service techfood-nginx-service -n techfood
 ```
 
-### 6. Limpeza (Opcional)
+### 9. Limpeza (Opcional)
 
 ```bash
 # Windows
@@ -67,7 +98,7 @@ k8s\cleanup.bat
 ./k8s/cleanup.sh
 ```
 
-## 🏗️ Arquitetura
+## Arquitetura
 
 A aplicação TechFood é composta pelos seguintes componentes:
 
@@ -93,7 +124,7 @@ A aplicação TechFood é composta pelos seguintes componentes:
 - **Deployments**: Gerenciamento dos pods
 - **HPA**: Auto-escalabilidade baseada em CPU/memória
 
-## 📊 Escalabilidade (HPA)
+## Escalabilidade (HPA)
 
 A aplicação está configurada com Horizontal Pod Autoscaler:
 
@@ -105,7 +136,7 @@ A aplicação está configurada com Horizontal Pod Autoscaler:
 | Monitor    | 2            | 5            | 70%        | 80%           |
 | Nginx      | 2            | 5            | 70%        | 80%           |
 
-## 🔒 Segurança
+## Segurança
 
 ### ConfigMaps (Dados não sensíveis)
 
@@ -119,7 +150,7 @@ A aplicação está configurada com Horizontal Pod Autoscaler:
 - Tokens JWT
 - Chaves de API do Mercado Pago
 
-## 📁 Estrutura dos Manifestos
+## Estrutura dos Manifestos
 
 ```
 k8s/
@@ -145,7 +176,7 @@ k8s/
 └── README.md                     # Este arquivo
 ```
 
-## 🌐 Endpoints
+## Endpoints
 
 Após o deploy, a aplicação estará disponível nos seguintes endpoints:
 
@@ -154,8 +185,6 @@ Após o deploy, a aplicação estará disponível nos seguintes endpoints:
 - **Monitor**: http://localhost:30000/monitor
 - **API**: http://localhost:30000/api
 - **Health Check**: http://localhost:30000/health
-
-## 📱 Comandos Úteis
 
 ### Monitoramento
 
@@ -184,9 +213,6 @@ kubectl describe pod <pod-name> -n techfood
 
 # Ver eventos do namespace
 kubectl get events -n techfood --sort-by='.metadata.creationTimestamp'
-
-# Port forward para um serviço
-kubectl port-forward service/techfood-api-service 8080:8080 -n techfood
 ```
 
 ### Limpeza
@@ -199,26 +225,7 @@ kubectl delete namespace techfood
 kubectl delete -k k8s/overlays/development/
 ```
 
-## 🔧 Configuração do Minikube
-
-### Recursos Recomendados
-
-```bash
-minikube start \
-  --memory=4096 \
-  --cpus=2 \
-  --disk-size=20g \
-  --driver=docker
-```
-
-### Addons Necessários
-
-```bash
-minikube addons enable metrics-server
-minikube addons enable ingress  # Opcional
-```
-
-## 📝 Notas de Desenvolvimento
+## Notas de Desenvolvimento
 
 - As imagens Docker são construídas localmente no Minikube
 - O banco de dados usa armazenamento persistente
@@ -226,26 +233,80 @@ minikube addons enable ingress  # Opcional
 - O HPA requer o metrics-server habilitado
 - Por padrão, o serviço é exposto via NodePort na porta 30000
 
-## Principais Comandos
+## Comandos Adicionais
+
+### Parar o Minikube
 
 ```bash
+minikube stop
+```
 
-# Testar se a API está respondendo dentro do cluster
+### Deletar o Cluster
+
+```bash
+minikube delete
+```
+
+### Dashboard do Kubernetes
+
+```bash
+minikube dashboard
+```
+
+### Logs do Minikube
+
+```bash
+minikube logs
+```
+
+### Testar se a API está respondendo dentro do cluster
+
+```bash
 kubectl exec -it deployment/techfood-nginx -n techfood -- curl -v http://techfood-api-service:8080/health
+```
 
-# Reiniciar o deployment Nginx
+### Reiniciar o deployment Nginx
+
+```bash
 kubectl rollout restart deployment/techfood-nginx -n techfood
+```
 
-# Verificar o status do deployment Nginx
+### Verificar o status do deployment Nginx
+
+```bash
 kubectl rollout status deployment/techfood-nginx -n techfood
+```
 
-# Port-forward para acessar o serviço Nginx localmente
-kubectl port-forward -n techfood service/techfood-nginx-service 30000:30000
+## Troubleshooting
 
-# Verificar logs do Nginx
-kubectl logs -f deployment/techfood-nginx -n techfood
+### Problema: Minikube não inicia
 
-# Obter a URL do serviço Nginx
-minikube service techfood-nginx-service -n techfood --url
+```bash
+# Verificar drivers disponíveis
+minikube start --help | Select-String "driver"
 
+# Verificar perfil do Minikube
+minikube profile list
+
+# Remover e recriar o cluster
+minikube delete
+minikube start --driver=docker
+```
+
+### Problema: Imagens não são encontradas
+
+```bash
+# Configurar Docker environment
+minikube docker-env | Invoke-Expression
+
+# Verificar imagens
+docker images
+```
+
+### Problema: Pods em CrashLoopBackOff
+
+```bash
+# Ver logs detalhados
+kubectl logs -f <pod-name> -n techfood
+kubectl describe pod <pod-name> -n techfood
 ```
