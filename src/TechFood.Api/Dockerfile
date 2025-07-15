@@ -12,11 +12,9 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/TechFood.Api/TechFood.Api.csproj", "TechFood.Api/"]
 COPY ["src/TechFood.Application/TechFood.Application.csproj", "TechFood.Application/"]
+COPY ["src/TechFood.Contracts/TechFood.Contracts.csproj", "TechFood.Contracts/"]
 COPY ["src/TechFood.Domain/TechFood.Domain.csproj", "TechFood.Domain/"]
-COPY ["src/TechFood.Domain.Shared/TechFood.Domain.Shared.csproj", "TechFood.Domain.Shared/"]
-COPY ["src/TechFood.Infra.Data/TechFood.Infra.Data.csproj", "TechFood.Infra.Data/"]
-COPY ["src/TechFood.Infra.ImageStore.LocalDisk/TechFood.Infra.ImageStore.LocalDisk.csproj", "TechFood.Infra.ImageStore.LocalDisk/"]
-COPY ["src/TechFood.Infra.Payments.MercadoPago/TechFood.Infra.Payments.MercadoPago.csproj", "TechFood.Infra.Payments.MercadoPago/"]
+COPY ["src/TechFood.Infra/TechFood.Infra.csproj", "TechFood.Infra/"]
 RUN dotnet restore "./TechFood.Api/TechFood.Api.csproj"
 COPY /src .
 WORKDIR TechFood.Api
