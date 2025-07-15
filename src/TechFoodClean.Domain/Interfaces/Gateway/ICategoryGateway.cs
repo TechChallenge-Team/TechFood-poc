@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using TechFoodClean.Domain.Entities;
 
-namespace TechFoodClean.Application.Interfaces.Gateway
+namespace TechFoodClean.Domain.Interfaces.Gateway
 {
     public interface ICategoryGateway
     {

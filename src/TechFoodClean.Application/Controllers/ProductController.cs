@@ -2,10 +2,10 @@ using TechFoodClean.Application.Gateway;
 using TechFoodClean.Application.Interfaces.Controller;
 using TechFoodClean.Application.Interfaces.DataSource;
 using TechFoodClean.Application.Interfaces.Presenter;
-using TechFoodClean.Application.Interfaces.UseCase;
 using TechFoodClean.Application.Presenters;
-using TechFoodClean.Application.UseCases;
 using TechFoodClean.Common.DTO.Product;
+using TechFoodClean.Domain.Interfaces.UseCase;
+using TechFoodClean.Domain.UseCases;
 
 namespace TechFoodClean.Application.Controllers
 {

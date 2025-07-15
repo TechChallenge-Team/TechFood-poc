@@ -1,11 +1,10 @@
-using TechFoodClean.Application.Interfaces.Gateway;
-using TechFoodClean.Application.Interfaces.UseCase;
 using TechFoodClean.Common.DTO.Customer;
-using TechFoodClean.Domain;
 using TechFoodClean.Domain.Enums;
+using TechFoodClean.Domain.Interfaces.Gateway;
+using TechFoodClean.Domain.Interfaces.UseCase;
 using TechFoodClean.Domain.ValueObjects;
 
-namespace TechFoodClean.Application.UseCases
+namespace TechFoodClean.Domain.UseCases
 {
     public class CustomerUseCase : ICustomerUseCase
     {

@@ -1,7 +1,7 @@
 using TechFoodClean.Domain;
 using TechFoodClean.Domain.Enums;
 
-namespace TechFoodClean.Application.Interfaces.Gateway
+namespace TechFoodClean.Domain.Interfaces.Gateway
 {
     public interface ICustomerGateway
     {

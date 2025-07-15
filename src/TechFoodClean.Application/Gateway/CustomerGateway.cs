@@ -1,10 +1,10 @@
 using TechFoodClean.Application.Interfaces.DataSource;
-using TechFoodClean.Application.Interfaces.Gateway;
 using TechFoodClean.Common.DTO;
 using TechFoodClean.Common.DTO.Enums;
 using TechFoodClean.Common.DTO.ValueObjects;
 using TechFoodClean.Domain;
 using TechFoodClean.Domain.Enums;
+using TechFoodClean.Domain.Interfaces.Gateway;
 using TechFoodClean.Domain.ValueObjects;
 
 namespace TechFoodClean.Application.Gateway

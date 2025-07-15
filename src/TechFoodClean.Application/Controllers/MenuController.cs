@@ -1,10 +1,10 @@
 using TechFoodClean.Application.Gateway;
 using TechFoodClean.Application.Interfaces.Controller;
 using TechFoodClean.Application.Interfaces.DataSource;
-using TechFoodClean.Application.Interfaces.Gateway;
 using TechFoodClean.Application.Interfaces.Presenter;
 using TechFoodClean.Application.Presenters;
-using TechFoodClean.Application.UseCases;
+using TechFoodClean.Domain.Interfaces.Gateway;
+using TechFoodClean.Domain.UseCases;
 
 namespace TechFoodClean.Application.Controllers
 {

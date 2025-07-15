@@ -1,10 +1,10 @@
-using TechFoodClean.Application.Interfaces.Gateway;
-using TechFoodClean.Application.Interfaces.UseCase;
 using TechFoodClean.Common.DTO.Payment;
 using TechFoodClean.Domain.Entities;
 using TechFoodClean.Domain.Enums;
+using TechFoodClean.Domain.Interfaces.Gateway;
+using TechFoodClean.Domain.Interfaces.UseCase;
 
-namespace TechFoodClean.Application.UseCases
+namespace TechFoodClean.Domain.UseCases
 {
     public class PaymentUseCase : IPaymentUseCase
     {

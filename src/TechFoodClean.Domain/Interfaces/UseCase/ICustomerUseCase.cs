@@ -1,7 +1,6 @@
 using TechFoodClean.Common.DTO.Customer;
-using TechFoodClean.Domain;
 
-namespace TechFoodClean.Application.Interfaces.UseCase
+namespace TechFoodClean.Domain.Interfaces.UseCase
 {
     public interface ICustomerUseCase
     {

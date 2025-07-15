@@ -1,7 +1,7 @@
-using TechFoodClean.Application.Interfaces.Gateway;
 using TechFoodClean.Application.Interfaces.Service;
 using TechFoodClean.Common.DTO.Payment;
 using TechFoodClean.Domain.Entities;
+using TechFoodClean.Domain.Interfaces.Gateway;
 
 namespace TechFoodClean.Application.Gateway
 {

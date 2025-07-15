@@ -1,7 +1,7 @@
 using TechFoodClean.Common.DTO.Category;
 using TechFoodClean.Domain.Entities;
 
-namespace TechFoodClean.Application.Interfaces.UseCase
+namespace TechFoodClean.Domain.Interfaces.UseCase
 {
     public interface ICategoryUseCase
     {

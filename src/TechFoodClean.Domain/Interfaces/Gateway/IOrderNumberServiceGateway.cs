@@ -1,4 +1,4 @@
-namespace TechFoodClean.Application.Interfaces.Gateway
+namespace TechFoodClean.Domain.Interfaces.Gateway
 {
     public interface IOrderNumberServiceGateway
     {

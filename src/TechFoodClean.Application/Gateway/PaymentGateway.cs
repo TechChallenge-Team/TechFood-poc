@@ -1,9 +1,9 @@
 using TechFoodClean.Application.Interfaces.DataSource;
-using TechFoodClean.Application.Interfaces.Gateway;
 using TechFoodClean.Common.DTO.Enums;
 using TechFoodClean.Common.Entities;
 using TechFoodClean.Domain.Entities;
 using TechFoodClean.Domain.Enums;
+using TechFoodClean.Domain.Interfaces.Gateway;
 
 namespace TechFoodClean.Application.Gateway
 {

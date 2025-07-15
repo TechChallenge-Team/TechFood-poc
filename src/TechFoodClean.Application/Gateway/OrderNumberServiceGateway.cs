@@ -1,5 +1,5 @@
-using TechFoodClean.Application.Interfaces.Gateway;
 using TechFoodClean.Application.Interfaces.Service;
+using TechFoodClean.Domain.Interfaces.Gateway;
 
 namespace TechFoodClean.Application.Gateway
 {

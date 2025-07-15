@@ -1,14 +1,13 @@
-using TechFoodClean.Application.Interfaces.Gateway;
-using TechFoodClean.Application.Interfaces.UseCase;
 using TechFoodClean.Common.DTO.Category;
 using TechFoodClean.Domain.Entities;
+using TechFoodClean.Domain.Interfaces.Gateway;
+using TechFoodClean.Domain.Interfaces.UseCase;
 
-namespace TechFoodClean.Application.UseCases
+namespace TechFoodClean.Domain.UseCases
 {
     public class CategoryUseCase : ICategoryUseCase
     {
         private readonly ICategoryGateway _categoryGateway;
-        private readonly IProductGateway _productGateway;
         public CategoryUseCase(ICategoryGateway categoryGateway)
         {
             _categoryGateway = categoryGateway;

@@ -1,11 +1,11 @@
-using TechFoodClean.Application.Interfaces.Gateway;
-using TechFoodClean.Application.Interfaces.UseCase;
 using TechFoodClean.Common.DTO.Product;
 using TechFoodClean.Common.Exceptions;
 using TechFoodClean.Common.Resources;
 using TechFoodClean.Domain.Entities;
+using TechFoodClean.Domain.Interfaces.Gateway;
+using TechFoodClean.Domain.Interfaces.UseCase;
 
-namespace TechFoodClean.Application.UseCases
+namespace TechFoodClean.Domain.UseCases
 {
     public class ProductUseCase : IProductUseCase
     {
@@ -20,13 +20,13 @@ namespace TechFoodClean.Application.UseCases
 
         public async Task<Product> AddAsync(CreateProductRequestDTO productDTO, string fileName)
         {
-            var categoryDTO = await _categoryGateway.GetByIdAsync(productDTO.CategoryId)
+            var category = await _categoryGateway.GetByIdAsync(productDTO.CategoryId)
                               ?? throw new NotFoundException(Exceptions.Product_CaregoryNotFound);
 
             var productEntity = new Product(null,
                                             productDTO.Name,
                                             productDTO.Description,
-                                            categoryDTO.Id,
+                                            category.Id,
                                             fileName,
                                             false,
                                             productDTO.Price);
