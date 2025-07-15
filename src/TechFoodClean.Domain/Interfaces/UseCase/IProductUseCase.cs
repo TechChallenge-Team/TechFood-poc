@@ -9,9 +9,9 @@ namespace TechFoodClean.Domain.Interfaces.UseCase
 
         Task<Product?> GetByIdAsync(Guid id);
 
-        Task<Product> AddAsync(CreateProductRequestDTO category, string fileName);
+        Task<Product> AddAsync(CreateProductRequestDTO productDTO, string fileName);
 
-        Task<Product?> UpdateAsync(Guid id, UpdateProductRequestDTO category, string fileName);
+        Task<Product?> UpdateAsync(Guid id, UpdateProductRequestDTO productDTO, string fileName);
 
         Task<bool> DeleteAsync(Guid id);
     }
