@@ -11,5 +11,7 @@ namespace TechFoodClean.Application.Interfaces.DataSource
         Task<PreparationDTO?> GetByOrderIdAsync(Guid orderId);
 
         Task<IEnumerable<PreparationDTO>> GetAllAsync();
+
+        Task UpdateAsync(PreparationDTO preparation);
     }
 }

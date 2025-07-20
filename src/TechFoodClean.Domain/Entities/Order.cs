@@ -25,6 +25,7 @@ public class Order : Entity, IAggregateRoot
         {
             base.SetId(id.Value);
         }
+
         CustomerId = customerId;
         CreatedAt = createdAt;
         FinishedAt = finishedAt;

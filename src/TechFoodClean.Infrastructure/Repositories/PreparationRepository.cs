@@ -39,6 +39,11 @@ public class PreparationRepository(TechFoodContext dbContext) : IPreparationData
 
     public async Task<PreparationDTO?> GetByOrderIdAsync(Guid orderId)
     {
-        return await _preparations.Where(x => x.OrderId == orderId).FirstOrDefaultAsync();
+        return await _preparations.FirstOrDefaultAsync(x => x.OrderId == orderId);
+    }
+
+    public async Task UpdateAsync(PreparationDTO preparation)
+    {
+        await Task.FromResult(_preparations.Update(preparation));
     }
 }

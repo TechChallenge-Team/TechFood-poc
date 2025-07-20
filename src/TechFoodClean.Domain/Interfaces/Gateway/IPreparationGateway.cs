@@ -1,15 +1,16 @@
 using TechFoodClean.Domain.Entities;
 
-namespace TechFoodClean.Domain.Interfaces.Gateway
+namespace TechFoodClean.Domain.Interfaces.Gateway;
+
+public interface IPreparationGateway
 {
-    public interface IPreparationGateway
-    {
-        Task<Guid> AddAsync(Preparation preparation);
+    Task<Guid> AddAsync(Preparation preparation);
 
-        Task<Preparation?> GetByIdAsync(Guid id);
+    Task<Preparation?> GetByIdAsync(Guid id);
 
-        Task<Preparation?> GetByOrderIdAsync(Guid orderId);
+    Task<Preparation?> GetByOrderIdAsync(Guid orderId);
 
-        Task<IEnumerable<Preparation>> GetAllAsync();
-    }
+    Task<IEnumerable<Preparation>> GetAllAsync();
+
+    Task UpdateAsync(Preparation preparation);
 }

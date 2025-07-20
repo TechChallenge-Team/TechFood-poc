@@ -11,15 +11,48 @@ namespace TechFoodClean.Application.Gateway
     {
         private readonly IUnitOfWorkDataSource _unitOfWork;
         private readonly IOrderDataSource _orderDataSource;
+
         public OrderGateway(IOrderDataSource orderDataSource,
-                            IUnitOfWorkDataSource unitOfWork)
+                            IUnitOfWorkDataSource unitOfWork
+                            )
         {
             _unitOfWork = unitOfWork;
             _orderDataSource = orderDataSource;
         }
-        public Task<Guid> AddAsync(Order order)
+
+        public async Task<Guid> AddAsync(Order order)
         {
-            throw new NotImplementedException();
+            var orderDTO = new OrderDTO()
+            {
+                Amount = order.Amount,
+                CustomerId = order.CustomerId,
+                Discount = order.Discount,
+                FinishedAt = order.FinishedAt,
+                Historical = order.Historical.Select(h => new OrderHistoryDTO
+                {
+                    Id = h.Id,
+                    OrderId = order.Id,
+                    IsDeleted = h.IsDeleted,
+                    CreatedAt = h.CreatedAt,
+                    Status = (OrderStatusTypeDTO)h.Status
+                }).ToList(),
+                IsDeleted = order.IsDeleted,
+                CreatedAt = order.CreatedAt,
+                Status = (OrderStatusTypeDTO)order.Status,
+                Items = order.Items.Select(i => new OrderItemDTO
+                {
+                    Id = i.Id,
+                    ProductId = i.ProductId,
+                    Quantity = i.Quantity,
+                    UnitPrice = i.UnitPrice
+                }).ToList()
+            };
+
+            var result = await _orderDataSource.AddAsync(orderDTO);
+
+            await _unitOfWork.CommitAsync();
+
+            return result;
         }
 
         public Task<List<Order>> GetAllDoneAndInPreparationAsync()

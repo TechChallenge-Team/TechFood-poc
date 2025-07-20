@@ -1,0 +1,42 @@
+using Microsoft.AspNetCore.Mvc;
+using TechFoodClean.Application.Controllers;
+using TechFoodClean.Application.Interfaces.Controller;
+using TechFoodClean.Application.Interfaces.DataSource;
+using TechFoodClean.Domain.Entities;
+
+namespace TechFoodClean.Api.Handlers
+{
+    [ApiController]
+    [Route("v1/order")]
+    [Tags("Order")]
+    public class OrderHandler : ControllerBase
+    {
+        private readonly IOrderController _orderController;
+
+        public OrderHandler(IOrderDataSource orderDataSource,
+            IProductDataSource productDataSource,
+            IPreparationDataSource preparationDataSource,
+            IUnitOfWorkDataSource unitOfWorkDataSource
+            )
+        {
+            _orderController = new OrderController(orderDataSource, productDataSource
+                , preparationDataSource, unitOfWorkDataSource);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateAsync([FromBody] CreateOrderRequestDTO request)
+        {
+            var result = await _orderController.CreateOrderAsync(request);
+
+            return Ok(result);
+        }
+
+        [HttpPatch]
+        public async Task<IActionResult> FinishAsync([FromBody] FinishOrderRequestDTO request)
+        {
+            await _orderController.FinishAsync(request);
+
+            return Ok();
+        }
+    }
+}

@@ -2,56 +2,95 @@ using TechFoodClean.Application.Interfaces.DataSource;
 using TechFoodClean.Common.DTO.Enums;
 using TechFoodClean.Common.Entities;
 using TechFoodClean.Domain.Entities;
+using TechFoodClean.Domain.Enums;
 using TechFoodClean.Domain.Interfaces.Gateway;
 
-namespace TechFoodClean.Application.Gateway
+namespace TechFoodClean.Application.Gateway;
+
+public class PreparationGateway : IPreparationGateway
 {
-    public class PreparationGateway : IPreparationGateway
+    private readonly IPreparationDataSource _preparationDataSource;
+    private readonly IUnitOfWorkDataSource _unitOfWorkDataSource;
+
+    public PreparationGateway(IPreparationDataSource preparationDataSource,
+        IUnitOfWorkDataSource unitOfWorkDataSource)
     {
-        private readonly IPreparationDataSource _preparationDataSource;
-        private readonly IUnitOfWorkDataSource _unitOfWorkDataSource;
-
-        public PreparationGateway(IUnitOfWorkDataSource unitOfWorkDataSource,
-                                  IPreparationDataSource preparationDataSource)
+        _unitOfWorkDataSource = unitOfWorkDataSource;
+        _preparationDataSource = preparationDataSource;
+    }
+    public async Task<Guid> AddAsync(Preparation preparation)
+    {
+        var preparationDto = new PreparationDTO
         {
-            _unitOfWorkDataSource = unitOfWorkDataSource;
-            _preparationDataSource = preparationDataSource;
-        }
-        public async Task<Guid> AddAsync(Preparation preparation)
+            Id = preparation.Id,
+            OrderId = preparation.OrderId,
+            Number = preparation.Number,
+            CreatedAt = preparation.CreatedAt,
+            FinishedAt = preparation.FinishedAt,
+            IsDeleted = preparation.IsDeleted,
+            StartedAt = preparation.StartedAt,
+            Status = (PreparationStatusTypeDTO)preparation.Status
+        };
+
+
+        var result = await _preparationDataSource.AddAsync(preparationDto);
+
+        await _unitOfWorkDataSource.CommitAsync();
+
+        return result;
+    }
+
+    public Task<IEnumerable<Preparation>> GetAllAsync()
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<Preparation?> GetByIdAsync(Guid id)
+    {
+        var preparationDTO = await _preparationDataSource.GetByIdAsync(id);
+
+        return preparationDTO is not null ? new Preparation(
+            preparationDTO.Id,
+            preparationDTO.OrderId,
+            preparationDTO.Number,
+            preparationDTO.CreatedAt,
+            preparationDTO.StartedAt,
+            preparationDTO.FinishedAt,
+            (PreparationStatusType)preparationDTO.Status
+        ): null;
+    }
+
+    public async Task<Preparation?> GetByOrderIdAsync(Guid orderId)
+    {
+        var preparationDTO = await _preparationDataSource.GetByOrderIdAsync(orderId);
+
+        return preparationDTO is not null ? new Preparation(
+            preparationDTO.Id,
+            preparationDTO.OrderId,
+            preparationDTO.Number,
+            preparationDTO.CreatedAt,
+            preparationDTO.StartedAt,
+            preparationDTO.FinishedAt,
+            (PreparationStatusType)preparationDTO.Status
+            ) : null;
+    }
+
+    public async Task UpdateAsync(Preparation preparation)
+    {
+        var request = new PreparationDTO
         {
-            var preparationDto = new PreparationDTO
-            {
-                Id = preparation.Id,
-                OrderId = preparation.OrderId,
-                Number = preparation.Number,
-                CreatedAt = preparation.CreatedAt,
-                FinishedAt = preparation.FinishedAt,
-                IsDeleted = preparation.IsDeleted,
-                StartedAt = preparation.StartedAt,
-                Status = (PreparationStatusTypeDTO)preparation.Status
-            };
+            Id = preparation.Id,
+            OrderId = preparation.OrderId,
+            Number = preparation.Number,
+            CreatedAt = preparation.CreatedAt,
+            FinishedAt = preparation.FinishedAt,
+            IsDeleted = preparation.IsDeleted,
+            StartedAt = preparation.StartedAt,
+            Status = (PreparationStatusTypeDTO)preparation.Status
+        };
 
+        await _preparationDataSource.UpdateAsync(request);
 
-            var result = await _preparationDataSource.AddAsync(preparationDto);
-
-            await _unitOfWorkDataSource.CommitAsync();
-
-            return result;
-        }
-
-        public Task<IEnumerable<Preparation>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Preparation?> GetByIdAsync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Preparation?> GetByOrderIdAsync(Guid orderId)
-        {
-            throw new NotImplementedException();
-        }
+        await _unitOfWorkDataSource.CommitAsync();
     }
 }

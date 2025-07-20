@@ -44,7 +44,6 @@ namespace TechFoodClean.Domain.UseCases
             {
                 throw new ApplicationException("Order not found.");
             }
-
             payment.Confirm();
 
             order.ConfirmPayment();

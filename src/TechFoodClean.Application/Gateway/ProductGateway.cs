@@ -8,16 +8,22 @@ namespace TechFoodClean.Application.Gateway
 {
     public class ProductGateway : IProductGateway
     {
-
         private readonly IProductDataSource _productDataSource;
         private readonly IImageDataSource _imageDataSource;
         private readonly IUnitOfWorkDataSource _unitOfWorkDataSource;
+
         public ProductGateway(IProductDataSource productDataSource,
                                IImageDataSource imageDataSource,
                                IUnitOfWorkDataSource unitOfWorkDataSource)
+            : this(productDataSource, unitOfWorkDataSource)
+        {
+            _imageDataSource = imageDataSource;
+        }
+
+        public ProductGateway(IProductDataSource productDataSource,
+                               IUnitOfWorkDataSource unitOfWorkDataSource)
         {
             _productDataSource = productDataSource;
-            _imageDataSource = imageDataSource;
             _unitOfWorkDataSource = unitOfWorkDataSource;
         }
 

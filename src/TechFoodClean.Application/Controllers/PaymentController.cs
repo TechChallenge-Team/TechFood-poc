@@ -27,7 +27,7 @@ public class PaymentController : IPaymentController
         var productGateway = new ProductGateway(productDataSource, imageDataSource, unitOfWork);
         var orderGateway = new OrderGateway(orderDataSource, unitOfWork);
         var paymentServiceGateway = new PaymentServiceGateway(paymentService);
-        var preparationGateway = new PreparationGateway(unitOfWork, preparationDataSource);
+        var preparationGateway = new PreparationGateway(preparationDataSource, unitOfWork);
         var orderNumberServiceGateway = new OrderNumberServiceGateway(orderNumberService);
 
         _paymentUseCase = new PaymentUseCase(paymentGateway,
