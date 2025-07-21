@@ -1,6 +1,4 @@
-using System;
 using TechFood.Domain.Enums;
-using TechFood.Domain.Shared.Entities;
 
 namespace TechFood.Domain.Entities;
 

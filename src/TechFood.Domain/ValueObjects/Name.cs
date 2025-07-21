@@ -1,6 +1,3 @@
-using System;
-using TechFood.Domain.Shared.ValueObjects;
-
 namespace TechFood.Domain.ValueObjects;
 
 public class Name : ValueObject, IEquatable<Name>

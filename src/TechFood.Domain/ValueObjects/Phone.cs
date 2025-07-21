@@ -1,5 +1,3 @@
-using TechFood.Domain.Shared.ValueObjects;
-
 namespace TechFood.Domain.ValueObjects;
 
 public class Phone : ValueObject

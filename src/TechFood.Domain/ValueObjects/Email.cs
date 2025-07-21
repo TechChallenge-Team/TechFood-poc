@@ -1,7 +1,5 @@
-using System;
-using TechFood.Domain.Shared.Exceptions;
-using TechFood.Domain.Shared.Validations;
-using TechFood.Domain.Shared.ValueObjects;
+using TechFood.Common.Exceptions;
+using TechFood.Domain.Validations;
 
 namespace TechFood.Domain.ValueObjects;
 
@@ -28,7 +26,7 @@ public class Email : ValueObject, IEquatable<Email>
     {
         if (!ValidateEmail.IsValidEmail(Address))
         {
-            throw new DomainException(Resources.Exceptions.Customer_ThrowEmailInvalid);
+            throw new DomainException(Common.Resources.Exceptions.Customer_ThrowEmailInvalid);
         }
     }
 }

@@ -1,5 +1,4 @@
-using TechFood.Domain.Shared.Entities;
-using TechFood.Domain.Shared.Validations;
+using TechFood.Domain.Validations;
 using TechFood.Domain.ValueObjects;
 
 namespace TechFood.Domain.Entities;
@@ -32,14 +31,14 @@ public class User : Entity, IAggregateRoot
 
     public void SetPassword(string passwordHash)
     {
-        Validations.ThrowIfEmpty(passwordHash, Resources.Exceptions.User_PasswordHashIsEmpty);
+        CommonValidations.ThrowIfEmpty(passwordHash, Common.Resources.Exceptions.User_PasswordHashIsEmpty);
 
         PasswordHash = passwordHash;
     }
 
     public void SetRole(string role)
     {
-        Validations.ThrowIfEmpty(role, Resources.Exceptions.User_RoleIsEmpty);
+        CommonValidations.ThrowIfEmpty(role, Common.Resources.Exceptions.User_RoleIsEmpty);
 
         Role = role;
     }

@@ -1,7 +1,6 @@
+using TechFood.Common.Exceptions;
 using TechFood.Domain.Enums;
-using TechFood.Domain.Shared.Exceptions;
-using TechFood.Domain.Shared.Validations;
-using TechFood.Domain.Shared.ValueObjects;
+using TechFood.Domain.Validations;
 
 namespace TechFood.Domain.ValueObjects;
 
@@ -23,7 +22,7 @@ public class Document : ValueObject
     {
         if (Type == DocumentType.CPF && !ValidaDocument.ValidarCPF(Value))
         {
-            throw new DomainException(Resources.Exceptions.Customer_ThrowDocumentCPFInvalid);
+            throw new DomainException(Common.Resources.Exceptions.Customer_ThrowDocumentCPFInvalid);
         }
     }
 }

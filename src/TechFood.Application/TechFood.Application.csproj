@@ -1,50 +1,20 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
-  
-  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
-    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.1.2" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2" />
-  </ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\TechFood.Domain\TechFood.Domain.csproj" />
-	</ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Common\Resources\Exceptions.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Exceptions.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Common\Resources\Validators.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Validators.resx</DependentUpon>
-    </Compile>
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.4" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Common\Resources\Exceptions.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Exceptions.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Common\Resources\Validators.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Validators.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\Category\" />
+    <ProjectReference Include="..\TechFood.Common\TechFood.Common.csproj" />
+    <ProjectReference Include="..\TechFood.Domain\TechFood.Domain.csproj" />
   </ItemGroup>
 
 </Project>

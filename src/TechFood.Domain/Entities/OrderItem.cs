@@ -1,6 +1,4 @@
-using System;
-using TechFood.Domain.Shared.Entities;
-using TechFood.Domain.Shared.Validations;
+using TechFood.Domain.Validations;
 
 namespace TechFood.Domain.Entities;
 
@@ -11,8 +9,13 @@ public class OrderItem : Entity
     public OrderItem(
         Guid productId,
         decimal unitPrice,
-        int quantity)
+        int quantity,
+        Guid? id = null)
     {
+        if (id is not null)
+        {
+            base.SetId(id.Value);
+        }
         ProductId = productId;
         UnitPrice = unitPrice;
         Quantity = quantity;
@@ -28,15 +31,15 @@ public class OrderItem : Entity
 
     public void UpdateQuantity(int quantity)
     {
-        Validations.ThrowIsGreaterThanZero(quantity, Resources.Exceptions.OrderItem_ThrowQuantityGreaterThanZero);
+        CommonValidations.ThrowIsGreaterThanZero(quantity, Common.Resources.Exceptions.OrderItem_ThrowQuantityGreaterThanZero);
 
         Quantity = quantity;
     }
 
     private void Validate()
     {
-        Validations.ThrowValidGuid(ProductId, Resources.Exceptions.OrderItem_ThrowProductIdIsInvalid);
-        Validations.ThrowIsGreaterThanZero(UnitPrice, Resources.Exceptions.OrderItem_ThrowUnitPriceGreaterThanZero);
-        Validations.ThrowIsGreaterThanZero(Quantity, Resources.Exceptions.OrderItem_ThrowQuantityGreaterThanZero);
+        CommonValidations.ThrowValidGuid(ProductId, Common.Resources.Exceptions.OrderItem_ThrowProductIdIsInvalid);
+        CommonValidations.ThrowIsGreaterThanZero(UnitPrice, Common.Resources.Exceptions.OrderItem_ThrowUnitPriceGreaterThanZero);
+        CommonValidations.ThrowIsGreaterThanZero(Quantity, Common.Resources.Exceptions.OrderItem_ThrowQuantityGreaterThanZero);
     }
 }

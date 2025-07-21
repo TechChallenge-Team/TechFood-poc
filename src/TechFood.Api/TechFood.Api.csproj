@@ -1,21 +1,61 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net8</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
-    <UserSecretsId>ce813c32-edb4-47f2-98d3-d02261ab15c1</UserSecretsId>
-    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>..\..</DockerfileContext>
-    <DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="images\**\*" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="images\**">
+    <Content Include="images\category\acompanhamento.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\category\bebida.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\category\lanche.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\category\sobremesa.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\product\batata-grande.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\product\batata.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\product\coca-cola.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\product\fanta.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\product\guarana.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\product\milk-shake-baunilha.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\product\milk-shake-chocolate.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\product\milk-shake-morango.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\product\nuggets.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\product\sprite.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\product\x-bacon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\product\x-burguer.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\product\x-salada.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -32,10 +72,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TechFood.Application\TechFood.Application.csproj" />
-    <ProjectReference Include="..\TechFood.Infra.Data\TechFood.Infra.Data.csproj" />
-    <ProjectReference Include="..\TechFood.Infra.Payments.MercadoPago\TechFood.Infra.Payments.MercadoPago.csproj" />
-    <ProjectReference Include="..\TechFood.Infra.ImageStore.LocalDisk\TechFood.Infra.ImageStore.LocalDisk.csproj" />
+    <ProjectReference Include="..\TechFood.Infrastructure.ImageStore.LocalDisk\TechFood.Infrastructure.ImageStore.LocalDisk.csproj" />
+    <ProjectReference Include="..\TechFood.Infrastructure.Payments.MercadoPago\TechFood.Infrastructure.Payments.MercadoPago.csproj" />
+    <ProjectReference Include="..\TechFood.Infrastructure\TechFood.Infrastructure.Data.csproj" />
   </ItemGroup>
-
 
 </Project>
