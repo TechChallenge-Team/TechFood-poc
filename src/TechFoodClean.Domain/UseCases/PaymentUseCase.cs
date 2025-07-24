@@ -35,18 +35,17 @@ namespace TechFoodClean.Domain.UseCases
             var payment = await _paymentGateway.GetByIdAsync(id);
 
             if (payment == null)
-            {
                 throw new ApplicationException("Payment not found.");
-            }
+
 
             var order = await _orderGateway.GetByIdAsync(payment.OrderId);
+
             if (order == null)
-            {
                 throw new ApplicationException("Order not found.");
-            }
             payment.Confirm();
 
             order.ConfirmPayment();
+
             var preparationNumber = await _orderNumberServiceGateway.GetAsync();
 
             await _orderGateway.UpdateAsync(order);
@@ -93,5 +92,7 @@ namespace TechFoodClean.Domain.UseCases
             return payment;
         }
 
+        public async Task<Payment?> GetByIdAsync(Guid id)
+            => await _paymentGateway.GetByIdAsync(id);
     }
 }

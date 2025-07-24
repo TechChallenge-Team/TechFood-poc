@@ -9,6 +9,7 @@ public class OrderUseCase : IOrderUseCase
     private readonly IOrderGateway _orderGateway;
     private readonly IProductGateway _productGateway;
     private readonly IPreparationGateway _preparationGateway;
+
     public OrderUseCase(IOrderGateway orderGateway,
         IProductGateway productGateway,
         IPreparationGateway preparationGateway)
@@ -27,19 +28,26 @@ public class OrderUseCase : IOrderUseCase
             {
                 var product = products.First(p => p!.Id == i.ProductId)!;
                 return new OrderItem(product.Id, product.Price, i.Quantity);
-            })
-            .ToList();
+            });
 
-        var order = new Order(
-            request.CustomerId
-            );
+        var order = new Order(request.CustomerId);
 
-        foreach(var item in orderItems)
+        foreach (var item in orderItems)
            order.AddItem(item);
 
         var orderId = await _orderGateway.AddAsync(order);
 
         order.SetId(orderId);
+
+        return order;
+    }
+
+    public async Task<Order> GetOrderByIdAsync(Guid orderId)
+    {
+        var order = await _orderGateway.GetByIdAsync(orderId);
+
+        if (order == null)
+            throw new ApplicationException("Order not found.");
 
         return order;
     }

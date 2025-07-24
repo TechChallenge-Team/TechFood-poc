@@ -24,7 +24,8 @@ namespace TechFoodClean.Api.Handlers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync([FromBody] CreateOrderRequestDTO request)
+        [ProducesResponseType(typeof(Guid), 200)]
+        public async Task<IActionResult> CreateAsync(CreateOrderRequestDTO request)
         {
             var result = await _orderController.CreateOrderAsync(request);
 

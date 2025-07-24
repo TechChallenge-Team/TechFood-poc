@@ -5,20 +5,19 @@ namespace TechFoodClean.Domain.Entities;
 public class CreateOrderRequestDTO
 {
     [Required]
-    public Guid? CustomerId { get; private set; }
+    public Guid CustomerId { get; set; }
+
+    public string? CuponCode { get; set; }
 
     [Required]
-    public string? CuponCode { get; private set; }
-
-    [Required]
-    public List<Item> Items { get; private set; } = [];
+    public List<Item> Items { get; set; } = [];
 
     public class Item
     {
         [Required]
-        public Guid ProductId { get; private set; }
+        public Guid ProductId { get; set; }
 
         [Required]
-        public int Quantity { get; private set; }
+        public int Quantity { get; set; }
     }
 }

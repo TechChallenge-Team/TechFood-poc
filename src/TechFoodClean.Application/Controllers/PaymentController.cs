@@ -51,4 +51,13 @@ public class PaymentController : IPaymentController
                    PaymentPresenter.Create(result) :
                    null;
     }
+
+    public async Task<PaymentPresenter?> GetByIdAsync(Guid id)
+    {
+        var result = await _paymentUseCase.GetByIdAsync(id);
+
+        return result is not null ?
+                   PaymentPresenter.Create(result) :
+                   null;
+    }
 }

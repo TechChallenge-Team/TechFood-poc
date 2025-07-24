@@ -38,6 +38,14 @@ public class PaymentsHandler : ControllerBase
                                                    orderNumberService);
     }
 
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetByIdAsync(Guid id)
+    {
+        var result = await _paymentController.GetByIdAsync(id);
+
+        return result != null ? Ok(result) : NotFound();
+    }
+
     [HttpPost]
     public async Task<IActionResult> CreateAsync(CreatePaymentRequestDTO paymentRequestDTO)
     {
