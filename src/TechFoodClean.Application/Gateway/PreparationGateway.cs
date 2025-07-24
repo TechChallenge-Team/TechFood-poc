@@ -40,9 +40,21 @@ public class PreparationGateway : IPreparationGateway
         return result;
     }
 
-    public Task<IEnumerable<Preparation>> GetAllAsync()
+    public async Task<IEnumerable<Preparation>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        var preparationDTO = await _preparationDataSource.GetAllAsync();
+        
+        return preparationDTO.Select(
+            p => new Preparation(
+                p.Id,
+                p.OrderId,
+                p.Number,
+                p.CreatedAt,
+                p.StartedAt,
+                p.FinishedAt,
+                (PreparationStatusType)p.Status
+            )
+        ).ToList();
     }
 
     public async Task<Preparation?> GetByIdAsync(Guid id)
