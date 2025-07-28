@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using TechFood.Application.Models.OrderMonitor;
 using TechFood.Application.Models.Preparation;
 
@@ -10,7 +11,7 @@ public interface IPreparationUseCase
 {
     Task<IEnumerable<GetPreparationMonitorResult>> GetAllPreparationOrdersAsync();
 
-    Task<int> GetPreparationByOrderIdAsync(Guid orderId);
+    Task<IActionResult> GetPreparationByOrderIdAsync(Guid orderId);
 
     Task<IEnumerable<GetPreparationResult>> GetAllAsync();
 

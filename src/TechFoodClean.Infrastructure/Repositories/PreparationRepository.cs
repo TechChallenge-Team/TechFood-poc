@@ -42,8 +42,14 @@ public class PreparationRepository(TechFoodContext dbContext) : IPreparationData
         return await _preparations.FirstOrDefaultAsync(x => x.OrderId == orderId);
     }
 
-    public async Task UpdateAsync(PreparationDTO preparation)
+    public async Task UpdateAsync(PreparationDTO updatedData)
     {
-        await Task.FromResult(_preparations.Update(preparation));
+        var local = _preparations.Local.FirstOrDefault(x => x.Id == updatedData.Id);
+        if (local != null)
+        {
+            _preparations.Entry(local).State = EntityState.Detached;
+        }
+
+        _preparations.Update(updatedData);
     }
 }

@@ -6,7 +6,7 @@ public interface IPreparationUseCase
 {
     Task<IEnumerable<Preparation>> GetAllPreparationOrdersAsync();
 
-    Task<int> GetPreparationByOrderIdAsync(Guid orderId);
+    Task<Preparation> GetPreparationByOrderIdAsync(Guid orderId);
 
     Task<IEnumerable<Preparation>> GetAllAsync();
 

@@ -24,6 +24,34 @@ public class PreparationController : IPreparationController
     public async Task<IEnumerable<object>> GetAllPreparationOrdersAsync()
     {
         var preparations = await _preparationUseCase.GetAllPreparationOrdersAsync();
+        
+        return preparations.Select(preparation => new PreparationPresenter(
+            preparation.Id,
+            preparation.Status,
+            preparation.CreatedAt,
+            preparation.StartedAt,
+            preparation.FinishedAt,
+            preparation.OrderId
+        ));
+    }
+
+    public async Task<object> GetPreparationByOrderIdAsync(Guid orderId)
+    {
+        var result = await _preparationUseCase.GetPreparationByOrderIdAsync(orderId);
+        return result is not null ? 
+            new PreparationPresenter(
+                result.Id,
+                result.Status,
+                result.CreatedAt,
+                result.StartedAt,
+                result.FinishedAt,
+                result.OrderId
+            ) : null;
+    }
+
+    public async Task<IEnumerable<object>> GetAllAsync()
+    {
+        var preparations = await _preparationUseCase.GetAllAsync();
     
         return preparations.Select(preparation => new PreparationPresenter(
             preparation.Id,
@@ -31,33 +59,22 @@ public class PreparationController : IPreparationController
             preparation.CreatedAt,
             preparation.StartedAt,
             preparation.FinishedAt,
-            // preparation.CanceledAt,
             preparation.OrderId
         ));
     }
 
-    public Task<object> GetPreparationByOrderIdAsync(Guid orderId)
+    public async Task StartAsync(Guid id)
     {
-        throw new NotImplementedException();
+      await _preparationUseCase.StartAsync(id);
     }
 
-    public Task<IEnumerable<object>> GetAllAsync()
+    public async Task FinishAsync(Guid id)
     {
-        throw new NotImplementedException();
+        await _preparationUseCase.FinishAsync(id);
     }
 
-    public Task StartAsync(Guid id)
+    public async Task CancelAsync(Guid id)
     {
-        throw new NotImplementedException();
-    }
-
-    public Task FinishAsync(Guid id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task CancelAsync(Guid id)
-    {
-        throw new NotImplementedException();
+        await _preparationUseCase.CancelAsync(id);
     }
 }

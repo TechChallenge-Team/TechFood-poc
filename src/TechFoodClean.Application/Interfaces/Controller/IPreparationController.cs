@@ -1,4 +1,8 @@
-﻿namespace TechFoodClean.Application.Interfaces.Controller;
+﻿using Microsoft.AspNetCore.Mvc;
+using TechFoodClean.Application.Presenters;
+using TechFoodClean.Domain.Entities;
+
+namespace TechFoodClean.Application.Interfaces.Controller;
 
 public interface IPreparationController
 {
