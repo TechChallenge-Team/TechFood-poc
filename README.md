@@ -2,6 +2,21 @@
 
 TechFood is a FIAP Post-Graduation project that aims to create a web application for a food delivery service. The project is developed using the dotnet core framework and utilizes the ASP.NET Core MVC architecture. The application is designed to be responsive and user-friendly, providing a seamless experience for both customers and restaurant owner. The project is built with a focus on clean architecture, DDD, and hexagonal architecture principles.
 
+## 📋 Table of Contents
+
+- [Project Presentation](#project-presentation)
+- [Brainstorming](#brainstorming)
+- [Technologies Used](#technologies-used)
+- [Features](#features)
+- [Project Structure](#project-structure)
+- [Getting Started](#getting-started)
+  - [☸️ Kubernetes Deployment](./k8s/README.md)
+  - [🐳 Docker Deployment](./DOCKER.md)
+- [Configuration](#configuration)
+- [API Documentation](#order-flow---swagger)
+- [Frontend Flows](#order-flow---frontend)
+- [Team Members](#members)
+
 ## Project Presentation
 
 [![Watch the video](https://img.youtube.com/vi/0T7fcPIKPRI/0.jpg)](https://youtu.be/0T7fcPIKPRI)
@@ -12,58 +27,112 @@ TechFood is a FIAP Post-Graduation project that aims to create a web application
 
 ## Technologies Used
 
-- ASP.NET Core
-- Entity Framework Core
-- AutoMapper
-- SQL Server
-- RadixUI
-- TypeScript
-- HTML/CSS
+### Backend
+
+- **ASP.NET Core** - Web API framework
+- **Entity Framework Core** - ORM for database access
+- **AutoMapper** - Object mapping
+- **SQL Server** - Database
+
+### Frontend
+
+- **RadixUI** - UI component library
+- **TypeScript** - Type-safe JavaScript
+- **React** - Frontend framework
+- **HTML/CSS** - Markup and styling
+
+### Infrastructure & DevOps
+
+- **Docker & Docker Compose** - Containerization
+- **Kubernetes** - Container orchestration
+- **NGINX** - Reverse proxy and load balancer
+- **Minikube** - Local Kubernetes development
+
+### Payment Integration
+
+- **Mercado Pago API** - Payment processing
 
 ## Features
 
+### Customer Features
+
 - Consumer self-ordering system
 - Consumer registration and login
-- Restaurant registration and login
-- Menu browsing
-- Order placement
+- Menu browsing and item selection
+- Order placement and tracking
 - Payment integration (Mercado Pago)
-- Order painel for consumers
-- Admin panel for restaurant owners
+- Real-time order status monitoring
+
+### Restaurant Features
+
+- Restaurant registration and login
+- Menu management
+- Order preparation tracking
+- Admin panel for restaurant operations
+- Order fulfillment workflow
 
 ### Project Structure
 
-The project is organized into several key components, including:
+The project is organized into several key components:
 
-- **SQL Server**: The database that stores all the application data, including users, restaurants, menus, and orders.
-- **API**: The backend API that handles requests and responses, built with ASP.NET Core.
-- **Self-Order**: The frontend application that allows consumers to place orders, built with RadixUI and React.
-- **Monitor**: A monitoring application for customers to track their orders in real-time.
-- **Admin**: An administrative interface for restaurant to manage menu, and order preparation and delivery.
-- **NGINX**: The reverse proxy server that routes requests to the appropriate application components.
+#### Core Applications
+
+- **SQL Server**: Database that stores all application data (users, restaurants, menus, orders)
+- **API**: Backend API built with ASP.NET Core that handles all business logic
+- **Self-Order**: Consumer-facing frontend for placing orders (RadixUI + React)
+- **Monitor**: Real-time order tracking application for customers
+- **Admin**: Restaurant management interface for menu and order management
+- **NGINX**: Reverse proxy server for routing requests
+
+#### Deployment & Infrastructure
+
+- **Docker**: Containerization with Docker Compose for local development
+- **Kubernetes**: Ready orchestration with Minikube support
+- **k8s/**: Kubernetes manifests and deployment scripts
+- **nginx/**: NGINX configuration files
 
 ## Getting Started
 
-To get started with the project, follow these steps:
+### Quick Start Summary
 
-1. Clone the repository to your local machine.
+1. **Clone the repository**
 
-2. With docker installed in the project root run:
+   ```bash
+   git clone <repository-url>
+   cd tech-challenge/fase1
+   ```
 
-```bash
-  docker-compose up -d
-```
+You can run this project using different deployment methods:
 
-3. Container http addresses
+### ☸️ Kubernetes Deployment
 
-- api swagger: http://localhost:5000/api/swagger/index.html
-- app self-order: http://localhost:5000/self-order/
-- app monitor: http://localhost:5000/monitor/
-- app admin: http://localhost:5000/admin/
+For deployment using Kubernetes (Minikube), see the detailed instructions in:
+📖 **[k8s/README.md](./k8s/README.md)**
 
-### Credentials
+Follow the guide in [k8s/README.md](./k8s/README.md)
 
-Mercado Pago credentials for payment integration:
+- API Swagger: http://localhost:30000/api/swagger/index.html
+- Self-Order App: http://localhost:30000/self-order/
+- Monitor App: http://localhost:30000/monitor/
+- Admin App: http://localhost:30000/admin/
+
+### 🐳 Docker Deployment
+
+For quick setup using Docker containers, see the detailed instructions in:
+📖 **[DOCKER.md](./DOCKER.md)**
+
+`docker-compose up -d` (see [DOCKER.md](./DOCKER.md) for details)
+
+- API Swagger: http://localhost:5000/api/swagger/index.html
+- Self-Order App: http://localhost:5000/self-order/
+- Monitor App: http://localhost:5000/monitor/
+- Admin App: http://localhost:5000/admin/
+
+## Configuration
+
+### Test Credentials
+
+The application comes with pre-configured test credentials for Mercado Pago payment integration:
 
 - **Seller Username**: `TESTUSER1125814911`
 - **Seller Password**: `DD1wLKK8sd`
@@ -72,9 +141,13 @@ Mercado Pago credentials for payment integration:
 - **User ID**: `2414323212`
 - **Access Token**: `APP_USR-5808215342931102-042817-5d5fee5e46fe9a6b08d17f29e741091f-2414323212`
 
-Database connection string for the API:
+### Database Connection
+
+The default database connection string used by the API:
 
 **Connection String**: `Server=techfood.db;Database=dbtechfood;User Id=sa;Password=123456#4EA;TrustServerCertificate=True;`
+
+_Note: These credentials are for development/testing purposes only. For production deployments, ensure to use secure credentials and proper environment variable management._
 
 ## Order Flow - Swagger
 
