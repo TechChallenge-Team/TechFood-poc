@@ -10,5 +10,7 @@ namespace TechFoodClean.Domain.Interfaces.UseCase
         Task<int> ConfirmAsync(Guid id);
 
         Task<Payment?> CreateAsync(CreatePaymentRequestDTO data);
+
+        Task<Payment?> GetByOrderIdAsync(Guid id);
     }
 }

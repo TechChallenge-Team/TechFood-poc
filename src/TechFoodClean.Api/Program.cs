@@ -6,11 +6,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using TechFoodClean.Api.Filters;
-using TechFoodClean.Application.Common.Filters;
 using TechFoodClean.Infrastructure.Data;
 using TechFoodClean.Infrastructure.Data.Contexts;
 using TechFoodClean.Infrastructure.Data.NamingPolicy;
-using TechFoodClean.Infrastructure.ImageStore.LocalDisk;
+using TechFoodClean.Infrastructure.ImageStore.LocalDisk.Configuration;
 using TechFoodClean.Infrastructure.Payments.MercadoPago;
 
 var builder = WebApplication.CreateBuilder(args);

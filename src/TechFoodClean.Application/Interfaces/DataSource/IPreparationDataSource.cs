@@ -1,4 +1,4 @@
-using TechFoodClean.Common.Entities;
+using TechFoodClean.Common.DTO;
 
 namespace TechFoodClean.Application.Interfaces.DataSource
 {
@@ -13,5 +13,6 @@ namespace TechFoodClean.Application.Interfaces.DataSource
         Task<IEnumerable<PreparationDTO>> GetAllAsync();
 
         Task UpdateAsync(PreparationDTO preparation);
+
     }
 }

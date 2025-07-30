@@ -7,6 +7,9 @@ namespace TechFoodClean.Domain.Interfaces.Gateway
         Task<Guid> AddAsync(Payment payment);
 
         Task<Payment?> GetByIdAsync(Guid id);
+
         Task UpdateAsync(Payment product);
+
+        Task<Payment?> GetByOrderIdAsync(Guid id);
     }
 }

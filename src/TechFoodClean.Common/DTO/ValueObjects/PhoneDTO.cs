@@ -1,4 +1,4 @@
-namespace TechFoodClean.Domain.ValueObjects;
+namespace TechFoodClean.Common.DTO.ValueObjects;
 
 public class PhoneDTO
 {

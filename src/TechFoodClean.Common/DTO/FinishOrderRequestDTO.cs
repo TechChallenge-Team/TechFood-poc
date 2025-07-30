@@ -1,4 +1,4 @@
-namespace TechFoodClean.Domain.Entities;
+namespace TechFoodClean.Common.DTO;
 
 public class FinishOrderRequestDTO
 {

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace TechFoodClean.Application.Common.Filters;
+namespace TechFoodClean.Api.Filters;
 
 public class ModelStateFilter : ActionFilterAttribute
 {

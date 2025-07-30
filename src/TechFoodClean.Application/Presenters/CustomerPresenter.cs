@@ -1,5 +1,5 @@
 using TechFoodClean.Common.DTO.Enums;
-using TechFoodClean.Domain;
+using TechFoodClean.Domain.Entities;
 
 namespace TechFoodClean.Application.Presenters
 {

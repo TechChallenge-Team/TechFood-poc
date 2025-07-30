@@ -1,4 +1,4 @@
-using TechFoodClean.Common.Entities;
+using TechFoodClean.Common.DTO;
 
 namespace TechFoodClean.Application.Interfaces.DataSource
 {

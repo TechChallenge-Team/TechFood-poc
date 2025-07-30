@@ -4,7 +4,7 @@ namespace TechFoodClean.Common.DTO.Payment
     {
         public string PosId { get; set; }
 
-        public Guid OrderId { get; set; }
+        public string OrderId { get; set; }
 
         public string Title { get; set; }
 
@@ -12,7 +12,7 @@ namespace TechFoodClean.Common.DTO.Payment
 
         public List<PaymentItemDTO> Items { get; set; } = [];
 
-        public QrCodePaymentRequestDTO(string posId, Guid orderId, string title, decimal amount, List<PaymentItemDTO> items)
+        public QrCodePaymentRequestDTO(string posId, string orderId, string title, decimal amount, List<PaymentItemDTO> items)
         {
             PosId = posId;
             OrderId = orderId;

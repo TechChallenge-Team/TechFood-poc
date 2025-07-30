@@ -37,26 +37,25 @@ namespace TechFoodClean.Domain.UseCases
             if (payment == null)
                 throw new ApplicationException("Payment not found.");
 
-
             var order = await _orderGateway.GetByIdAsync(payment.OrderId);
 
             if (order == null)
                 throw new ApplicationException("Order not found.");
+
             payment.Confirm();
 
             order.ConfirmPayment();
 
-            var preparationNumber = await _orderNumberServiceGateway.GetAsync();
 
             await _orderGateway.UpdateAsync(order);
 
             await _paymentGateway.UpdateAsync(payment);
 
-            var preparation = new Preparation(payment.OrderId, preparationNumber);
+            var preparation = new Preparation(payment.OrderId, payment.Number);
 
             await _preparationGateway.AddAsync(preparation);
 
-            return preparationNumber;
+            return preparation.Number;
         }
 
         public async Task<Payment?> CreateAsync(CreatePaymentRequestDTO data)
@@ -83,6 +82,8 @@ namespace TechFoodClean.Domain.UseCases
                 throw new NotImplementedException("Credit card payment is not implemented yet.");
             }
 
+            payment.SetOrderNumber(await _orderNumberServiceGateway.GetAsync());
+
             order.CreatePayment();
 
             await _paymentGateway.AddAsync(payment);
@@ -94,5 +95,8 @@ namespace TechFoodClean.Domain.UseCases
 
         public async Task<Payment?> GetByIdAsync(Guid id)
             => await _paymentGateway.GetByIdAsync(id);
+
+        public async Task<Payment?> GetByOrderIdAsync(Guid id)
+            => await _paymentGateway.GetByOrderIdAsync(id);
     }
 }

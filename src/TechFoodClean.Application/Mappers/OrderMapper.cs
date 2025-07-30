@@ -1,4 +1,4 @@
-using TechFoodClean.Common.Entities;
+using TechFoodClean.Common.DTO;
 using TechFoodClean.Domain.Entities;
 using TechFoodClean.Domain.Enums;
 

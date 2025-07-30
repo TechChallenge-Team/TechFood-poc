@@ -1,4 +1,5 @@
 using TechFoodClean.Common.DTO.Customer;
+using TechFoodClean.Domain.Entities;
 
 namespace TechFoodClean.Domain.Interfaces.UseCase
 {

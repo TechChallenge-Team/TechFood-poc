@@ -2,7 +2,7 @@ using TechFoodClean.Application.Gateway;
 using TechFoodClean.Application.Interfaces.Controller;
 using TechFoodClean.Application.Interfaces.DataSource;
 using TechFoodClean.Application.Presenters;
-using TechFoodClean.Domain.Entities;
+using TechFoodClean.Common.DTO;
 using TechFoodClean.Domain.Interfaces.UseCase;
 using TechFoodClean.Domain.UseCases;
 

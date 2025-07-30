@@ -1,4 +1,5 @@
 using TechFoodClean.Common.DTO.Customer;
+using TechFoodClean.Domain.Entities;
 using TechFoodClean.Domain.Enums;
 using TechFoodClean.Domain.Interfaces.Gateway;
 using TechFoodClean.Domain.Interfaces.UseCase;

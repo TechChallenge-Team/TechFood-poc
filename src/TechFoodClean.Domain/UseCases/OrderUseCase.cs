@@ -1,3 +1,4 @@
+using TechFoodClean.Common.DTO;
 using TechFoodClean.Domain.Entities;
 using TechFoodClean.Domain.Interfaces.Gateway;
 using TechFoodClean.Domain.Interfaces.UseCase;

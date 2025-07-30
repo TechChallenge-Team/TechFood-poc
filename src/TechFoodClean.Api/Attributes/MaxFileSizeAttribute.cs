@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace TechFoodClean.Api;
+namespace TechFoodClean.Api.Attributes;
 
 public class MaxFileSizeAttribute : ValidationAttribute
 {

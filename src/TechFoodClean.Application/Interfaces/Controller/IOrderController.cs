@@ -1,5 +1,5 @@
 using TechFoodClean.Application.Presenters;
-using TechFoodClean.Domain.Entities;
+using TechFoodClean.Common.DTO;
 
 namespace TechFoodClean.Application.Interfaces.Controller;
 

@@ -1,6 +1,4 @@
-using TechFoodClean.Common.DTO;
-
-namespace TechFoodClean.Common.Entities;
+namespace TechFoodClean.Common.DTO;
 
 public class OrderItemDTO : EntityDTO
 {

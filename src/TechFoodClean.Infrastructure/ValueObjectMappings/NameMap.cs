@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TechFoodClean.Common.DTO.ValueObjects;
 
-namespace TechFoodClean.Infrastructure.DataValueObjectMappings;
+namespace TechFoodClean.Infrastructure.Data.ValueObjectMappings;
 
 public static class NameMap
 {

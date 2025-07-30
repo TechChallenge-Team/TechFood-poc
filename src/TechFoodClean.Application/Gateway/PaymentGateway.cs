@@ -1,6 +1,6 @@
 using TechFoodClean.Application.Interfaces.DataSource;
+using TechFoodClean.Common.DTO;
 using TechFoodClean.Common.DTO.Enums;
-using TechFoodClean.Common.Entities;
 using TechFoodClean.Domain.Entities;
 using TechFoodClean.Domain.Enums;
 using TechFoodClean.Domain.Interfaces.Gateway;
@@ -66,6 +66,15 @@ namespace TechFoodClean.Application.Gateway
             await _paymentDataSource.UpdateAsync(paymentDTO);
 
             await _unitOfWorkDataSource.CommitAsync();
+        }
+
+        public async Task<Payment?> GetByOrderIdAsync(Guid id)
+        {
+            var payment = await _paymentDataSource.GetByOrderIdAsync(id);
+
+            return payment is not null
+                ? new Payment(payment.OrderId, (PaymentType)payment.Type, payment.Amount, payment.Id)
+                : null;
         }
     }
 }

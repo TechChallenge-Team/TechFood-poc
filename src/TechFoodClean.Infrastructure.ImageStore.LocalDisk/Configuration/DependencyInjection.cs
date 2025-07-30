@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using TechFoodClean.Application.Interfaces.DataSource;
 
-namespace TechFoodClean.Infrastructure.ImageStore.LocalDisk
+namespace TechFoodClean.Infrastructure.ImageStore.LocalDisk.Configuration
 {
     public static class DependencyInjection
     {

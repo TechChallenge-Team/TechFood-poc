@@ -1,7 +1,7 @@
 using TechFoodClean.Application.Interfaces.DataSource;
 using TechFoodClean.Infrastructure.Data.Contexts;
 
-namespace TechFoodClean.Infrastructure.Data;
+namespace TechFoodClean.Infrastructure.Data.Repositories;
 
 public class AnotherUnitOfWork(TechFoodContext dbContext) : IUnitOfWorkDataSource
 {
@@ -9,7 +9,7 @@ public class AnotherUnitOfWork(TechFoodContext dbContext) : IUnitOfWorkDataSourc
 
     public async Task<bool> CommitAsync()
     {
-        var success = (await _context.SaveChangesAsync()) > 0;
+        var success = await _context.SaveChangesAsync() > 0;
         return success;
     }
 

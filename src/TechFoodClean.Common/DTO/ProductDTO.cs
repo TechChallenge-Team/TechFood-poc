@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using TechFoodClean.Common.DTO;
 
-namespace TechFoodClean.Common.Entities;
+namespace TechFoodClean.Common.DTO;
 
 public class ProductDTO : EntityDTO
 {

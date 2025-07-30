@@ -18,6 +18,7 @@ namespace TechFood.Doman.Tests
             //// Assert
             Assert.Equal(Domain.Resources.Exceptions.Category_ThrowNameIsEmpty, result.Message);
         }
+
         [Fact(DisplayName = "Validate Category Name Is Empty")]
         [Trait("Category", "Category Name Is Empty")]
         public void ShoudThrowException_WhenCategoryFileImageIsEmpty()
@@ -27,6 +28,7 @@ namespace TechFood.Doman.Tests
             //// Assert
             Assert.Equal(Domain.Resources.Exceptions.Category_ThrowFileImageIsEmpty, result.Message);
         }
+
         [Fact(DisplayName = "Validate Category Category Index Is Less Than Zero")]
         [Trait("Category", "Category Index Is Less ThanZero")]
         public void ShoudThrowException_WhenCategoryIndexIsLessThanZero()

@@ -1,6 +1,6 @@
 using TechFoodClean.Application.Interfaces.DataSource;
+using TechFoodClean.Common.DTO;
 using TechFoodClean.Common.DTO.Enums;
-using TechFoodClean.Common.Entities;
 using TechFoodClean.Domain.Entities;
 using TechFoodClean.Domain.Enums;
 using TechFoodClean.Domain.Interfaces.Gateway;
@@ -18,6 +18,7 @@ public class PreparationGateway : IPreparationGateway
         _unitOfWorkDataSource = unitOfWorkDataSource;
         _preparationDataSource = preparationDataSource;
     }
+
     public async Task<Guid> AddAsync(Preparation preparation)
     {
         var preparationDto = new PreparationDTO
@@ -43,7 +44,7 @@ public class PreparationGateway : IPreparationGateway
     public async Task<IEnumerable<Preparation>> GetAllAsync()
     {
         var preparationDTO = await _preparationDataSource.GetAllAsync();
-        
+
         return preparationDTO.Select(
             p => new Preparation(
                 p.Id,
@@ -69,7 +70,7 @@ public class PreparationGateway : IPreparationGateway
             preparationDTO.StartedAt,
             preparationDTO.FinishedAt,
             (PreparationStatusType)preparationDTO.Status
-        ): null;
+        ) : null;
     }
 
     public async Task<Preparation?> GetByOrderIdAsync(Guid orderId)

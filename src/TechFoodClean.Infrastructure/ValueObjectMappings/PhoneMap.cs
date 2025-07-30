@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TechFoodClean.Domain.ValueObjects;
+using TechFoodClean.Common.DTO.ValueObjects;
 
 namespace TechFoodClean.Infrastructure.Data.ValueObjectMappings;
 

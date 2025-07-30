@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using TechFoodClean.Application.Interfaces.DataSource;
-using TechFoodClean.Common.Entities;
+using TechFoodClean.Common.DTO;
 using TechFoodClean.Domain.Entities;
 using TechFoodClean.Domain.Interfaces.Gateway;
 

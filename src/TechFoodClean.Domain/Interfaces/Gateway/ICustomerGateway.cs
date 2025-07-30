@@ -1,4 +1,4 @@
-using TechFoodClean.Domain;
+using TechFoodClean.Domain.Entities;
 using TechFoodClean.Domain.Enums;
 
 namespace TechFoodClean.Domain.Interfaces.Gateway

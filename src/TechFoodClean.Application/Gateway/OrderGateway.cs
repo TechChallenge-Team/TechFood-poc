@@ -1,7 +1,7 @@
 using TechFoodClean.Application.Interfaces.DataSource;
 using TechFoodClean.Application.Mappers;
+using TechFoodClean.Common.DTO;
 using TechFoodClean.Common.DTO.Enums;
-using TechFoodClean.Common.Entities;
 using TechFoodClean.Domain.Entities;
 using TechFoodClean.Domain.Interfaces.Gateway;
 

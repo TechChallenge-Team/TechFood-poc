@@ -37,6 +37,8 @@ public class Payment : Entity, IAggregateRoot
     public decimal Amount { get; private set; }
     public string QrCodeData { get; private set; }
 
+    public int Number { get; private set; }
+
     public void Confirm()
     {
         if (PaidAt.HasValue)
@@ -62,4 +64,6 @@ public class Payment : Entity, IAggregateRoot
     {
         QrCodeData = qrCodeData;
     }
+
+    public void SetOrderNumber(int number) => Number = number;
 }

@@ -1,4 +1,4 @@
-using TechFoodClean.Common.Entities;
+using TechFoodClean.Common.DTO;
 
 namespace TechFoodClean.Application.Interfaces.DataSource
 {
@@ -9,5 +9,7 @@ namespace TechFoodClean.Application.Interfaces.DataSource
         Task<PaymentDTO?> GetByIdAsync(Guid id);
 
         Task UpdateAsync(PaymentDTO payment);
+
+        Task<PaymentDTO?> GetByOrderIdAsync(Guid id);
     }
 }

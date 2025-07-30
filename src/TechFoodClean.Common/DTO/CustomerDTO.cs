@@ -1,5 +1,4 @@
 using TechFoodClean.Common.DTO.ValueObjects;
-using TechFoodClean.Domain.ValueObjects;
 
 namespace TechFoodClean.Common.DTO;
 

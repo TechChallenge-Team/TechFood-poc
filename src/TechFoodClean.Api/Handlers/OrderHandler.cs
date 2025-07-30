@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using TechFoodClean.Application.Controllers;
 using TechFoodClean.Application.Interfaces.Controller;
 using TechFoodClean.Application.Interfaces.DataSource;
-using TechFoodClean.Domain.Entities;
+using TechFoodClean.Common.DTO;
 
 namespace TechFoodClean.Api.Handlers
 {

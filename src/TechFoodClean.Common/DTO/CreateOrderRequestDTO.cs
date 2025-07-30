@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace TechFoodClean.Domain.Entities;
+namespace TechFoodClean.Common.DTO;
 
 public class CreateOrderRequestDTO
 {

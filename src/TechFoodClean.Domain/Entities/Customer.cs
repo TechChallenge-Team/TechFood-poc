@@ -1,7 +1,6 @@
-using TechFoodClean.Domain.Entities;
 using TechFoodClean.Domain.ValueObjects;
 
-namespace TechFoodClean.Domain;
+namespace TechFoodClean.Domain.Entities;
 
 public class Customer : Entity, IAggregateRoot
 {
@@ -11,7 +10,7 @@ public class Customer : Entity, IAggregateRoot
     {
         if (id is not null)
         {
-            base.SetId(id.Value);
+            SetId(id.Value);
         }
         Name = name;
         Email = email;

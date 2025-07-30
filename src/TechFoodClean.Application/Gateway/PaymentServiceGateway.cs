@@ -16,7 +16,7 @@ namespace TechFoodClean.Application.Gateway
         {
             var qRCodePaymentRequestDTO = new QrCodePaymentRequestDTO(
                 "TOTEM01",
-                order.Id,
+                order.Id.ToString().Replace("-", ""),
                 "TechFood - Order #" + order.Id,
                 order.Amount,
                 order.Items.ToList().ConvertAll(i => new PaymentItemDTO(

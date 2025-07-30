@@ -2,7 +2,6 @@ using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using TechFoodClean.Common.DTO;
 using TechFoodClean.Common.DTO.Enums;
-using TechFoodClean.Common.Entities;
 
 namespace TechFoodClean.Infrastructure.Data.Contexts;
 

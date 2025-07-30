@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TechFoodClean.Application.Interfaces.DataSource;
+using TechFoodClean.Common.DTO;
 using TechFoodClean.Common.DTO.Enums;
-using TechFoodClean.Common.Entities;
 using TechFoodClean.Infrastructure.Data.Contexts;
 
 namespace TechFoodClean.Infrastructure.Data.Repositories;
