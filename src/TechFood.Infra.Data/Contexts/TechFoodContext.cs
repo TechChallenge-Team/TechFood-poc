@@ -1,36 +1,31 @@
-using System;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using TechFood.Domain.Entities;
-using TechFood.Domain.Enums;
-using TechFood.Domain.Shared.Entities;
+using TechFood.Common.DTO;
+using TechFood.Common.DTO.Enums;
 
 namespace TechFood.Infra.Data.Contexts;
 
 public class TechFoodContext(
     DbContextOptions<TechFoodContext> options) : DbContext(options)
 {
-    public DbSet<Category> Categories { get; set; } = null!;
+    public DbSet<CategoryDTO> Categories { get; set; } = null!;
 
-    public DbSet<Customer> Customers { get; set; } = null!;
+    public DbSet<CustomerDTO> Customers { get; set; } = null!;
 
-    public DbSet<Order> Orders { get; set; } = null!;
+    public DbSet<OrderDTO> Orders { get; set; } = null!;
 
-    public DbSet<Product> Products { get; set; } = null!;
+    public DbSet<ProductDTO> Products { get; set; } = null!;
 
-    public DbSet<Payment> Payments { get; set; } = null!;
+    public DbSet<PaymentDTO> Payments { get; set; } = null!;
 
-    public DbSet<User> Users { get; set; } = null!;
+    public DbSet<UserDTO> Users { get; set; } = null!;
 
-    public DbSet<Preparation> Preparations { get; set; } = null!;
+    public DbSet<PreparationDTO> Preparations { get; set; } = null!;
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         foreach (var entry in ChangeTracker
-            .Entries<Entity>()
+            .Entries<EntityDTO>()
             .Where(e => e.State == EntityState.Deleted))
         {
             entry.State = EntityState.Modified;
@@ -50,20 +45,20 @@ public class TechFoodContext(
 
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())
         {
-            if (typeof(Entity).IsAssignableFrom(entityType.ClrType))
+            if (typeof(EntityDTO).IsAssignableFrom(entityType.ClrType))
             {
                 var parameter = Expression.Parameter(entityType.ClrType, "e");
-                var property = Expression.Property(parameter, nameof(Entity.IsDeleted));
+                var property = Expression.Property(parameter, nameof(EntityDTO.IsDeleted));
                 var condition = Expression.Equal(property, Expression.Constant(false));
                 var lambda = Expression.Lambda(condition, parameter);
 
                 modelBuilder.Entity(entityType.ClrType).HasQueryFilter(lambda);
 
                 modelBuilder.Entity(entityType.ClrType)
-                    .HasKey(nameof(Entity.Id));
+                    .HasKey(nameof(EntityDTO.Id));
 
                 modelBuilder.Entity(entityType.ClrType)
-                    .Property(nameof(Entity.Id))
+                    .Property(nameof(EntityDTO.Id))
                     .IsRequired()
                     .ValueGeneratedNever();
             }
@@ -117,73 +112,73 @@ public class TechFoodContext(
 
     private static void SeedContext(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Customer>()
+        modelBuilder.Entity<CustomerDTO>()
             .HasData(
                 new { Id = new Guid("25b58f54-63bc-42da-8cf6-8162097e72c8"), IsDeleted = false }
             );
 
-        modelBuilder.Entity<Customer>().OwnsOne(c => c.Name)
+        modelBuilder.Entity<CustomerDTO>().OwnsOne(c => c.Name)
            .HasData(
-               new { CustomerId = new Guid("25b58f54-63bc-42da-8cf6-8162097e72c8"), FullName = "John" }
+               new { CustomerDTOId = new Guid("25b58f54-63bc-42da-8cf6-8162097e72c8"), FullName = "John" }
            );
 
-        modelBuilder.Entity<Customer>().OwnsOne(c => c.Document)
+        modelBuilder.Entity<CustomerDTO>().OwnsOne(c => c.Document)
           .HasData(
-              new { CustomerId = new Guid("25b58f54-63bc-42da-8cf6-8162097e72c8"), Type = DocumentType.CPF, Value = "4511554544" }
+              new { CustomerDTOId = new Guid("25b58f54-63bc-42da-8cf6-8162097e72c8"), Type = DocumentTypeDTO.CPF, Value = "4511554544" }
           );
 
-        modelBuilder.Entity<Customer>().OwnsOne(c => c.Email)
+        modelBuilder.Entity<CustomerDTO>().OwnsOne(c => c.Email)
           .HasData(
-              new { CustomerId = new Guid("25b58f54-63bc-42da-8cf6-8162097e72c8"), Address = "john.dev@gmail.com" }
+              new { CustomerDTOId = new Guid("25b58f54-63bc-42da-8cf6-8162097e72c8"), Address = "john.dev@gmail.com" }
           );
 
-        modelBuilder.Entity<Customer>().OwnsOne(c => c.Phone)
+        modelBuilder.Entity<CustomerDTO>().OwnsOne(c => c.Phone)
           .HasData(
-              new { CustomerId = new Guid("25b58f54-63bc-42da-8cf6-8162097e72c8"), CountryCode = "55", DDD = "11", Number = "9415452222" }
+              new { CustomerDTOId = new Guid("25b58f54-63bc-42da-8cf6-8162097e72c8"), CountryCode = "55", DDD = "11", Number = "9415452222" }
           );
 
-        modelBuilder.Entity<Customer>()
+        modelBuilder.Entity<CustomerDTO>()
             .HasData(
                 new { Id = new Guid("9887b301-605f-46a6-93db-ac1ce8685723"), IsDeleted = false }
             );
 
-        modelBuilder.Entity<Customer>().OwnsOne(c => c.Name)
+        modelBuilder.Entity<CustomerDTO>().OwnsOne(c => c.Name)
            .HasData(
-               new { CustomerId = new Guid("9887b301-605f-46a6-93db-ac1ce8685723"), FullName = "John Silva" }
+               new { CustomerDTOId = new Guid("9887b301-605f-46a6-93db-ac1ce8685723"), FullName = "John Silva" }
            );
 
-        modelBuilder.Entity<Customer>().OwnsOne(c => c.Document)
+        modelBuilder.Entity<CustomerDTO>().OwnsOne(c => c.Document)
           .HasData(
-              new { CustomerId = new Guid("9887b301-605f-46a6-93db-ac1ce8685723"), Type = DocumentType.CPF, Value = "000000000191" }
+              new { CustomerDTOId = new Guid("9887b301-605f-46a6-93db-ac1ce8685723"), Type = DocumentTypeDTO.CPF, Value = "000000000191" }
           );
 
-        modelBuilder.Entity<Customer>().OwnsOne(c => c.Email)
+        modelBuilder.Entity<CustomerDTO>().OwnsOne(c => c.Email)
           .HasData(
-              new { CustomerId = new Guid("9887b301-605f-46a6-93db-ac1ce8685723"), Address = "john.silva@gmail.com" }
+              new { CustomerDTOId = new Guid("9887b301-605f-46a6-93db-ac1ce8685723"), Address = "john.silva@gmail.com" }
           );
 
-        modelBuilder.Entity<Customer>().OwnsOne(c => c.Phone)
+        modelBuilder.Entity<CustomerDTO>().OwnsOne(c => c.Phone)
           .HasData(
-              new { CustomerId = new Guid("9887b301-605f-46a6-93db-ac1ce8685723"), CountryCode = "55", DDD = "11", Number = "9415452222" }
+              new { CustomerDTOId = new Guid("9887b301-605f-46a6-93db-ac1ce8685723"), CountryCode = "55", DDD = "11", Number = "9415452222" }
           );
 
-        modelBuilder.Entity<User>().OwnsOne(c => c.Name)
+        modelBuilder.Entity<UserDTO>().OwnsOne(c => c.Name)
            .HasData(
-               new { UserId = new Guid("fa09f3a0-f22d-40a8-9cca-0c64e5ed50e4"), FullName = "John Admin" }
+               new { UserDTOId = new Guid("fa09f3a0-f22d-40a8-9cca-0c64e5ed50e4"), FullName = "John Admin" }
            );
 
-        modelBuilder.Entity<User>().OwnsOne(c => c.Email)
+        modelBuilder.Entity<UserDTO>().OwnsOne(c => c.Email)
          .HasData(
-             new { UserId = new Guid("fa09f3a0-f22d-40a8-9cca-0c64e5ed50e4"), Address = "john.admin@techfood.com" }
+             new { UserDTOId = new Guid("fa09f3a0-f22d-40a8-9cca-0c64e5ed50e4"), Address = "john.admin@techfood.com" }
          );
 
-        modelBuilder.Entity<User>()
+        modelBuilder.Entity<UserDTO>()
             .HasData(
                 // password: 123456
                 new { Id = new Guid("fa09f3a0-f22d-40a8-9cca-0c64e5ed50e4"), Username = "john.admin", Role = "admin", PasswordHash = "AQAAAAIAAYagAAAAEKs0I0Zk5QKKieJTm20PwvTmpkSfnp5BhSl5E35ny8DqffCJA+CiDRnnKRCeOx8+mg==", IsDeleted = false }
             );
 
-        modelBuilder.Entity<Category>()
+        modelBuilder.Entity<CategoryDTO>()
             .HasData(
                 new { Id = new Guid("eaa76b46-2e6b-42eb-8f5d-b213f85f25ea"), SortOrder = 0, Name = "Lanche", ImageFileName = "lanche.png", IsDeleted = false },
                 new { Id = new Guid("c65e2cec-bd44-446d-8ed3-a7045cd4876a"), SortOrder = 1, Name = "Acompanhamento", ImageFileName = "acompanhamento.png", IsDeleted = false },
@@ -191,24 +186,24 @@ public class TechFoodContext(
                 new { Id = new Guid("ec2fb26d-99a4-4eab-aa5c-7dd18d88a025"), SortOrder = 3, Name = "Sobremesa", ImageFileName = "sobremesa.png", IsDeleted = false }
             );
 
-        modelBuilder.Entity<Product>()
+        modelBuilder.Entity<ProductDTO>()
             .HasData(
-                new { Id = new Guid("090d8eb0-f514-4248-8512-cf0d61a262f0"), Name = "X-Burguer", Description = "Delicioso X-Burguer", Price = 19.99m, CategoryId = new Guid("eaa76b46-2e6b-42eb-8f5d-b213f85f25ea"), ImageFileName = "x-burguer.png", OutOfStock = false, IsDeleted = false },
-                new { Id = new Guid("a62dc225-416a-4e36-ba35-a2bd2bbb80f7"), Name = "X-Salada", Description = "Delicioso X-Salada", Price = 21.99m, CategoryId = new Guid("eaa76b46-2e6b-42eb-8f5d-b213f85f25ea"), ImageFileName = "x-salada.png", OutOfStock = false, IsDeleted = false },
-                new { Id = new Guid("3c9374f1-58e9-4b07-bdf6-73aa2f4757ff"), Name = "X-Bacon", Description = "Delicioso X-Bacon", Price = 22.99m, CategoryId = new Guid("eaa76b46-2e6b-42eb-8f5d-b213f85f25ea"), ImageFileName = "x-bacon.png", OutOfStock = false, IsDeleted = false },
-                new { Id = new Guid("55f32e65-c82f-4a10-981c-cdb7b0d2715a"), Name = "Batata Frita", Description = "Crocante Batata Frita", Price = 9.99m, CategoryId = new Guid("c65e2cec-bd44-446d-8ed3-a7045cd4876a"), ImageFileName = "batata.png", OutOfStock = false, IsDeleted = false },
-                new { Id = new Guid("3249b4e4-11e5-41d9-9d55-e9b1d59bfb23"), Name = "Batata Frita Grande", Description = "Crocante Batata Frita", Price = 12.99m, CategoryId = new Guid("c65e2cec-bd44-446d-8ed3-a7045cd4876a"), ImageFileName = "batata-grande.png", OutOfStock = false, IsDeleted = false },
-                new { Id = new Guid("4aeb3ad6-1e06-418e-8878-e66a4ba9337f"), Name = "Nuggets de Frango", Description = "Delicioso Nuggets de Frango", Price = 13.99m, CategoryId = new Guid("c65e2cec-bd44-446d-8ed3-a7045cd4876a"), ImageFileName = "nuggets.png", OutOfStock = false, IsDeleted = false },
-                new { Id = new Guid("86c50c81-c46e-4e79-a591-3b68c75cefda"), Name = "Coca-Cola", Description = "Coca-Cola", Price = 4.99m, CategoryId = new Guid("c3a70938-9e88-437d-a801-c166d2716341"), ImageFileName = "coca-cola.png", OutOfStock = false, IsDeleted = false },
-                new { Id = new Guid("44c61027-8e16-444d-9f4f-e332410cccaa"), Name = "Guaraná", Description = "Guaraná", Price = 4.99m, CategoryId = new Guid("c3a70938-9e88-437d-a801-c166d2716341"), ImageFileName = "guarana.png", OutOfStock = false, IsDeleted = false },
-                new { Id = new Guid("bf90f247-52cc-4bbb-b6e3-9c77b6ff546f"), Name = "Fanta", Description = "Fanta", Price = 4.99m, CategoryId = new Guid("c3a70938-9e88-437d-a801-c166d2716341"), ImageFileName = "fanta.png", OutOfStock = false, IsDeleted = false },
-                new { Id = new Guid("8620cf54-0d37-4aa1-832a-eb98e9b36863"), Name = "Sprite", Description = "Sprite", Price = 4.99m, CategoryId = new Guid("c3a70938-9e88-437d-a801-c166d2716341"), ImageFileName = "sprite.png", OutOfStock = false, IsDeleted = false },
-                new { Id = new Guid("de797d9f-c473-4bed-a560-e7036ca10ab1"), Name = "Milk Shake de Morango", Description = "Milk Shake de Morango", Price = 7.99m, CategoryId = new Guid("ec2fb26d-99a4-4eab-aa5c-7dd18d88a025"), ImageFileName = "milk-shake-morango.png", OutOfStock = false, IsDeleted = false },
-                new { Id = new Guid("113daae6-f21f-4d38-a778-9364ac64f909"), Name = "Milk Shake de Chocolate", Description = "Milk Shake de Chocolate", Price = 7.99m, CategoryId = new Guid("ec2fb26d-99a4-4eab-aa5c-7dd18d88a025"), ImageFileName = "milk-shake-chocolate.png", OutOfStock = false, IsDeleted = false },
-                new { Id = new Guid("2665c2ec-c537-4d95-9a0f-791bcd4cc938"), Name = "Milk Shake de Baunilha", Description = "Milk Shake de Baunilha", Price = 7.99m, CategoryId = new Guid("ec2fb26d-99a4-4eab-aa5c-7dd18d88a025"), ImageFileName = "milk-shake-baunilha.png", OutOfStock = false, IsDeleted = false }
+                new { Id = new Guid("090d8eb0-f514-4248-8512-cf0d61a262f0"), Name = "X-Burguer", Description = "Delicioso X-Burguer", Price = 19.99m, CategoryDTOId = new Guid("eaa76b46-2e6b-42eb-8f5d-b213f85f25ea"), ImageFileName = "x-burguer.png", OutOfStock = false, IsDeleted = false },
+                new { Id = new Guid("a62dc225-416a-4e36-ba35-a2bd2bbb80f7"), Name = "X-Salada", Description = "Delicioso X-Salada", Price = 21.99m, CategoryDTOId = new Guid("eaa76b46-2e6b-42eb-8f5d-b213f85f25ea"), ImageFileName = "x-salada.png", OutOfStock = false, IsDeleted = false },
+                new { Id = new Guid("3c9374f1-58e9-4b07-bdf6-73aa2f4757ff"), Name = "X-Bacon", Description = "Delicioso X-Bacon", Price = 22.99m, CategoryDTOId = new Guid("eaa76b46-2e6b-42eb-8f5d-b213f85f25ea"), ImageFileName = "x-bacon.png", OutOfStock = false, IsDeleted = false },
+                new { Id = new Guid("55f32e65-c82f-4a10-981c-cdb7b0d2715a"), Name = "Batata Frita", Description = "Crocante Batata Frita", Price = 9.99m, CategoryDTOId = new Guid("c65e2cec-bd44-446d-8ed3-a7045cd4876a"), ImageFileName = "batata.png", OutOfStock = false, IsDeleted = false },
+                new { Id = new Guid("3249b4e4-11e5-41d9-9d55-e9b1d59bfb23"), Name = "Batata Frita Grande", Description = "Crocante Batata Frita", Price = 12.99m, CategoryDTOId = new Guid("c65e2cec-bd44-446d-8ed3-a7045cd4876a"), ImageFileName = "batata-grande.png", OutOfStock = false, IsDeleted = false },
+                new { Id = new Guid("4aeb3ad6-1e06-418e-8878-e66a4ba9337f"), Name = "Nuggets de Frango", Description = "Delicioso Nuggets de Frango", Price = 13.99m, CategoryDTOId = new Guid("c65e2cec-bd44-446d-8ed3-a7045cd4876a"), ImageFileName = "nuggets.png", OutOfStock = false, IsDeleted = false },
+                new { Id = new Guid("86c50c81-c46e-4e79-a591-3b68c75cefda"), Name = "Coca-Cola", Description = "Coca-Cola", Price = 4.99m, CategoryDTOId = new Guid("c3a70938-9e88-437d-a801-c166d2716341"), ImageFileName = "coca-cola.png", OutOfStock = false, IsDeleted = false },
+                new { Id = new Guid("44c61027-8e16-444d-9f4f-e332410cccaa"), Name = "Guaraná", Description = "Guaraná", Price = 4.99m, CategoryDTOId = new Guid("c3a70938-9e88-437d-a801-c166d2716341"), ImageFileName = "guarana.png", OutOfStock = false, IsDeleted = false },
+                new { Id = new Guid("bf90f247-52cc-4bbb-b6e3-9c77b6ff546f"), Name = "Fanta", Description = "Fanta", Price = 4.99m, CategoryDTOId = new Guid("c3a70938-9e88-437d-a801-c166d2716341"), ImageFileName = "fanta.png", OutOfStock = false, IsDeleted = false },
+                new { Id = new Guid("8620cf54-0d37-4aa1-832a-eb98e9b36863"), Name = "Sprite", Description = "Sprite", Price = 4.99m, CategoryDTOId = new Guid("c3a70938-9e88-437d-a801-c166d2716341"), ImageFileName = "sprite.png", OutOfStock = false, IsDeleted = false },
+                new { Id = new Guid("de797d9f-c473-4bed-a560-e7036ca10ab1"), Name = "Milk Shake de Morango", Description = "Milk Shake de Morango", Price = 7.99m, CategoryDTOId = new Guid("ec2fb26d-99a4-4eab-aa5c-7dd18d88a025"), ImageFileName = "milk-shake-morango.png", OutOfStock = false, IsDeleted = false },
+                new { Id = new Guid("113daae6-f21f-4d38-a778-9364ac64f909"), Name = "Milk Shake de Chocolate", Description = "Milk Shake de Chocolate", Price = 7.99m, CategoryDTOId = new Guid("ec2fb26d-99a4-4eab-aa5c-7dd18d88a025"), ImageFileName = "milk-shake-chocolate.png", OutOfStock = false, IsDeleted = false },
+                new { Id = new Guid("2665c2ec-c537-4d95-9a0f-791bcd4cc938"), Name = "Milk Shake de Baunilha", Description = "Milk Shake de Baunilha", Price = 7.99m, CategoryDTOId = new Guid("ec2fb26d-99a4-4eab-aa5c-7dd18d88a025"), ImageFileName = "milk-shake-baunilha.png", OutOfStock = false, IsDeleted = false }
                 );
 
-        modelBuilder.Entity<Order>()
+        modelBuilder.Entity<OrderDTO>()
             .HasData(
                 new
                 {
@@ -218,7 +213,7 @@ public class TechFoodContext(
                     CreatedAt = new DateTime(2025, 5, 13, 22, 2, 36, DateTimeKind.Utc)
             .AddTicks(6053),
                     Amount = 39.97m,
-                    Status = OrderStatusType.PreparationDone,
+                    Status = OrderStatusTypeDTO.PreparationDone,
                     Discount = 0m,
                     IsDeleted = false
                 },
@@ -230,13 +225,13 @@ public class TechFoodContext(
                     CreatedAt = new DateTime(2025, 5, 13, 22, 2, 36, DateTimeKind.Utc)
             .AddTicks(6354),
                     Amount = 26.98m,
-                    Status = OrderStatusType.InPreparation,
+                    Status = OrderStatusTypeDTO.InPreparation,
                     Discount = 0m,
                     IsDeleted = false
                 }
             );
 
-        modelBuilder.Entity<OrderItem>()
+        modelBuilder.Entity<OrderItemDTO>()
             .HasData(
                new { Id = new Guid("ea31fb90-4bc3-418f-95fc-56516d5bc634"), OrderId = new Guid("d1b5f3a2-4c8e-4b7c-9f0e-5a2d6f3b8c1e"), ProductId = new Guid("090d8eb0-f514-4248-8512-cf0d61a262f0"), Quantity = 1, UnitPrice = 19.99m, IsDeleted = false },
                new { Id = new Guid("b0f1c3a2-4c8e-4b7c-9f0e-5a2d6f3b8c1e"), OrderId = new Guid("d1b5f3a2-4c8e-4b7c-9f0e-5a2d6f3b8c1e"), ProductId = new Guid("55f32e65-c82f-4a10-981c-cdb7b0d2715a"), Quantity = 2, UnitPrice = 9.99m, IsDeleted = false },

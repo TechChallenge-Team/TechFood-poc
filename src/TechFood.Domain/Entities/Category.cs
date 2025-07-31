@@ -1,5 +1,4 @@
-using TechFood.Domain.Shared.Entities;
-using TechFood.Domain.Shared.Validations;
+using TechFood.Domain.Validations;
 
 namespace TechFood.Domain.Entities;
 
@@ -7,8 +6,13 @@ public class Category : Entity, IAggregateRoot
 {
     public Category() { }
 
-    public Category(string name, string imageFileName, int sortOrder)
+    public Category(string name, string imageFileName, int sortOrder, bool isDeleted = false, Guid? id = null)
     {
+        if (id is not null)
+        {
+            base.SetId(id.Value);
+        }
+        IsDeleted = isDeleted;
         Name = name;
         ImageFileName = imageFileName;
         SortOrder = sortOrder;
@@ -32,8 +36,8 @@ public class Category : Entity, IAggregateRoot
 
     private void Validate()
     {
-        Validations.ThrowIfEmpty(Name, Resources.Exceptions.Category_ThrowNameIsEmpty);
-        Validations.ThrowIfEmpty(ImageFileName, Resources.Exceptions.Category_ThrowFileImageIsEmpty);
-        Validations.ThrowIfLessThan(SortOrder, 0, Resources.Exceptions.Category_ThrowIndexIsLessThanZero);
+        CommonValidations.ThrowIfEmpty(Name, Common.Resources.Exceptions.Category_ThrowNameIsEmpty);
+        CommonValidations.ThrowIfEmpty(ImageFileName, Common.Resources.Exceptions.Category_ThrowFileImageIsEmpty);
+        CommonValidations.ThrowIfLessThan(SortOrder, 0, Common.Resources.Exceptions.Category_ThrowIndexIsLessThanZero);
     }
 }

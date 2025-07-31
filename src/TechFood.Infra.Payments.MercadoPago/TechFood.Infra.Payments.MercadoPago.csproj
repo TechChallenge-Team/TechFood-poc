@@ -1,7 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
@@ -11,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TechFood.Application\TechFood.Application.csproj" />
+    <ProjectReference Include="..\TechFood.Common\TechFood.Common.csproj" />
   </ItemGroup>
 
 </Project>

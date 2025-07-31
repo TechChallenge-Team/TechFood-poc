@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TechFood.Domain.Entities;
+using TechFood.Common.DTO;
 
 namespace TechFood.Infra.Data.Mappings;
 
-public class ProductMap : IEntityTypeConfiguration<Product>
+public class ProductMap : IEntityTypeConfiguration<ProductDTO>
 {
-    public void Configure(EntityTypeBuilder<Product> builder)
+    public void Configure(EntityTypeBuilder<ProductDTO> builder)
     {
         builder.ToTable("Product");
 
@@ -18,7 +18,7 @@ public class ProductMap : IEntityTypeConfiguration<Product>
             .HasMaxLength(255)
             .IsRequired();
 
-        builder.HasOne<Category>()
+        builder.HasOne<CategoryDTO>()
             .WithMany()
             .IsRequired();
 

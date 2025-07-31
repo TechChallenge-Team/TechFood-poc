@@ -1,27 +1,23 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using TechFood.Domain.Entities;
-using TechFood.Domain.Enums;
-using TechFood.Domain.Repositories;
+using TechFood.Application.Interfaces.DataSource;
+using TechFood.Common.DTO;
+using TechFood.Common.DTO.Enums;
 using TechFood.Infra.Data.Contexts;
 
 namespace TechFood.Infra.Data.Repositories;
 
-public class PreparationRepository(TechFoodContext dbContext) : IPreparationRepository
+public class PreparationRepository(TechFoodContext dbContext) : IPreparationDataSource
 {
-    private readonly DbSet<Preparation> _preparations = dbContext.Preparations;
+    private readonly DbSet<PreparationDTO> _preparations = dbContext.Preparations;
 
-    public async Task<Guid> AddAsync(Preparation preparation)
+    public async Task<Guid> AddAsync(PreparationDTO preparation)
     {
         var entry = await _preparations.AddAsync(preparation);
 
         return entry.Entity.Id;
     }
 
-    public Task<Preparation?> GetByIdAsync(Guid id)
+    public Task<PreparationDTO?> GetByIdAsync(Guid id)
     {
         var preparation = _preparations
             .FirstOrDefaultAsync(p => p.Id == id);
@@ -30,19 +26,30 @@ public class PreparationRepository(TechFoodContext dbContext) : IPreparationRepo
     }
 
     //NOTES: Check the queryobject pattern
-    public async Task<IEnumerable<Preparation>> GetAllAsync()
+    public async Task<IEnumerable<PreparationDTO>> GetAllAsync()
     {
         var result = await _preparations
-            .Where(query => query.Status == PreparationStatusType.Pending ||
-                             query.Status == PreparationStatusType.InProgress||
-                             query.Status == PreparationStatusType.Done)
+            .Where(query => query.Status == PreparationStatusTypeDTO.Pending ||
+                             query.Status == PreparationStatusTypeDTO.InProgress ||
+                             query.Status == PreparationStatusTypeDTO.Done)
             .ToListAsync();
 
         return result;
     }
 
-    public async Task<Preparation?> GetByOrderIdAsync(Guid orderId)
+    public async Task<PreparationDTO?> GetByOrderIdAsync(Guid orderId)
     {
-        return await _preparations.Where(x => x.OrderId == orderId).FirstOrDefaultAsync();
+        return await _preparations.FirstOrDefaultAsync(x => x.OrderId == orderId);
+    }
+
+    public async Task UpdateAsync(PreparationDTO updatedData)
+    {
+        var local = _preparations.Local.FirstOrDefault(x => x.Id == updatedData.Id);
+        if (local != null)
+        {
+            _preparations.Entry(local).State = EntityState.Detached;
+        }
+
+        _preparations.Update(updatedData);
     }
 }

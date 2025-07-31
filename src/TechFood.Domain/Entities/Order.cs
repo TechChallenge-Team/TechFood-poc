@@ -1,9 +1,7 @@
-using System;
-using System.Collections.Generic;
+using TechFood.Common.Exceptions;
+using TechFood.Common.Resources;
 using TechFood.Domain.Enums;
-using TechFood.Domain.Shared.Entities;
-using TechFood.Domain.Shared.Exceptions;
-using TechFood.Domain.Shared.Validations;
+using TechFood.Domain.Validations;
 
 namespace TechFood.Domain.Entities;
 
@@ -19,10 +17,29 @@ public class Order : Entity, IAggregateRoot
         Status = OrderStatusType.Created;
     }
 
+    public Order(Guid? customerId, DateTime createdAt, DateTime? finishedAt,
+    OrderStatusType status, decimal amount, decimal discount,
+    IEnumerable<OrderItem> items, IEnumerable<OrderHistory?> history, Guid? id = null)
+    {
+        if (id is not null)
+        {
+            base.SetId(id.Value);
+        }
+
+        CustomerId = customerId;
+        CreatedAt = createdAt;
+        FinishedAt = finishedAt;
+        Status = status;
+        Amount = amount;
+        Discount = discount;
+        _items = items.ToList();
+        _historical = history?.ToList() ?? new List<OrderHistory>();
+    }
+
     private readonly List<OrderItem> _items = [];
 
     private readonly List<OrderHistory> _historical = [];
-    
+
     public Guid? CustomerId { get; private set; }
 
     public DateTime CreatedAt { get; private set; }
@@ -43,10 +60,10 @@ public class Order : Entity, IAggregateRoot
     {
         if (Status != OrderStatusType.Created)
         {
-            throw new DomainException(Resources.Exceptions.Order_CannotApplyDiscountToNonCreatedStatus);
+            throw new DomainException(Exceptions.Order_CannotApplyDiscountToNonCreatedStatus);
         }
 
-        Validations.ThrowIsGreaterThanZero(discount, Resources.Exceptions.Order_DiscountCannotBeNegative);
+        CommonValidations.ThrowIsGreaterThanZero(discount, Exceptions.Order_DiscountCannotBeNegative);
 
         Discount = discount;
 
@@ -57,7 +74,7 @@ public class Order : Entity, IAggregateRoot
     {
         if (Status != OrderStatusType.Created)
         {
-            throw new DomainException(Resources.Exceptions.Order_CannotCreatePaymentToNonCreatedStatus);
+            throw new DomainException(Exceptions.Order_CannotCreatePaymentToNonCreatedStatus);
         }
 
         UpdateStatus(OrderStatusType.WaitingPayment);
@@ -67,7 +84,7 @@ public class Order : Entity, IAggregateRoot
     {
         if (Status != OrderStatusType.WaitingPayment)
         {
-            throw new DomainException(Resources.Exceptions.Order_CannotPayToNonWaitingPaymentStatus);
+            throw new DomainException(Exceptions.Order_CannotPayToNonWaitingPaymentStatus);
         }
 
         UpdateStatus(OrderStatusType.Paid);
@@ -77,7 +94,7 @@ public class Order : Entity, IAggregateRoot
     {
         if (Status != OrderStatusType.WaitingPayment)
         {
-            throw new DomainException(Resources.Exceptions.Order_CannotRefuseToNonWaitingPaymentStatus);
+            throw new DomainException(Exceptions.Order_CannotRefuseToNonWaitingPaymentStatus);
         }
 
         UpdateStatus(OrderStatusType.RefusedPayment);
@@ -87,7 +104,7 @@ public class Order : Entity, IAggregateRoot
     {
         if (Status != OrderStatusType.Created)
         {
-            throw new DomainException(Resources.Exceptions.Order_CannotAddItemToNonCreatedStatus);
+            throw new DomainException(Exceptions.Order_CannotAddItemToNonCreatedStatus);
         }
 
         _items.Add(item);
@@ -99,12 +116,12 @@ public class Order : Entity, IAggregateRoot
     {
         if (Status != OrderStatusType.Created)
         {
-            throw new DomainException(Resources.Exceptions.Order_CannotRemoveItemToNonCreatedStatus);
+            throw new DomainException(Exceptions.Order_CannotRemoveItemToNonCreatedStatus);
         }
 
         var item = _items.Find(i => i.Id == itemId);
 
-        Validations.ThrowObjectIsNull(item, Resources.Exceptions.Order_ItemNotFound);
+        CommonValidations.ThrowObjectIsNull(item, Exceptions.Order_ItemNotFound);
 
         _items.Remove(item!);
 
@@ -127,7 +144,7 @@ public class Order : Entity, IAggregateRoot
     {
         if (Status != OrderStatusType.InPreparation)
         {
-            throw new DomainException(Resources.Exceptions.Order_CannotFinishToNonInPreparationStatus);
+            throw new DomainException(Exceptions.Order_CannotFinishToNonInPreparationStatus);
         }
 
         UpdateStatus(OrderStatusType.PreparationDone);
@@ -137,7 +154,7 @@ public class Order : Entity, IAggregateRoot
     {
         if (Status != OrderStatusType.Paid)
         {
-            throw new DomainException(Resources.Exceptions.Order_CannotPrepareToNonPaidStatus);
+            throw new DomainException(Exceptions.Order_CannotPrepareToNonPaidStatus);
         }
 
         UpdateStatus(OrderStatusType.InPreparation);
@@ -164,6 +181,6 @@ public class Order : Entity, IAggregateRoot
     private void UpdateStatus(OrderStatusType status)
     {
         Status = status;
-        _historical.Add(new(status));
+        _historical.Add(new(status, null, Guid.Empty));
     }
 }

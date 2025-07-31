@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TechFood.Domain.ValueObjects;
+using TechFood.Common.DTO.ValueObjects;
 
 namespace TechFood.Infra.Data.ValueObjectMappings;
 
 public static class PhoneMap
 {
-    public static void MapPhone<TEntity>(this OwnedNavigationBuilder<TEntity, Phone> navigationBuilder)
+    public static void MapPhone<TEntity>(this OwnedNavigationBuilder<TEntity, PhoneDTO> navigationBuilder)
        where TEntity : class
     {
         navigationBuilder.WithOwner();

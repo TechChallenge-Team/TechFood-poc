@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TechFood.Domain.Entities;
+using TechFood.Common.DTO;
 
 namespace TechFood.Infra.Data.Mappings;
 
-public class CategoryMap : IEntityTypeConfiguration<Category>
+public class CategoryMap : IEntityTypeConfiguration<CategoryDTO>
 {
-    public void Configure(EntityTypeBuilder<Category> builder)
+    public void Configure(EntityTypeBuilder<CategoryDTO> builder)
     {
         builder.ToTable("Category");
 

@@ -1,5 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using TechFood.Application.Common.Services.Interfaces;
+using TechFood.Application.Interfaces.DataSource;
 
 namespace TechFood.Infra.ImageStore.LocalDisk.Configuration
 {
@@ -7,7 +7,7 @@ namespace TechFood.Infra.ImageStore.LocalDisk.Configuration
     {
         public static IServiceCollection AddInfraImageStore(this IServiceCollection services)
         {
-            services.AddScoped<IImageStorageService, LocalDiskImageStorageService>();
+            services.AddScoped<IImageDataSource, LocalDiskImageStorageService>();
 
             return services;
         }

@@ -1,6 +1,4 @@
-using System;
-using TechFood.Domain.Shared.Entities;
-using TechFood.Domain.Shared.Validations;
+using TechFood.Domain.Validations;
 
 namespace TechFood.Domain.Entities;
 
@@ -9,13 +7,20 @@ public class Product : Entity, IAggregateRoot
     private Product() { }
 
     public Product(
+        Guid? id,
         string name,
         string description,
         Guid categoryId,
         string imageFileName,
+        bool outOfStock,
         decimal price
         )
     {
+        if (id is not null)
+        {
+            base.SetId(id.Value);
+        }
+
         Name = name;
         Description = description;
         CategoryId = categoryId;
@@ -64,10 +69,10 @@ public class Product : Entity, IAggregateRoot
 
     private void Validate()
     {
-        Validations.ThrowIfEmpty(Name, Resources.Exceptions.Product_ThrowNameIsEmpty);
-        Validations.ThrowIfEmpty(Description, Resources.Exceptions.Product_ThrowDescriptionIsEmpty);
-        Validations.ThrowValidGuid(CategoryId, Resources.Exceptions.Product_ThrowCategoryIdInvalid);
-        Validations.ThrowIfEmpty(ImageFileName, Resources.Exceptions.Product_ThrowCategoryImageFileIsEmpty);
-        Validations.ThrowIsGreaterThanZero(Price, Resources.Exceptions.Product_ThrowPriceIsGreaterThanZero);
+        CommonValidations.ThrowIfEmpty(Name, Common.Resources.Exceptions.Product_ThrowNameIsEmpty);
+        CommonValidations.ThrowIfEmpty(Description, Common.Resources.Exceptions.Product_ThrowDescriptionIsEmpty);
+        CommonValidations.ThrowValidGuid(CategoryId, Common.Resources.Exceptions.Product_ThrowCategoryIdInvalid);
+        CommonValidations.ThrowIfEmpty(ImageFileName, Common.Resources.Exceptions.Product_ThrowCategoryImageFileIsEmpty);
+        CommonValidations.ThrowIsGreaterThanZero(Price, Common.Resources.Exceptions.Product_ThrowPriceIsGreaterThanZero);
     }
 }

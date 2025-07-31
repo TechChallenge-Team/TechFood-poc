@@ -1,11 +1,8 @@
-using System;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using TechFood.Application.Common.Services.Interfaces;
-using TechFood.Domain.Enums;
 
-namespace TechFood.Infra.Services.MercadoPago
+namespace TechFood.Infra.Payments.MercadoPago
 {
     public static class DependecyInjection
     {
@@ -19,7 +16,7 @@ namespace TechFood.Infra.Services.MercadoPago
                     configSection.Bind(options);
                 });
 
-            services.AddKeyedTransient<IPaymentService, MercadoPagoPaymentService>(PaymentType.MercadoPago);
+            //services.AddKeyedTransient<IPaymentService, MercadoPagoPaymentService>(PaymentTypeDTO.MercadoPago);
 
             services.AddHttpClient(MercadoPagoOptions.ClientName, (serviceProvider, client) =>
             {

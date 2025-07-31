@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TechFood.Domain.Entities;
+using TechFood.Common.DTO;
 
 namespace TechFood.Infra.Data.Mappings;
 
-public class OrderHistoryMap : IEntityTypeConfiguration<OrderHistory>
+public class OrderHistoryMap : IEntityTypeConfiguration<OrderHistoryDTO>
 {
-    public void Configure(EntityTypeBuilder<OrderHistory> builder)
+    public void Configure(EntityTypeBuilder<OrderHistoryDTO> builder)
     {
         builder.ToTable("OrderHistory");
     }

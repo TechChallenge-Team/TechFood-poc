@@ -1,13 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TechFood.Domain.Entities;
+using TechFood.Common.DTO;
 using TechFood.Infra.Data.ValueObjectMappings;
 
 namespace TechFood.Infra.Data.Mappings;
 
-public class UserMap : IEntityTypeConfiguration<User>
+public class UserMap : IEntityTypeConfiguration<UserDTO>
 {
-    public void Configure(EntityTypeBuilder<User> builder)
+    public void Configure(EntityTypeBuilder<UserDTO> builder)
     {
         builder.ToTable("User");
 

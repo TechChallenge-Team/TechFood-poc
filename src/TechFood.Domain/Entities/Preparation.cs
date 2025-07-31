@@ -1,19 +1,30 @@
-using System;
 using TechFood.Domain.Enums;
-using TechFood.Domain.Shared.Entities;
 
 namespace TechFood.Domain.Entities;
 
 public class Preparation : Entity, IAggregateRoot
 {
-    private Preparation() { }
-
     public Preparation(Guid orderId, int number)
     {
         OrderId = orderId;
         Number = number;
         CreatedAt = DateTime.Now;
         Status = PreparationStatusType.Pending;
+    }
+
+    public Preparation(Guid id,
+        Guid orderId,
+        int number,
+        DateTime createdAt,
+        DateTime? startedAt,
+        DateTime? finishedAt,
+        PreparationStatusType status) : this(orderId, number)
+    {
+        SetId(id);
+        CreatedAt = createdAt;
+        StartedAt = startedAt;
+        FinishedAt = finishedAt;
+        Status = status;
     }
 
     public Guid OrderId { get; private set; }

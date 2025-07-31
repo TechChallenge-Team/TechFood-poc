@@ -1,32 +1,31 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using TechFood.Domain.Entities;
-using TechFood.Domain.Repositories;
+using TechFood.Application.Interfaces.DataSource;
+using TechFood.Common.DTO;
 using TechFood.Infra.Data.Contexts;
 
 namespace TechFood.Infra.Data.Repositories;
 
-public class CategoryRepository(TechFoodContext dbContext) : ICategoryRepository
+public class CategoryRepository(TechFoodContext dbContext) : ICategoryDataSource
 {
-    private readonly DbSet<Category> _categories = dbContext.Categories;
+    private readonly DbSet<CategoryDTO> _categories = dbContext.Categories;
 
-    public async Task<Guid> AddAsync(Category entity)
+    public async Task<Guid> AddAsync(CategoryDTO entity)
     {
         var result = await _categories.AddAsync(entity);
 
         return result.Entity.Id;
     }
 
-    public async Task DeleteAsync(Category category)
+    public async Task UpdateAsync(CategoryDTO category)
+        => await Task.FromResult(_categories.Update(category));
+
+    public async Task DeleteAsync(CategoryDTO category)
         => await Task.FromResult(_categories.Remove(category));
 
-    public async Task<IEnumerable<Category>> GetAllAsync()
+    public async Task<IEnumerable<CategoryDTO>> GetAllAsync()
         => await _categories.AsNoTracking().OrderBy(c => c.SortOrder).ToListAsync();
 
-    public async Task<Category?> GetByIdAsync(Guid id)
-        => await _categories.Where(x => x.Id == id).FirstOrDefaultAsync();
+    public async Task<CategoryDTO?> GetByIdAsync(Guid id)
+        => await _categories.Where(x => x.Id == id).AsNoTracking().FirstOrDefaultAsync();
 
 }

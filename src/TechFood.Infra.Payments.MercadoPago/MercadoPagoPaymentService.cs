@@ -1,17 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using TechFood.Application.Common.Data;
-using TechFood.Application.Common.Services.Interfaces;
+using TechFood.Application.Interfaces.Service;
+using TechFood.Common.DTO.Payment;
 
-namespace TechFood.Infra.Services.MercadoPago
+namespace TechFood.Infra.Payments.MercadoPago
 {
-    internal class MercadoPagoPaymentService(
+    public class MercadoPagoPaymentService(
         IOptions<MercadoPagoOptions> options,
         IHttpClientFactory httpClientFactory,
         IHttpContextAccessor httpContextAccessor) : IPaymentService
@@ -25,7 +21,7 @@ namespace TechFood.Infra.Services.MercadoPago
             PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
         };
 
-        public async Task<QrCodePaymentResult> GenerateQrCodePaymentAsync(QrCodePaymentRequest data)
+        public async Task<QrCodePaymentResultDTO> GenerateQrCodePaymentAsync(QrCodePaymentRequestDTO data)
         {
             var http = _httpContextAccessor.HttpContext!.Request;
             var notificationUrl = $"{http.Scheme}://www.techfood.com/v1/notifications/mercadopago";
@@ -60,9 +56,11 @@ namespace TechFood.Infra.Services.MercadoPago
 
             var result = await response.Content.ReadFromJsonAsync<QrCodeResult>(_jsonOptions);
 
-            return new(
-                result!.InStoreOrderId,
-                result.QrData);
+            return new QrCodePaymentResultDTO()
+            {
+                QrCodeId = result!.InStoreOrderId,
+                QrCodeData = result.QrData
+            };
         }
     }
 

@@ -1,8 +1,8 @@
-using TechFood.Application.Common.Services.Interfaces;
+using TechFood.Application.Interfaces.DataSource;
 
 namespace TechFood.Infra.ImageStore.LocalDisk
 {
-    public class LocalDiskImageStorageService : IImageStorageService
+    public class LocalDiskImageStorageService : IImageDataSource
     {
         private const string ImageFolderName = "images";
 

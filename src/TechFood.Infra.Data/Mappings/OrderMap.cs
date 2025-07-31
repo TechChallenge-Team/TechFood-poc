@@ -1,16 +1,16 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TechFood.Domain.Entities;
+using TechFood.Common.DTO;
 
 namespace TechFood.Infra.Data.Mappings;
 
-public class OrderMap : IEntityTypeConfiguration<Order>
+public class OrderMap : IEntityTypeConfiguration<OrderDTO>
 {
-    public void Configure(EntityTypeBuilder<Order> builder)
+    public void Configure(EntityTypeBuilder<OrderDTO> builder)
     {
         builder.ToTable("Order");
 
-        builder.HasOne<Customer>()
+        builder.HasOne<CustomerDTO>()
             .WithMany()
             .HasForeignKey(o => o.CustomerId)
             .IsRequired(false);

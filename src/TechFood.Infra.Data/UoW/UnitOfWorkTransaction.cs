@@ -1,12 +1,10 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using TechFood.Domain.UoW;
+using TechFood.Application.Interfaces.DataSource;
 
 namespace TechFood.Infra.Data.UoW;
 
-public class UnitOfWorkTransaction(IEnumerable<IUnitOfWork> uows) : IUnitOfWorkTransaction
+public class UnitOfWorkTransaction(IEnumerable<IUnitOfWorkDataSource> uows) : IUnitOfWorkTransactionDataSource
 {
-    private readonly IEnumerable<IUnitOfWork> _uows = uows;
+    private readonly IEnumerable<IUnitOfWorkDataSource> _uows = uows;
 
     public async Task<bool> CommitAsync()
     {

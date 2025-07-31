@@ -1,4 +1,4 @@
-namespace TechFood.Infra.Services.MercadoPago
+namespace TechFood.Infra.Payments.MercadoPago
 {
     public class MercadoPagoOptions
     {

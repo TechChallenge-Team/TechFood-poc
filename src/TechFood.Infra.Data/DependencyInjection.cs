@@ -1,13 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using TechFood.Application.Models.OrderMonitor;
-using TechFood.Domain.Repositories;
-using TechFood.Domain.Shared.Interfaces;
-using TechFood.Domain.UoW;
+using Microsoft.Extensions.Logging;
+using TechFood.Application.Interfaces.DataSource;
+using TechFood.Application.Interfaces.Presenter;
+using TechFood.Application.Interfaces.Service;
 using TechFood.Infra.Data.Contexts;
-using TechFood.Infra.Data.Queries;
 using TechFood.Infra.Data.Repositories;
+using TechFood.Infra.Data.Services;
 using TechFood.Infra.Data.UoW;
 
 namespace TechFood.Infra.Data;
@@ -22,23 +22,31 @@ public static class DependencyInjection
         {
             var config = serviceProvider.GetRequiredService<IConfiguration>();
 
+            options.LogTo(Console.WriteLine, LogLevel.Information);
+
+            // This is optional but useful for seeing parameter values in your SQL.
+            // WARNING: DO NOT USE IN PRODUCTION, as it may log sensitive data.
+            options.EnableSensitiveDataLogging();
+
             options.UseSqlServer(config.GetConnectionString("DataBaseConection"));
         });
 
         //UoW
-        services.AddScoped<IUnitOfWorkTransaction, UnitOfWorkTransaction>();
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.AddScoped<IUnitOfWork, AnotherUnitOfWork>();
+        services.AddScoped<IUnitOfWorkTransactionDataSource, UnitOfWorkTransaction>();
+        services.AddScoped<IUnitOfWorkDataSource, UnitOfWork>();
+        services.AddScoped<IUnitOfWorkDataSource, AnotherUnitOfWork>();
 
         //Data
-        services.AddScoped<ICategoryRepository, CategoryRepository>();
-        services.AddScoped<IProductRepository, ProductRepository>();
-        services.AddScoped<IOrderRepository, OrderRepository>();
-        services.AddScoped<ICustomerRepository, CustomerRepository>();
-        services.AddScoped<IPaymentRepository, PaymentRepository>();
-        services.AddScoped<IUserRepository, UserRepository>();
-        services.AddScoped<IPreparationRepository, PreparationRepository>();
-        services.AddScoped<IReadOnlyQuery<GetPreparationMonitorResult>, OrderMonitorQuery>();
+        services.AddScoped<ICategoryDataSource, CategoryRepository>();
+        services.AddTransient<IImageUrlResolver, ImageUrlResolver>();
+        services.AddScoped<IProductDataSource, ProductRepository>();
+        services.AddScoped<IOrderDataSource, OrderRepository>();
+        services.AddScoped<ICustomerDataSource, CustomerRepository>();
+        services.AddScoped<IPaymentDataSource, PaymentRepository>();
+        services.AddSingleton<IOrderNumberService, OrderNumberService>();
+        //services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IPreparationDataSource, PreparationRepository>();
+        //services.AddScoped<IReadOnlyQuery<GetPreparationMonitorResult>, OrderMonitorQuery>();
 
         return services;
     }

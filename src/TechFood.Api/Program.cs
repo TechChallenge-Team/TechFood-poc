@@ -5,13 +5,12 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
-using TechFood.Application;
-using TechFood.Application.Common.Filters;
-using TechFood.Application.Common.NamingPolicy;
+using TechFood.Api.Filters;
 using TechFood.Infra.Data;
 using TechFood.Infra.Data.Contexts;
+using TechFood.Infra.Data.NamingPolicy;
 using TechFood.Infra.ImageStore.LocalDisk.Configuration;
-using TechFood.Infra.Services.MercadoPago;
+using TechFood.Infra.Payments.MercadoPago;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -23,9 +22,9 @@ var builder = WebApplication.CreateBuilder(args);
     })
 
     .ConfigureApiBehaviorOptions(options =>
-    {
-        options.SuppressModelStateInvalidFilter = true;
-    })
+     {
+         options.SuppressModelStateInvalidFilter = true;
+     })
 
     .AddJsonOptions(options =>
     {
@@ -75,7 +74,7 @@ var builder = WebApplication.CreateBuilder(args);
             };
         });
 
-    builder.Services.AddApplication();
+    //builder.Services.AddApplication();
     builder.Services.AddInfraData();
     builder.Services.AddInfraMercadoPagoPayment();
     builder.Services.AddInfraImageStore();

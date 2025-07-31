@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TechFood.Domain.ValueObjects;
+using TechFood.Common.DTO.ValueObjects;
 
 namespace TechFood.Infra.Data.ValueObjectMappings;
 
 public static class EmailMap
 {
-    public static void MapEmail<TEntity>(this OwnedNavigationBuilder<TEntity, Email> navigationBuilder)
+    public static void MapEmail<TEntity>(this OwnedNavigationBuilder<TEntity, EmailDTO> navigationBuilder)
     where TEntity : class
     {
         navigationBuilder.WithOwner();

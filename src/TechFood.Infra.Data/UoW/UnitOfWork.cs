@@ -1,10 +1,9 @@
-using System.Threading.Tasks;
-using TechFood.Domain.UoW;
+using TechFood.Application.Interfaces.DataSource;
 using TechFood.Infra.Data.Contexts;
 
 namespace TechFood.Infra.Data.UoW;
 
-public class UnitOfWork(TechFoodContext dbContext) : IUnitOfWork
+public class UnitOfWork(TechFoodContext dbContext) : IUnitOfWorkDataSource
 {
     public async Task<bool> CommitAsync()
     {

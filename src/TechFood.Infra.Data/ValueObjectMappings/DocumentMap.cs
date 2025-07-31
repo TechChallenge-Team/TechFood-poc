@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TechFood.Domain.ValueObjects;
+using TechFood.Common.DTO.ValueObjects;
 
 namespace TechFood.Infra.Data.ValueObjectMappings;
 
 public static class DocumentMap
 {
-    public static void MapDocument<TEntity>(this OwnedNavigationBuilder<TEntity, Document> navigationBuilder)
+    public static void MapDocument<TEntity>(this OwnedNavigationBuilder<TEntity, DocumentDTO> navigationBuilder)
        where TEntity : class
     {
         navigationBuilder.WithOwner();
