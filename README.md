@@ -6,6 +6,7 @@ TechFood is a FIAP Post-Graduation project that aims to create a web application
 
 - [Project Presentation](#project-presentation)
 - [Brainstorming](#brainstorming)
+- [Architecture](#architecture)
 - [Technologies Used](#technologies-used)
 - [Features](#features)
 - [Project Structure](#project-structure)
@@ -24,6 +25,44 @@ TechFood is a FIAP Post-Graduation project that aims to create a web application
 ## Brainstorming
 
 [![Brainstorming](docs/miro.png)](https://miro.com/app/board/uXjVIuYTFVc=/)
+
+## Architecture (k8s)
+
+### Solution Architecture
+
+The TechFood application follows a microservices architecture designed to handle the specific business requirements of a food delivery service. The architecture addresses both business needs and infrastructure requirements for scalable deployment.
+
+![Architecture Diagram](docs/k8s.png)
+
+#### Business Requirements Addressed
+
+The architecture solves the following business problems:
+
+1. **Customer Self-Service Ordering**: Enables customers to browse menus and place orders independently without staff assistance
+2. **Real-time Order Management**: Provides restaurant staff with immediate visibility into incoming orders and preparation status
+3. **Payment Processing Integration**: Seamlessly integrates with Mercado Pago for secure payment processing
+4. **Order Tracking**: Allows customers to monitor their order status in real-time
+5. **Multi-tenant Restaurant Support**: Supports multiple restaurants with isolated data and operations
+
+#### Infrastructure Requirements
+
+The solution is designed to run on various Kubernetes platforms:
+
+- **Local Development**: Minikube or Kind for local testing and development
+- **Cloud Platforms**:
+  - Azure Kubernetes Service (AKS)
+  - Amazon Elastic Kubernetes Service (EKS)
+  - Google Kubernetes Engine (GKE)
+- **Hybrid Cloud**: Can be deployed on any Kubernetes-compliant platform
+
+**Key Infrastructure Components**:
+
+- **Container Orchestration**: Kubernetes for automated deployment, scaling, and management
+- **Load Balancing**: NGINX ingress controller for traffic distribution
+- **Data Persistence**: SQL Server with persistent volume claims
+- **Service Mesh**: Internal service communication via Kubernetes services
+- **Monitoring**: Built-in health checks and readiness probes
+- **Scalability**: Horizontal pod autoscaling capabilities
 
 ## Technologies Used
 
