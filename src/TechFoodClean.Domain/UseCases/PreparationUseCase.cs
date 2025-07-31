@@ -1,4 +1,4 @@
-﻿using TechFoodClean.Domain.Entities;
+using TechFoodClean.Domain.Entities;
 using TechFoodClean.Domain.Enums;
 using TechFoodClean.Domain.Interfaces.Gateway;
 using TechFoodClean.Domain.Interfaces.UseCase;
@@ -13,11 +13,6 @@ public class PreparationUseCase : IPreparationUseCase
         IPreparationGateway preparationGateway)
     {
         _preparationGateway = preparationGateway;
-    }
-    
-    public Task<IEnumerable<Preparation>> GetAllPreparationOrdersAsync()
-    {
-        throw new NotImplementedException();
     }
 
     public Task<Preparation> GetPreparationByOrderIdAsync(Guid orderId)

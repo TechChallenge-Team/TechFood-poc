@@ -11,7 +11,7 @@ public interface IPreparationUseCase
 {
     Task<IEnumerable<GetPreparationMonitorResult>> GetAllPreparationOrdersAsync();
 
-    Task<IActionResult> GetPreparationByOrderIdAsync(Guid orderId);
+    Task<int> GetPreparationByOrderIdAsync(Guid orderId);
 
     Task<IEnumerable<GetPreparationResult>> GetAllAsync();
 

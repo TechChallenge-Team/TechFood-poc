@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using System.Net.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using TechFoodClean.Application.Controllers;
 using TechFoodClean.Application.Interfaces.Controller;
 using TechFoodClean.Application.Interfaces.DataSource;
@@ -6,7 +8,7 @@ using TechFoodClean.Application.Interfaces.DataSource;
 namespace TechFoodClean.Api.Handlers;
 
 [ApiController()]
-[Route("v1/[controller]")]
+[Route("v1/preparation")]
 [Tags("Preparation")]
 
 public class PreparationHandler : ControllerBase
@@ -15,12 +17,23 @@ public class PreparationHandler : ControllerBase
     
     public PreparationHandler(
         IPreparationDataSource preparationDataSource,
+         IOrderDataSource orderDataSource,
+                             IProductDataSource productDataSource,
+                             IImageDataSource imageDataSource,
+                             ICategoryDataSource categoryDataSource,
         IUnitOfWorkDataSource unitOfWorkDataSource
         )
     {
         _preparationController = new PreparationController(
             preparationDataSource,
-            unitOfWorkDataSource);
+            orderDataSource,
+            productDataSource,
+            categoryDataSource,
+            imageDataSource,
+               unitOfWorkDataSource);
+
+
+                            
     }
 
     [HttpGet]

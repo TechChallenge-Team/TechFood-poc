@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TechFood.Application\TechFood.Application.csproj" />
     <ProjectReference Include="..\TechFoodClean.Common\TechFoodClean.Common.csproj" />
     <ProjectReference Include="..\TechFoodClean.Domain\TechFoodClean.Domain.csproj" />
   </ItemGroup>
