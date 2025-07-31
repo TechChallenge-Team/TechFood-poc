@@ -45,7 +45,7 @@ namespace TechFoodClean.Application.Gateway
             var payment = await _paymentDataSource.GetByIdAsync(id);
 
             return payment is not null
-                ? new Payment(payment.OrderId, (PaymentType)payment.Type, payment.Amount, payment.Id)
+                ? new Payment(payment.OrderId, (PaymentType)payment.Type, payment.Amount, payment.Id, (PaymentStatusType)payment.Status)
                 : null;
         }
 

@@ -11,17 +11,19 @@ public class Payment : Entity, IAggregateRoot
         Guid orderId,
         PaymentType type,
         decimal amount,
-        Guid? id = null)
+        Guid? id = null,
+        PaymentStatusType status = PaymentStatusType.Pending)
     {
         if (id is not null)
         {
             base.SetId(id.Value);
         }
+
         OrderId = orderId;
         Type = type;
         Amount = amount;
         CreatedAt = DateTime.Now;
-        Status = PaymentStatusType.Pending;
+        Status = status;
     }
 
     public Guid OrderId { get; private set; }

@@ -1,4 +1,3 @@
-using TechFood.Application.Models.OrderMonitor;
 using TechFoodClean.Application.Gateway;
 using TechFoodClean.Application.Interfaces.Controller;
 using TechFoodClean.Application.Interfaces.DataSource;
@@ -11,7 +10,6 @@ using static TechFoodClean.Application.Controllers.PreparationMonitorPresenter;
 namespace TechFoodClean.Application.Controllers;
 
 public class PreparationController : IPreparationController
-
 {
     private readonly IPreparationUseCase _preparationUseCase;
     private readonly IProductUseCase _productUseCase;
@@ -72,7 +70,7 @@ public class PreparationController : IPreparationController
             preparationsMonitor.Add(preparationMonitor);
         }
 
-        return preparationsMonitor;
+        return preparationsMonitor.OrderByDescending(x => x.Status);
     }
 
     public async Task<PreparationPresenter> GetPreparationByOrderIdAsync(Guid orderId)
