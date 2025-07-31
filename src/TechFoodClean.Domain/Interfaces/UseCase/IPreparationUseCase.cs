@@ -1,12 +1,10 @@
-﻿using TechFoodClean.Domain.Entities;
+using TechFoodClean.Domain.Entities;
 
 namespace TechFoodClean.Domain.Interfaces.UseCase;
 
 public interface IPreparationUseCase
 {
-    Task<IEnumerable<Preparation>> GetAllPreparationOrdersAsync();
-
-    Task<int> GetPreparationByOrderIdAsync(Guid orderId);
+    Task<Preparation> GetPreparationByOrderIdAsync(Guid orderId);
 
     Task<IEnumerable<Preparation>> GetAllAsync();
 

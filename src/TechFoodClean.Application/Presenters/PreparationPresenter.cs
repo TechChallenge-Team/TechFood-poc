@@ -9,7 +9,6 @@ namespace TechFoodClean.Application.Presenters
         public DateTime CreatedAt { get; set; }
         public DateTime? StartedAt { get; set; }
         public DateTime? FinishedAt { get; set; }
-        // public DateTime? CanceledAt { get; set; }
         public Guid OrderId { get; set; }
 
         public PreparationPresenter(
@@ -18,7 +17,6 @@ namespace TechFoodClean.Application.Presenters
             DateTime createdAt,
             DateTime? startedAt,
             DateTime? finishedAt,
-            // DateTime? canceledAt,
             Guid orderId)
         {
             Id = id;
@@ -26,7 +24,6 @@ namespace TechFoodClean.Application.Presenters
             CreatedAt = createdAt;
             StartedAt = startedAt;
             FinishedAt = finishedAt;
-            // CanceledAt = canceledAt;
             OrderId = orderId;
         }
     }

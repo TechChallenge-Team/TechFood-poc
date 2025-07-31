@@ -31,6 +31,7 @@ namespace TechFoodClean.Application.Controllers
 
             var products = await _productUseCase.ListAllAsync();
             var categories = await _categoryUseCase.ListAllAsync();
+
             if (products is null || categories is null)
             {
                 return null;

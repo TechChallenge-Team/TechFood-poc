@@ -1,4 +1,5 @@
-﻿using TechFoodClean.Domain.Entities;
+using TechFoodClean.Domain.Entities;
+using TechFoodClean.Domain.Enums;
 using TechFoodClean.Domain.Interfaces.Gateway;
 using TechFoodClean.Domain.Interfaces.UseCase;
 
@@ -13,39 +14,58 @@ public class PreparationUseCase : IPreparationUseCase
     {
         _preparationGateway = preparationGateway;
     }
-    
-    public Task<IEnumerable<Preparation>> GetAllPreparationOrdersAsync()
-    {
-        return _preparationGateway.GetAllAsync();
-    }
 
-    public Task<int> GetPreparationByOrderIdAsync(Guid orderId)
+    public Task<Preparation> GetPreparationByOrderIdAsync(Guid orderId)
     {
-        throw new NotImplementedException();
+        return _preparationGateway.GetByOrderIdAsync(orderId);
     }
 
     public Task<IEnumerable<Preparation>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        return _preparationGateway.GetAllAsync();
     }
 
-    public Task<Preparation> GetByIdAsync(Guid id)
+    public async Task<Preparation> GetByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var preparation = await _preparationGateway.GetByIdAsync(id);
+        if (preparation == null)
+        {
+            throw new KeyNotFoundException($"Preparation with ID {id} not found.");
+        }
+
+        return preparation;
     }
 
-    public Task StartAsync(Guid id)
+    public async Task StartAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var preparation = await _preparationGateway.GetByIdAsync(id);
+        if (preparation == null)
+        {
+            throw new ApplicationException($"Preparation with ID {id} not found.");
+        }
+        preparation.Start();
+        await _preparationGateway.UpdateAsync(preparation);
     }
 
-    public Task FinishAsync(Guid id)
+    public async Task FinishAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var preparation = await _preparationGateway.GetByIdAsync(id);
+        if (preparation == null)
+        {
+            throw new ApplicationException($"Preparation with ID {id} not found.");
+        }
+        preparation.Finish();
+        await _preparationGateway.UpdateAsync(preparation);
     }
 
-    public Task CancelAsync(Guid id)
+    public async Task CancelAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var preparation = await _preparationGateway.GetByIdAsync(id);
+        if (preparation == null)
+        {
+            throw new ApplicationException($"Preparation with ID {id} not found.");
+        }
+        preparation.Cancel();
+        await _preparationGateway.UpdateAsync(preparation);
     }
 }

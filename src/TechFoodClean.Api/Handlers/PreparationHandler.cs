@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using System.Net.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using TechFoodClean.Application.Controllers;
 using TechFoodClean.Application.Interfaces.Controller;
 using TechFoodClean.Application.Interfaces.DataSource;
@@ -6,7 +8,7 @@ using TechFoodClean.Application.Interfaces.DataSource;
 namespace TechFoodClean.Api.Handlers;
 
 [ApiController()]
-[Route("v1/[controller]")]
+[Route("v1/preparation")]
 [Tags("Preparation")]
 
 public class PreparationHandler : ControllerBase
@@ -15,12 +17,23 @@ public class PreparationHandler : ControllerBase
     
     public PreparationHandler(
         IPreparationDataSource preparationDataSource,
+         IOrderDataSource orderDataSource,
+                             IProductDataSource productDataSource,
+                             IImageDataSource imageDataSource,
+                             ICategoryDataSource categoryDataSource,
         IUnitOfWorkDataSource unitOfWorkDataSource
         )
     {
         _preparationController = new PreparationController(
             preparationDataSource,
-            unitOfWorkDataSource);
+            orderDataSource,
+            productDataSource,
+            categoryDataSource,
+            imageDataSource,
+               unitOfWorkDataSource);
+
+
+                            
     }
 
     [HttpGet]
@@ -34,7 +47,12 @@ public class PreparationHandler : ControllerBase
     [Route("{orderId:guid}/number")]
     public async Task<IActionResult> GetPreparationByOrderIdAsync(Guid orderId)
     {
-        return Ok(await _preparationController.GetPreparationByOrderIdAsync(orderId));
+        var preparationPresenter = await _preparationController.GetPreparationByOrderIdAsync(orderId);
+
+        if (preparationPresenter is null)
+            return NotFound("Preparation not found for the given order ID.");
+
+        return Ok(preparationPresenter);
     }
 
     [HttpGet]
@@ -51,7 +69,7 @@ public class PreparationHandler : ControllerBase
     {
         await _preparationController.StartAsync(id);
 
-        return Ok();
+        return Ok("Preparation started successfully.");
     }
 
     [HttpPatch]
@@ -60,7 +78,7 @@ public class PreparationHandler : ControllerBase
     {
         await _preparationController.FinishAsync(id);
 
-        return Ok();
+        return Ok("Preparation finished successfully.");
     }
 
     [HttpPatch]
@@ -69,7 +87,7 @@ public class PreparationHandler : ControllerBase
     {
         await _preparationController.CancelAsync(id);
 
-        return Ok();
+        return Ok("Preparation canceled successfully");
     }
 }
 
