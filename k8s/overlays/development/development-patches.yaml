@@ -20,6 +20,25 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: techfood-webhook
+  namespace: techfood
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+        - name: techfood-webhook
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "250m"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
   name: techfood-admin
   namespace: techfood
 spec:

@@ -16,6 +16,7 @@ resources:
   - techfood-nginx.yaml
   - hpa.yaml
   - monitoring.yaml
+  - techfood-webhook.yaml
 
 commonLabels:
   app.kubernetes.io/version: "1.0.0"
