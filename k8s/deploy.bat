@@ -65,7 +65,7 @@ echo Após estabelecer a conexão, os endpoints estarão disponíveis em:
 echo - Admin: http://localhost:30000/admin
 echo - Self-Order: http://localhost:30000/self-order
 echo - Monitor: http://localhost:30000/monitor
-echo - API: http://localhost:30000/api
+echo - API: http://localhost:30000/api/swagger/index.html
 echo.
 echo Para monitorar os recursos:
 echo kubectl get pods -n techfood -w

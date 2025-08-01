@@ -12,8 +12,8 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: techfood-api
-  minReplicas: 2
-  maxReplicas: 10
+  minReplicas: 1
+  maxReplicas: 3
   metrics:
     - type: Resource
       resource:
@@ -63,8 +63,8 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: techfood-self-order
-  minReplicas: 3
-  maxReplicas: 15
+  minReplicas: 1
+  maxReplicas: 3
   metrics:
     - type: Resource
       resource:
@@ -114,8 +114,8 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: techfood-admin
-  minReplicas: 2
-  maxReplicas: 5
+  minReplicas: 1
+  maxReplicas: 3
   metrics:
     - type: Resource
       resource:
@@ -144,8 +144,8 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: techfood-monitor
-  minReplicas: 2
-  maxReplicas: 5
+  minReplicas: 1
+  maxReplicas: 3
   metrics:
     - type: Resource
       resource:
@@ -174,8 +174,8 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: techfood-nginx
-  minReplicas: 2
-  maxReplicas: 5
+  minReplicas: 1
+  maxReplicas: 2
   metrics:
     - type: Resource
       resource:

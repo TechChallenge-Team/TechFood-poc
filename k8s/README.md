@@ -183,7 +183,7 @@ Após o deploy, a aplicação estará disponível nos seguintes endpoints:
 - **Admin**: http://localhost:30000/admin
 - **Self-Order**: http://localhost:30000/self-order
 - **Monitor**: http://localhost:30000/monitor
-- **API**: http://localhost:30000/api
+- **API**: http://localhost:30000/api/swagger/index.html
 - **Health Check**: http://localhost:30000/health
 
 ### Monitoramento
