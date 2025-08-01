@@ -5,7 +5,9 @@ namespace TechFood.Application.Interfaces.Controller;
 
 public interface IOrderController
 {
-    Task<OrderPresenter?> CreateOrderAsync(CreateOrderRequestDTO request);
+    Task<CreateOrderPresenter?> CreateOrderAsync(CreateOrderRequestDTO request);
+
     Task FinishAsync(FinishOrderRequestDTO request);
 
+    Task<IEnumerable<OrderPresenter>> GetAllDoneAndInPreparationAsync();
 }

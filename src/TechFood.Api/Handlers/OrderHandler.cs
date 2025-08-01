@@ -1,3 +1,4 @@
+using Azure.Core;
 using Microsoft.AspNetCore.Mvc;
 using TechFood.Application.Controllers;
 using TechFood.Application.Interfaces.Controller;
@@ -21,6 +22,15 @@ namespace TechFood.Api.Handlers
         {
             _orderController = new OrderController(orderDataSource, productDataSource
                 , preparationDataSource, unitOfWorkDataSource);
+        }
+
+        [HttpGet]
+        [ProducesResponseType(typeof(Guid), 200)]
+        public async Task<IActionResult> GetAllDoneAndInPreparationAsync()
+        {
+            var result = await _orderController.GetAllDoneAndInPreparationAsync();
+
+            return Ok(result);
         }
 
         [HttpPost]

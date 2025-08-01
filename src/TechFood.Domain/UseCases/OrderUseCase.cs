@@ -73,4 +73,9 @@ public class OrderUseCase : IOrderUseCase
 
         await _orderGateway.UpdateAsync(order);
     }
+
+    public async Task<IEnumerable<Order>> GetAllDoneAndInPreparationAsync()
+    {
+       return await _orderGateway.GetAllDoneAndInPreparationAsync();
+    }
 }

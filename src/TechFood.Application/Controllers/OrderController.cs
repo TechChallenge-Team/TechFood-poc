@@ -25,13 +25,13 @@ public class OrderController : IOrderController
         _orderUseCase = new OrderUseCase(orderGateway, productGateway, preparationGateway);
     }
 
-    public async Task<OrderPresenter?> CreateOrderAsync(CreateOrderRequestDTO request)
+    public async Task<CreateOrderPresenter?> CreateOrderAsync(CreateOrderRequestDTO request)
     {
 
         var order = await _orderUseCase.CreateOrderAsync(request);
 
         return order is not null ?
-                   OrderPresenter.Create(order) :
+                   CreateOrderPresenter.Create(order) :
                    null;
     }
 
@@ -40,5 +40,14 @@ public class OrderController : IOrderController
         await _orderUseCase.FinishAsync(request);
 
         return;
+    }
+
+    public async Task<IEnumerable<OrderPresenter>> GetAllDoneAndInPreparationAsync()
+    {
+        var orders = await _orderUseCase.GetAllDoneAndInPreparationAsync();
+
+        return orders.Any() ?
+            orders.Select(x => OrderPresenter.Create(x)):
+                 null;
     }
 }

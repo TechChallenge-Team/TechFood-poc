@@ -1,8 +1,10 @@
+using System.Linq;
 using TechFood.Application.Interfaces.DataSource;
 using TechFood.Application.Mappers;
 using TechFood.Common.DTO;
 using TechFood.Common.DTO.Enums;
 using TechFood.Domain.Entities;
+using TechFood.Domain.Enums;
 using TechFood.Domain.Interfaces.Gateway;
 
 namespace TechFood.Application.Gateway
@@ -55,9 +57,33 @@ namespace TechFood.Application.Gateway
             return result;
         }
 
-        public Task<List<Order>> GetAllDoneAndInPreparationAsync()
+        public async Task<List<Order>> GetAllDoneAndInPreparationAsync()
         {
-            throw new NotImplementedException();
+            var orders = await _orderDataSource.GetAllDoneAndInPreparationAsync();
+
+            var orderList = orders
+    .Select(x => new Order(
+        x.CustomerId,
+        x.CreatedAt,
+        null,
+        (OrderStatusType)x.Status,
+        x.Amount,
+        x.Discount,
+        (x.Items ?? new List<OrderItemDTO>()).Any()
+            ? (x.Items ?? new List<OrderItemDTO>()).Select(orderItem =>
+                new OrderItem(orderItem.ProductId, orderItem.UnitPrice, orderItem.Quantity, orderItem.Id))
+            : new List<OrderItem>(),
+        (x.Historical ?? new List<OrderHistoryDTO>()).Any()
+            ? (x.Historical ?? new List<OrderHistoryDTO>()).Select(orderHistory =>
+                new OrderHistory((OrderStatusType)orderHistory.Status, orderHistory.CreatedAt, orderHistory.Id))
+            : new List<OrderHistory>(),
+        x.Id
+    ))
+    .OrderByDescending(c => c.Status)
+    .ThenBy(c => c.CreatedAt)
+    .ToList();
+
+            return orderList;
         }
 
         public async Task<Order?> GetByIdAsync(Guid id)

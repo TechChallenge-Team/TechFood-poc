@@ -20,8 +20,12 @@ internal class OrderRepository(TechFoodContext dbContext) : IOrderDataSource
     public async Task<List<OrderDTO>> GetAllDoneAndInPreparationAsync()
     {
         var orders = await _orders.AsNoTracking()
-                                  .Where(x => x.Status == OrderStatusTypeDTO.PreparationDone || x.Status == OrderStatusTypeDTO.InPreparation)
-                                  .OrderBy(c => c.CreatedAt).ToListAsync();
+          .Where(x =>
+              (x.Status == OrderStatusTypeDTO.PreparationDone
+              || x.Status == OrderStatusTypeDTO.InPreparation
+              || x.Status == OrderStatusTypeDTO.Paid)
+              && x.FinishedAt == null)
+          .ToListAsync();
 
         return orders;
     }
