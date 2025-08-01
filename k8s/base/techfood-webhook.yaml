@@ -45,8 +45,8 @@ spec:
                   key: AllowedHosts
             - name: Access_Key
               valueFrom:
-                configMapKeyRef:
-                  name: techfood-webhook-config
+                secretKeyRef:
+                  name: techfood-webhook-secret
                   key: Access_Key
             - name: ConnectionStrings__DataBaseConection
               valueFrom:
