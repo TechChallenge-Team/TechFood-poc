@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,6 +17,12 @@
     <ProjectReference Include="..\TechFood.Infra.Data\TechFood.Infra.Data.csproj" />
     <ProjectReference Include="..\TechFood.Infra.ImageStore.LocalDisk\TechFood.Infra.ImageStore.LocalDisk.csproj" />
     <ProjectReference Include="..\TechFood.Infra.Payments.MercadoPago\TechFood.Infra.Payments.MercadoPago.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\.dockerignore">
+      <Link>.dockerignore</Link>
+    </Content>
   </ItemGroup>
 
 </Project>
