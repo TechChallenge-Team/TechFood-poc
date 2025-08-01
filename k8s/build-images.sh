@@ -16,6 +16,14 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+# Build do WebHook
+echo "📦 Building TechFood.WebHook..."
+docker build -t techfood.webhook:latest -f src/TechFood.WebHook.Api/Dockerfile .
+if [ $? -ne 0 ]; then
+    echo "❌ Erro ao fazer build do WebHook"
+    exit 1
+fi
+
 # Build do Admin
 echo "📦 Building TechFood.Admin..."
 docker build -t techfood.admin:latest -f apps/admin/Dockerfile .

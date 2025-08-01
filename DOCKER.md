@@ -31,6 +31,7 @@ docker-compose up -d
 Após a inicialização dos containers, as aplicações estarão disponíveis nos seguintes endereços:
 
 - **API Swagger**: http://localhost:5000/api/swagger/index.html
+- **Webhook Swagger**: http://localhost:5000/webhook/swagger/index.html
 - **Self-Order App**: http://localhost:5000/self-order/
 - **Monitor App**: http://localhost:5000/monitor/
 - **Admin App**: http://localhost:5000/admin/

@@ -12,6 +12,7 @@ services:
       - techfood.self-order
       - techfood.monitor
       - techfood.api
+      - techfood.webhook
 
   techfood.admin:
     image: ${DOCKER_REGISTRY-}techfood.admin
@@ -105,6 +106,36 @@ services:
           "5",
           "-v",
           "TRUSTSERVERCERTIFICATE=yes",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  techfood.webhook:
+    image: ${DOCKER_REGISTRY-}techfood.webhook
+    build:
+      context: .
+      dockerfile: src/TechFood.WebHook.Api/Dockerfile
+    container_name: techfood.webhook
+    environment:
+      ASPNETCORE_HTTP_PORTS: 8080
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__DataBaseConection: Server=techfood.db;Database=dbtechfood;User Id=sa;Password=123456#4EA;TrustServerCertificate=True;
+    ports:
+      - "49753:8080"
+    depends_on:
+      techfood.db:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:8080/health",
         ]
       interval: 10s
       timeout: 5s

@@ -10,6 +10,7 @@ resources:
   - pvc.yaml
   - techfood-db.yaml
   - techfood-api.yaml
+  - techfood-webhook.yaml
   - techfood-admin.yaml
   - techfood-self-order.yaml
   - techfood-monitor.yaml

@@ -151,6 +151,7 @@ For deployment using Kubernetes (Minikube), see the detailed instructions in:
 Follow the guide in [k8s/README.md](./k8s/README.md)
 
 - API Swagger: http://localhost:30000/api/swagger/index.html
+- Webhook Swagger: http://localhost:30000/webhook/swagger/index.html
 - Self-Order App: http://localhost:30000/self-order/
 - Monitor App: http://localhost:30000/monitor/
 - Admin App: http://localhost:30000/admin/
@@ -163,6 +164,7 @@ For quick setup using Docker containers, see the detailed instructions in:
 `docker-compose up -d` (see [DOCKER.md](./DOCKER.md) for details)
 
 - API Swagger: http://localhost:5000/api/swagger/index.html
+- Webhook Swagger: http://localhost:5000/webhook/swagger/index.html
 - Self-Order App: http://localhost:5000/self-order/
 - Monitor App: http://localhost:5000/monitor/
 - Admin App: http://localhost:5000/admin/

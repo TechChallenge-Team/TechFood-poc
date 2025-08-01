@@ -19,6 +19,20 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  name: techfood-webhook-config
+  namespace: techfood
+  labels:
+    app.kubernetes.io/name: techfood-webhook
+    app.kubernetes.io/component: config
+    app.kubernetes.io/part-of: techfood-system
+data:
+  ASPNETCORE_ENVIRONMENT: "Development"
+  ASPNETCORE_HTTP_PORTS: "8080"
+  AllowedHosts: "*"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
   name: nginx-config
   namespace: techfood
   labels:
@@ -41,6 +55,10 @@ data:
 
     upstream api_upstream {
         server techfood-api-service:8080;
+    }
+
+    upstream webhook_upstream {
+        server techfood-webhook-service:8080;
     }
 
     server {
@@ -107,6 +125,21 @@ data:
         
         location /api {
             return 301 /api/;
+        }
+
+        # Webhook endpoints
+        location /webhook/ {
+            proxy_pass http://webhook_upstream/;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Host $host:$server_port;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_set_header X-Forwarded-Prefix /webhook;
+        }
+        
+        location /webhook {
+            return 301 /webhook/;
         }
 
         location /health/ {
