@@ -81,6 +81,29 @@ public class OrderUseCase : IOrderUseCase
 
     public async Task<Order> GetByIdAsync(Guid id)
     {
-        return await _orderGateway.GetByIdAsync(id);
+        var order = await _orderGateway.GetByIdAsync(id);
+        if (order == null)
+        {
+            throw new ApplicationException($"Order with ID {id} not found.");
+        }
+        return order;
+    }
+
+    public async Task StartPreparationAsync(Order order)
+    {
+        order.StartPreparation();
+        await _orderGateway.UpdateAsync(order);
+    }
+
+    public async Task CancelPreparationAsync(Order order)
+    {
+        order.CancelPreparation();
+        await _orderGateway.UpdateAsync(order);
+    }
+
+    public async Task PreparationDoneAsync(Order order)
+    {
+        order.FinishPreparation();
+        await _orderGateway.UpdateAsync(order);
     }
 }

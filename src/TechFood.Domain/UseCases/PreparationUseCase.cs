@@ -1,5 +1,4 @@
 using TechFood.Domain.Entities;
-using TechFood.Domain.Enums;
 using TechFood.Domain.Interfaces.Gateway;
 using TechFood.Domain.Interfaces.UseCase;
 
@@ -8,7 +7,7 @@ namespace TechFood.Domain.UseCases;
 public class PreparationUseCase : IPreparationUseCase
 {
     private readonly IPreparationGateway _preparationGateway;
-        
+
     public PreparationUseCase(
         IPreparationGateway preparationGateway)
     {
@@ -36,7 +35,7 @@ public class PreparationUseCase : IPreparationUseCase
         return preparation;
     }
 
-    public async Task StartAsync(Guid id)
+    public async Task<Preparation> StartAsync(Guid id)
     {
         var preparation = await _preparationGateway.GetByIdAsync(id);
         if (preparation == null)
@@ -45,9 +44,10 @@ public class PreparationUseCase : IPreparationUseCase
         }
         preparation.Start();
         await _preparationGateway.UpdateAsync(preparation);
+        return preparation;
     }
 
-    public async Task FinishAsync(Guid id)
+    public async Task<Preparation> FinishAsync(Guid id)
     {
         var preparation = await _preparationGateway.GetByIdAsync(id);
         if (preparation == null)
@@ -56,9 +56,10 @@ public class PreparationUseCase : IPreparationUseCase
         }
         preparation.Finish();
         await _preparationGateway.UpdateAsync(preparation);
+        return preparation;
     }
 
-    public async Task CancelAsync(Guid id)
+    public async Task<Preparation> CancelAsync(Guid id)
     {
         var preparation = await _preparationGateway.GetByIdAsync(id);
         if (preparation == null)
@@ -67,5 +68,6 @@ public class PreparationUseCase : IPreparationUseCase
         }
         preparation.Cancel();
         await _preparationGateway.UpdateAsync(preparation);
+        return preparation;
     }
 }

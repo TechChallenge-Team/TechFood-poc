@@ -63,6 +63,6 @@ public class PaymentsHandler : ControllerBase
     {
         await _paymentController.ConfirmAsync(id);
 
-        return Ok();
+        return Ok("Order payed successfully.");
     }
 }

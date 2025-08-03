@@ -10,9 +10,9 @@ public interface IPreparationUseCase
 
     Task<Preparation> GetByIdAsync(Guid id);
 
-    Task StartAsync(Guid id);
+    Task<Preparation> StartAsync(Guid id);
 
-    Task FinishAsync(Guid id);
+    Task<Preparation> FinishAsync(Guid id);
 
-    Task CancelAsync(Guid id);
+    Task<Preparation> CancelAsync(Guid id);
 }

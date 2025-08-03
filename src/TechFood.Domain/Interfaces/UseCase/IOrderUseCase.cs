@@ -14,5 +14,8 @@ public interface IOrderUseCase
     Task<IEnumerable<Order>> GetAllDoneAndInPreparationAsync();
 
     Task<Order> GetByIdAsync(Guid id);
+    Task StartPreparationAsync(Order order);
+    Task CancelPreparationAsync(Order order);
+    Task PreparationDoneAsync(Order order);
 }
 

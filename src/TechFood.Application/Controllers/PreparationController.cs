@@ -73,7 +73,7 @@ public class PreparationController : IPreparationController
         return preparationsMonitor.OrderByDescending(x => x.Status);
     }
 
-    public async Task<PreparationPresenter> GetPreparationByOrderIdAsync(Guid orderId)
+    public async Task<PreparationPresenter?> GetPreparationByOrderIdAsync(Guid orderId)
     {
         var result = await _preparationUseCase.GetPreparationByOrderIdAsync(orderId);
         return result is not null ?
@@ -103,17 +103,23 @@ public class PreparationController : IPreparationController
 
     public async Task StartAsync(Guid id)
     {
-        await _preparationUseCase.StartAsync(id);
+        var preparation = await _preparationUseCase.StartAsync(id);
+        var order = await _orderUseCase.GetOrderByIdAsync(preparation.OrderId);
+        await _orderUseCase.StartPreparationAsync(order);
     }
 
     public async Task FinishAsync(Guid id)
     {
-        await _preparationUseCase.FinishAsync(id);
+        var preparation = await _preparationUseCase.FinishAsync(id);
+        var order = await _orderUseCase.GetOrderByIdAsync(preparation.OrderId);
+        await _orderUseCase.PreparationDoneAsync(order);
     }
 
     public async Task CancelAsync(Guid id)
     {
-        await _preparationUseCase.CancelAsync(id);
+        var preparation = await _preparationUseCase.CancelAsync(id);
+        var order = await _orderUseCase.GetOrderByIdAsync(preparation.OrderId);
+        await _orderUseCase.CancelPreparationAsync(order);
     }
 }
 

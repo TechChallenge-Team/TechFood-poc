@@ -20,6 +20,7 @@ public class PreparationRepository(TechFoodContext dbContext) : IPreparationData
     public Task<PreparationDTO?> GetByIdAsync(Guid id)
     {
         var preparation = _preparations
+            .AsNoTracking()
             .FirstOrDefaultAsync(p => p.Id == id);
 
         return preparation;
@@ -39,17 +40,11 @@ public class PreparationRepository(TechFoodContext dbContext) : IPreparationData
 
     public async Task<PreparationDTO?> GetByOrderIdAsync(Guid orderId)
     {
-        return await _preparations.FirstOrDefaultAsync(x => x.OrderId == orderId);
+        return await _preparations.AsNoTracking().FirstOrDefaultAsync(x => x.OrderId == orderId);
     }
 
     public async Task UpdateAsync(PreparationDTO updatedData)
     {
-        var local = _preparations.Local.FirstOrDefault(x => x.Id == updatedData.Id);
-        if (local != null)
-        {
-            _preparations.Entry(local).State = EntityState.Detached;
-        }
-
         _preparations.Update(updatedData);
     }
 }

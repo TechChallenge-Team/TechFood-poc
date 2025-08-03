@@ -46,7 +46,6 @@ namespace TechFood.Domain.UseCases
 
             order.ConfirmPayment();
 
-
             await _orderGateway.UpdateAsync(order);
 
             await _paymentGateway.UpdateAsync(payment);
