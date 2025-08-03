@@ -1,9 +1,8 @@
-using System.Net.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using TechFood.Application.Controllers;
 using TechFood.Application.Interfaces.Controller;
 using TechFood.Application.Interfaces.DataSource;
+using TechFood.Application.Presenters;
 
 namespace TechFood.Api.Handlers;
 
@@ -14,7 +13,7 @@ namespace TechFood.Api.Handlers;
 public class PreparationHandler : ControllerBase
 {
     private readonly IPreparationController _preparationController;
-    
+
     public PreparationHandler(
         IPreparationDataSource preparationDataSource,
          IOrderDataSource orderDataSource,
@@ -33,11 +32,12 @@ public class PreparationHandler : ControllerBase
                unitOfWorkDataSource);
 
 
-                            
+
     }
 
     [HttpGet]
     [Route("orders")]
+    [ProducesResponseType(typeof(PreparationMonitorPresenter), 200)]
     public async Task<IActionResult> GetAllPreparationOrdersAsync()
     {
         return Ok(await _preparationController.GetAllPreparationOrdersAsync());
@@ -45,6 +45,7 @@ public class PreparationHandler : ControllerBase
 
     [HttpGet]
     [Route("{orderId:guid}/number")]
+    [ProducesResponseType(typeof(PreparationPresenter), 200)]
     public async Task<IActionResult> GetPreparationByOrderIdAsync(Guid orderId)
     {
         var preparationPresenter = await _preparationController.GetPreparationByOrderIdAsync(orderId);
@@ -56,6 +57,7 @@ public class PreparationHandler : ControllerBase
     }
 
     [HttpGet]
+    [ProducesResponseType(typeof(IEnumerable<PreparationPresenter>), 200)]
     public async Task<IActionResult> GetAllAsync()
     {
         var result = await _preparationController.GetAllAsync();

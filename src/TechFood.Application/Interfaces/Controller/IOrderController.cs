@@ -7,7 +7,8 @@ public interface IOrderController
 {
     Task<CreateOrderPresenter?> CreateOrderAsync(CreateOrderRequestDTO request);
 
-    Task FinishAsync(FinishOrderRequestDTO request);
+    Task FinishAsync(Guid id);
 
     Task<IEnumerable<OrderPresenter>> GetAllDoneAndInPreparationAsync();
+    Task<OrderPresenter> GetById(Guid id);
 }

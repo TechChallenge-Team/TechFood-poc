@@ -9,7 +9,10 @@ public interface IOrderUseCase
 
     Task<Order> GetOrderByIdAsync(Guid orderId);
 
-    Task FinishAsync(FinishOrderRequestDTO request);
+    Task FinishAsync(Guid orderId);
 
     Task<IEnumerable<Order>> GetAllDoneAndInPreparationAsync();
+
+    Task<Order> GetByIdAsync(Guid id);
 }
+

@@ -3,6 +3,7 @@ using TechFood.Application.Controllers;
 using TechFood.Application.Interfaces.Controller;
 using TechFood.Application.Interfaces.DataSource;
 using TechFood.Application.Interfaces.Presenter;
+using TechFood.Application.Presenters;
 using TechFood.Common.DTO.Product;
 
 namespace TechFood.Api.Handlers
@@ -28,6 +29,7 @@ namespace TechFood.Api.Handlers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<ProductPresenter>), 200)]
         public async Task<IActionResult> GetAsync()
         {
             var result = await _productController.ListAllAsync();
@@ -36,6 +38,7 @@ namespace TechFood.Api.Handlers
         }
 
         [HttpGet("{id:Guid}")]
+        [ProducesResponseType(typeof(ProductPresenter), 200)]
         public async Task<IActionResult> GetByIdAsync(Guid id)
         {
             var result = await _productController.GetByIdAsync(id);
@@ -44,6 +47,7 @@ namespace TechFood.Api.Handlers
         }
 
         [HttpPost]
+        [ProducesResponseType(typeof(ProductPresenter), 200)]
         public async Task<IActionResult> AddAsync(CreateProductRequestDTO product)
         {
             var result = await _productController.AddAsync(product);
@@ -52,6 +56,7 @@ namespace TechFood.Api.Handlers
         }
 
         [HttpPut("{id:Guid}")]
+        [ProducesResponseType(typeof(ProductPresenter), 200)]
         public async Task<IActionResult> UpdateAsync(Guid id, UpdateProductRequestDTO product)
         {
 

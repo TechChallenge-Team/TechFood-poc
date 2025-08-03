@@ -35,9 +35,9 @@ public class OrderController : IOrderController
                    null;
     }
 
-    public async Task FinishAsync(FinishOrderRequestDTO request)
+    public async Task FinishAsync(Guid orderId)
     {
-        await _orderUseCase.FinishAsync(request);
+        await _orderUseCase.FinishAsync(orderId);
 
         return;
     }
@@ -47,7 +47,14 @@ public class OrderController : IOrderController
         var orders = await _orderUseCase.GetAllDoneAndInPreparationAsync();
 
         return orders.Any() ?
-            orders.Select(x => OrderPresenter.Create(x)):
+            orders.Select(x => OrderPresenter.Create(x)) :
                  null;
+    }
+
+    public async Task<OrderPresenter> GetById(Guid id)
+    {
+        var orders = await _orderUseCase.GetByIdAsync(id);
+
+        return orders != null ? OrderPresenter.Create(orders) : null;
     }
 }

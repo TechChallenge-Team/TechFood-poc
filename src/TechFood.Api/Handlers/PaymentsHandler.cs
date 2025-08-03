@@ -4,6 +4,7 @@ using TechFood.Application.Controllers;
 using TechFood.Application.Interfaces.Controller;
 using TechFood.Application.Interfaces.DataSource;
 using TechFood.Application.Interfaces.Service;
+using TechFood.Application.Presenters;
 using TechFood.Common.DTO.Payment;
 using TechFood.Infra.Payments.MercadoPago;
 
@@ -39,6 +40,7 @@ public class PaymentsHandler : ControllerBase
     }
 
     [HttpGet("{id:guid}")]
+    [ProducesResponseType(typeof(PaymentPresenter), 200)]
     public async Task<IActionResult> GetByIdAsync(Guid id)
     {
         var result = await _paymentController.GetByIdAsync(id);
@@ -47,6 +49,7 @@ public class PaymentsHandler : ControllerBase
     }
 
     [HttpPost]
+    [ProducesResponseType(typeof(PaymentPresenter), 200)]
     public async Task<IActionResult> CreateAsync(CreatePaymentRequestDTO paymentRequestDTO)
     {
 

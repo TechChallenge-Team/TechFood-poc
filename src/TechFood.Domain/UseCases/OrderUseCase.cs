@@ -34,7 +34,7 @@ public class OrderUseCase : IOrderUseCase
         var order = new Order(request.CustomerId);
 
         foreach (var item in orderItems)
-           order.AddItem(item);
+            order.AddItem(item);
 
         var orderId = await _orderGateway.AddAsync(order);
 
@@ -53,14 +53,14 @@ public class OrderUseCase : IOrderUseCase
         return order;
     }
 
-    public async Task FinishAsync(FinishOrderRequestDTO request)
+    public async Task FinishAsync(Guid orderId)
     {
-        var order = await _orderGateway.GetByIdAsync(request.OrderId);
+        var order = await _orderGateway.GetByIdAsync(orderId);
 
         if (order == null)
             throw new ApplicationException("Order not found.");
 
-        var preparation = await _preparationGateway.GetByOrderIdAsync(request.OrderId);
+        var preparation = await _preparationGateway.GetByOrderIdAsync(orderId);
 
         if (preparation == null)
             throw new ApplicationException("Preparation not found.");
@@ -76,6 +76,11 @@ public class OrderUseCase : IOrderUseCase
 
     public async Task<IEnumerable<Order>> GetAllDoneAndInPreparationAsync()
     {
-       return await _orderGateway.GetAllDoneAndInPreparationAsync();
+        return await _orderGateway.GetAllDoneAndInPreparationAsync();
+    }
+
+    public async Task<Order> GetByIdAsync(Guid id)
+    {
+        return await _orderGateway.GetByIdAsync(id);
     }
 }

@@ -5,6 +5,7 @@ namespace TechFood.Application.Presenters
 {
     public class OrderPresenter
     {
+        public Guid OrderId { get; private set; }
         public Guid? CustomerId { get; private set; }
 
         public DateTime CreatedAt { get; private set; }
@@ -21,6 +22,7 @@ namespace TechFood.Application.Presenters
         {
             return new OrderPresenter
             {
+                OrderId = order.Id,
                 CustomerId = order.CustomerId,
                 CreatedAt = order.CreatedAt,
                 FinishedAt = order.FinishedAt,

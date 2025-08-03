@@ -3,6 +3,7 @@ using TechFood.Application.Controllers;
 using TechFood.Application.Interfaces.Controller;
 using TechFood.Application.Interfaces.DataSource;
 using TechFood.Application.Interfaces.Presenter;
+using TechFood.Application.Presenters;
 
 namespace TechFood.Api.Handlers
 {
@@ -26,6 +27,7 @@ namespace TechFood.Api.Handlers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(MenuPresenter), 200)]
         public async Task<IActionResult> GetAsync()
         {
             var result = await _menuController.GetAsync();

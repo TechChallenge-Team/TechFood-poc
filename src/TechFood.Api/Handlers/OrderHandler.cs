@@ -1,8 +1,8 @@
-using Azure.Core;
 using Microsoft.AspNetCore.Mvc;
 using TechFood.Application.Controllers;
 using TechFood.Application.Interfaces.Controller;
 using TechFood.Application.Interfaces.DataSource;
+using TechFood.Application.Presenters;
 using TechFood.Common.DTO;
 
 namespace TechFood.Api.Handlers
@@ -25,7 +25,7 @@ namespace TechFood.Api.Handlers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(Guid), 200)]
+        [ProducesResponseType(typeof(IEnumerable<OrderPresenter>), 200)]
         public async Task<IActionResult> GetAllDoneAndInPreparationAsync()
         {
             var result = await _orderController.GetAllDoneAndInPreparationAsync();
@@ -33,8 +33,17 @@ namespace TechFood.Api.Handlers
             return Ok(result);
         }
 
+        [HttpGet("{id:Guid}")]
+        [ProducesResponseType(typeof(OrderPresenter), 200)]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var result = await _orderController.GetById(id);
+
+            return Ok(result);
+        }
+
         [HttpPost]
-        [ProducesResponseType(typeof(Guid), 200)]
+        [ProducesResponseType(typeof(OrderPresenter), 200)]
         public async Task<IActionResult> CreateAsync(CreateOrderRequestDTO request)
         {
             var result = await _orderController.CreateOrderAsync(request);
@@ -42,12 +51,12 @@ namespace TechFood.Api.Handlers
             return Ok(result);
         }
 
-        [HttpPatch]
-        public async Task<IActionResult> FinishAsync([FromBody] FinishOrderRequestDTO request)
+        [HttpPatch("{orderId:Guid}/finish")]
+        public async Task<IActionResult> FinishAsync(Guid orderId)
         {
-            await _orderController.FinishAsync(request);
+            await _orderController.FinishAsync(orderId);
 
-            return Ok();
+            return Ok("Order finished successfully.");
         }
     }
 }

@@ -3,6 +3,7 @@ using TechFood.Application.Controllers;
 using TechFood.Application.Interfaces.Controller;
 using TechFood.Application.Interfaces.DataSource;
 using TechFood.Application.Interfaces.Presenter;
+using TechFood.Application.Presenters;
 using TechFood.Common.DTO.Category;
 
 namespace TechFood.Api.Handlers
@@ -26,6 +27,7 @@ namespace TechFood.Api.Handlers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(List<CategoryPresenter>), 200)]
         public async Task<IActionResult> GetAsync()
         {
             var result = await _categoryController.ListAllAsync();
@@ -34,6 +36,7 @@ namespace TechFood.Api.Handlers
         }
 
         [HttpGet("{id:Guid}")]
+        [ProducesResponseType(typeof(CategoryPresenter), 200)]
         public async Task<IActionResult> GetByIdAsync(Guid id)
         {
             var result = await _categoryController.GetByIdAsync(id);
@@ -42,6 +45,7 @@ namespace TechFood.Api.Handlers
         }
 
         [HttpPost]
+        [ProducesResponseType(typeof(CategoryPresenter), 200)]
         public async Task<IActionResult> AddAsync(CreateCategoryRequestDTO category)
         {
             var result = await _categoryController.AddAsync(category);
@@ -50,6 +54,7 @@ namespace TechFood.Api.Handlers
         }
 
         [HttpPut("{id:Guid}")]
+        [ProducesResponseType(typeof(CategoryPresenter), 200)]
         public async Task<IActionResult> UpdateAsync(Guid id, UpdateCategoryRequestDTO category)
         {
 

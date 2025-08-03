@@ -4,8 +4,7 @@ namespace TechFood.Common.DTO;
 
 public class CreateOrderRequestDTO
 {
-    [Required]
-    public Guid CustomerId { get; set; }
+    public Guid? CustomerId { get; set; }
 
     public string? CuponCode { get; set; }
 
