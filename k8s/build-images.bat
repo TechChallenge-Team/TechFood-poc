@@ -15,6 +15,15 @@ if errorlevel 1 (
     exit /b 1
 )
 
+REM Build da Webhook
+echo 📦 Building TechFood.Webhook...
+docker build -t techfood-webhook:latest -f src/TechFood.WebHook.Api/Dockerfile .
+if errorlevel 1 (
+    echo ❌ Erro ao fazer build do Webhook
+    exit /b 1
+)
+
+
 REM Build do Admin
 echo 📦 Building TechFood.Admin...
 docker build -t techfood.admin:latest -f apps/admin/Dockerfile .

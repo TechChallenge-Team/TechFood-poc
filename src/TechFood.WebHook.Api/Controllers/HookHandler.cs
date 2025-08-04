@@ -17,7 +17,7 @@ namespace TechFood.WebHook.Api.Controllers
     public class HookHandler : ControllerBase
     {
         private readonly IHookController _hookUseCase;
-
+        //incluir Access_Key ja definida no secrets: \k8s\base\secrets.yaml
         private readonly string secretKey = "87bc7869ec224e19f3fa0e113836d0b243d655fb35969a026514c2cc586f5efa";
 
         public HookHandler(IUnitOfWorkDataSource unitOfWork,

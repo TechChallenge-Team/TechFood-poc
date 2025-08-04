@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: techfood-webhook
+  namespace: techfood
+  labels:
+    app.kubernetes.io/name: techfood-webhook
+    app.kubernetes.io/component: backend
+    app.kubernetes.io/part-of: techfood-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: techfood-webhook
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: techfood-webhook
+        app.kubernetes.io/component: backend
+        app.kubernetes.io/part-of: techfood-system
+
+    spec:
+      containers:
+        - name: techfood-webhook
+          image: techfood-webhook:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          env:
+            - name: ASPNETCORE_HTTP_PORTS
+              valueFrom:
+                configMapKeyRef:
+                  name: techfood-webhook-config
+                  key: ASPNETCORE_HTTP_PORTS
+            - name: ASPNETCORE_ENVIRONMENT
+              valueFrom:
+                configMapKeyRef:
+                  name: techfood-webhook-config
+                  key: ASPNETCORE_ENVIRONMENT
+
+            - name: AllowedHosts
+              valueFrom:
+                configMapKeyRef:
+                  name: techfood-webhook-config
+                  key: AllowedHosts
+            - name: Access_Key
+              valueFrom:
+                secretKeyRef:
+                  name: techfood-webhook-secret
+                  key: Access_Key
+            - name: ConnectionStrings__DataBaseConection
+              valueFrom:
+                secretKeyRef:
+                  name: techfood-webhook-secret
+                  key: ConnectionStrings__DataBaseConection
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: techfood-webhook-service
+  namespace: techfood
+  labels:
+    app.kubernetes.io/name: techfood-webhook
+    app.kubernetes.io/component: backend
+    app.kubernetes.io/part-of: techfood-system
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: techfood-webhook
+  type: ClusterIP

@@ -98,6 +98,14 @@ k8s\cleanup.bat
 ./k8s/cleanup.sh
 ```
 
+### 9. Para Rodar scripts de teste de stress para resposta do hpa foi utilizado o arquivo:
+
+```bash
+# Windows
+./k8s/test-stress-hpa/loop_request.bat
+
+```
+
 ## Arquitetura
 
 A aplicação TechFood é composta pelos seguintes componentes:
@@ -161,6 +169,7 @@ k8s/
 │   ├── pvc.yaml                   # Persistent Volume Claims
 │   ├── techfood-db.yaml           # Database deployment
 │   ├── techfood-api.yaml          # API deployment
+│   ├── techfood-webhook.yaml      # Webhook deployment
 │   ├── techfood-admin.yaml        # Admin app deployment
 │   ├── techfood-self-order.yaml   # Self-order app deployment
 │   ├── techfood-monitor.yaml      # Monitor app deployment
@@ -185,6 +194,7 @@ Após o deploy, a aplicação estará disponível nos seguintes endpoints:
 - **Monitor**: http://localhost:30000/monitor
 - **API**: http://localhost:30000/api/swagger/index.html
 - **Health Check**: http://localhost:30000/health
+- **WEBHOOK**: http://localhost:30000/webhook/swagger/index.html
 
 ### Monitoramento
 
