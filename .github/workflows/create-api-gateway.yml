@@ -76,7 +76,7 @@ jobs:
             echo "IAM Role $LAMBDA_ROLE_NAME not found, creating it..."
             
             # Create a policy document for the role
-            cat > lambda-role-policy.json << EOF
+            cat > lambda-role-policy.json << 'EOF'
             {
               "Version": "2012-10-17",
               "Statement": [
