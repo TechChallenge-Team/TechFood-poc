@@ -1,0 +1,315 @@
+name: Create API Gateway with Hello World Lambda
+
+on:
+  workflow_dispatch: # Permite execução manual
+  push: # Executa automaticamente em qualquer commit em qualquer branch
+
+jobs:
+  create-api-gateway-with-lambda:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION || 'us-east-1' }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install jq
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq
+
+      # Create Hello World Lambda function
+      - name: Create Hello World Lambda Code
+        run: |
+          mkdir -p lambda-hello-code
+          cat > lambda-hello-code/index.js << 'EOF'
+          exports.handler = async (event) => {
+            console.log('Hello World Lambda invoked with event:', JSON.stringify(event));
+            
+            // Prepare response
+            const response = {
+              statusCode: 200,
+              headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*' // Enable CORS
+              },
+              body: JSON.stringify({
+                message: 'Hello World from TechFood Lambda!',
+                timestamp: new Date().toISOString(),
+                event: event
+              })
+            };
+            
+            return response;
+          };
+          EOF
+
+          # Create zip file for Lambda deployment
+          cd lambda-hello-code
+          zip -r ../lambda-hello-function.zip index.js
+          cd ..
+
+          echo "Hello World Lambda code prepared"
+
+      - name: Check and Create Lambda execution role
+        id: create_lambda_role
+        run: |
+          # Define IAM role for Lambda
+          LAMBDA_ROLE_NAME="techfood-hello-lambda-role"
+
+          # Check if role already exists
+          if aws iam get-role --role-name $LAMBDA_ROLE_NAME 2>/dev/null; then
+            echo "IAM Role $LAMBDA_ROLE_NAME already exists, retrieving ARN..."
+            LAMBDA_ROLE_ARN=$(aws iam get-role --role-name $LAMBDA_ROLE_NAME --query 'Role.Arn' --output text)
+          else
+            echo "IAM Role $LAMBDA_ROLE_NAME not found, creating it..."
+            
+            # Create a policy document for the role
+            cat > lambda-role-policy.json << EOF
+            {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Principal": {
+                    "Service": "lambda.amazonaws.com"
+                  },
+                  "Action": "sts:AssumeRole"
+                }
+              ]
+            }
+            EOF
+            
+            # Create the IAM role
+            LAMBDA_ROLE_ARN=$(aws iam create-role --role-name $LAMBDA_ROLE_NAME --assume-role-policy-document file://lambda-role-policy.json --query 'Role.Arn' --output text)
+            
+            # Attach basic Lambda execution policy
+            aws iam attach-role-policy --role-name $LAMBDA_ROLE_NAME --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+            
+            # Wait for role to propagate
+            echo "Waiting for IAM role to propagate..."
+            sleep 10
+            
+            echo "Created Lambda role with ARN: $LAMBDA_ROLE_ARN"
+          fi
+
+          echo "LAMBDA_ROLE_ARN=$LAMBDA_ROLE_ARN" >> $GITHUB_ENV
+
+      - name: Check and Create/Update Lambda Function
+        id: create_lambda
+        run: |
+          # Define Lambda function name
+          LAMBDA_FUNCTION_NAME="techfood-hello-lambda"
+
+          # Check if Lambda function already exists
+          if aws lambda get-function --function-name $LAMBDA_FUNCTION_NAME 2>/dev/null; then
+            echo "Lambda function $LAMBDA_FUNCTION_NAME already exists, updating code..."
+            
+            # Update Lambda code
+            LAMBDA_ARN=$(aws lambda update-function-code \
+              --function-name $LAMBDA_FUNCTION_NAME \
+              --zip-file fileb://lambda-hello-function.zip \
+              --query 'FunctionArn' --output text)
+            
+            # Update configuration if needed
+            aws lambda update-function-configuration \
+              --function-name $LAMBDA_FUNCTION_NAME \
+              --handler index.handler \
+              --runtime nodejs20.x \
+              --role $LAMBDA_ROLE_ARN \
+              --timeout 10 \
+              --memory-size 128
+              
+            echo "Updated Lambda function: $LAMBDA_FUNCTION_NAME"
+          else
+            echo "Lambda function $LAMBDA_FUNCTION_NAME not found, creating it..."
+            
+            # Create new Lambda function
+            LAMBDA_ARN=$(aws lambda create-function \
+              --function-name $LAMBDA_FUNCTION_NAME \
+              --zip-file fileb://lambda-hello-function.zip \
+              --handler index.handler \
+              --runtime nodejs20.x \
+              --role $LAMBDA_ROLE_ARN \
+              --timeout 10 \
+              --memory-size 128 \
+              --query 'FunctionArn' --output text)
+              
+            echo "Created Lambda function with ARN: $LAMBDA_ARN"
+          fi
+
+          echo "LAMBDA_ARN=$LAMBDA_ARN" >> $GITHUB_ENV
+
+      - name: Check and Create API Gateway REST API
+        id: create_api
+        run: |
+          API_NAME="TechFoodAPI"
+
+          # Check if API Gateway with this name already exists
+          API_ID=$(aws apigateway get-rest-apis --query "items[?name=='$API_NAME'].id" --output text)
+
+          if [ -z "$API_ID" ]; then
+            echo "API Gateway $API_NAME not found, creating it..."
+            API_ID=$(aws apigateway create-rest-api --name "$API_NAME" --query 'id' --output text)
+            echo "Created API Gateway with ID: $API_ID"
+          else
+            echo "API Gateway $API_NAME already exists with ID: $API_ID"
+          fi
+
+          echo "API_ID=$API_ID" >> $GITHUB_ENV
+
+          # Get the root resource ID
+          ROOT_RESOURCE_ID=$(aws apigateway get-resources --rest-api-id $API_ID --query 'items[0].id' --output text)
+          echo "ROOT_RESOURCE_ID=$ROOT_RESOURCE_ID" >> $GITHUB_ENV
+
+          # Check if hello resource already exists
+          RESOURCES=$(aws apigateway get-resources --rest-api-id $API_ID)
+          HELLO_RESOURCE_ID=$(echo $RESOURCES | jq -r '.items[] | select(.pathPart == "hello") | .id')
+
+          if [ -z "$HELLO_RESOURCE_ID" ]; then
+            echo "Resource 'hello' not found, creating it..."
+            HELLO_RESOURCE_ID=$(aws apigateway create-resource --rest-api-id $API_ID --parent-id $ROOT_RESOURCE_ID --path-part "hello" --query 'id' --output text)
+            echo "Created Hello resource with ID: $HELLO_RESOURCE_ID"
+          else
+            echo "Resource 'hello' already exists with ID: $HELLO_RESOURCE_ID"
+          fi
+
+          echo "HELLO_RESOURCE_ID=$HELLO_RESOURCE_ID" >> $GITHUB_ENV
+
+      - name: Configure API Gateway to Lambda Integration
+        run: |
+          # Check if GET method already exists on the hello resource
+          if ! aws apigateway get-method --rest-api-id $API_ID --resource-id $HELLO_RESOURCE_ID --http-method GET 2>/dev/null; then
+            echo "Creating GET method for resource..."
+            # Create GET method on the hello resource
+            aws apigateway put-method \
+              --rest-api-id $API_ID \
+              --resource-id $HELLO_RESOURCE_ID \
+              --http-method GET \
+              --authorization-type NONE
+          else
+            echo "GET method already exists for this resource"
+          fi
+
+          # Create or update integration between API Gateway and Hello World Lambda
+          echo "Creating/updating Lambda integration..."
+          aws apigateway put-integration \
+            --rest-api-id $API_ID \
+            --resource-id $HELLO_RESOURCE_ID \
+            --http-method GET \
+            --type AWS_PROXY \
+            --integration-http-method POST \
+            --uri arn:aws:apigateway:${{ secrets.AWS_REGION || 'us-east-1' }}:lambda:path/2015-03-31/functions/${LAMBDA_ARN}/invocations
+
+          # Add permission for API Gateway to invoke Lambda (with error handling for already exists)
+          # We remove and add the permission again to ensure it's up to date
+          aws lambda remove-permission \
+            --function-name techfood-hello-lambda \
+            --statement-id apigateway-invoke-hello-lambda 2>/dev/null || true
+            
+          aws lambda add-permission \
+            --function-name techfood-hello-lambda \
+            --statement-id apigateway-invoke-hello-lambda \
+            --action lambda:InvokeFunction \
+            --principal apigateway.amazonaws.com \
+            --source-arn "arn:aws:execute-api:${{ secrets.AWS_REGION || 'us-east-1' }}:$(aws sts get-caller-identity --query Account --output text):$API_ID/*/GET/hello"
+
+          # Create a method response (put-method-response will update if already exists)
+          echo "Creating/updating method response..."
+          aws apigateway put-method-response \
+            --rest-api-id $API_ID \
+            --resource-id $HELLO_RESOURCE_ID \
+            --http-method GET \
+            --status-code 200 \
+            --response-models '{"application/json": "Empty"}' || echo "Method response may already exist"
+
+          # Enable CORS for hello endpoint
+          # Check if OPTIONS method already exists
+          if ! aws apigateway get-method --rest-api-id $API_ID --resource-id $HELLO_RESOURCE_ID --http-method OPTIONS 2>/dev/null; then
+            echo "Creating OPTIONS method for CORS support..."
+            aws apigateway put-method \
+              --rest-api-id $API_ID \
+              --resource-id $HELLO_RESOURCE_ID \
+              --http-method OPTIONS \
+              --authorization-type NONE
+          else
+            echo "OPTIONS method already exists for this resource"
+          fi
+
+          aws apigateway put-method-response \
+            --rest-api-id $API_ID \
+            --resource-id $HELLO_RESOURCE_ID \
+            --http-method OPTIONS \
+            --status-code 200 \
+            --response-parameters '{"method.response.header.Access-Control-Allow-Headers": true, "method.response.header.Access-Control-Allow-Methods": true, "method.response.header.Access-Control-Allow-Origin": true}'
+
+          aws apigateway put-integration \
+            --rest-api-id $API_ID \
+            --resource-id $HELLO_RESOURCE_ID \
+            --http-method OPTIONS \
+            --type MOCK \
+            --integration-http-method OPTIONS \
+            --request-templates '{"application/json": "{\"statusCode\": 200}"}'
+
+          aws apigateway put-integration-response \
+            --rest-api-id $API_ID \
+            --resource-id $HELLO_RESOURCE_ID \
+            --http-method OPTIONS \
+            --status-code 200 \
+            --response-parameters '{"method.response.header.Access-Control-Allow-Headers": "'\''Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'\''", "method.response.header.Access-Control-Allow-Methods": "'\''GET,OPTIONS'\''", "method.response.header.Access-Control-Allow-Origin": "'\''*'\''"}'
+
+      - name: Deploy API Gateway
+        run: |
+          # Check if prod stage exists
+          if ! aws apigateway get-stage --rest-api-id $API_ID --stage-name prod 2>/dev/null; then
+            echo "Creating new deployment and prod stage..."
+            # Create a deployment with a new stage
+            DEPLOYMENT_ID=$(aws apigateway create-deployment \
+              --rest-api-id $API_ID \
+              --stage-name prod \
+              --query 'id' --output text)
+          else
+            echo "Prod stage exists, creating new deployment only..."
+            # Create a new deployment and update the existing stage
+            DEPLOYMENT_ID=$(aws apigateway create-deployment \
+              --rest-api-id $API_ID \
+              --description "Update from GitHub Actions" \
+              --query 'id' --output text)
+              
+            # Update the existing prod stage to point to the new deployment
+            aws apigateway update-stage \
+              --rest-api-id $API_ID \
+              --stage-name prod \
+              --patch-operations op=replace,path=/deploymentId,value=$DEPLOYMENT_ID
+          fi
+
+          # Get the invoke URL
+          HELLO_API_URL="https://${API_ID}.execute-api.${{ secrets.AWS_REGION || 'us-east-1' }}.amazonaws.com/prod/hello"
+          echo "HELLO_API_URL=$HELLO_API_URL" >> $GITHUB_ENV
+
+          echo "API Gateway deployed successfully"
+          echo "Hello World API URL: $HELLO_API_URL"
+
+      - name: Output Summary
+        run: |
+          echo "====== Deployment Summary ======"
+          echo "API Gateway ID: $API_ID"
+          echo "Hello World Lambda ARN: $LAMBDA_ARN"
+          echo ""
+          echo "=== API Endpoint ==="
+          echo "Hello World Endpoint: $HELLO_API_URL"
+          echo "Try it in your browser: $HELLO_API_URL"
+          echo ""
+          echo "=== Test Command ==="
+          echo "curl $HELLO_API_URL"
+          echo "=============================="
