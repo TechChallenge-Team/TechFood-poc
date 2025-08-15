@@ -19,8 +19,34 @@ var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Build();
 {
-    app.UseHttpsRedirection();
+    app.UseForwardedHeaders();
+
+    if (!app.Environment.IsDevelopment())
+    {
+        app.UseHsts();
+        app.UseHttpsRedirection();
+    }
+
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseDeveloperExceptionPage();
+
+        app.UseSwagger(options =>
+        {
+            options.OpenApiVersion = Microsoft.OpenApi.OpenApiSpecVersion.OpenApi2_0;
+        });
+
+        app.UseSwaggerUI();
+    }
+
+    app.UseInfra();
+
+    app.UseRouting();
+
+    app.UseCors();
+
     app.UseAuthorization();
+
     app.MapControllers();
 
     app.Run();
