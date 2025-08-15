@@ -1,13 +1,20 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
-using TechFood.Api;
 using TechFood.Application;
+using TechFood.Common.Extensions;
 using TechFood.Infra;
 using TechFood.Infra.Persistence.Contexts;
 
 var builder = WebApplication.CreateBuilder(args);
 {
-    builder.Services.AddPresentation(builder.Configuration);
+    builder.Services.AddPresentation(builder.Configuration, new PresentationOptions
+    {
+        AddSwagger = true,
+        AddJwtAuthentication = true,
+        SwaggerTitle = "TechFood API V1",
+        SwaggerDescription = "TechFood API V1"
+    });
+
     builder.Services.AddApplication();
     builder.Services.AddInfra();
 }

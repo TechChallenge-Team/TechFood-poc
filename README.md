@@ -13,6 +13,7 @@ TechFood is a FIAP Post-Graduation project that aims to create a web application
 - [Getting Started](#getting-started)
   - [☸️ Kubernetes Deployment](./k8s/README.md)
   - [🐳 Docker Deployment](./DOCKER.md)
+  - [⚡ AWS Lambda Deployment](./LAMBDA-README.md)
 - [Configuration](#configuration)
 - [API Documentation](#order-flow---swagger)
 - [Frontend Flows](#order-flow---frontend)
@@ -84,8 +85,15 @@ The solution is designed to run on various Kubernetes platforms:
 
 - **Docker & Docker Compose** - Containerization
 - **Kubernetes** - Container orchestration
+- **AWS Lambda** - Serverless functions for Authentication and Customer endpoints
 - **NGINX** - Reverse proxy and load balancer
 - **Minikube** - Local Kubernetes development
+
+### Serverless
+
+- **AWS Lambda** - Serverless compute for specific endpoints
+- **API Gateway** - RESTful API endpoint management
+- **AWS SAM** - Serverless Application Model for deployment
 
 ### Payment Integration
 
@@ -166,6 +174,36 @@ For quick setup using Docker containers, see the detailed instructions in:
 - Self-Order App: http://localhost:5000/self-order/
 - Monitor App: http://localhost:5000/monitor/
 - Admin App: http://localhost:5000/admin/
+
+### ⚡ AWS Lambda Deployment
+
+For serverless deployment of Customer and Authentication endpoints using AWS Lambda, see:
+📖 **[LAMBDA-README.md](./LAMBDA-README.md)**
+
+This deployment method provides:
+
+- **Serverless Customer Endpoints**: Create and retrieve customer data
+- **Serverless Authentication**: Sign-in functionality
+- **Auto-scaling**: Handles traffic spikes automatically
+- **Cost-effective**: Pay only for actual usage
+
+Quick deployment:
+
+```bash
+# Build and deploy
+./build-lambdas.bat  # Windows
+./deploy-lambdas.bat # Windows
+
+# Or on Linux/Mac
+./build-lambdas.sh
+./deploy-lambdas.sh
+```
+
+After deployment, access endpoints via API Gateway URL:
+
+- POST `/v1/authentication/signin`
+- POST `/v1/customers`
+- GET `/v1/customers/{document}`
 
 ## Configuration
 

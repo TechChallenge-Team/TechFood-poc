@@ -5,7 +5,7 @@ using TechFood.Application.Customers.Queries.GetCustomerByDocument;
 using TechFood.Contracts.Customers;
 using TechFood.Domain.Enums;
 
-namespace TechFood.Api.Controllers;
+namespace TechFood.Lambda.Customers.Controllers;
 
 [ApiController()]
 [Route("v1/[controller]")]
